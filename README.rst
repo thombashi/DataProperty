@@ -105,6 +105,8 @@ Dependencies
 
 Python 2.5+ or 3.3+
 
+-  `six <https://pypi.python.org/pypi/six/>`__
+
 Test dependencies
 -----------------
 
