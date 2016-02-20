@@ -4,7 +4,165 @@
 @author: Tsuyoshi Hombashi
 '''
 
-import thutils.common as common
+import six
+
+
+def is_integer(value):
+    if isinstance(value, six.integer_types):
+        return not isinstance(value, bool)
+
+    try:
+        int(value)
+    except:
+        return False
+
+    if isinstance(value, float):
+        return False
+
+    return True
+
+
+def is_hex(value):
+    try:
+        int(value, 16)
+    except (TypeError, ValueError):
+        return False
+
+    return True
+
+
+def is_float(value):
+    if any([isinstance(value, float), value == float("inf")]):
+        return True
+
+    if isinstance(value, bool):
+        return False
+
+    try:
+        work = float(value)
+        if work == float("inf"):
+            return False
+    except:
+        return False
+
+    return True
+
+
+def is_nan(value):
+    return value != value
+
+
+def is_empty_string(value):
+    try:
+        return len(value.strip()) == 0
+    except AttributeError:
+        return True
+
+
+def is_not_empty_string(value):
+    """
+    空白文字(\0, \t, \n)を除いた文字数が0より大きければTrueを返す
+    """
+
+    try:
+        return len(value.strip()) > 0
+    except AttributeError:
+        return False
+
+
+def _is_list(value):
+    return isinstance(value, list)
+
+
+def _is_tuple(value):
+    return isinstance(value, tuple)
+
+
+def is_list_or_tuple(value):
+    return any([_is_list(value), _is_tuple(value)])
+
+
+# def is_empty_list_or_tuple(value):
+#    return value is None or (_is_list(value) and len(value) == 0)
+
+
+def is_empty_list_or_tuple(value):
+    return value is None or (is_list_or_tuple(value) and len(value) == 0)
+
+
+def is_not_empty_list_or_tuple(value):
+    return is_list_or_tuple(value) and len(value) > 0
+
+
+def get_integer_digit(value):
+    import math
+
+    abs_value = abs(float(value))
+
+    if abs_value == 0:
+        return 1
+
+    return max(1, int(math.log10(abs_value) + 1.0))
+
+
+def _get_decimal_places(value, integer_digits):
+    import math
+    from collections import namedtuple
+    from six.moves import range
+
+    float_digit_len = 0
+    if is_integer(value):
+        abs_value = abs(int(value))
+    else:
+        abs_value = abs(float(value))
+        text_value = str(abs_value)
+        float_text = 0
+        if text_value.find(".") != -1:
+            float_text = text_value.split(".")[1]
+            float_digit_len = len(float_text)
+        elif text_value.find("e-") != -1:
+            float_text = text_value.split("e-")[1]
+            float_digit_len = int(float_text) - 1
+
+    Threshold = namedtuple("Threshold", "pow digit_len")
+    upper_threshold = Threshold(pow=-2, digit_len=6)
+    min_digit_len = 1
+
+    treshold_list = [
+        Threshold(upper_threshold.pow + i, upper_threshold.digit_len - i)
+        for i, _ in enumerate(range(upper_threshold.digit_len, min_digit_len - 1, -1))
+    ]
+
+    abs_digit = min_digit_len
+    for treshold in treshold_list:
+        if abs_value < math.pow(10, treshold.pow):
+            abs_digit = treshold.digit_len
+            break
+
+    return min(abs_digit, float_digit_len)
+
+
+def get_number_of_digit(value):
+    try:
+        integer_digits = get_integer_digit(value)
+    except (ValueError, TypeError):
+        integer_digits = float("nan")
+
+    try:
+        decimal_places = _get_decimal_places(value, integer_digits)
+    except (ValueError, TypeError):
+        decimal_places = float("nan")
+
+    return (integer_digits, decimal_places)
+
+
+def get_text_len(text):
+    try:
+        return len(str(text))
+    except UnicodeEncodeError:
+        return len(text)
+    except:
+        return 0
 
 
 def _get_base_float_len(integer_digits, decimal_places):
@@ -20,7 +178,7 @@ def _get_base_float_len(integer_digits, decimal_places):
 
 
 def _get_additional_format_len(data):
-    if not common.is_float(data):
+    if not is_float(data):
         return 0
 
     format_len = 0
@@ -70,6 +228,13 @@ class Typecode:
     FLOAT = 1 << 1
     STRING = 1 << 2
 
+    __TYPENAME_TABLE = {
+        NONE:   "NONE",
+        INT:    "INT",
+        FLOAT:  "FLOAT",
+        STRING: "STRING",
+    }
+
     @classmethod
     def get_typecode_from_bitmap(cls, typecode_bitmap):
         typecode_list = [cls.STRING, cls.FLOAT, cls.INT]
@@ -79,6 +244,10 @@ class Typecode:
                 return typecode
 
         return cls.STRING
+
+    @classmethod
+    def get_typename(cls, typecode):
+        return cls.__TYPENAME_TABLE.get(typecode)
 
 
 class Align:
@@ -145,7 +314,7 @@ class DataPeroperty(object):
         self.__align = PropertyExtractor.get_align_from_typecode(
             self.__typecode)
 
-        integer_digits, decimal_places = common.get_number_of_digit(data)
+        integer_digits, decimal_places = get_number_of_digit(data)
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = _get_additional_format_len(data)
@@ -159,20 +328,20 @@ class DataPeroperty(object):
         if data is None:
             return Typecode.NONE
 
-        if common.is_integer(data):
+        if is_integer(data):
             return Typecode.INT
 
-        if common.is_float(data):
+        if is_float(data):
             return Typecode.FLOAT
 
         return Typecode.STRING
 
     @staticmethod
     def __get_type_format(value, decimal_places):
-        if common.is_integer(value):
+        if is_integer(value):
             return "d"
-        if common.is_float(value):
-            if common.is_nan(value):
+        if is_float(value):
+            if is_nan(value):
                 return "f"
             return ".%df" % (decimal_places)
         return "s"
@@ -189,7 +358,7 @@ class DataPeroperty(object):
                     self.integer_digits, self.decimal_places) +
                 _get_additional_format_len(self.data))
 
-        return common.get_text_len(self.data)
+        return get_text_len(self.data)
 
 
 class ColumnDataPeroperty(object):
@@ -210,8 +379,12 @@ class ColumnDataPeroperty(object):
     def decimal_places(self):
         import math
 
-        avg = self.minmax_decimal_places.average()
-        if common.is_nan(avg):
+        try:
+            avg = self.minmax_decimal_places.average()
+        except TypeError:
+            return float("nan")
+
+        if is_nan(avg):
             return float("nan")
 
         return int(math.ceil(avg))
@@ -270,7 +443,7 @@ class PropertyExtractor:
         for col_idx, col_prop_list in enumerate(zip(*data_prop_matrix)):
             column_prop = ColumnDataPeroperty()
 
-            if common.is_not_empty_list_or_tuple(header_prop_list):
+            if is_not_empty_list_or_tuple(header_prop_list):
                 header_prop = header_prop_list[col_idx]
                 column_prop.update_header(header_prop)
 
@@ -298,7 +471,7 @@ class PropertyExtractor:
 
     @staticmethod
     def __extract_data_property_list(data_list):
-        if common.is_empty_list_or_tuple(data_list):
+        if is_empty_list_or_tuple(data_list):
             return []
 
         return [DataPeroperty(data) for data in data_list]
@@ -308,7 +481,7 @@ class PropertyExtractor:
         if typecode == Typecode.INT:
             return "d"
         if typecode == Typecode.FLOAT:
-            if common.is_nan(decimal_places):
+            if is_nan(decimal_places):
                 return "f"
             return ".%df" % (decimal_places)
         return "s"
