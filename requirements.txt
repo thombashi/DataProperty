@@ -1,1 +1,1 @@
-thutils
+six<=1.8.0
