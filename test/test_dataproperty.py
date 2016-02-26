@@ -29,7 +29,6 @@ class Test_is_integer:
         [0.5], ["0.5"],
         [.999], [".999"],
         [""], ["test"], ["1a1"], ["11a"], ["a11"],
-        #["１"],
         [True],
         [1e-05], [-1e-05],
         ["1e-05"], ["-1e-05"],
@@ -51,7 +50,6 @@ class Test_is_hex:
         [None], [nan], [inf],
         [0], [1], [0.5],
         ["test"], ["g"],
-        #["１"],
         [True],
     ])
     def test_abnormal(self, value):
@@ -74,7 +72,6 @@ class Test_is_float:
         [None],
         ["test"],
         ["inf"],
-        #["１"],
         [True],
     ])
     def test_abnormal(self, value):
@@ -560,6 +557,14 @@ class Test_PropertyExtractor_extract_column_property_list:
         ],
         [
             None,
+            [
+                [1, 1.1, "aaa", 1,   1],
+                [2, 2.2, "bbb", 2.2, 2.2],
+                [3, 3.3, "ccc", 3,   "ccc"],
+            ],
+        ],
+        [
+            [],
             [
                 [1, 1.1, "aaa", 1,   1],
                 [2, 2.2, "bbb", 2.2, 2.2],
