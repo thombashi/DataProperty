@@ -9,7 +9,7 @@ REQUIREMENT_DIR = "requirements"
 with open("README.rst") as fp:
     long_description = fp.read()
 
-with open(os.path.join(MISC_DIR, "summary.md")) as f:
+with open(os.path.join(MISC_DIR, "summary.txt")) as f:
     summary = f.read()
 
 with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
