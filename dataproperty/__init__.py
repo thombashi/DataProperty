@@ -4,6 +4,8 @@
 @author: Tsuyoshi Hombashi
 '''
 
+import math
+
 import six
 
 
@@ -82,10 +84,6 @@ def is_list_or_tuple(value):
     return any([_is_list(value), _is_tuple(value)])
 
 
-# def is_empty_list_or_tuple(value):
-#    return value is None or (_is_list(value) and len(value) == 0)
-
-
 def is_empty_list_or_tuple(value):
     return value is None or (is_list_or_tuple(value) and len(value) == 0)
 
@@ -95,8 +93,6 @@ def is_not_empty_list_or_tuple(value):
 
 
 def get_integer_digit(value):
-    import math
-
     abs_value = abs(float(value))
 
     if abs_value == 0:
@@ -106,7 +102,6 @@ def get_integer_digit(value):
 
 
 def _get_decimal_places(value, integer_digits):
-    import math
     from collections import namedtuple
     from six.moves import range
 
@@ -130,7 +125,8 @@ def _get_decimal_places(value, integer_digits):
 
     treshold_list = [
         Threshold(upper_threshold.pow + i, upper_threshold.digit_len - i)
-        for i, _ in enumerate(range(upper_threshold.digit_len, min_digit_len - 1, -1))
+        for i, _
+        in enumerate(range(upper_threshold.digit_len, min_digit_len - 1, -1))
     ]
 
     abs_digit = min_digit_len
@@ -377,8 +373,6 @@ class ColumnDataPeroperty(object):
 
     @property
     def decimal_places(self):
-        import math
-
         try:
             avg = self.minmax_decimal_places.average()
         except TypeError:
