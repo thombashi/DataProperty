@@ -1,5 +1,7 @@
 **DataProperty**
 
+.. image:: https://img.shields.io/pypi/pyversions/DataProperty.svg
+   :target: https://pypi.python.org/pypi/DataProperty
 .. image:: https://travis-ci.org/thombashi/DataProperty.svg?branch=master
     :target: https://travis-ci.org/thombashi/DataProperty
 .. image:: https://coveralls.io/repos/github/thombashi/DataProperty/badge.svg?branch=master
@@ -9,10 +11,9 @@
    :backlinks: top
    :local:
 
-About
-=====
-
-Python library for property of data.
+Summary
+=======
+Python library for extract property from data.
 
 Installation
 ============
