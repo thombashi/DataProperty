@@ -156,30 +156,6 @@ class Test_is_list_or_tuple:
 class Test_is_empty_list_or_tuple:
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [[], True],
-        [None, True],
-
-        [[1], False],
-        [["a"] * 200000, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_empty_list_or_tuple(value) == expected
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [(), False],
-        [(1, 2), False],
-        [nan, False],
-        [0, False],
-        ["aaa", False],
-        [True, False],
-    ])
-    def test_abnormal(self, value, expected):
-        assert is_empty_list_or_tuple(value) == expected
-
-
-class Test_is_empty_list_or_tuple:
-
-    @pytest.mark.parametrize(["value", "expected"], [
         [(), True],
         [[], True],
         [None, True],
