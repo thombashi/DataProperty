@@ -156,30 +156,6 @@ class Test_is_list_or_tuple:
 class Test_is_empty_list_or_tuple:
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [[], True],
-        [None, True],
-
-        [[1], False],
-        [["a"] * 200000, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_empty_list_or_tuple(value) == expected
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [(), False],
-        [(1, 2), False],
-        [nan, False],
-        [0, False],
-        ["aaa", False],
-        [True, False],
-    ])
-    def test_abnormal(self, value, expected):
-        assert is_empty_list_or_tuple(value) == expected
-
-
-class Test_is_empty_list_or_tuple:
-
-    @pytest.mark.parametrize(["value", "expected"], [
         [(), True],
         [[], True],
         [None, True],
@@ -531,10 +507,26 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         prop_matrix = PropertyExtractor.extract_data_property_matrix(value)
 
         assert len(prop_matrix) == 2
-        assert prop_matrix[0][0].typecode == Typecode.NONE
-        assert prop_matrix[0][1].typecode == Typecode.INT
-        assert prop_matrix[1][0].typecode == Typecode.FLOAT
-        assert prop_matrix[1][1].typecode == Typecode.STRING
+
+        prop = prop_matrix[0][0]
+        assert prop.typecode == Typecode.NONE
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+
+        prop = prop_matrix[0][1]
+        assert prop.typecode == Typecode.INT
+        assert prop.align.align_code == Align.RIGHT.align_code
+        assert prop.align.align_string == Align.RIGHT.align_string
+
+        prop = prop_matrix[1][0]
+        assert prop.typecode == Typecode.FLOAT
+        assert prop.align.align_code == Align.RIGHT.align_code
+        assert prop.align.align_string == Align.RIGHT.align_string
+
+        prop = prop_matrix[1][1]
+        assert prop.typecode == Typecode.STRING
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
 
     @pytest.mark.parametrize(["value", "expected"], [
         [None, TypeError],
@@ -552,7 +544,7 @@ class Test_PropertyExtractor_extract_column_property_list:
             [
                 [1, 1.1, "aaa", 1,   1],
                 [2, 2.2, "bbb", 2.2, 2.2],
-                [3, 3.3, "ccc", 3,   "ccc"],
+                [3, 3.3, "ccc", -3,   "ccc"],
             ],
         ],
         [
@@ -560,7 +552,7 @@ class Test_PropertyExtractor_extract_column_property_list:
             [
                 [1, 1.1, "aaa", 1,   1],
                 [2, 2.2, "bbb", 2.2, 2.2],
-                [3, 3.3, "ccc", 3,   "ccc"],
+                [3, 3.3, "ccc", -3,   "ccc"],
             ],
         ],
         [
@@ -568,7 +560,7 @@ class Test_PropertyExtractor_extract_column_property_list:
             [
                 [1, 1.1, "aaa", 1,   1],
                 [2, 2.2, "bbb", 2.2, 2.2],
-                [3, 3.3, "ccc", 3,   "ccc"],
+                [3, 3.3, "ccc", -3,   "ccc"],
             ],
         ],
     ])
@@ -577,11 +569,31 @@ class Test_PropertyExtractor_extract_column_property_list:
             header_list, value)
 
         assert len(col_prop_list) == 5
-        assert col_prop_list[0].typecode == Typecode.INT
-        assert col_prop_list[1].typecode == Typecode.FLOAT
-        assert col_prop_list[2].typecode == Typecode.STRING
-        assert col_prop_list[3].typecode == Typecode.FLOAT
-        assert col_prop_list[4].typecode == Typecode.STRING
+
+        prop = col_prop_list[0]
+        assert prop.typecode == Typecode.INT
+        assert prop.align.align_code == Align.RIGHT.align_code
+        assert prop.align.align_string == Align.RIGHT.align_string
+
+        prop = col_prop_list[1]
+        assert prop.typecode == Typecode.FLOAT
+        assert prop.align.align_code == Align.RIGHT.align_code
+        assert prop.align.align_string == Align.RIGHT.align_string
+
+        prop = col_prop_list[2]
+        assert prop.typecode == Typecode.STRING
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+
+        prop = col_prop_list[3]
+        assert prop.typecode == Typecode.FLOAT
+        assert prop.align.align_code == Align.RIGHT.align_code
+        assert prop.align.align_string == Align.RIGHT.align_string
+
+        prop = col_prop_list[4]
+        assert prop.typecode == Typecode.STRING
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
 
     @pytest.mark.parametrize(["header_list", "value", "expected"], [
         [

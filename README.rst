@@ -25,6 +25,9 @@ Installation
 Usage
 =====
 
+Extract property of data for each data from matrix
+--------------------------------------------------
+
 .. code:: python
 
     from dataproperty import PropertyExtractor, Typecode
@@ -70,6 +73,9 @@ Usage
     [0, 1, nan, 0, 0]
     [0, 1, nan, 1, 1]
     [0, 1, nan, 0, nan]
+
+Extract property of data for each column from matrix
+----------------------------------------------------
 
 .. code:: python
 
