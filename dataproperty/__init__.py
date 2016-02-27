@@ -157,8 +157,6 @@ def get_text_len(text):
         return len(str(text))
     except UnicodeEncodeError:
         return len(text)
-    except:
-        return 0
 
 
 def _get_base_float_len(integer_digits, decimal_places):
