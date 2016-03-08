@@ -188,7 +188,7 @@ def _get_additional_format_len(data):
 
     format_len = 0
 
-    if data < 0:
+    if float(data) < 0:
         # for minus character
         format_len += 1
 

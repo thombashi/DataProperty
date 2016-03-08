@@ -492,6 +492,27 @@ class Test_DataPeroperty_decimal_places:
         is_nan(dp.decimal_places)
 
 
+class Test_DataPeroperty_additional_format_len:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [2147483648, 0],
+        [0, 0],
+        [-1, 1],
+        [-0.01, 1],
+        ["2147483648", 0],
+        ["1", 0],
+        ["-1", 1],
+        ["-0.01", 1],
+
+        [None, 0],
+        ["a", 0],
+        [nan, 0],
+    ])
+    def test_normal(self, value, expected):
+        dp = DataPeroperty(value)
+        assert dp.additional_format_len == expected
+
+
 class Test_ColumnDataPeroperty_decimal_places:
 
     def test_null(self):
