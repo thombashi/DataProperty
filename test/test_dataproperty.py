@@ -4,9 +4,10 @@
 @author: Tsuyoshi Hombashi
 '''
 
-import pytest
+import datetime
 
 from dataproperty import *
+import pytest
 
 
 nan = float("nan")
@@ -201,6 +202,22 @@ class Test_is_not_empty_list_or_tuple:
     ])
     def test_abnormal(self, value, expected):
         assert is_not_empty_list_or_tuple(value) == expected
+
+
+class Test_is_datetime:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [datetime.datetime(2016, 1, 1), True],
+
+        [None, False],
+        ["", False],
+        ["テスト", False],
+        [[], False],
+        [1, False],
+        [True, False],
+    ])
+    def test_normal(self, value, expected):
+        assert is_datetime(value) == expected
 
 
 class Test_get_integer_digit:

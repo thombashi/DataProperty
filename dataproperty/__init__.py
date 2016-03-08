@@ -92,6 +92,17 @@ def is_not_empty_list_or_tuple(value):
     return is_list_or_tuple(value) and len(value) > 0
 
 
+def is_datetime(value):
+    """
+    :return: ``True``` if type of `value` is datetime.datetime.
+    :rtype: bool
+    """
+
+    import datetime
+
+    return value is not None and isinstance(value, datetime.datetime)
+
+
 def get_integer_digit(value):
     abs_value = abs(float(value))
 
