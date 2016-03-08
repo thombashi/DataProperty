@@ -60,3 +60,4 @@ desktop.ini
 misc/README_HEADER.rst
 misc/readme_converter.py
 misc/README.md
+upgrade.sh
