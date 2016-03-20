@@ -4,9 +4,15 @@
 @author: Tsuyoshi Hombashi
 '''
 
+from __future__ import absolute_import
+import abc
 import math
 
 import six
+
+from ._align import Align
+from ._container import MinMaxContainer
+from ._typecode import Typecode
 
 
 def is_integer(value):
@@ -170,215 +176,149 @@ def get_text_len(text):
         return len(text)
 
 
-def _get_base_float_len(integer_digits, decimal_places):
-    if any([integer_digits < 0, decimal_places < 0]):
-        raise ValueError()
+@six.add_metaclass(abc.ABCMeta)
+class DataPeropertyInterface(object):
 
-    float_len = integer_digits + decimal_places
-    if decimal_places > 0:
-        # for dot
-        float_len += 1
+    @abc.abstractproperty
+    def align(self):   # pragma: no cover
+        pass
 
-    return float_len
+    @abc.abstractproperty
+    def decimal_places(self):   # pragma: no cover
+        pass
 
-
-def _get_additional_format_len(data):
-    if not is_float(data):
-        return 0
-
-    format_len = 0
-
-    if float(data) < 0:
-        # for minus character
-        format_len += 1
-
-    return format_len
-
-
-class MinMaxContainer(object):
+    @abc.abstractproperty
+    def typecode(self):   # pragma: no cover
+        pass
 
     @property
-    def min_value(self):
-        return self.__min_value
+    def format_str(self):
+        if self.typecode == Typecode.INT:
+            return "d"
 
-    @property
-    def max_value(self):
-        return self.__max_value
+        if self.typecode == Typecode.FLOAT:
+            if is_nan(self.decimal_places):
+                return "f"
 
-    def __init__(self):
-        self.__min_value = None
-        self.__max_value = None
+            return ".%df" % (self.decimal_places)
 
-    def diff(self):
-        return self.max_value - self.min_value
-
-    def average(self):
-        return (self.max_value + self.min_value) * 0.5
-
-    def update(self, value):
-        if self.__min_value is None:
-            self.__min_value = value
-        else:
-            self.__min_value = min(self.__min_value, value)
-
-        if self.__max_value is None:
-            self.__max_value = value
-        else:
-            self.__max_value = max(self.__max_value, value)
+        return "s"
 
 
-class Typecode:
-    NONE = 0
-    INT = 1 << 0
-    FLOAT = 1 << 1
-    STRING = 1 << 2
-
-    __TYPENAME_TABLE = {
-        NONE:   "NONE",
-        INT:    "INT",
-        FLOAT:  "FLOAT",
-        STRING: "STRING",
-    }
-
-    @classmethod
-    def get_typecode_from_bitmap(cls, typecode_bitmap):
-        typecode_list = [cls.STRING, cls.FLOAT, cls.INT]
-
-        for typecode in typecode_list:
-            if typecode_bitmap & typecode:
-                return typecode
-
-        return cls.STRING
-
-    @classmethod
-    def get_typename(cls, typecode):
-        return cls.__TYPENAME_TABLE.get(typecode)
-
-
-class Align:
-
-    class __AlignData:
-
-        @property
-        def align_code(self):
-            return self.__align_code
-
-        @property
-        def align_string(self):
-            return self.__align_string
-
-        def __init__(self, code, string):
-            self.__align_code = code
-            self.__align_string = string
-
-    AUTO = __AlignData(1 << 0, "auto")
-    LEFT = __AlignData(1 << 1, "left")
-    RIGHT = __AlignData(1 << 2, "right")
-    CENTER = __AlignData(1 << 3, "center")
-
-
-class DataPeroperty(object):
-
-    @property
-    def data(self):
-        return self.__data
-
-    @property
-    def typecode(self):
-        return self.__typecode
+class DataPeroperty(DataPeropertyInterface):
 
     @property
     def align(self):
         return self.__align
 
     @property
+    def decimal_places(self):
+        """
+        :return:
+            Decimal places if the ``data`` is ``float``.
+            Returns ``0`` if the ``data`` is ``int``.
+            Otherwise, returns ``float("nan")``.
+        :rtype: int
+        """
+
+        return self.__decimal_places
+
+    @property
+    def typecode(self):
+        """
+        Return the type code that corresponds to the type of the ``data``.
+
+        :return: One of the constants that are defined in the ``Typecode`` class.
+        :rtype: int
+        """
+
+        return self.__typecode
+
+    @property
+    def data(self):
+        """
+        :return: Original data.
+        :rtype: Original data type.
+        """
+
+        return self.__data
+
+    @property
     def str_len(self):
+        """
+        :return: Length of the ``data`` as a string.
+        :rtype: int
+        """
+
         return self.__str_len
 
     @property
     def integer_digits(self):
-        return self.__integer_digits
+        """
+        :return:
+            Integer digits if the ``data`` is ``int``/``float``.
+            Otherwise, returns ``float("nan")``.
+        :rtype: int
+        """
 
-    @property
-    def decimal_places(self):
-        return self.__decimal_places
+        return self.__integer_digits
 
     @property
     def additional_format_len(self):
         return self.__additional_format_len
 
-    @property
-    def type_format(self):
-        return self.__type_format
-
     def __init__(self, data):
         super(DataPeroperty, self).__init__()
 
         self.__data = data
-        self.__typecode = self.__get_typecode(data)
+        self.__typecode = Typecode.get_typecode_from_data(data)
         self.__align = PropertyExtractor.get_align_from_typecode(
             self.__typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
-        self.__additional_format_len = _get_additional_format_len(data)
-
-        self.__type_format = self.__get_type_format(
-            data, decimal_places)
+        self.__additional_format_len = self.__get_additional_format_len(data)
         self.__str_len = self.__get_str_len()
 
-    @staticmethod
-    def __get_typecode(data):
-        if data is None:
-            return Typecode.NONE
+    def __get_additional_format_len(self, data):
+        if not is_float(data):
+            return 0
 
-        if is_integer(data):
-            return Typecode.INT
+        format_len = 0
 
-        if is_float(data):
-            return Typecode.FLOAT
+        if float(data) < 0:
+            # for minus character
+            format_len += 1
 
-        return Typecode.STRING
+        return format_len
 
-    @staticmethod
-    def __get_type_format(value, decimal_places):
-        if is_integer(value):
-            return "d"
-        if is_float(value):
-            if is_nan(value):
-                return "f"
-            return ".%df" % (decimal_places)
-        return "s"
+    def __get_base_float_len(self):
+        if any([self.integer_digits < 0, self.decimal_places < 0]):
+            raise ValueError()
+
+        float_len = self.integer_digits + self.decimal_places
+        if self.decimal_places > 0:
+            # for dot
+            float_len += 1
+
+        return float_len
 
     def __get_str_len(self):
         if self.typecode == Typecode.INT:
-            return (
-                self.integer_digits +
-                _get_additional_format_len(self.data))
+            return self.integer_digits + self.additional_format_len
 
         if self.typecode == Typecode.FLOAT:
-            return (
-                _get_base_float_len(
-                    self.integer_digits, self.decimal_places) +
-                _get_additional_format_len(self.data))
+            return self.__get_base_float_len() + self.additional_format_len
 
         return get_text_len(self.data)
 
 
-class ColumnDataPeroperty(object):
-
-    @property
-    def typecode(self):
-        return Typecode.get_typecode_from_bitmap(self.typecode_bitmap)
+class ColumnDataPeroperty(DataPeropertyInterface):
 
     @property
     def align(self):
         return PropertyExtractor.get_align_from_typecode(self.typecode)
-
-    @property
-    def padding_len(self):
-        return self.__str_len
 
     @property
     def decimal_places(self):
@@ -392,35 +332,55 @@ class ColumnDataPeroperty(object):
 
         return int(math.ceil(avg))
 
+    @property
+    def typecode(self):
+        return Typecode.get_typecode_from_bitmap(self.__typecode_bitmap)
+
+    @property
+    def padding_len(self):
+        return self.__str_len
+
+    @property
+    def minmax_integer_digits(self):
+        return self.__minmax_integer_digits
+
+    @property
+    def minmax_decimal_places(self):
+        return self.__minmax_decimal_places
+
+    @property
+    def minmax_additional_format_len(self):
+        return self.__minmax_additional_format_len
+
     def __init__(self):
-        self.typecode_bitmap = Typecode.NONE
+        self.__typecode_bitmap = Typecode.NONE
         self.__str_len = 0
-        self.type_format = None
-        self.minmax_integer_digits = MinMaxContainer()
-        self.minmax_decimal_places = MinMaxContainer()
-        self.minmax_additional_format_len = MinMaxContainer()
+        self.__minmax_integer_digits = MinMaxContainer()
+        self.__minmax_decimal_places = MinMaxContainer()
+        self.__minmax_additional_format_len = MinMaxContainer()
 
-    def update_padding_len(self, padding_len):
-        self.__str_len = max(self.__str_len, padding_len)
+    def update_header(self, dataprop):
+        self.__update(dataprop)
 
-    def update_header(self, prop):
-        self.update_padding_len(prop.str_len)
+    def update_body(self, dataprop):
+        self.__typecode_bitmap |= dataprop.typecode
+        self.__update(dataprop)
 
-        if prop.typecode in (Typecode.FLOAT, Typecode.INT):
-            self.minmax_integer_digits.update(prop.integer_digits)
+    def __update(self, dataprop):
+        self.__str_len = max(self.__str_len, dataprop.str_len)
 
-        if prop.typecode == Typecode.FLOAT:
-            self.minmax_decimal_places.update(prop.decimal_places)
+        if dataprop.typecode in (Typecode.FLOAT, Typecode.INT):
+            self.__minmax_integer_digits.update(dataprop.integer_digits)
 
-        self.minmax_additional_format_len.update(prop.additional_format_len)
+        if dataprop.typecode == Typecode.FLOAT:
+            self.__minmax_decimal_places.update(dataprop.decimal_places)
 
-    def update_body(self, prop):
-        self.typecode_bitmap |= prop.typecode
-        self.update_header(prop)
+        self.__minmax_additional_format_len.update(
+            dataprop.additional_format_len)
 
 
 class PropertyExtractor:
-    __dict_ValueType_Align = {
+    __typecode_align_table = {
         Typecode.STRING	: Align.LEFT,
         Typecode.INT	: Align.RIGHT,
         Typecode.FLOAT	: Align.RIGHT,
@@ -428,7 +388,7 @@ class PropertyExtractor:
 
     @classmethod
     def get_align_from_typecode(cls, typecode):
-        return cls.__dict_ValueType_Align.get(typecode, Align.LEFT)
+        return cls.__typecode_align_table.get(typecode, Align.LEFT)
 
     @classmethod
     def extract_data_property_matrix(cls, data_matrix):
@@ -453,21 +413,6 @@ class PropertyExtractor:
             for prop in col_prop_list:
                 column_prop.update_body(prop)
 
-            decimal_places = 0
-            if column_prop.typecode == Typecode.FLOAT:
-                decimal_places = column_prop.decimal_places
-
-                float_len = (
-                    _get_base_float_len(
-                        column_prop.minmax_integer_digits.max_value,
-                        decimal_places) +
-                    column_prop.minmax_additional_format_len.max_value
-                )
-                column_prop.update_padding_len(float_len)
-
-            column_prop.type_format = cls.__get_column_type_format(
-                column_prop.typecode, decimal_places)
-
             column_prop_list.append(column_prop)
 
         return column_prop_list
@@ -478,13 +423,3 @@ class PropertyExtractor:
             return []
 
         return [DataPeroperty(data) for data in data_list]
-
-    @staticmethod
-    def __get_column_type_format(typecode, decimal_places):
-        if typecode == Typecode.INT:
-            return "d"
-        if typecode == Typecode.FLOAT:
-            if is_nan(decimal_places):
-                return "f"
-            return ".%df" % (decimal_places)
-        return "s"
