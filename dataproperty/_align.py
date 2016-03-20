@@ -7,7 +7,7 @@
 
 class Align:
 
-    class __AlignData:
+    class __AlignData(object):
 
         @property
         def align_code(self):
@@ -20,6 +20,9 @@ class Align:
         def __init__(self, code, string):
             self.__align_code = code
             self.__align_string = string
+
+        def __repr__(self):
+            return self.align_string
 
     AUTO = __AlignData(1 << 0, "auto")
     LEFT = __AlignData(1 << 1, "left")
