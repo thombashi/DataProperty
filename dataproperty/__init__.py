@@ -176,18 +176,6 @@ def get_text_len(text):
         return len(text)
 
 
-def _get_base_float_len(integer_digits, decimal_places):
-    if any([integer_digits < 0, decimal_places < 0]):
-        raise ValueError()
-
-    float_len = integer_digits + decimal_places
-    if decimal_places > 0:
-        # for dot
-        float_len += 1
-
-    return float_len
-
-
 @six.add_metaclass(abc.ABCMeta)
 class DataPeropertyInterface(object):
 
@@ -202,6 +190,19 @@ class DataPeropertyInterface(object):
     @abc.abstractproperty
     def typecode(self):
         pass
+
+    @property
+    def format_str(self):
+        if self.typecode == Typecode.INT:
+            return "d"
+
+        if self.typecode == Typecode.FLOAT:
+            if is_nan(self.decimal_places):
+                return "f"
+
+            return ".%df" % (self.decimal_places)
+
+        return "s"
 
 
 class DataPeroperty(DataPeropertyInterface):
@@ -266,10 +267,6 @@ class DataPeroperty(DataPeropertyInterface):
     def additional_format_len(self):
         return self.__additional_format_len
 
-    @property
-    def format_str(self):
-        return self.__type_format
-
     def __init__(self, data):
         super(DataPeroperty, self).__init__()
 
@@ -282,23 +279,7 @@ class DataPeroperty(DataPeropertyInterface):
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len(data)
-
-        self.__type_format = self.__get_format_str(
-            data, decimal_places)
         self.__str_len = self.__get_str_len()
-
-    @staticmethod
-    def __get_format_str(value, decimal_places):
-        if is_integer(value):
-            return "d"
-
-        if is_float(value):
-            if is_nan(value):
-                return "f"
-
-            return ".%df" % (decimal_places)
-
-        return "s"
 
     def __get_additional_format_len(self, data):
         if not is_float(data):
@@ -312,22 +293,28 @@ class DataPeroperty(DataPeropertyInterface):
 
         return format_len
 
+    def __get_base_float_len(self):
+        if any([self.integer_digits < 0, self.decimal_places < 0]):
+            raise ValueError()
+
+        float_len = self.integer_digits + self.decimal_places
+        if self.decimal_places > 0:
+            # for dot
+            float_len += 1
+
+        return float_len
+
     def __get_str_len(self):
         if self.typecode == Typecode.INT:
-            return (
-                self.integer_digits +
-                self.__get_additional_format_len(self.data))
+            return self.integer_digits + self.additional_format_len
 
         if self.typecode == Typecode.FLOAT:
-            return (
-                _get_base_float_len(
-                    self.integer_digits, self.decimal_places) +
-                self.__get_additional_format_len(self.data))
+            return self.__get_base_float_len() + self.additional_format_len
 
         return get_text_len(self.data)
 
 
-class ColumnDataPeroperty(object):
+class ColumnDataPeroperty(DataPeropertyInterface):
 
     @property
     def align(self):
@@ -347,52 +334,48 @@ class ColumnDataPeroperty(object):
 
     @property
     def typecode(self):
-        return Typecode.get_typecode_from_bitmap(self.typecode_bitmap)
+        return Typecode.get_typecode_from_bitmap(self.__typecode_bitmap)
 
     @property
     def padding_len(self):
         return self.__str_len
 
     @property
-    def format_str(self):
-        if self.typecode == Typecode.INT:
-            return "d"
+    def minmax_integer_digits(self):
+        return self.__minmax_integer_digits
 
-        if self.typecode == Typecode.FLOAT:
-            if is_nan(self.decimal_places):
-                return "f"
+    @property
+    def minmax_decimal_places(self):
+        return self.__minmax_decimal_places
 
-            return ".%df" % (self.decimal_places)
-
-        return "s"
+    @property
+    def minmax_additional_format_len(self):
+        return self.__minmax_additional_format_len
 
     def __init__(self):
-        self.typecode_bitmap = Typecode.NONE
+        self.__typecode_bitmap = Typecode.NONE
         self.__str_len = 0
-        self.minmax_integer_digits = MinMaxContainer()
-        self.minmax_decimal_places = MinMaxContainer()
-        self.minmax_additional_format_len = MinMaxContainer()
-
-    def update_padding_len(self, padding_len):
-        self.__str_len = max(self.__str_len, padding_len)
+        self.__minmax_integer_digits = MinMaxContainer()
+        self.__minmax_decimal_places = MinMaxContainer()
+        self.__minmax_additional_format_len = MinMaxContainer()
 
     def update_header(self, dataprop):
         self.__update(dataprop)
 
     def update_body(self, dataprop):
-        self.typecode_bitmap |= dataprop.typecode
+        self.__typecode_bitmap |= dataprop.typecode
         self.__update(dataprop)
 
     def __update(self, dataprop):
-        self.update_padding_len(dataprop.str_len)
+        self.__str_len = max(self.__str_len, dataprop.str_len)
 
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INT):
-            self.minmax_integer_digits.update(dataprop.integer_digits)
+            self.__minmax_integer_digits.update(dataprop.integer_digits)
 
         if dataprop.typecode == Typecode.FLOAT:
-            self.minmax_decimal_places.update(dataprop.decimal_places)
+            self.__minmax_decimal_places.update(dataprop.decimal_places)
 
-        self.minmax_additional_format_len.update(
+        self.__minmax_additional_format_len.update(
             dataprop.additional_format_len)
 
 
