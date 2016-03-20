@@ -110,7 +110,7 @@ Extract property of data for each column from matrix
 Dependencies
 ============
 
-Python 2.5+ or 3.3+
+Python 2.6+ or 3.3+
 
 -  `six <https://pypi.python.org/pypi/six/>`__
 
