@@ -4,9 +4,13 @@
 @author: Tsuyoshi Hombashi
 '''
 
+from __future__ import absolute_import
+import abc
 import math
 
 import six
+
+from ._container import MinMaxContainer
 
 
 def is_integer(value):
@@ -258,16 +262,23 @@ class Align:
     CENTER = __AlignData(1 << 3, "center")
 
 
-class DataPeroperty(object):
+@six.add_metaclass(abc.ABCMeta)
+class DataPeropertyInterface(object):
 
-    @property
-    def data(self):
-        """
-        :return: Original data.
-        :rtype: Original data type.
-        """
+    @abc.abstractproperty
+    def typecode(self):
+        pass
 
-        return self.__data
+    @abc.abstractproperty
+    def align(self):
+        pass
+
+    @abc.abstractproperty
+    def decimal_places(self):
+        pass
+
+
+class DataPeroperty(DataPeropertyInterface):
 
     @property
     def typecode(self):
@@ -283,6 +294,27 @@ class DataPeroperty(object):
     @property
     def align(self):
         return self.__align
+
+    @property
+    def decimal_places(self):
+        """
+        :return:
+            Decimal places if the ``data`` is ``float``.
+            Returns ``0`` if the ``data`` is ``int``.
+            Otherwise, returns ``float("nan")``.
+        :rtype: int
+        """
+
+        return self.__decimal_places
+
+    @property
+    def data(self):
+        """
+        :return: Original data.
+        :rtype: Original data type.
+        """
+
+        return self.__data
 
     @property
     def str_len(self):
@@ -305,18 +337,6 @@ class DataPeroperty(object):
         return self.__integer_digits
 
     @property
-    def decimal_places(self):
-        """
-        :return:
-            Decimal places if the ``data`` is ``float``.
-            Returns ``0`` if the ``data`` is ``int``.
-            Otherwise, returns ``float("nan")``.
-        :rtype: int
-        """
-
-        return self.__decimal_places
-
-    @property
     def additional_format_len(self):
         return self.__additional_format_len
 
@@ -328,7 +348,7 @@ class DataPeroperty(object):
         super(DataPeroperty, self).__init__()
 
         self.__data = data
-        self.__typecode = self.__get_typecode(data)
+        self.__typecode = Typecode.get_typecode_from_data(data)
         self.__align = PropertyExtractor.get_align_from_typecode(
             self.__typecode)
 
