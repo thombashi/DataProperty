@@ -267,7 +267,7 @@ class DataPeroperty(DataPeropertyInterface):
         return self.__additional_format_len
 
     @property
-    def type_format(self):
+    def format_str(self):
         return self.__type_format
 
     def __init__(self, data):
@@ -354,7 +354,7 @@ class ColumnDataPeroperty(object):
         return self.__str_len
 
     @property
-    def type_format(self):
+    def format_str(self):
         if self.typecode == Typecode.INT:
             return "d"
 
