@@ -219,6 +219,19 @@ class Typecode:
         return cls.STRING
 
     @classmethod
+    def get_typecode_from_data(cls, data):
+        if data is None:
+            return cls.NONE
+
+        if is_integer(data):
+            return cls.INT
+
+        if is_float(data):
+            return cls.FLOAT
+
+        return cls.STRING
+
+    @classmethod
     def get_typename(cls, typecode):
         return cls.__TYPENAME_TABLE.get(typecode)
 
@@ -327,19 +340,6 @@ class DataPeroperty(object):
         self.__type_format = self.__get_type_format(
             data, decimal_places)
         self.__str_len = self.__get_str_len()
-
-    @staticmethod
-    def __get_typecode(data):
-        if data is None:
-            return Typecode.NONE
-
-        if is_integer(data):
-            return Typecode.INT
-
-        if is_float(data):
-            return Typecode.FLOAT
-
-        return Typecode.STRING
 
     @staticmethod
     def __get_type_format(value, decimal_places):
