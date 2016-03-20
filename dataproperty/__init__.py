@@ -180,15 +180,15 @@ def get_text_len(text):
 class DataPeropertyInterface(object):
 
     @abc.abstractproperty
-    def align(self):
+    def align(self):   # pragma: no cover
         pass
 
     @abc.abstractproperty
-    def decimal_places(self):
+    def decimal_places(self):   # pragma: no cover
         pass
 
     @abc.abstractproperty
-    def typecode(self):
+    def typecode(self):   # pragma: no cover
         pass
 
     @property
