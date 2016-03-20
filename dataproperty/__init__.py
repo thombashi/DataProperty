@@ -281,10 +281,22 @@ class DataPeroperty(object):
 
     @property
     def data(self):
+        """
+        :return: Original data.
+        :rtype: Original data type.
+        """
+
         return self.__data
 
     @property
     def typecode(self):
+        """
+        Return the type code that corresponds to the type of the ``data``.
+
+        :return: One of the constants that are defined in the ``Typecode`` class.
+        :rtype: int
+        """
+
         return self.__typecode
 
     @property
@@ -293,14 +305,34 @@ class DataPeroperty(object):
 
     @property
     def str_len(self):
+        """
+        :return: Length of the ``data`` as a string.
+        :rtype: int
+        """
+
         return self.__str_len
 
     @property
     def integer_digits(self):
+        """
+        :return:
+            Integer digits if the ``data`` is ``int``/``float``.
+            Otherwise, returns ``float("nan")``.
+        :rtype: int
+        """
+
         return self.__integer_digits
 
     @property
     def decimal_places(self):
+        """
+        :return:
+            Decimal places if the ``data`` is ``float``.
+            Returns ``0`` if the ``data`` is ``int``.
+            Otherwise, returns ``float("nan")``.
+        :rtype: int
+        """
+
         return self.__decimal_places
 
     @property
