@@ -145,11 +145,100 @@ class Test_DataPeroperty_additional_format_len:
         assert dp.additional_format_len == expected
 
 
-class Test_ColumnDataPeroperty_decimal_places:
+class Test_DataPeroperty_repr:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [
+            0,
+            "data=0, typename=INT, align=right, str_len=1, "
+            "integer_digits=1, decimal_places=0, additional_format_len=0",
+        ],
+        [
+            -1.0,
+            "data=-1.0, typename=FLOAT, align=right, str_len=4, "
+            "integer_digits=1, decimal_places=1, additional_format_len=1",
+        ],
+        [
+            -12.234,
+            "data=-12.23, typename=FLOAT, align=right, str_len=6, "
+            "integer_digits=2, decimal_places=2, additional_format_len=1",
+        ],
+        [
+            "abcdefg",
+            "data=abcdefg, typename=STRING, align=left, str_len=7, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+        [
+            None,
+            "data=None, typename=NONE, align=left, str_len=4, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+    ])
+    def test_normal(self, value, expected):
+        dp = DataPeroperty(value)
+        assert str(dp) == expected
+
+
+class Test_ColumnDataPeroperty:
+
+    def test_normal_0(self):
+        col_prop = ColumnDataPeroperty()
+        col_prop.update_header(DataPeroperty("abc"))
+
+        for value in [0, -1.234, 55.55]:
+            col_prop.update_body(DataPeroperty(value))
+
+        assert col_prop.align == Align.RIGHT
+        assert col_prop.decimal_places == 3
+        assert col_prop.typecode == Typecode.FLOAT
+        assert col_prop.padding_len == 6
+
+        assert col_prop.minmax_integer_digits.min_value == 1
+        assert col_prop.minmax_integer_digits.max_value == 2
+
+        assert col_prop.minmax_decimal_places.min_value == 2
+        assert col_prop.minmax_decimal_places.max_value == 3
+
+        assert col_prop.minmax_additional_format_len.min_value == 0
+        assert col_prop.minmax_additional_format_len.max_value == 1
+
+        assert str(col_prop) == (
+            "typename=FLOAT, align=right, padding_len=6, "
+            "integer_digits=(min=1, max=2), decimal_places=(min=2, max=3), "
+            "additional_format_len=(min=0, max=1)")
+
+    def test_normal_1(self):
+        col_prop = ColumnDataPeroperty()
+        col_prop.update_header(DataPeroperty("abc"))
+
+        for value in [0, -1.234, 55.55, "abcdefg"]:
+            col_prop.update_body(DataPeroperty(value))
+
+        assert col_prop.align == Align.LEFT
+        assert col_prop.decimal_places == 3
+        assert col_prop.typecode == Typecode.STRING
+        assert col_prop.padding_len == 7
+
+        assert col_prop.minmax_integer_digits.min_value == 1
+        assert col_prop.minmax_integer_digits.max_value == 2
+
+        assert col_prop.minmax_decimal_places.min_value == 2
+        assert col_prop.minmax_decimal_places.max_value == 3
+
+        assert col_prop.minmax_additional_format_len.min_value == 0
+        assert col_prop.minmax_additional_format_len.max_value == 1
+
+        assert str(col_prop) == (
+            "typename=STRING, align=left, padding_len=7, "
+            "integer_digits=(min=1, max=2), decimal_places=(min=2, max=3), "
+            "additional_format_len=(min=0, max=1)")
 
     def test_null(self):
         col_prop = ColumnDataPeroperty()
+        assert col_prop.align == Align.LEFT
         assert is_nan(col_prop.decimal_places)
+        assert col_prop.typecode == Typecode.STRING
+        assert col_prop.padding_len == 0
 
 
 class Test_PropertyExtractor_get_align_from_typecode:
