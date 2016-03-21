@@ -22,6 +22,21 @@ class MinMaxContainer(object):
         for value in value_list:
             self.update(value)
 
+    def __eq__(self, other):
+        return all([
+            self.min_value == other.min_value,
+            self.max_value == other.max_value,
+        ])
+
+    def __ne__(self, other):
+        return any([
+            self.min_value != other.min_value,
+            self.max_value != other.max_value,
+        ])
+
+    def __contains__(self, x):
+        return self.min_value <= x <= self.max_value
+
     def diff(self):
         try:
             return self.max_value - self.min_value
