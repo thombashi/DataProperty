@@ -326,22 +326,21 @@ class Test_get_number_of_digit:
 
 class Test_get_text_len:
 
-    def test_normal_1(self):
-        assert get_text_len("") == 0
-        assert get_text_len(
+    @pytest.mark.parametrize(["value", "expected"], [
+        ["", 0],
+        [
             "aaaaaaaaaaaaaaaaaaaa"
             "aaaaaaaaaaaaaaaaaaaa"
             "aaaaaaaaaaaaaaaaaaaa"
             "aaaaaaaaaaaaaaaaaaaa"
-            "aaaaaaaaaaaaaaaaaaaa"
-        ) == 100
+            "aaaaaaaaaaaaaaaaaaaa",
+            100
+        ],
+        [u"あ", 1],
 
-    def test_normal_2(self):
-        assert get_text_len(u"あ") == 1
-
-    def test_abnormal_1(self):
-        assert get_text_len(None) == 4
-
-    def test_abnormal_2(self):
-        assert get_text_len(nan) == 3
-        assert get_text_len(inf) == 3
+        [None, 4],
+        [nan, 3],
+        [inf, 3],
+    ])
+    def test_normal(self, value, expected):
+        assert get_text_len(value) == expected
