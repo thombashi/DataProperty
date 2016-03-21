@@ -290,6 +290,17 @@ class DataPeroperty(DataPeropertyInterface):
         self.__additional_format_len = self.__get_additional_format_len(data)
         self.__str_len = self.__get_str_len()
 
+    def __repr__(self):
+        return ", ".join([
+            ("data=%" + self.format_str) % (convert_value(self.data)),
+            "typename=" + Typecode.get_typename(self.typecode),
+            "align=" + str(self.align),
+            "str_len=" + str(self.str_len),
+            "integer_digits=" + str(self.integer_digits),
+            "decimal_places=" + str(self.decimal_places),
+            "additional_format_len=" + str(self.additional_format_len),
+        ])
+
     def __get_additional_format_len(self, data):
         if not is_float(data):
             return 0
@@ -367,6 +378,17 @@ class ColumnDataPeroperty(DataPeropertyInterface):
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = MinMaxContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
+
+    def __repr__(self):
+        return ", ".join([
+            "typename=" + Typecode.get_typename(self.typecode),
+            "align=" + str(self.align),
+            "padding_len=" + str(self.padding_len),
+            "integer_digits=(%s)" % (str(self.minmax_integer_digits)),
+            "decimal_places=(%s)" % (str(self.minmax_decimal_places)),
+            "additional_format_len=(%s)" % (
+                str(self.minmax_additional_format_len)),
+        ])
 
     def update_header(self, dataprop):
         self.__update(dataprop)
