@@ -20,7 +20,10 @@ class MinMaxContainer(object):
         self.__max_value = None
 
     def diff(self):
-        return self.max_value - self.min_value
+        try:
+            return self.max_value - self.min_value
+        except TypeError:
+            return float("nan")
 
     def mean(self):
         try:
@@ -29,6 +32,9 @@ class MinMaxContainer(object):
             return float("nan")
 
     def update(self, value):
+        if value is None:
+            return
+
         if self.__min_value is None:
             self.__min_value = value
         else:
