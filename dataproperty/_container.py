@@ -15,9 +15,12 @@ class MinMaxContainer(object):
     def max_value(self):
         return self.__max_value
 
-    def __init__(self):
+    def __init__(self, value_list=[]):
         self.__min_value = None
         self.__max_value = None
+
+        for value in value_list:
+            self.update(value)
 
     def diff(self):
         try:
