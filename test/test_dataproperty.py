@@ -5,10 +5,10 @@
 '''
 
 import datetime
-import sys
 
 from dataproperty import *
 import pytest
+import six
 
 
 nan = float("nan")
@@ -351,11 +351,11 @@ class Test_convert_value:
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["0", 0],
-        [str(sys.maxint), sys.maxint],
-        [str(-sys.maxint), -sys.maxint],
+        [str(six.MAXSIZE), six.MAXSIZE],
+        [str(-six.MAXSIZE), -six.MAXSIZE],
         [0, 0],
-        [sys.maxint, sys.maxint],
-        [-sys.maxint, -sys.maxint],
+        [six.MAXSIZE, six.MAXSIZE],
+        [-six.MAXSIZE, -six.MAXSIZE],
 
         ["0.0", 0],
         [0.0, 0],
