@@ -21,8 +21,31 @@ class Test_DataPeroperty_data:
         [None, None],
     ])
     def test_normal(self, value, expected):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         assert dp.data == expected
+
+
+class Test_DataPeroperty_set_data:
+
+    @pytest.mark.parametrize(
+        ["value", "replace_tabs_with_spaces", "tab_length", "expected"],
+        [
+            ["a\tb", True, 2, "a  b"],
+            ["a\tb", True, 4, "a    b"],
+            ["a\tb", False, 4, "a\tb"],
+        ])
+    def test_normal(self, value, replace_tabs_with_spaces, tab_length, expected):
+        dp = DataProperty(value, replace_tabs_with_spaces, tab_length)
+        assert dp.data == expected
+
+    @pytest.mark.parametrize(
+        ["value", "replace_tabs_with_spaces", "tab_length", "expected"],
+        [
+            ["a\tb", True, None, TypeError],
+        ])
+    def test_exception(self, value, replace_tabs_with_spaces, tab_length, expected):
+        with pytest.raises(expected):
+            DataProperty(value, replace_tabs_with_spaces, tab_length)
 
 
 class Test_DataPeroperty_typecode:
@@ -36,7 +59,7 @@ class Test_DataPeroperty_typecode:
         [nan, Typecode.FLOAT],
     ])
     def test_normal(self, value, expected):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         assert dp.typecode == expected
 
 
@@ -50,7 +73,7 @@ class Test_DataPeroperty_align:
         [nan, Align.RIGHT],
     ])
     def test_normal(self, value, expected):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         assert dp.align == expected
 
 
@@ -71,14 +94,14 @@ class Test_DataPeroperty_str_len:
         [None, 4],
     ])
     def test_normal(self, value, expected):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         assert dp.str_len == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         [nan, nan],
     ])
     def test_abnormal(self, value, expected):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         is_nan(dp.str_len)
 
 
@@ -90,7 +113,7 @@ class Test_DataPeroperty_integer_digits:
         [12.34, 2],
     ])
     def test_normal(self, value, expected):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         assert dp.integer_digits == expected
 
     @pytest.mark.parametrize(["value"], [
@@ -99,7 +122,7 @@ class Test_DataPeroperty_integer_digits:
         [nan],
     ])
     def test_abnormal(self, value):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         is_nan(dp.integer_digits)
 
 
@@ -111,7 +134,7 @@ class Test_DataPeroperty_decimal_places:
         [12.34, 2],
     ])
     def test_normal(self, value, expected):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         assert dp.decimal_places == expected
 
     @pytest.mark.parametrize(["value"], [
@@ -120,7 +143,7 @@ class Test_DataPeroperty_decimal_places:
         [nan],
     ])
     def test_abnormal(self, value):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         is_nan(dp.decimal_places)
 
 
@@ -141,7 +164,7 @@ class Test_DataPeroperty_additional_format_len:
         [nan, 0],
     ])
     def test_normal(self, value, expected):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         assert dp.additional_format_len == expected
 
 
@@ -175,7 +198,7 @@ class Test_DataPeroperty_repr:
         ],
     ])
     def test_normal(self, value, expected):
-        dp = DataPeroperty(value)
+        dp = DataProperty(value)
         assert str(dp) == expected
 
 
@@ -183,10 +206,10 @@ class Test_ColumnDataPeroperty:
 
     def test_normal_0(self):
         col_prop = ColumnDataPeroperty()
-        col_prop.update_header(DataPeroperty("abc"))
+        col_prop.update_header(DataProperty("abc"))
 
         for value in [0, -1.234, 55.55]:
-            col_prop.update_body(DataPeroperty(value))
+            col_prop.update_body(DataProperty(value))
 
         assert col_prop.align == Align.RIGHT
         assert col_prop.decimal_places == 3
@@ -209,10 +232,10 @@ class Test_ColumnDataPeroperty:
 
     def test_normal_1(self):
         col_prop = ColumnDataPeroperty()
-        col_prop.update_header(DataPeroperty("abc"))
+        col_prop.update_header(DataProperty("abc"))
 
         for value in [0, -1.234, 55.55, "abcdefg"]:
-            col_prop.update_body(DataPeroperty(value))
+            col_prop.update_body(DataProperty(value))
 
         assert col_prop.align == Align.LEFT
         assert col_prop.decimal_places == 3

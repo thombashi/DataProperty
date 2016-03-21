@@ -27,6 +27,45 @@ Installation
 Usage
 =====
 
+Extract property of data
+------------------------
+
+e.g. float
+~~~~~~~~~~
+
+.. code:: python
+
+    from dataproperty import DataProperty
+    DataProperty(-1.0)
+
+::
+
+    data=-1.0, typename=FLOAT, align=right, str_len=4, integer_digits=1, decimal_places=1, additional_format_len=1
+
+e.g. int
+~~~~~~~~
+
+.. code:: python
+
+    from dataproperty import DataProperty
+    DataProperty(123456789)
+
+::
+
+    data=123456789, typename=INT, align=right, str_len=9, integer_digits=9, decimal_places=0, additional_format_len=0
+
+e.g. string
+~~~~~~~~~~~
+
+.. code:: python
+
+    from dataproperty import DataProperty
+    DataProperty("abcdefgh")
+
+::
+
+    data=abcdefgh, typename=STRING, align=left, str_len=8, integer_digits=nan, decimal_places=nan, additional_format_len=0
+
 Extract property of data for each data from matrix
 --------------------------------------------------
 
