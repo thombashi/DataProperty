@@ -5,6 +5,7 @@
 '''
 
 import datetime
+import sys
 
 from dataproperty import *
 import pytest
@@ -344,3 +345,28 @@ class Test_get_text_len:
     ])
     def test_normal(self, value, expected):
         assert get_text_len(value) == expected
+
+
+class Test_convert_value:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        ["0", 0],
+        [str(sys.maxint), sys.maxint],
+        [str(-sys.maxint), -sys.maxint],
+        [0, 0],
+        [sys.maxint, sys.maxint],
+        [-sys.maxint, -sys.maxint],
+
+        ["0.0", 0],
+        [0.0, 0],
+
+        ["aaaaa", "aaaaa"],
+
+        [inf, inf],
+        [None, None],
+    ])
+    def test_normal(self, value, expected):
+        assert convert_value(value) == expected
+
+    def test_abnormal(self):
+        assert is_nan(convert_value(nan))
