@@ -22,6 +22,12 @@ class MinMaxContainer(object):
         for value in value_list:
             self.update(value)
 
+    def __repr__(self):
+        return ", ".join([
+            "min=" + str(self.min_value),
+            "max=" + str(self.max_value),
+        ])
+
     def __eq__(self, other):
         return all([
             self.min_value == other.min_value,
