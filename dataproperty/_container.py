@@ -15,17 +15,50 @@ class MinMaxContainer(object):
     def max_value(self):
         return self.__max_value
 
-    def __init__(self):
+    def __init__(self, value_list=[]):
         self.__min_value = None
         self.__max_value = None
 
-    def diff(self):
-        return self.max_value - self.min_value
+        for value in value_list:
+            self.update(value)
 
-    def average(self):
-        return (self.max_value + self.min_value) * 0.5
+    def __repr__(self):
+        return ", ".join([
+            "min=" + str(self.min_value),
+            "max=" + str(self.max_value),
+        ])
+
+    def __eq__(self, other):
+        return all([
+            self.min_value == other.min_value,
+            self.max_value == other.max_value,
+        ])
+
+    def __ne__(self, other):
+        return any([
+            self.min_value != other.min_value,
+            self.max_value != other.max_value,
+        ])
+
+    def __contains__(self, x):
+        return self.min_value <= x <= self.max_value
+
+    def diff(self):
+        try:
+            return self.max_value - self.min_value
+        except TypeError:
+            return float("nan")
+
+    def mean(self):
+        try:
+            return (self.max_value + self.min_value) * 0.5
+        except TypeError:
+            return float("nan")
 
     def update(self, value):
+        if value is None:
+            return
+
         if self.__min_value is None:
             self.__min_value = value
         else:

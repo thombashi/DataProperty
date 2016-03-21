@@ -20,7 +20,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 setuptools.setup(
     name="DataProperty",
-    version="0.2.2",
+    version="0.2.3",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
     url="https://github.com/thombashi/DataProperty",
@@ -37,6 +37,7 @@ setuptools.setup(
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
+        "Operating System :: Microsoft :: Windows",
         "Operating System :: POSIX",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 2",
