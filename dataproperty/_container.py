@@ -22,7 +22,7 @@ class MinMaxContainer(object):
     def diff(self):
         return self.max_value - self.min_value
 
-    def average(self):
+    def mean(self):
         return (self.max_value + self.min_value) * 0.5
 
     def update(self, value):

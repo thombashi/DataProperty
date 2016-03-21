@@ -323,7 +323,7 @@ class ColumnDataPeroperty(DataPeropertyInterface):
     @property
     def decimal_places(self):
         try:
-            avg = self.minmax_decimal_places.average()
+            avg = self.minmax_decimal_places.mean()
         except TypeError:
             return float("nan")
 
