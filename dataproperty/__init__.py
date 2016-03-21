@@ -276,10 +276,10 @@ class DataProperty(DataPeropertyInterface):
     def additional_format_len(self):
         return self.__additional_format_len
 
-    def __init__(self, data):
+    def __init__(self, data, replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__()
 
-        self.__data = data
+        self.__set_data(data, replace_tabs_with_spaces, tab_length)
         self.__typecode = Typecode.get_typecode_from_data(data)
         self.__align = PropertyExtractor.get_align_from_typecode(
             self.__typecode)
@@ -289,6 +289,16 @@ class DataProperty(DataPeropertyInterface):
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len(data)
         self.__str_len = self.__get_str_len()
+
+    def __set_data(self, data, replace_tabs_with_spaces, tab_length):
+        if replace_tabs_with_spaces:
+            try:
+                self.__data = data.replace("\t", " " * tab_length)
+                return
+            except AttributeError:
+                pass
+
+        self.__data = data
 
     def __repr__(self):
         return ", ".join([

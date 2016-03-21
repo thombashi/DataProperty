@@ -25,6 +25,29 @@ class Test_DataPeroperty_data:
         assert dp.data == expected
 
 
+class Test_DataPeroperty_set_data:
+
+    @pytest.mark.parametrize(
+        ["value", "replace_tabs_with_spaces", "tab_length", "expected"],
+        [
+            ["a\tb", True, 2, "a  b"],
+            ["a\tb", True, 4, "a    b"],
+            ["a\tb", False, 4, "a\tb"],
+        ])
+    def test_normal(self, value, replace_tabs_with_spaces, tab_length, expected):
+        dp = DataProperty(value, replace_tabs_with_spaces, tab_length)
+        assert dp.data == expected
+
+    @pytest.mark.parametrize(
+        ["value", "replace_tabs_with_spaces", "tab_length", "expected"],
+        [
+            ["a\tb", True, None, TypeError],
+        ])
+    def test_exception(self, value, replace_tabs_with_spaces, tab_length, expected):
+        with pytest.raises(expected):
+            DataProperty(value, replace_tabs_with_spaces, tab_length)
+
+
 class Test_DataPeroperty_typecode:
 
     @pytest.mark.parametrize(["value", "expected"], [
