@@ -214,7 +214,7 @@ class DataPeropertyInterface(object):
         return "s"
 
 
-class DataPeroperty(DataPeropertyInterface):
+class DataProperty(DataPeropertyInterface):
 
     @property
     def align(self):
@@ -277,7 +277,7 @@ class DataPeroperty(DataPeropertyInterface):
         return self.__additional_format_len
 
     def __init__(self, data):
-        super(DataPeroperty, self).__init__()
+        super(DataProperty, self).__init__()
 
         self.__data = data
         self.__typecode = Typecode.get_typecode_from_data(data)
@@ -453,4 +453,4 @@ class PropertyExtractor:
         if is_empty_list_or_tuple(data_list):
             return []
 
-        return [DataPeroperty(data) for data in data_list]
+        return [DataProperty(data) for data in data_list]
