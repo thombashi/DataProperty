@@ -382,9 +382,9 @@ class ColumnDataPeroperty(DataPeropertyInterface):
     def minmax_additional_format_len(self):
         return self.__minmax_additional_format_len
 
-    def __init__(self):
+    def __init__(self, min_padding_len=0):
         self.__typecode_bitmap = Typecode.NONE
-        self.__str_len = 0
+        self.__str_len = min_padding_len
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = MinMaxContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -434,7 +434,8 @@ class PropertyExtractor(object):
         column_prop_list = []
 
         for col_idx, col_prop_list in enumerate(zip(*data_prop_matrix)):
-            column_prop = ColumnDataPeroperty()
+            column_prop = ColumnDataPeroperty(
+                min_padding_len=self.min_padding_len)
 
             if is_not_empty_list_or_tuple(header_prop_list):
                 header_prop = header_prop_list[col_idx]
@@ -450,6 +451,7 @@ class PropertyExtractor(object):
     def __init__(self):
         self.header_list = []
         self.data_matrix = []
+        self.min_padding_len = 0
 
     @staticmethod
     def __extract_data_property_list(data_list):
