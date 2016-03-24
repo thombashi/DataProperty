@@ -13,6 +13,11 @@ nan = float("nan")
 inf = float("inf")
 
 
+@pytest.fixture
+def prop_extractor():
+    return PropertyExtractor()
+
+
 class Test_DataPeroperty_data:
 
     @pytest.mark.parametrize(["value", "expected"], [
@@ -31,6 +36,7 @@ class Test_DataPeroperty_set_data:
         ["value", "replace_tabs_with_spaces", "tab_length", "expected"],
         [
             ["a\tb", True, 2, "a  b"],
+            ["\ta\t\tb\tc\t", True, 2, "  a    b  c  "],
             ["a\tb", True, 4, "a    b"],
             ["a\tb", False, 4, "a\tb"],
         ])
@@ -274,8 +280,9 @@ class Test_PropertyExtractor_extract_data_property_matrix:
             ],
         ],
     ])
-    def test_normal(self, value):
-        prop_matrix = PropertyExtractor.extract_data_property_matrix(value)
+    def test_normal(self, prop_extractor, value):
+        prop_extractor.data_matrix = value
+        prop_matrix = prop_extractor.extract_data_property_matrix()
 
         assert len(prop_matrix) == 2
 
@@ -314,9 +321,9 @@ class Test_PropertyExtractor_extract_data_property_matrix:
     @pytest.mark.parametrize(["value", "expected"], [
         [None, TypeError],
     ])
-    def test_exception(self, value, expected):
+    def test_exception(self, prop_extractor, value, expected):
         with pytest.raises(expected):
-            PropertyExtractor.extract_data_property_matrix(value)
+            prop_extractor.extract_data_property_matrix(value)
 
 
 class Test_PropertyExtractor_extract_column_property_list:
@@ -340,9 +347,10 @@ class Test_PropertyExtractor_extract_column_property_list:
             TEST_DATA_MATRIX,
         ],
     ])
-    def test_normal(self, header_list, value):
-        col_prop_list = PropertyExtractor.extract_column_property_list(
-            header_list, value)
+    def test_normal(self, prop_extractor, header_list, value):
+        prop_extractor.header_list = header_list
+        prop_extractor.data_matrix = value
+        col_prop_list = prop_extractor.extract_column_property_list()
 
         assert len(col_prop_list) == 5
 
@@ -398,7 +406,8 @@ class Test_PropertyExtractor_extract_column_property_list:
             TypeError
         ],
     ])
-    def test_exception(self, header_list, value, expected):
+    def test_exception(self, prop_extractor, header_list, value, expected):
         with pytest.raises(expected):
-            PropertyExtractor.extract_column_property_list(
-                header_list, value)
+            prop_extractor.header_list = header_list
+            prop_extractor.data_matrix = value
+            prop_extractor.extract_column_property_list()

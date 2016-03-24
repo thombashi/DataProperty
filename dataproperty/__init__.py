@@ -420,19 +420,17 @@ class ColumnDataPeroperty(DataPeropertyInterface):
             dataprop.additional_format_len)
 
 
-class PropertyExtractor:
+class PropertyExtractor(object):
 
-    @classmethod
-    def extract_data_property_matrix(cls, data_matrix):
+    def extract_data_property_matrix(self):
         return [
-            cls.__extract_data_property_list(data_list)
-            for data_list in data_matrix
+            self.__extract_data_property_list(data_list)
+            for data_list in self.data_matrix
         ]
 
-    @classmethod
-    def extract_column_property_list(cls, header_list, data_matrix):
-        data_prop_matrix = cls.extract_data_property_matrix(data_matrix)
-        header_prop_list = cls.__extract_data_property_list(header_list)
+    def extract_column_property_list(self):
+        data_prop_matrix = self.extract_data_property_matrix()
+        header_prop_list = self.__extract_data_property_list(self.header_list)
         column_prop_list = []
 
         for col_idx, col_prop_list in enumerate(zip(*data_prop_matrix)):
@@ -448,6 +446,10 @@ class PropertyExtractor:
             column_prop_list.append(column_prop)
 
         return column_prop_list
+
+    def __init__(self):
+        self.header_list = []
+        self.data_matrix = []
 
     @staticmethod
     def __extract_data_property_list(data_list):
