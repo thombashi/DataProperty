@@ -298,11 +298,11 @@ class DataProperty(DataPeropertyInterface):
             except AttributeError:
                 pass
 
-        self.__data = data
+        self.__data = convert_value(data)
 
     def __repr__(self):
         return ", ".join([
-            ("data=%" + self.format_str) % (convert_value(self.data)),
+            ("data=%" + self.format_str) % (self.data),
             "typename=" + Typecode.get_typename(self.typecode),
             "align=" + str(self.align),
             "str_len=" + str(self.str_len),
