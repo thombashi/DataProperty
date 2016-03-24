@@ -13,6 +13,7 @@ import six
 from ._align import Align
 from ._container import MinMaxContainer
 from ._typecode import Typecode
+from ._align_getter import align_getter
 
 
 def is_integer(value):
@@ -281,8 +282,7 @@ class DataProperty(DataPeropertyInterface):
 
         self.__set_data(data, replace_tabs_with_spaces, tab_length)
         self.__typecode = Typecode.get_typecode_from_data(data)
-        self.__align = PropertyExtractor.get_align_from_typecode(
-            self.__typecode)
+        self.__align = align_getter.get_align_from_typecode(self.__typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
         self.__integer_digits = integer_digits
@@ -348,7 +348,7 @@ class ColumnDataPeroperty(DataPeropertyInterface):
 
     @property
     def align(self):
-        return PropertyExtractor.get_align_from_typecode(self.typecode)
+        return align_getter.get_align_from_typecode(self.typecode)
 
     @property
     def decimal_places(self):
@@ -421,15 +421,6 @@ class ColumnDataPeroperty(DataPeropertyInterface):
 
 
 class PropertyExtractor:
-    __typecode_align_table = {
-        Typecode.STRING	: Align.LEFT,
-        Typecode.INT	: Align.RIGHT,
-        Typecode.FLOAT	: Align.RIGHT,
-    }
-
-    @classmethod
-    def get_align_from_typecode(cls, typecode):
-        return cls.__typecode_align_table.get(typecode, Align.LEFT)
 
     @classmethod
     def extract_data_property_matrix(cls, data_matrix):
