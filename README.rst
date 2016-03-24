@@ -74,18 +74,21 @@ Extract property of data for each data from matrix
     from dataproperty import PropertyExtractor, Typecode
     import six
 
+    data_matrix = [
+        [1, 1.1, "aa",  1,   1],
+        [2, 2.2, "bbb", 2.2, 2.2],
+        [3, 3.33, "cccc", -3, "ccc"],
+    ]
+    prop_extractor = PropertyExtractor()
+
     def display(prop_matrix, name):
         six.print_()
         six.print_("---------- %s ----------" % (name))
         for prop_list in prop_matrix:
             six.print_([getattr(prop, name) for prop in prop_list])
 
-    data_matrix = [
-        [1, 1.1, "aa",  1,   1],
-        [2, 2.2, "bbb", 2.2, 2.2],
-        [3, 3.33, "cccc", -3, "ccc"],
-    ]
-    prop_matrix = PropertyExtractor.extract_data_property_matrix(data_matrix)
+    prop_extractor.data_matrix = data_matrix
+    prop_matrix = prop_extractor.extract_data_property_matrix()
 
     six.print_("---------- typename ----------")
     for prop_list in prop_matrix:
@@ -137,18 +140,21 @@ Extract property of data for each column from matrix
     from dataproperty import PropertyExtractor, Typecode
     import six
 
-    def display(prop_list, name):
-        six.print_()
-        six.print_("---------- %s ----------" % (name))
-        six.print_([getattr(prop, name) for prop in prop_list])
-
-    header_list = ["int", "float", "str", "num", "mix"]
     data_matrix = [
         [1, 1.1, "aa",  1,   1],
         [2, 2.2, "bbb", 2.2, 2.2],
         [3, 3.33, "cccc", -3, "ccc"],
     ]
-    col_prop_list = PropertyExtractor.extract_column_property_list(header_list, data_matrix)
+    prop_extractor = PropertyExtractor()
+
+    def display(prop_list, name):
+        six.print_()
+        six.print_("---------- %s ----------" % (name))
+        six.print_([getattr(prop, name) for prop in prop_list])
+
+    prop_extractor.header_list = ["int", "float", "str", "num", "mix"]
+    prop_extractor.data_matrix = data_matrix
+    col_prop_list = prop_extractor.extract_column_property_list()
 
     six.print_("---------- typename ----------")
     six.print_([Typecode.get_typename(prop.typecode) for prop in col_prop_list])
