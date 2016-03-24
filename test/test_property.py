@@ -264,17 +264,6 @@ class Test_ColumnDataPeroperty:
         assert col_prop.padding_len == 0
 
 
-class Test_PropertyExtractor_get_align_from_typecode:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [Typecode.STRING, Align.LEFT],
-        [Typecode.INT, Align.RIGHT],
-        [Typecode.FLOAT, Align.RIGHT],
-    ])
-    def test_normal(self, value, expected):
-        assert PropertyExtractor.get_align_from_typecode(value) == expected
-
-
 class Test_PropertyExtractor_extract_data_property_matrix:
 
     @pytest.mark.parametrize(["value"], [
