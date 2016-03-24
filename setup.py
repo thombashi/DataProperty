@@ -20,7 +20,7 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
 
 setuptools.setup(
     name="DataProperty",
-    version="0.2.4",
+    version="0.2.5",
     author="Tsuyoshi Hombashi",
     author_email="gogogo.vm@gmail.com",
     url="https://github.com/thombashi/DataProperty",
@@ -34,7 +34,7 @@ setuptools.setup(
     setup_requires=["pytest-runner"],
     tests_require=tests_require,
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: Microsoft :: Windows",

@@ -13,6 +13,7 @@ import six
 from ._align import Align
 from ._container import MinMaxContainer
 from ._typecode import Typecode
+from ._align_getter import align_getter
 
 
 def is_integer(value):
@@ -281,8 +282,7 @@ class DataProperty(DataPeropertyInterface):
 
         self.__set_data(data, replace_tabs_with_spaces, tab_length)
         self.__typecode = Typecode.get_typecode_from_data(data)
-        self.__align = PropertyExtractor.get_align_from_typecode(
-            self.__typecode)
+        self.__align = align_getter.get_align_from_typecode(self.__typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
         self.__integer_digits = integer_digits
@@ -298,11 +298,11 @@ class DataProperty(DataPeropertyInterface):
             except AttributeError:
                 pass
 
-        self.__data = data
+        self.__data = convert_value(data)
 
     def __repr__(self):
         return ", ".join([
-            ("data=%" + self.format_str) % (convert_value(self.data)),
+            ("data=%" + self.format_str) % (self.data),
             "typename=" + Typecode.get_typename(self.typecode),
             "align=" + str(self.align),
             "str_len=" + str(self.str_len),
@@ -348,7 +348,7 @@ class ColumnDataPeroperty(DataPeropertyInterface):
 
     @property
     def align(self):
-        return PropertyExtractor.get_align_from_typecode(self.typecode)
+        return align_getter.get_align_from_typecode(self.typecode)
 
     @property
     def decimal_places(self):
@@ -382,9 +382,9 @@ class ColumnDataPeroperty(DataPeropertyInterface):
     def minmax_additional_format_len(self):
         return self.__minmax_additional_format_len
 
-    def __init__(self):
+    def __init__(self, min_padding_len=0):
         self.__typecode_bitmap = Typecode.NONE
-        self.__str_len = 0
+        self.__str_len = min_padding_len
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = MinMaxContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -420,32 +420,22 @@ class ColumnDataPeroperty(DataPeropertyInterface):
             dataprop.additional_format_len)
 
 
-class PropertyExtractor:
-    __typecode_align_table = {
-        Typecode.STRING	: Align.LEFT,
-        Typecode.INT	: Align.RIGHT,
-        Typecode.FLOAT	: Align.RIGHT,
-    }
+class PropertyExtractor(object):
 
-    @classmethod
-    def get_align_from_typecode(cls, typecode):
-        return cls.__typecode_align_table.get(typecode, Align.LEFT)
-
-    @classmethod
-    def extract_data_property_matrix(cls, data_matrix):
+    def extract_data_property_matrix(self):
         return [
-            cls.__extract_data_property_list(data_list)
-            for data_list in data_matrix
+            self.__extract_data_property_list(data_list)
+            for data_list in self.data_matrix
         ]
 
-    @classmethod
-    def extract_column_property_list(cls, header_list, data_matrix):
-        data_prop_matrix = cls.extract_data_property_matrix(data_matrix)
-        header_prop_list = cls.__extract_data_property_list(header_list)
+    def extract_column_property_list(self):
+        data_prop_matrix = self.extract_data_property_matrix()
+        header_prop_list = self.__extract_data_property_list(self.header_list)
         column_prop_list = []
 
         for col_idx, col_prop_list in enumerate(zip(*data_prop_matrix)):
-            column_prop = ColumnDataPeroperty()
+            column_prop = ColumnDataPeroperty(
+                min_padding_len=self.min_padding_len)
 
             if is_not_empty_list_or_tuple(header_prop_list):
                 header_prop = header_prop_list[col_idx]
@@ -457,6 +447,11 @@ class PropertyExtractor:
             column_prop_list.append(column_prop)
 
         return column_prop_list
+
+    def __init__(self):
+        self.header_list = []
+        self.data_matrix = []
+        self.min_padding_len = 0
 
     @staticmethod
     def __extract_data_property_list(data_list):
