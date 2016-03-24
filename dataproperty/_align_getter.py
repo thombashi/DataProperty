@@ -22,7 +22,7 @@ class AlignGetter(object):
         self.__typecode_align_table = x
 
     def get_align_from_typecode(self, typecode):
-        return self.__typecode_align_table.get(typecode, Align.LEFT)
+        return self.__typecode_align_table.get(typecode, self.default_align)
 
     def __init__(self):
         self.typecode_align_table = {
@@ -30,5 +30,6 @@ class AlignGetter(object):
             Typecode.INT: Align.RIGHT,
             Typecode.FLOAT: Align.RIGHT,
         }
+        self.default_align = Align.LEFT
 
 align_getter = AlignGetter()
