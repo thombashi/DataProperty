@@ -6,6 +6,7 @@
 
 
 class MinMaxContainer(object):
+    __slots__ = ("__min_value", "__max_value")
 
     @property
     def min_value(self):
