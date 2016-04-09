@@ -188,6 +188,7 @@ def convert_value(value):
 
 @six.add_metaclass(abc.ABCMeta)
 class DataPeropertyInterface(object):
+    __slots__ = ()
 
     @abc.abstractproperty
     def align(self):   # pragma: no cover
@@ -216,6 +217,15 @@ class DataPeropertyInterface(object):
 
 
 class DataProperty(DataPeropertyInterface):
+    __slots__ = (
+        "__data",
+        "__typecode",
+        "__align",
+        "__integer_digits",
+        "__decimal_places",
+        "__additional_format_len",
+        "__str_len",
+    )
 
     @property
     def align(self):
@@ -345,6 +355,13 @@ class DataProperty(DataPeropertyInterface):
 
 
 class ColumnDataPeroperty(DataPeropertyInterface):
+    __slots__ = (
+        "__typecode_bitmap",
+        "__str_len",
+        "__minmax_integer_digits",
+        "__minmax_decimal_places",
+        "__minmax_additional_format_len",
+    )
 
     @property
     def align(self):
