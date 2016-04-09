@@ -18,21 +18,29 @@ with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
 with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_require = [line.strip() for line in f if line.strip()]
 
+author = "Tsuyoshi Hombashi"
+email = "gogogo.vm@gmail.com"
+
 setuptools.setup(
     name="DataProperty",
-    version="0.2.5",
-    author="Tsuyoshi Hombashi",
-    author_email="gogogo.vm@gmail.com",
+    version="0.2.6",
     url="https://github.com/thombashi/DataProperty",
+    bugtrack_url="https://github.com/thombashi/DataProperty/issues",
+
+    author=author,
+    author_email=email,
     description=summary,
-    keywords=["property"],
-    long_description=long_description,
-    license="MIT License",
     include_package_data=True,
-    packages=setuptools.find_packages(exclude=['test*']),
     install_requires=install_requires,
+    keywords=["property"],
+    license="MIT License",
+    long_description=long_description,
+    maintainer=author,
+    maintainer_email=email,
+    packages=setuptools.find_packages(exclude=['test*']),
     setup_requires=["pytest-runner"],
     tests_require=tests_require,
+
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
