@@ -211,7 +211,7 @@ class Test_DataPeroperty_repr:
 class Test_ColumnDataPeroperty:
 
     def test_normal_0(self):
-        col_prop = ColumnDataPeroperty()
+        col_prop = ColumnDataProperty()
         col_prop.update_header(DataProperty("abc"))
 
         for value in [0, -1.234, 55.55]:
@@ -237,7 +237,7 @@ class Test_ColumnDataPeroperty:
             "additional_format_len=(min=0, max=1)")
 
     def test_normal_1(self):
-        col_prop = ColumnDataPeroperty()
+        col_prop = ColumnDataProperty()
         col_prop.update_header(DataProperty("abc"))
 
         for value in [0, -1.234, 55.55, "abcdefg"]:
@@ -265,7 +265,7 @@ class Test_ColumnDataPeroperty:
     def test_min_padding_len(self):
         min_padding_len = 100
 
-        col_prop = ColumnDataPeroperty(min_padding_len)
+        col_prop = ColumnDataProperty(min_padding_len)
         col_prop.update_header(DataProperty("abc"))
 
         for value in [0, -1.234, 55.55]:
@@ -291,7 +291,7 @@ class Test_ColumnDataPeroperty:
             "additional_format_len=(min=0, max=1)")
 
     def test_null(self):
-        col_prop = ColumnDataPeroperty()
+        col_prop = ColumnDataProperty()
         assert col_prop.align == Align.LEFT
         assert is_nan(col_prop.decimal_places)
         assert col_prop.typecode == Typecode.STRING

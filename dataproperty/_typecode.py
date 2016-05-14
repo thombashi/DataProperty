@@ -1,13 +1,14 @@
 # encoding: utf-8
 
-'''
-@author: Tsuyoshi Hombashi
-'''
+"""
+.. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
+"""
 
 
 from __future__ import absolute_import
 
-import dataproperty
+from ._function import is_integer
+from ._function import is_float
 
 
 class Typecode:
@@ -38,10 +39,10 @@ class Typecode:
         if data is None:
             return cls.NONE
 
-        if dataproperty.is_integer(data):
+        if is_integer(data):
             return cls.INT
 
-        if dataproperty.is_float(data):
+        if is_float(data):
             return cls.FLOAT
 
         return cls.STRING
