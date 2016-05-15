@@ -1,9 +1,8 @@
 # encoding: utf-8
 
-'''
-@author: Tsuyoshi Hombashi
-'''
-
+"""
+.. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
+"""
 
 from dataproperty import *
 import pytest
@@ -22,6 +21,9 @@ class Test_DataPeroperty_data:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [1, 1],
+        ["1", 1],
+        ["999999999", 999999999],
+        ["1.1", 1.1],
         ["a", "a"],
         [None, None],
     ])
@@ -40,7 +42,8 @@ class Test_DataPeroperty_set_data:
             ["a\tb", True, 4, "a    b"],
             ["a\tb", False, 4, "a\tb"],
         ])
-    def test_normal(self, value, replace_tabs_with_spaces, tab_length, expected):
+    def test_normal(
+            self, value, replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(value, replace_tabs_with_spaces, tab_length)
         assert dp.data == expected
 
@@ -49,7 +52,8 @@ class Test_DataPeroperty_set_data:
         [
             ["a\tb", True, None, TypeError],
         ])
-    def test_exception(self, value, replace_tabs_with_spaces, tab_length, expected):
+    def test_exception(
+            self, value, replace_tabs_with_spaces, tab_length, expected):
         with pytest.raises(expected):
             DataProperty(value, replace_tabs_with_spaces, tab_length)
 

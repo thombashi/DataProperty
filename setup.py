@@ -23,7 +23,7 @@ email = "gogogo.vm@gmail.com"
 
 setuptools.setup(
     name="DataProperty",
-    version="0.2.7",
+    version="0.2.8",
     url="https://github.com/thombashi/DataProperty",
     bugtrack_url="https://github.com/thombashi/DataProperty/issues",
 
