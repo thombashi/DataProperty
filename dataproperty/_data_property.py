@@ -160,14 +160,13 @@ class DataProperty(DataPeropertyInterface):
         return get_text_len(self.data)
 
     def __set_data(self, data, replace_tabs_with_spaces, tab_length):
+        self.__data = convert_value(data)
+
         if replace_tabs_with_spaces:
             try:
-                self.__data = data.replace("\t", " " * tab_length)
-                return
+                self.__data = self.__data.replace("\t", " " * tab_length)
             except AttributeError:
                 pass
-
-        self.__data = convert_value(data)
 
 
 class ColumnDataProperty(DataPeropertyInterface):
