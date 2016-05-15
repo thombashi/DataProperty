@@ -108,12 +108,12 @@ class DataProperty(DataPeropertyInterface):
 
         self.__set_data(data, replace_tabs_with_spaces, tab_length)
         self.__typecode = Typecode.get_typecode_from_data(data)
-        self.__align = align_getter.get_align_from_typecode(self.__typecode)
+        self.__align = align_getter.get_align_from_typecode(self.typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
-        self.__additional_format_len = self.__get_additional_format_len(data)
+        self.__additional_format_len = self.__get_additional_format_len()
         self.__str_len = self.__get_str_len()
 
     def __repr__(self):
@@ -127,13 +127,13 @@ class DataProperty(DataPeropertyInterface):
             "additional_format_len=" + str(self.additional_format_len),
         ])
 
-    def __get_additional_format_len(self, data):
-        if not is_float(data):
+    def __get_additional_format_len(self):
+        if not is_float(self.data):
             return 0
 
         format_len = 0
 
-        if float(data) < 0:
+        if float(self.data) < 0:
             # for minus character
             format_len += 1
 
