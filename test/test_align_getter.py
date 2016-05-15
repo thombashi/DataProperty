@@ -1,9 +1,8 @@
 # encoding: utf-8
 
-'''
-@author: Tsuyoshi Hombashi
-'''
-
+"""
+.. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
+"""
 
 from dataproperty import *
 from dataproperty._align_getter import AlignGetter

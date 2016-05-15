@@ -1,9 +1,8 @@
 # encoding: utf-8
 
-'''
-@author: Tsuyoshi Hombashi
-'''
-
+"""
+.. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
+"""
 
 from dataproperty import *
 import pytest
@@ -124,7 +123,6 @@ class Test_MinMaxContainer_update:
         assert container.max_value == 3
 
     def test_normal_1(self, container):
-        import sys
         for value in [None, -six.MAXSIZE, 0, None, six.MAXSIZE, None]:
             container.update(value)
 

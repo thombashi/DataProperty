@@ -4,7 +4,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-
 from ._data_property import DataProperty
 from ._data_property import ColumnDataProperty
 from ._function import is_empty_list_or_tuple
