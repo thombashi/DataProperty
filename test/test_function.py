@@ -364,10 +364,18 @@ class Test_convert_value:
         ["aaaaa", "aaaaa"],
 
         [inf, inf],
-        [None, None],
     ])
     def test_normal(self, value, expected):
         assert convert_value(value) == expected
+
+    @pytest.mark.parametrize(["value", "none_return_value", "expected"], [
+        [None, None, None],
+        ["1", None, 1],
+        [None, "null", "null"],
+        ["1", "null", 1],
+    ])
+    def test_none(self, value, none_return_value, expected):
+        assert convert_value(value, none_return_value) == expected
 
     def test_abnormal(self):
         assert is_nan(convert_value(nan))
