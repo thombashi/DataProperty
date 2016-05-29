@@ -171,8 +171,10 @@ def get_text_len(text):
         return len(text)
 
 
-def convert_value(value):
-    if is_integer(value):
+def convert_value(value, none_return_value=None):
+    if value is None:
+        return none_return_value
+    elif is_integer(value):
         value = int(value)
     elif is_float(value):
         value = float(value)

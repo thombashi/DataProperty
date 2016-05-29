@@ -35,27 +35,37 @@ class Test_DataPeroperty_data:
 class Test_DataPeroperty_set_data:
 
     @pytest.mark.parametrize(
-        ["value", "replace_tabs_with_spaces", "tab_length", "expected"],
         [
-            ["a\tb", True, 2, "a  b"],
-            ["\ta\t\tb\tc\t", True, 2, "  a    b  c  "],
-            ["a\tb", True, 4, "a    b"],
-            ["a\tb", False, 4, "a\tb"],
+            "value", "none_value", "replace_tabs_with_spaces", "tab_length",
+            "expected"
+        ],
+        [
+            ["a\tb", None, True, 2, "a  b"],
+            ["\ta\t\tb\tc\t", None, True, 2, "  a    b  c  "],
+            ["a\tb", None, True, 4, "a    b"],
+            ["a\tb", None, False, 4, "a\tb"],
         ])
     def test_normal(
-            self, value, replace_tabs_with_spaces, tab_length, expected):
-        dp = DataProperty(value, replace_tabs_with_spaces, tab_length)
+            self, value, none_value,
+            replace_tabs_with_spaces, tab_length, expected):
+        dp = DataProperty(
+            value, none_value, replace_tabs_with_spaces, tab_length)
         assert dp.data == expected
 
     @pytest.mark.parametrize(
-        ["value", "replace_tabs_with_spaces", "tab_length", "expected"],
         [
-            ["a\tb", True, None, TypeError],
+            "value", "none_value", "replace_tabs_with_spaces", "tab_length",
+            "expected"
+        ],
+        [
+            ["a\tb", None, True, None, TypeError],
         ])
     def test_exception(
-            self, value, replace_tabs_with_spaces, tab_length, expected):
+            self, value, none_value,
+            replace_tabs_with_spaces, tab_length, expected):
         with pytest.raises(expected):
-            DataProperty(value, replace_tabs_with_spaces, tab_length)
+            DataProperty(
+                value, none_value, replace_tabs_with_spaces, tab_length)
 
 
 class Test_DataPeroperty_typecode:
@@ -304,21 +314,24 @@ class Test_ColumnDataPeroperty:
 
 class Test_PropertyExtractor_extract_data_property_matrix:
 
-    @pytest.mark.parametrize(["value"], [
+    @pytest.mark.parametrize(["value", "non_value"], [
         [
             [
                 [None, 1],
                 [1.1, "a"],
             ],
+            "null",
         ],
     ])
-    def test_normal(self, prop_extractor, value):
+    def test_normal(self, prop_extractor, value, non_value):
         prop_extractor.data_matrix = value
+        prop_extractor.none_value = non_value
         prop_matrix = prop_extractor.extract_data_property_matrix()
 
         assert len(prop_matrix) == 2
 
         prop = prop_matrix[0][0]
+        assert prop.data == "null"
         assert prop.typecode == Typecode.NONE
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string

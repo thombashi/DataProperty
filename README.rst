@@ -66,8 +66,8 @@ e.g. string
 
     data=abcdefgh, typename=STRING, align=left, str_len=8, integer_digits=nan, decimal_places=nan, additional_format_len=0
 
-Extract property of data for each data from matrix
---------------------------------------------------
+Extract property of data for each data from a matrix
+----------------------------------------------------
 
 .. code:: python
 
@@ -132,8 +132,8 @@ Extract property of data for each data from matrix
     [0, 1, nan, 1, 1]
     [0, 2, nan, 0, nan]
 
-Extract property of data for each column from matrix
-----------------------------------------------------
+Extract property of data for each column from a matrix
+------------------------------------------------------
 
 .. code:: python
 

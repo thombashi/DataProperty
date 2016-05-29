@@ -12,6 +12,12 @@ from ._function import is_not_empty_list_or_tuple
 
 class PropertyExtractor(object):
 
+    def __init__(self):
+        self.header_list = []
+        self.data_matrix = []
+        self.min_padding_len = 0
+        self.none_value = None
+
     def extract_data_property_matrix(self):
         return [
             self.__extract_data_property_list(data_list)
@@ -38,14 +44,8 @@ class PropertyExtractor(object):
 
         return column_prop_list
 
-    def __init__(self):
-        self.header_list = []
-        self.data_matrix = []
-        self.min_padding_len = 0
-
-    @staticmethod
-    def __extract_data_property_list(data_list):
+    def __extract_data_property_list(self, data_list):
         if is_empty_list_or_tuple(data_list):
             return []
 
-        return [DataProperty(data) for data in data_list]
+        return [DataProperty(data, self.none_value) for data in data_list]
