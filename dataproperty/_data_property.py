@@ -103,10 +103,12 @@ class DataProperty(DataPeropertyInterface):
     def additional_format_len(self):
         return self.__additional_format_len
 
-    def __init__(self, data, replace_tabs_with_spaces=True, tab_length=2):
+    def __init__(
+            self, data, none_value=None,
+            replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__()
 
-        self.__set_data(data, replace_tabs_with_spaces, tab_length)
+        self.__set_data(data, none_value, replace_tabs_with_spaces, tab_length)
         self.__typecode = Typecode.get_typecode_from_data(data)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
@@ -159,8 +161,9 @@ class DataProperty(DataPeropertyInterface):
 
         return get_text_len(self.data)
 
-    def __set_data(self, data, replace_tabs_with_spaces, tab_length):
-        self.__data = convert_value(data)
+    def __set_data(
+            self, data, none_value, replace_tabs_with_spaces, tab_length):
+        self.__data = convert_value(data, none_value)
 
         if replace_tabs_with_spaces:
             try:

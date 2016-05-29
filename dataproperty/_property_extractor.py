@@ -16,6 +16,7 @@ class PropertyExtractor(object):
         self.header_list = []
         self.data_matrix = []
         self.min_padding_len = 0
+        self.none_value = None
 
     def extract_data_property_matrix(self):
         return [
@@ -43,9 +44,8 @@ class PropertyExtractor(object):
 
         return column_prop_list
 
-    @staticmethod
-    def __extract_data_property_list(data_list):
+    def __extract_data_property_list(self, data_list):
         if is_empty_list_or_tuple(data_list):
             return []
 
-        return [DataProperty(data) for data in data_list]
+        return [DataProperty(data, self.none_value) for data in data_list]
