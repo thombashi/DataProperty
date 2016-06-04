@@ -7,8 +7,6 @@
 from __future__ import absolute_import
 
 from ._error import TypeConversionError
-from ._function import is_float
-from ._function import is_integer
 
 
 class DateTimeConverter(object):
@@ -78,13 +76,16 @@ class DateTimeConverter(object):
 
 
 def convert_value(value, none_return_value=None):
+    from ._type_checker import IntegerTypeChecker
+    from ._type_checker import FloatTypeChecker
+
     if value is None:
         return none_return_value
 
-    if is_integer(value):
+    if IntegerTypeChecker(value).is_type():
         return int(value)
 
-    if is_float(value):
+    if FloatTypeChecker(value).is_type():
         return float(value)
 
     return value
