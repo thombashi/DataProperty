@@ -9,12 +9,12 @@ from dateutil.tz import tzoffset
 import pytest
 import six
 
-from dataproperty import DateTimeConverter
 from dataproperty import TypeConversionError
 from dataproperty import convert_value
 from dataproperty import is_nan
-from dataproperty._converter import IntegerConverter
-from dataproperty._converter import FloatConverter
+from dataproperty.converter import IntegerConverter
+from dataproperty.converter import FloatConverter
+from dataproperty.converter import DateTimeConverter
 
 
 nan = float("nan")

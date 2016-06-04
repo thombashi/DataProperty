@@ -7,7 +7,7 @@
 from __future__ import absolute_import
 import abc
 
-from ._error import TypeConversionError
+from .._error import TypeConversionError
 
 
 class ValueConverterInterface(object):
@@ -110,19 +110,3 @@ class DateTimeConverter(ValueConverter):
 
     def __get_dst_timezone_name(self, offset):
         return self.__COMMON_DST_TIMEZONE_TABLE[offset]
-
-
-def convert_value(value, none_return_value=None):
-    from ._type_checker import IntegerTypeChecker
-    from ._type_checker import FloatTypeChecker
-
-    if value is None:
-        return none_return_value
-
-    if IntegerTypeChecker(value).is_type():
-        return int(value)
-
-    if FloatTypeChecker(value).is_type():
-        return float(value)
-
-    return value

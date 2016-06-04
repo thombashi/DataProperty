@@ -14,7 +14,7 @@ from ._typecode import Typecode
 from ._typecode_extractor import typecode_extractor
 from ._type_checker import FloatTypeChecker
 
-from ._converter import convert_value
+from .converter import convert_value
 from ._function import is_nan
 from ._function import get_number_of_digit
 from ._function import get_text_len

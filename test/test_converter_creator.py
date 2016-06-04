@@ -8,12 +8,12 @@ from __future__ import absolute_import
 
 import pytest
 
-from dataproperty._converter import IntegerConverter
-from dataproperty._converter import FloatConverter
-from dataproperty._converter import DateTimeConverter
-from dataproperty._converter_creator import IntegerConverterCreator
-from dataproperty._converter_creator import FloatConverterCreator
-from dataproperty._converter_creator import DateTimeConverterCreator
+from dataproperty.converter import IntegerConverter
+from dataproperty.converter import FloatConverter
+from dataproperty.converter import DateTimeConverter
+from dataproperty.converter import IntegerConverterCreator
+from dataproperty.converter import FloatConverterCreator
+from dataproperty.converter import DateTimeConverterCreator
 
 
 class Test_ConverterCreator(object):

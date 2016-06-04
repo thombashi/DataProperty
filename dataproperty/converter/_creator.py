@@ -9,9 +9,9 @@ import abc
 
 import six
 
-from ._converter import IntegerConverter
-from ._converter import FloatConverter
-from ._converter import DateTimeConverter
+from ._core import IntegerConverter
+from ._core import FloatConverter
+from ._core import DateTimeConverter
 
 
 @six.add_metaclass(abc.ABCMeta)
