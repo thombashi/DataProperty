@@ -13,16 +13,6 @@ from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._typecode import Typecode
 
-"""
-from ._type_checker import IntegerTypeChecker
-from ._type_checker import FloatTypeChecker
-from ._type_checker import DateTimeTypeChecker
-
-from ._type_checker_creator import IntegerTypeCheckerCreator
-from ._type_checker_creator import FloatTypeCheckerCreator
-from ._type_checker_creator import DateTimeTypeCheckerCreator
-"""
-
 from .converter import convert_value
 
 from ._data_property import ColumnDataProperty

@@ -8,12 +8,12 @@ from __future__ import absolute_import
 
 import pytest
 
-from dataproperty import IntegerTypeCheckerCreator
-from dataproperty import FloatTypeCheckerCreator
-from dataproperty import DateTimeTypeCheckerCreator
-from dataproperty import IntegerTypeChecker
-from dataproperty import FloatTypeChecker
-from dataproperty import DateTimeTypeChecker
+from dataproperty._type_checker_creator import IntegerTypeCheckerCreator
+from dataproperty._type_checker_creator import FloatTypeCheckerCreator
+from dataproperty._type_checker_creator import DateTimeTypeCheckerCreator
+from dataproperty._type_checker import IntegerTypeChecker
+from dataproperty._type_checker import FloatTypeChecker
+from dataproperty._type_checker import DateTimeTypeChecker
 
 
 class Test_TypeCheckerCreator(object):
