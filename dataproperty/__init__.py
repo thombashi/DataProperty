@@ -18,6 +18,7 @@ from ._type_checker import IntegerTypeChecker
 from ._type_checker import FloatTypeChecker
 
 from ._converter import convert_value
+from ._converter import DateTimeConverter
 from ._function import is_integer
 from ._function import is_hex
 from ._function import is_float
