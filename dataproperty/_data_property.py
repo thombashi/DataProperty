@@ -11,7 +11,8 @@ from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
-from ._typecode_extractor import typecode_extractor
+#from ._typecode_extractor import get_typecode_from_bitmap
+from ._typecode_extractor import get_typecode_from_data
 from ._type_checker import FloatTypeChecker
 
 from .converter import convert_value
@@ -110,7 +111,7 @@ class DataProperty(DataPeropertyInterface):
         super(DataProperty, self).__init__()
 
         self.__set_data(data, none_value, replace_tabs_with_spaces, tab_length)
-        self.__typecode = typecode_extractor.get_typecode_from_data(data)
+        self.__typecode = get_typecode_from_data(data)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
@@ -200,7 +201,7 @@ class ColumnDataProperty(DataPeropertyInterface):
 
     @property
     def typecode(self):
-        return typecode_extractor.get_typecode_from_bitmap(self.__typecode_bitmap)
+        return self.__get_typecode_from_bitmap(self.__typecode_bitmap)
 
     @property
     def padding_len(self):
@@ -242,6 +243,21 @@ class ColumnDataProperty(DataPeropertyInterface):
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
         self.__update(dataprop)
+
+    @staticmethod
+    def __get_typecode_from_bitmap(typecode_bitmap):
+        typecode_list = [
+            Typecode.STRING,
+            Typecode.FLOAT,
+            Typecode.INT,
+            Typecode.DATETIME,
+        ]
+
+        for typecode in typecode_list:
+            if typecode_bitmap & typecode:
+                return typecode
+
+        return Typecode.STRING
 
     def __update(self, dataprop):
         self.__str_len = max(self.__str_len, dataprop.str_len)
