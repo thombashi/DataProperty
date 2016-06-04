@@ -4,8 +4,12 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-from dataproperty import *
+import datetime
+
 import pytest
+import six
+
+from dataproperty import *
 
 
 nan = float("nan")
@@ -219,6 +223,41 @@ class Test_DataPeroperty_repr:
 
 
 class Test_ColumnDataPeroperty:
+    DATATIME_DATA = datetime.datetime(2017, 1, 1)
+
+    @pytest.mark.parametrize(["value_list", "expected"], [
+        [
+            [0, six.MAXSIZE, -six.MAXSIZE],
+            Typecode.INT,
+        ],
+        [
+            [0, 1.1, -six.MAXSIZE],
+            Typecode.FLOAT,
+        ],
+        [
+            [0, 1.1, -six.MAXSIZE, "test"],
+            Typecode.STRING,
+        ],
+        [
+            [DATATIME_DATA, DATATIME_DATA],
+            Typecode.DATETIME,
+        ],
+        [[DATATIME_DATA, 1], Typecode.STRING],
+        [[1, DATATIME_DATA], Typecode.STRING],
+        [[DATATIME_DATA, 1.0], Typecode.STRING],
+        [[1.0, DATATIME_DATA], Typecode.STRING],
+        [[DATATIME_DATA, "test"], Typecode.STRING],
+        [["test", DATATIME_DATA], Typecode.STRING],
+        [[1, DATATIME_DATA, 1.0, "test", DATATIME_DATA], Typecode.STRING],
+    ])
+    def test_normal_typecode(self, value_list, expected):
+        col_prop = ColumnDataProperty()
+        col_prop.update_header(DataProperty("dummy"))
+
+        for value in value_list:
+            col_prop.update_body(DataProperty(value))
+
+        assert col_prop.typecode == expected
 
     def test_normal_0(self):
         col_prop = ColumnDataProperty()

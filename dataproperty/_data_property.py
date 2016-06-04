@@ -260,6 +260,13 @@ class ColumnDataProperty(DataPeropertyInterface):
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
+
+        if all([
+            self.__typecode_bitmap & Typecode.DATETIME,
+            self.__typecode_bitmap & ~Typecode.DATETIME,
+        ]):
+            self.__typecode_bitmap |= Typecode.STRING
+
         self.__update(dataprop)
 
     @staticmethod
