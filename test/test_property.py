@@ -25,11 +25,21 @@ class Test_DataPeroperty_data:
         ["999999999", 999999999],
         ["1.1", 1.1],
         ["a", "a"],
-        [None, None],
     ])
     def test_normal(self, value, expected):
         dp = DataProperty(value)
         assert dp.data == expected
+
+    @pytest.mark.parametrize(["value", "none_value", "expected"], [
+        [None, None, None],
+        [None, "null", "null"],
+        [None, "", ""],
+        [None, 0, 0],
+    ])
+    def test_none(self, value, none_value, expected):
+        dp = DataProperty(value, none_value)
+        assert dp.data == expected
+        assert dp.typecode == Typecode.NONE
 
 
 class Test_DataPeroperty_set_data:
