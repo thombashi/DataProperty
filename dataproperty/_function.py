@@ -12,8 +12,10 @@ import six
 
 def is_integer(value):
     """
-    This function will be deleted in the future.
-    Use IntegerTypeChecker instead of this function.
+    .. warning::
+
+        This function will be deleted in the future.
+        Use IntegerTypeChecker class instead of this function.
     """
 
     from ._type_checker import IntegerTypeChecker
@@ -32,8 +34,10 @@ def is_hex(value):
 
 def is_float(value):
     """
-    This function will be deleted in the future.
-    Use FloatTypeChecker instead of this function.
+    .. warning::
+
+        This function will be deleted in the future.
+        Use FloatTypeChecker class instead of this function.
     """
 
     from ._type_checker import FloatTypeChecker
