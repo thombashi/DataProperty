@@ -9,9 +9,7 @@ import abc
 
 import six
 
-
-class TypeConversionError(Exception):
-    pass
+from ._error import TypeConversionError
 
 
 @six.add_metaclass(abc.ABCMeta)

@@ -6,6 +6,8 @@
 
 from __future__ import absolute_import
 
+from ._error import TypeConversionError
+
 from ._align import Align
 from ._align_getter import align_getter
 from ._container import MinMaxContainer
