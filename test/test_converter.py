@@ -23,22 +23,22 @@ inf = float("inf")
 
 class Test_IntegerConverter_convert:
 
-    @pytest.mark.parametrize(["value", "expected"], [
-        [0.0, 0],
-        [0.1, 0],
-        [-0.1, 0],
-        [1, 1],
-        [-1, -1],
-        ["1", 1],
-        ["-1", -1],
-        [.5, 0],
-        [0., 0],
-        [True, 1],
-        [str(six.MAXSIZE), six.MAXSIZE],
-        [str(-six.MAXSIZE), -six.MAXSIZE],
+    @pytest.mark.parametrize(["value", "is_convert", "expected"], [
+        [0.1, True, 0],
+        [-0.1, False, -0.1],
+        [1, False, 1],
+        [-1, True, -1],
+        [.5, True, 0],
+        [0., False, 0],
+        [True, True, 1],
+        [True, False, 1],
+        [str(six.MAXSIZE), True, six.MAXSIZE],
+        [str(six.MAXSIZE), False, str(six.MAXSIZE)],
+        [str(-six.MAXSIZE), True, -six.MAXSIZE],
+        [str(-six.MAXSIZE), False, str(-six.MAXSIZE)],
     ])
-    def test_normal(self, value, expected):
-        assert IntegerConverter(value).convert() == expected
+    def test_normal(self, value, is_convert, expected):
+        assert IntegerConverter(value, is_convert).convert() == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["", TypeConversionError],
@@ -52,7 +52,7 @@ class Test_IntegerConverter_convert:
     ])
     def test_exception(self, value, expected):
         with pytest.raises(expected):
-            IntegerConverter(value, True).convert()
+            IntegerConverter(value).convert()
 
 
 class Test_FloatConverter_convert:
