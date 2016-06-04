@@ -14,6 +14,10 @@ from ._data_property import DataProperty
 from ._typecode import Typecode
 from ._property_extractor import PropertyExtractor
 
+from ._type_checker import IntegerTypeChecker
+from ._type_checker import FloatTypeChecker
+
+
 from ._function import is_integer
 from ._function import is_hex
 from ._function import is_float

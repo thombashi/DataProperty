@@ -9,20 +9,17 @@ import math
 
 import six
 
+from ._type_checker import IntegerTypeChecker
+from ._type_checker import FloatTypeChecker
+
 
 def is_integer(value):
-    if isinstance(value, six.integer_types):
-        return not isinstance(value, bool)
+    """
+    This function will be deleted in the future.
+    Use IntegerTypeChecker instead of this function.
+    """
 
-    try:
-        int(value)
-    except:
-        return False
-
-    if isinstance(value, float):
-        return False
-
-    return True
+    return IntegerTypeChecker(value).is_type()
 
 
 def is_hex(value):
@@ -35,20 +32,12 @@ def is_hex(value):
 
 
 def is_float(value):
-    if any([isinstance(value, float), value == float("inf")]):
-        return True
+    """
+    This function will be deleted in the future.
+    Use FloatTypeChecker instead of this function.
+    """
 
-    if isinstance(value, bool):
-        return False
-
-    try:
-        work = float(value)
-        if work == float("inf"):
-            return False
-    except:
-        return False
-
-    return True
+    return FloatTypeChecker(value).is_type()
 
 
 def is_nan(value):
@@ -174,9 +163,11 @@ def get_text_len(text):
 def convert_value(value, none_return_value=None):
     if value is None:
         return none_return_value
-    elif is_integer(value):
-        value = int(value)
-    elif is_float(value):
-        value = float(value)
+
+    if is_integer(value):
+        return int(value)
+
+    if is_float(value):
+        return float(value)
 
     return value
