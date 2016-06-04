@@ -11,9 +11,10 @@ from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
-#from ._typecode_extractor import get_typecode_from_bitmap
-from ._typecode_extractor import get_typecode_from_data
 from ._type_checker import FloatTypeChecker
+from ._type_checker_creator import IntegerTypeCheckerCreator
+from ._type_checker_creator import FloatTypeCheckerCreator
+from ._type_checker_creator import DateTimeTypeCheckerCreator
 
 from .converter import convert_value
 from ._function import is_nan
@@ -31,6 +32,12 @@ class DataProperty(DataPeropertyInterface):
         "__additional_format_len",
         "__str_len",
     )
+
+    __CHECKER_CREATOR_LIST = [
+        IntegerTypeCheckerCreator(),
+        FloatTypeCheckerCreator(),
+        DateTimeTypeCheckerCreator()
+    ]
 
     @property
     def align(self):
@@ -111,7 +118,7 @@ class DataProperty(DataPeropertyInterface):
         super(DataProperty, self).__init__()
 
         self.__set_data(data, none_value, replace_tabs_with_spaces, tab_length)
-        self.__typecode = get_typecode_from_data(data)
+        self.__typecode = self.__get_typecode_from_data(data, True)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
@@ -162,6 +169,17 @@ class DataProperty(DataPeropertyInterface):
             return self.__get_base_float_len() + self.additional_format_len
 
         return get_text_len(self.data)
+
+    def __get_typecode_from_data(self, data, is_convert):
+        if data is None:
+            return Typecode.NONE
+
+        for checker_creator in self.__CHECKER_CREATOR_LIST:
+            checker = checker_creator.create(data, is_convert)
+            if checker.is_type():
+                return checker.typecode
+
+        return Typecode.STRING
 
     def __set_data(
             self, data, none_value, replace_tabs_with_spaces, tab_length):

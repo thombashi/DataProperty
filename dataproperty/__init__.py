@@ -28,7 +28,6 @@ from .converter import convert_value
 from ._data_property import ColumnDataProperty
 from ._data_property import DataProperty
 
-from ._typecode_extractor import typecode_extractor
 from ._property_extractor import PropertyExtractor
 
 from ._function import is_integer
