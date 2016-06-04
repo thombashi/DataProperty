@@ -11,9 +11,12 @@ from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
+from ._type_checker import FloatTypeChecker
+from ._type_checker_creator import IntegerTypeCheckerCreator
+from ._type_checker_creator import FloatTypeCheckerCreator
+from ._type_checker_creator import DateTimeTypeCheckerCreator
 
-from ._function import convert_value
-from ._function import is_float
+from .converter import convert_value
 from ._function import is_nan
 from ._function import get_number_of_digit
 from ._function import get_text_len
@@ -29,6 +32,12 @@ class DataProperty(DataPeropertyInterface):
         "__additional_format_len",
         "__str_len",
     )
+
+    __CHECKER_CREATOR_LIST = [
+        IntegerTypeCheckerCreator(),
+        FloatTypeCheckerCreator(),
+        DateTimeTypeCheckerCreator()
+    ]
 
     @property
     def align(self):
@@ -104,12 +113,13 @@ class DataProperty(DataPeropertyInterface):
         return self.__additional_format_len
 
     def __init__(
-            self, data, none_value=None,
+            self, data, none_value=None, is_convert=True,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__()
 
-        self.__set_data(data, none_value, replace_tabs_with_spaces, tab_length)
-        self.__typecode = Typecode.get_typecode_from_data(data)
+        self.__set_data(
+            data, none_value, is_convert, replace_tabs_with_spaces, tab_length)
+        self.__typecode = self.__get_typecode_from_data(data, is_convert)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
@@ -130,7 +140,7 @@ class DataProperty(DataPeropertyInterface):
         ])
 
     def __get_additional_format_len(self):
-        if not is_float(self.data):
+        if not FloatTypeChecker(self.data).is_type():
             return 0
 
         format_len = 0
@@ -161,14 +171,26 @@ class DataProperty(DataPeropertyInterface):
 
         return get_text_len(self.data)
 
+    def __get_typecode_from_data(self, data, is_convert):
+        if data is None:
+            return Typecode.NONE
+
+        for checker_creator in self.__CHECKER_CREATOR_LIST:
+            checker = checker_creator.create(data, is_convert)
+            if checker.is_type():
+                return checker.typecode
+
+        return Typecode.STRING
+
     def __set_data(
-            self, data, none_value, replace_tabs_with_spaces, tab_length):
-        self.__data = convert_value(data, none_value)
+            self, data, none_value, is_convert,
+            replace_tabs_with_spaces, tab_length):
+        self.__data = convert_value(data, none_value, is_convert)
 
         if replace_tabs_with_spaces:
             try:
                 self.__data = self.__data.replace("\t", " " * tab_length)
-            except AttributeError:
+            except (TypeError, AttributeError):
                 pass
 
 
@@ -199,7 +221,7 @@ class ColumnDataProperty(DataPeropertyInterface):
 
     @property
     def typecode(self):
-        return Typecode.get_typecode_from_bitmap(self.__typecode_bitmap)
+        return self.__get_typecode_from_bitmap(self.__typecode_bitmap)
 
     @property
     def padding_len(self):
@@ -240,7 +262,29 @@ class ColumnDataProperty(DataPeropertyInterface):
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
+
+        if all([
+            self.__typecode_bitmap & Typecode.DATETIME,
+            self.__typecode_bitmap & ~Typecode.DATETIME,
+        ]):
+            self.__typecode_bitmap |= Typecode.STRING
+
         self.__update(dataprop)
+
+    @staticmethod
+    def __get_typecode_from_bitmap(typecode_bitmap):
+        typecode_list = [
+            Typecode.STRING,
+            Typecode.FLOAT,
+            Typecode.INT,
+            Typecode.DATETIME,
+        ]
+
+        for typecode in typecode_list:
+            if typecode_bitmap & typecode:
+                return typecode
+
+        return Typecode.STRING
 
     def __update(self, dataprop):
         self.__str_len = max(self.__str_len, dataprop.str_len)

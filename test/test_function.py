@@ -346,36 +346,3 @@ class Test_get_text_len:
     ])
     def test_normal(self, value, expected):
         assert get_text_len(value) == expected
-
-
-class Test_convert_value:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        ["0", 0],
-        [str(six.MAXSIZE), six.MAXSIZE],
-        [str(-six.MAXSIZE), -six.MAXSIZE],
-        [0, 0],
-        [six.MAXSIZE, six.MAXSIZE],
-        [-six.MAXSIZE, -six.MAXSIZE],
-
-        ["0.0", 0],
-        [0.0, 0],
-
-        ["aaaaa", "aaaaa"],
-
-        [inf, inf],
-    ])
-    def test_normal(self, value, expected):
-        assert convert_value(value) == expected
-
-    @pytest.mark.parametrize(["value", "none_return_value", "expected"], [
-        [None, None, None],
-        ["1", None, 1],
-        [None, "null", "null"],
-        ["1", "null", 1],
-    ])
-    def test_none(self, value, none_return_value, expected):
-        assert convert_value(value, none_return_value) == expected
-
-    def test_abnormal(self):
-        assert is_nan(convert_value(nan))

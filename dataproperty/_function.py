@@ -7,22 +7,18 @@
 from __future__ import absolute_import
 import math
 
-import six
-
 
 def is_integer(value):
-    if isinstance(value, six.integer_types):
-        return not isinstance(value, bool)
+    """
+    .. warning::
 
-    try:
-        int(value)
-    except:
-        return False
+        This function will be deleted in the future.
+        Use IntegerTypeChecker class instead of this function.
+    """
 
-    if isinstance(value, float):
-        return False
+    from ._type_checker import IntegerTypeChecker
 
-    return True
+    return IntegerTypeChecker(value).is_type()
 
 
 def is_hex(value):
@@ -35,20 +31,16 @@ def is_hex(value):
 
 
 def is_float(value):
-    if any([isinstance(value, float), value == float("inf")]):
-        return True
+    """
+    .. warning::
 
-    if isinstance(value, bool):
-        return False
+        This function will be deleted in the future.
+        Use FloatTypeChecker class instead of this function.
+    """
 
-    try:
-        work = float(value)
-        if work == float("inf"):
-            return False
-    except:
-        return False
+    from ._type_checker import FloatTypeChecker
 
-    return True
+    return FloatTypeChecker(value).is_type()
 
 
 def is_nan(value):
@@ -169,14 +161,3 @@ def get_text_len(text):
         return len(str(text))
     except UnicodeEncodeError:
         return len(text)
-
-
-def convert_value(value, none_return_value=None):
-    if value is None:
-        return none_return_value
-    elif is_integer(value):
-        value = int(value)
-    elif is_float(value):
-        value = float(value)
-
-    return value
