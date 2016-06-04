@@ -9,15 +9,14 @@ import math
 
 import six
 
-from ._type_checker import IntegerTypeChecker
-from ._type_checker import FloatTypeChecker
-
 
 def is_integer(value):
     """
     This function will be deleted in the future.
     Use IntegerTypeChecker instead of this function.
     """
+
+    from ._type_checker import IntegerTypeChecker
 
     return IntegerTypeChecker(value).is_type()
 
@@ -36,6 +35,8 @@ def is_float(value):
     This function will be deleted in the future.
     Use FloatTypeChecker instead of this function.
     """
+
+    from ._type_checker import FloatTypeChecker
 
     return FloatTypeChecker(value).is_type()
 

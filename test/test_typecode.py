@@ -4,8 +4,9 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-from dataproperty import *
 import pytest
+
+from dataproperty import Typecode
 
 
 class Test_Typecode_get_typecode_from_bitmap:
