@@ -44,7 +44,7 @@ class DateTimeConverter(object):
 
         try:
             self.__datetime = dateutil.parser.parse(self.__value)
-        except AttributeError:
+        except (AttributeError, ValueError):
             raise TypeConversionError
 
         try:

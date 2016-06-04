@@ -63,7 +63,7 @@ class Test_DateTimeConverter_to_datetime:
         assert str(dt_converter.to_datetime()) == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
-        ["invalid time string", ValueError],
+        ["invalid time string", TypeConversionError],
         [None, TypeConversionError],
         [11111, TypeConversionError],
     ])
