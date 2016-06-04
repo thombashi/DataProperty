@@ -5,11 +5,32 @@
 """
 
 from __future__ import absolute_import
+import abc
 
 from ._error import TypeConversionError
 
 
-class DateTimeConverter(object):
+class ValueConverterInterface(object):
+
+    @abc.abstractmethod
+    def convert(self):   # pragma: no cover
+        pass
+
+
+class ValueConverter(ValueConverterInterface):
+
+    @abc.abstractmethod
+    def convert(self):   # pragma: no cover
+        pass
+
+    def __init__(self, value):
+        self._value = value
+
+    def __repr__(self):
+        return str(self.convert())
+
+
+class DateTimeConverter(ValueConverter):
 
     __DAYS_TO_SECONDS_COEF = 60 ** 2 * 24
     __MICROSECONDS_TO_SECONDS_COEF = 1000.0 ** 2
@@ -27,23 +48,21 @@ class DateTimeConverter(object):
     }
 
     def __init__(self, value):
-        self.__value = value
+        super(DateTimeConverter, self).__init__(value)
+
         self.__datetime = None
 
-    def __repr__(self):
-        return str(self.to_datetime())
-
-    def to_datetime(self):
+    def convert(self):
         import datetime
         import dateutil.parser
         import pytz
 
-        if isinstance(self.__value, datetime.datetime):
-            self.__datetime = self.__value
+        if isinstance(self._value, datetime.datetime):
+            self.__datetime = self._value
             return self.__datetime
 
         try:
-            self.__datetime = dateutil.parser.parse(self.__value)
+            self.__datetime = dateutil.parser.parse(self._value)
         except (AttributeError, ValueError):
             raise TypeConversionError
 

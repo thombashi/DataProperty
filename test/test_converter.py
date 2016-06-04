@@ -19,7 +19,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_DateTimeConverter_to_datetime:
+class Test_DateTimeConverter_convert:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [
@@ -36,7 +36,7 @@ class Test_DateTimeConverter_to_datetime:
     def test_normal(self, value, expected):
         dt_converter = DateTimeConverter(value)
 
-        assert dt_converter.to_datetime() == expected
+        assert dt_converter.convert() == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         [
@@ -60,7 +60,7 @@ class Test_DateTimeConverter_to_datetime:
         dt_converter = DateTimeConverter(value)
 
         assert str(dt_converter) == expected
-        assert str(dt_converter.to_datetime()) == expected
+        assert str(dt_converter.convert()) == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["invalid time string", TypeConversionError],
@@ -71,7 +71,7 @@ class Test_DateTimeConverter_to_datetime:
         dt_converter = DateTimeConverter(value)
 
         with pytest.raises(expected):
-            dt_converter.to_datetime()
+            dt_converter.convert()
 
 
 class Test_convert_value:

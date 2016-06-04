@@ -135,7 +135,7 @@ class DateTimeTypeChecker(TypeChecker):
         return False
 
     def _try_convert(self):
-        self._converted_value = DateTimeConverter(self._value).to_datetime()
+        self._converted_value = DateTimeConverter(self._value).convert()
 
     def _is_valid_after_convert(self):
         return True
