@@ -82,13 +82,12 @@ class DateTimeConverter(ValueConverter):
         import dateutil.parser
         import pytz
 
-        if not self._is_convert:
-            return self._value
-
         if isinstance(self._value, datetime.datetime):
             self.__datetime = self._value
             return self.__datetime
 
+        if not self._is_convert:
+            return self._value
         try:
             self.__datetime = dateutil.parser.parse(self._value)
         except (AttributeError, ValueError):
