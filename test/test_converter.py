@@ -13,10 +13,76 @@ from dataproperty import DateTimeConverter
 from dataproperty import TypeConversionError
 from dataproperty import convert_value
 from dataproperty import is_nan
+from dataproperty._converter import IntegerConverter
+from dataproperty._converter import FloatConverter
 
 
 nan = float("nan")
 inf = float("inf")
+
+
+class Test_IntegerConverter_convert:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [0.0, 0],
+        [0.1, 0],
+        [-0.1, 0],
+        [1, 1],
+        [-1, -1],
+        ["1", 1],
+        ["-1", -1],
+        [.5, 0],
+        [0., 0],
+        [True, 1],
+    ])
+    def test_normal(self, value, expected):
+        assert IntegerConverter(value).convert() == expected
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        ["", TypeConversionError],
+        [None, TypeConversionError],
+        ["test", TypeConversionError],
+        ["0.0", TypeConversionError],
+        ["0.1", TypeConversionError],
+        ["-0.1", TypeConversionError],
+        ["1e-05", TypeConversionError],
+        [inf, TypeConversionError],
+    ])
+    def test_exception(self, value, expected):
+        with pytest.raises(expected):
+            IntegerConverter(value).convert()
+
+
+class Test_FloatConverter_convert:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [0.0, 0.0],
+        [0.1, 0.1],
+        [-0.1, -0.1],
+        [1, 1.0],
+        [-1, -1.0],
+        ["0.0", 0.0],
+        ["0.1", 0.1],
+        ["-0.1", -0.1],
+        ["1", 1.0],
+        ["-1", -1.0],
+        [.5, .5],
+        [0., 0.0],
+        ["1e-05", 1e-05],
+        [inf, inf],
+        [True, 1.0],
+    ])
+    def test_normal(self, value, expected):
+        assert FloatConverter(value).convert() == expected
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        ["", TypeConversionError],
+        [None, TypeConversionError],
+        ["test", TypeConversionError],
+    ])
+    def test_exception(self, value, expected):
+        with pytest.raises(expected):
+            FloatConverter(value).convert()
 
 
 class Test_DateTimeConverter_convert:

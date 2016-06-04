@@ -30,6 +30,24 @@ class ValueConverter(ValueConverterInterface):
         return str(self.convert())
 
 
+class IntegerConverter(ValueConverter):
+
+    def convert(self):
+        try:
+            return int(self._value)
+        except (TypeError, ValueError, OverflowError):
+            raise TypeConversionError
+
+
+class FloatConverter(ValueConverter):
+
+    def convert(self):
+        try:
+            return float(self._value)
+        except (TypeError, ValueError):
+            raise TypeConversionError
+
+
 class DateTimeConverter(ValueConverter):
 
     __DAYS_TO_SECONDS_COEF = 60 ** 2 * 24
