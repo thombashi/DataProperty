@@ -226,6 +226,10 @@ class Test_ColumnDataPeroperty:
     DATATIME_DATA = datetime.datetime(2017, 1, 1)
 
     @pytest.mark.parametrize(["value_list", "expected"], [
+        [[None, None], Typecode.STRING],
+        [[None, 1], Typecode.INT],
+        [[1.0, None], Typecode.FLOAT],
+        [[None, "test"], Typecode.STRING],
         [
             [0, six.MAXSIZE, -six.MAXSIZE],
             Typecode.INT,
@@ -248,7 +252,7 @@ class Test_ColumnDataPeroperty:
         [[1.0, DATATIME_DATA], Typecode.STRING],
         [[DATATIME_DATA, "test"], Typecode.STRING],
         [["test", DATATIME_DATA], Typecode.STRING],
-        [[1, DATATIME_DATA, 1.0, "test", DATATIME_DATA], Typecode.STRING],
+        [[1, DATATIME_DATA, 1.0, "test", None], Typecode.STRING],
     ])
     def test_normal_typecode(self, value_list, expected):
         col_prop = ColumnDataProperty()
