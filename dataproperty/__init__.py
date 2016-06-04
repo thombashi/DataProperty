@@ -14,11 +14,16 @@ from ._container import MinMaxContainer
 from ._data_property import ColumnDataProperty
 from ._data_property import DataProperty
 from ._typecode import Typecode
+from ._typecode import typecode_extractor
 from ._property_extractor import PropertyExtractor
 
 from ._type_checker import IntegerTypeChecker
 from ._type_checker import FloatTypeChecker
 from ._type_checker import DateTimeTypeChecker
+
+from ._type_checker_creator import IntegerTypeCheckerCreator
+from ._type_checker_creator import FloatTypeCheckerCreator
+from ._type_checker_creator import DateTimeTypeCheckerCreator
 
 from ._converter import convert_value
 from ._converter import DateTimeConverter
