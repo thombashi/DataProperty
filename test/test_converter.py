@@ -16,6 +16,12 @@ class Test_DateTimeConverter_to_datetime:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [
+            datetime.datetime(
+                2017, 3, 22, 10, 0, tzinfo=tzoffset(None, 32400)),
+            datetime.datetime(
+                2017, 3, 22, 10, 0, tzinfo=tzoffset(None, 32400)),
+        ],
+        [
             "2017-03-22T10:00:00+0900",
             datetime.datetime(2017, 3, 22, 10, 0, tzinfo=tzoffset(None, 32400))
         ],

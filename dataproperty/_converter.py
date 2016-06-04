@@ -36,8 +36,13 @@ class DateTimeConverter(object):
         return str(self.to_datetime())
 
     def to_datetime(self):
+        import datetime
         import dateutil.parser
         import pytz
+
+        if isinstance(self.__value, datetime.datetime):
+            self.__datetime = self.__value
+            return self.__datetime
 
         try:
             self.__datetime = dateutil.parser.parse(self.__value)
