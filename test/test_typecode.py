@@ -20,7 +20,7 @@ class Test_Typecode_get_typecode_from_bitmap:
         [int("101", 2), Typecode.STRING],
         [int("110", 2), Typecode.STRING],
         [int("111", 2), Typecode.STRING],
-        [int("1000", 2), Typecode.STRING],
+        [int("1000", 2), Typecode.DATETIME],
         [int("1001", 2), Typecode.INT],
         [int("1010", 2), Typecode.FLOAT],
         [int("1100", 2), Typecode.STRING],
