@@ -9,10 +9,11 @@ import datetime
 
 from dateutil.tz import tzoffset
 import pytest
+import six
 
-from dataproperty import IntegerTypeChecker
-from dataproperty import FloatTypeChecker
-from dataproperty import DateTimeTypeChecker
+from dataproperty._type_checker import IntegerTypeChecker
+from dataproperty._type_checker import FloatTypeChecker
+from dataproperty._type_checker import DateTimeTypeChecker
 from dataproperty import Typecode
 
 
@@ -24,13 +25,11 @@ class Test_IntegerTypeChecker:
 
     @pytest.mark.parametrize(["value", "is_convert"], [
         [0, True], [0, False],
-        [99999999999, True], [99999999999, False],
-        [-99999999999, True], [-99999999999, False],
-        [1234567890123456789, True], [-1234567890123456789, False],
         ["0", True],
-        ["99999999999", True],
-        ["-99999999999", True],
         [" 1 ", True],
+        [six.MAXSIZE, True], [six.MAXSIZE, False],
+        [-six.MAXSIZE, True], [-six.MAXSIZE, False],
+        [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
     ])
     def test_normal_true(self, value, is_convert):
         type_checker = IntegerTypeChecker(value, is_convert)
@@ -59,9 +58,8 @@ class Test_IntegerTypeChecker:
         ["0", False],
         ["0xff", True], ["0xff", False],
 
-        ["99999999999", False],
-        ["-99999999999", False],
         [" 1 ", False],
+        [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
     ])
     def test_normal_false(self, value, is_convert):
         assert not IntegerTypeChecker(value, is_convert).is_type()
@@ -85,6 +83,8 @@ class Test_FloatTypeChecker:
         ["1e-05", True],
         [nan, True], [nan, False],
         [inf, True], [inf, False],
+        [six.MAXSIZE, True], [-six.MAXSIZE, True],
+        [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
     ])
     def test_normal_true(self, value, is_convert):
         type_checker = FloatTypeChecker(value, is_convert)
@@ -105,6 +105,8 @@ class Test_FloatTypeChecker:
         ["test", True], ["test", False],
         ["inf", True], ["inf", False],
         [True, True], [True, False],
+        [six.MAXSIZE, False], [-six.MAXSIZE, False],
+        [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
     ])
     def test_normal_false(self, value, is_convert):
         assert not FloatTypeChecker(value, is_convert).is_type()
@@ -139,8 +141,7 @@ class Test_DateTimeTypeChecker:
         ["invalid time string", False],
         [None, True],
         [None, False],
-        [11111, True],
-        [11111, False],
+        [six.MAXSIZE, True], [six.MAXSIZE, False],
     ])
     def test_normal_false(self, value, is_convert):
         assert not DateTimeTypeChecker(value, is_convert).is_type()

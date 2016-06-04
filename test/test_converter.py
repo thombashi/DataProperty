@@ -34,6 +34,8 @@ class Test_IntegerConverter_convert:
         [.5, 0],
         [0., 0],
         [True, 1],
+        [str(six.MAXSIZE), six.MAXSIZE],
+        [str(-six.MAXSIZE), -six.MAXSIZE],
     ])
     def test_normal(self, value, expected):
         assert IntegerConverter(value).convert() == expected
