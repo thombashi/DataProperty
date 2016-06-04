@@ -12,7 +12,7 @@ from ._container import MinMaxContainer
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
 
-from ._function import convert_value
+from ._converter import convert_value
 from ._function import is_float
 from ._function import is_nan
 from ._function import get_number_of_digit

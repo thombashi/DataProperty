@@ -158,16 +158,3 @@ def get_text_len(text):
         return len(str(text))
     except UnicodeEncodeError:
         return len(text)
-
-
-def convert_value(value, none_return_value=None):
-    if value is None:
-        return none_return_value
-
-    if is_integer(value):
-        return int(value)
-
-    if is_float(value):
-        return float(value)
-
-    return value

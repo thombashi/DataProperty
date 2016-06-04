@@ -17,7 +17,7 @@ from ._property_extractor import PropertyExtractor
 from ._type_checker import IntegerTypeChecker
 from ._type_checker import FloatTypeChecker
 
-
+from ._converter import convert_value
 from ._function import is_integer
 from ._function import is_hex
 from ._function import is_float
@@ -31,4 +31,3 @@ from ._function import is_datetime
 from ._function import get_integer_digit
 from ._function import get_number_of_digit
 from ._function import get_text_len
-from ._function import convert_value
