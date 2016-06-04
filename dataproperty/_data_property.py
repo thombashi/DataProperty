@@ -12,9 +12,9 @@ from ._container import MinMaxContainer
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
 from ._typecode import typecode_extractor
+from ._type_checker import FloatTypeChecker
 
 from ._converter import convert_value
-from ._function import is_float
 from ._function import is_nan
 from ._function import get_number_of_digit
 from ._function import get_text_len
@@ -131,7 +131,7 @@ class DataProperty(DataPeropertyInterface):
         ])
 
     def __get_additional_format_len(self):
-        if not is_float(self.data):
+        if not FloatTypeChecker(self.data).is_type():
             return 0
 
         format_len = 0
