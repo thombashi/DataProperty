@@ -7,6 +7,7 @@
 import pytest
 
 from dataproperty import Typecode
+from dataproperty import typecode_extractor
 
 
 class Test_Typecode_get_typecode_from_bitmap:
@@ -26,7 +27,7 @@ class Test_Typecode_get_typecode_from_bitmap:
         [int("1100", 2), Typecode.STRING],
     ])
     def test_normal(self, value, expected):
-        assert Typecode.get_typecode_from_bitmap(value) == expected
+        assert typecode_extractor.get_typecode_from_bitmap(value) == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         [None, TypeError],
@@ -34,7 +35,7 @@ class Test_Typecode_get_typecode_from_bitmap:
     ])
     def test_exception(self, value, expected):
         with pytest.raises(expected):
-            assert Typecode.get_typecode_from_bitmap(value)
+            assert typecode_extractor.get_typecode_from_bitmap(value)
 
 
 class Test_Typecode_get_typename:

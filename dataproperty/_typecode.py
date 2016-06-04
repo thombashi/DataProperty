@@ -11,9 +11,6 @@ from ._function import is_integer
 from ._function import is_float
 
 
-CreatorTuple = namedtuple("CreatorTuple", "creator typecode")
-
-
 class Typecode(object):
     NONE = 0
     INT = 1 << 0
@@ -30,33 +27,47 @@ class Typecode(object):
     }
 
     @classmethod
-    def get_typecode_from_bitmap(cls, typecode_bitmap):
+    def get_typename(cls, typecode):
+        return cls.__TYPENAME_TABLE.get(typecode)
+
+
+class _TypecodeExtractor(object):
+
+    def __init__(self):
+        from ._type_checker_creator import IntegerTypeCheckerCreator
+        from ._type_checker_creator import FloatTypeCheckerCreator
+        from ._type_checker_creator import DateTimeTypeCheckerCreator
+
+        self.__checker_creator_list = [
+            IntegerTypeCheckerCreator(),
+            FloatTypeCheckerCreator(),
+            DateTimeTypeCheckerCreator()
+        ]
+
+    def get_typecode_from_bitmap(self, typecode_bitmap):
         typecode_list = [
-            cls.STRING,
-            cls.FLOAT,
-            cls.INT,
-            cls.DATETIME,
+            Typecode.STRING,
+            Typecode.FLOAT,
+            Typecode.INT,
+            Typecode.DATETIME,
         ]
 
         for typecode in typecode_list:
             if typecode_bitmap & typecode:
                 return typecode
 
-        return cls.STRING
+        return Typecode.STRING
 
-    @classmethod
-    def get_typecode_from_data(cls, data):
+    def get_typecode_from_data(self, data, is_convert=True):
         if data is None:
-            return cls.NONE
+            return Typecode.NONE
 
-        if is_integer(data):
-            return cls.INT
+        for checker_creator in self.__checker_creator_list:
+            checker = checker_creator.create(data, is_convert)
+            if checker.is_type():
+                return checker.typecode
 
-        if is_float(data):
-            return cls.FLOAT
+        return Typecode.STRING
 
-        return cls.STRING
 
-    @classmethod
-    def get_typename(cls, typecode):
-        return cls.__TYPENAME_TABLE.get(typecode)
+typecode_extractor = _TypecodeExtractor()

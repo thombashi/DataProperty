@@ -11,6 +11,7 @@ from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
+from ._typecode import typecode_extractor
 
 from ._converter import convert_value
 from ._function import is_float
@@ -109,7 +110,7 @@ class DataProperty(DataPeropertyInterface):
         super(DataProperty, self).__init__()
 
         self.__set_data(data, none_value, replace_tabs_with_spaces, tab_length)
-        self.__typecode = Typecode.get_typecode_from_data(data)
+        self.__typecode = typecode_extractor.get_typecode_from_data(data)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
@@ -199,7 +200,7 @@ class ColumnDataProperty(DataPeropertyInterface):
 
     @property
     def typecode(self):
-        return Typecode.get_typecode_from_bitmap(self.__typecode_bitmap)
+        return typecode_extractor.get_typecode_from_bitmap(self.__typecode_bitmap)
 
     @property
     def padding_len(self):
