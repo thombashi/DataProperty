@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 
+from ._error import TypeConversionError
 from ._function import is_float
 from ._function import is_integer
 
@@ -41,7 +42,7 @@ class DateTimeConverter(object):
         try:
             self.__datetime = dateutil.parser.parse(self.__value)
         except AttributeError:
-            return None
+            raise TypeConversionError
 
         try:
             dst_timezone_name = self.__get_dst_timezone_name(

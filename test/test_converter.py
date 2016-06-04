@@ -9,6 +9,7 @@ from dateutil.tz import tzoffset
 import pytest
 
 from dataproperty import DateTimeConverter
+from dataproperty import TypeConversionError
 
 
 class Test_DateTimeConverter_to_datetime:
@@ -18,8 +19,6 @@ class Test_DateTimeConverter_to_datetime:
             "2017-03-22T10:00:00+0900",
             datetime.datetime(2017, 3, 22, 10, 0, tzinfo=tzoffset(None, 32400))
         ],
-        [None, None],
-        [11111, None],
     ])
     def test_normal(self, value, expected):
         dt_converter = DateTimeConverter(value)
@@ -52,6 +51,8 @@ class Test_DateTimeConverter_to_datetime:
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["invalid time string", ValueError],
+        [None, TypeConversionError],
+        [11111, TypeConversionError],
     ])
     def test_exception(self, value, expected):
         dt_converter = DateTimeConverter(value)
