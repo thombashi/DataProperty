@@ -14,7 +14,7 @@ from ._container import MinMaxContainer
 from ._data_property import ColumnDataProperty
 from ._data_property import DataProperty
 from ._typecode import Typecode
-from ._typecode import typecode_extractor
+from ._typecode_extractor import typecode_extractor
 from ._property_extractor import PropertyExtractor
 
 from ._type_checker import IntegerTypeChecker
