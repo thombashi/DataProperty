@@ -13,6 +13,7 @@ import pytest
 from dataproperty import IntegerTypeChecker
 from dataproperty import FloatTypeChecker
 from dataproperty import DateTimeTypeChecker
+from dataproperty import Typecode
 
 
 nan = float("nan")
@@ -32,7 +33,9 @@ class Test_IntegerTypeChecker:
         [" 1 ", True],
     ])
     def test_normal_true(self, value, is_convert):
-        assert IntegerTypeChecker(value, is_convert).is_type()
+        type_checker = IntegerTypeChecker(value, is_convert)
+        assert type_checker.is_type()
+        assert type_checker.typecode == Typecode.INT
 
     @pytest.mark.parametrize(["value", "is_convert"], [
         ["", True], ["", False],
@@ -84,7 +87,9 @@ class Test_FloatTypeChecker:
         [inf, True], [inf, False],
     ])
     def test_normal_true(self, value, is_convert):
-        assert FloatTypeChecker(value, is_convert).is_type()
+        type_checker = FloatTypeChecker(value, is_convert)
+        assert type_checker.is_type()
+        assert type_checker.typecode == Typecode.FLOAT
 
     @pytest.mark.parametrize(["value", "is_convert"], [
         [1, False],
@@ -124,7 +129,9 @@ class Test_DateTimeTypeChecker:
         ],
     ])
     def test_normal_true(self, value, is_convert):
-        assert DateTimeTypeChecker(value, is_convert).is_type()
+        type_checker = DateTimeTypeChecker(value, is_convert)
+        assert type_checker.is_type()
+        assert type_checker.typecode == Typecode.DATETIME
 
     @pytest.mark.parametrize(["value", "is_convert"], [
         ["2017-03-22T10:00:00+0900", False],

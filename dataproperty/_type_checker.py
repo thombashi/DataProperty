@@ -11,13 +11,18 @@ import six
 
 from ._converter import DateTimeConverter
 from ._error import TypeConversionError
+from ._typecode import Typecode
 
 
 @six.add_metaclass(abc.ABCMeta)
 class TypeCheckerInterface(object):
 
+    @abc.abstractproperty
+    def typecode(self):   # pragma: no cover
+        pass
+
     @abc.abstractmethod
-    def is_type(self):
+    def is_type(self):   # pragma: no cover
         pass
 
 
@@ -67,6 +72,10 @@ class TypeChecker(TypeCheckerInterface):
 
 class IntegerTypeChecker(TypeChecker):
 
+    @property
+    def typecode(self):
+        return Typecode.INT
+
     def _is_instance(self):
         if isinstance(self._value, six.integer_types):
             return not isinstance(self._value, bool)
@@ -91,6 +100,10 @@ class IntegerTypeChecker(TypeChecker):
 
 class FloatTypeChecker(TypeChecker):
 
+    @property
+    def typecode(self):
+        return Typecode.FLOAT
+
     def _is_instance(self):
         return any(
             [isinstance(self._value, float), self._value == float("inf")])
@@ -109,6 +122,10 @@ class FloatTypeChecker(TypeChecker):
 
 
 class DateTimeTypeChecker(TypeChecker):
+
+    @property
+    def typecode(self):
+        return Typecode.DATETIME
 
     def _is_instance(self):
         import datetime
