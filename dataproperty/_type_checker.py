@@ -9,7 +9,9 @@ import abc
 
 import six
 
-from ._converter import DateTimeConverter
+from ._converter_creator import IntegerConverterCreator
+from ._converter_creator import FloatConverterCreator
+from ._converter_creator import DateTimeConverterCreator
 from ._error import TypeConversionError
 from ._typecode import Typecode
 
@@ -27,6 +29,10 @@ class TypeCheckerInterface(object):
 
 
 class TypeChecker(TypeCheckerInterface):
+
+    @abc.abstractproperty
+    def creator(self):   # pragma: no cover
+        pass
 
     def __init__(self, value, is_convert=True):
         self._value = value
@@ -61,9 +67,8 @@ class TypeChecker(TypeCheckerInterface):
     def _is_exclude_instance(self):
         pass
 
-    @abc.abstractmethod
     def _try_convert(self):
-        pass
+        self._converted_value = self.creator.create(self._value).convert()
 
     @abc.abstractmethod
     def _is_valid_after_convert(self):
@@ -75,6 +80,10 @@ class IntegerTypeChecker(TypeChecker):
     @property
     def typecode(self):
         return Typecode.INT
+
+    @property
+    def creator(self):
+        return IntegerConverterCreator()
 
     def _is_instance(self):
         if isinstance(self._value, six.integer_types):
@@ -88,12 +97,6 @@ class IntegerTypeChecker(TypeChecker):
             isinstance(self._value, float),
         ])
 
-    def _try_convert(self):
-        try:
-            self._converted_value = int(self._value)
-        except (TypeError, ValueError):
-            raise TypeConversionError
-
     def _is_valid_after_convert(self):
         return True
 
@@ -104,18 +107,16 @@ class FloatTypeChecker(TypeChecker):
     def typecode(self):
         return Typecode.FLOAT
 
+    @property
+    def creator(self):
+        return FloatConverterCreator()
+
     def _is_instance(self):
         return any(
             [isinstance(self._value, float), self._value == float("inf")])
 
     def _is_exclude_instance(self):
         return isinstance(self._value, bool)
-
-    def _try_convert(self):
-        try:
-            self._converted_value = float(self._value)
-        except (TypeError, ValueError):
-            raise TypeConversionError
 
     def _is_valid_after_convert(self):
         return self._converted_value != float("inf")
@@ -127,15 +128,17 @@ class DateTimeTypeChecker(TypeChecker):
     def typecode(self):
         return Typecode.DATETIME
 
+    @property
+    def creator(self):
+        return DateTimeConverterCreator()
+
     def _is_instance(self):
         import datetime
+
         return isinstance(self._value, datetime.datetime)
 
     def _is_exclude_instance(self):
         return False
-
-    def _try_convert(self):
-        self._converted_value = DateTimeConverter(self._value).convert()
 
     def _is_valid_after_convert(self):
         return True
