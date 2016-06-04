@@ -5,10 +5,6 @@
 """
 
 from __future__ import absolute_import
-from collections import namedtuple
-
-from ._function import is_integer
-from ._function import is_float
 
 
 class Typecode(object):

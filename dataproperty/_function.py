@@ -7,8 +7,6 @@
 from __future__ import absolute_import
 import math
 
-import six
-
 
 def is_integer(value):
     """
