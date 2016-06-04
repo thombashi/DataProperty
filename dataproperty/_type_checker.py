@@ -10,7 +10,7 @@ import abc
 import six
 
 
-class ParseError(Exception):
+class TypeConversionError(Exception):
     pass
 
 
@@ -41,7 +41,7 @@ class TypeChecker(TypeCheckerInterface):
 
         try:
             self._try_convert()
-        except ParseError:
+        except TypeConversionError:
             return False
 
         if not self._is_valid_after_convert():
@@ -84,7 +84,7 @@ class IntegerTypeChecker(TypeChecker):
         try:
             self._converted_value = int(self._value)
         except (TypeError, ValueError):
-            raise ParseError
+            raise TypeConversionError
 
     def _is_valid_after_convert(self):
         return True
@@ -103,7 +103,7 @@ class FloatTypeChecker(TypeChecker):
         try:
             self._converted_value = float(self._value)
         except (TypeError, ValueError):
-            raise ParseError
+            raise TypeConversionError
 
     def _is_valid_after_convert(self):
         return self._converted_value != float("inf")
