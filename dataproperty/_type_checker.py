@@ -9,6 +9,7 @@ import abc
 
 import six
 
+from ._converter import DateTimeConverter
 from ._error import TypeConversionError
 
 
@@ -105,3 +106,19 @@ class FloatTypeChecker(TypeChecker):
 
     def _is_valid_after_convert(self):
         return self._converted_value != float("inf")
+
+
+class DateTimeTypeChecker(TypeChecker):
+
+    def _is_instance(self):
+        import datetime
+        return isinstance(self._value, datetime.datetime)
+
+    def _is_exclude_instance(self):
+        return False
+
+    def _try_convert(self):
+        self._converted_value = DateTimeConverter(self._value).to_datetime()
+
+    def _is_valid_after_convert(self):
+        return True

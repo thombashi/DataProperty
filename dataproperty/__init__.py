@@ -18,6 +18,7 @@ from ._property_extractor import PropertyExtractor
 
 from ._type_checker import IntegerTypeChecker
 from ._type_checker import FloatTypeChecker
+from ._type_checker import DateTimeTypeChecker
 
 from ._converter import convert_value
 from ._converter import DateTimeConverter

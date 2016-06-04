@@ -7,10 +7,12 @@
 
 import datetime
 
+from dateutil.tz import tzoffset
 import pytest
 
 from dataproperty import IntegerTypeChecker
 from dataproperty import FloatTypeChecker
+from dataproperty import DateTimeTypeChecker
 
 
 nan = float("nan")
@@ -101,3 +103,37 @@ class Test_FloatTypeChecker:
     ])
     def test_normal_false(self, value, is_convert):
         assert not FloatTypeChecker(value, is_convert).is_type()
+
+
+class Test_DateTimeTypeChecker:
+
+    @pytest.mark.parametrize(["value", "is_convert"], [
+        [
+            datetime.datetime(
+                2017, 3, 22, 10, 0, tzinfo=tzoffset(None, 32400)),
+            True,
+        ],
+        [
+            datetime.datetime(
+                2017, 3, 22, 10, 0, tzinfo=tzoffset(None, 32400)),
+            False,
+        ],
+        [
+            "2017-03-22T10:00:00+0900",
+            True,
+        ],
+    ])
+    def test_normal_true(self, value, is_convert):
+        assert DateTimeTypeChecker(value, is_convert).is_type()
+
+    @pytest.mark.parametrize(["value", "is_convert"], [
+        ["2017-03-22T10:00:00+0900", False],
+        ["invalid time string", True],
+        ["invalid time string", False],
+        [None, True],
+        [None, False],
+        [11111, True],
+        [11111, False],
+    ])
+    def test_normal_false(self, value, is_convert):
+        assert not DateTimeTypeChecker(value, is_convert).is_type()
