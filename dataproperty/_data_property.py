@@ -170,7 +170,7 @@ class DataProperty(DataPeropertyInterface):
         if replace_tabs_with_spaces:
             try:
                 self.__data = self.__data.replace("\t", " " * tab_length)
-            except AttributeError:
+            except (TypeError, AttributeError):
                 pass
 
 
