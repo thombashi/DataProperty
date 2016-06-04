@@ -17,6 +17,7 @@ class PropertyExtractor(object):
         self.data_matrix = []
         self.min_padding_len = 0
         self.none_value = None
+        self.is_convert = True
 
     def extract_data_property_matrix(self):
         return [
@@ -48,4 +49,7 @@ class PropertyExtractor(object):
         if is_empty_list_or_tuple(data_list):
             return []
 
-        return [DataProperty(data, self.none_value) for data in data_list]
+        return [
+            DataProperty(data, self.none_value, self.is_convert)
+            for data in data_list
+        ]

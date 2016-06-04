@@ -113,12 +113,13 @@ class DataProperty(DataPeropertyInterface):
         return self.__additional_format_len
 
     def __init__(
-            self, data, none_value=None,
+            self, data, none_value=None, is_convert=True,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__()
 
-        self.__set_data(data, none_value, replace_tabs_with_spaces, tab_length)
-        self.__typecode = self.__get_typecode_from_data(data, True)
+        self.__set_data(
+            data, none_value, is_convert, replace_tabs_with_spaces, tab_length)
+        self.__typecode = self.__get_typecode_from_data(data, is_convert)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
@@ -182,8 +183,9 @@ class DataProperty(DataPeropertyInterface):
         return Typecode.STRING
 
     def __set_data(
-            self, data, none_value, replace_tabs_with_spaces, tab_length):
-        self.__data = convert_value(data, none_value)
+            self, data, none_value, is_convert,
+            replace_tabs_with_spaces, tab_length):
+        self.__data = convert_value(data, none_value, is_convert)
 
         if replace_tabs_with_spaces:
             try:

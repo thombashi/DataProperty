@@ -21,18 +21,27 @@ def prop_extractor():
     return PropertyExtractor()
 
 
-class Test_DataPeroperty_data:
+class Test_DataPeroperty_data_typecode:
 
-    @pytest.mark.parametrize(["value", "expected"], [
-        [1, 1],
-        ["1", 1],
-        ["999999999", 999999999],
-        ["1.1", 1.1],
-        ["a", "a"],
-    ])
-    def test_normal(self, value, expected):
-        dp = DataProperty(value)
-        assert dp.data == expected
+    @pytest.mark.parametrize(
+        ["value", "is_convert", "expected_data", "expected_typecode"],
+        [
+            [six.MAXSIZE, True, six.MAXSIZE, Typecode.INT],
+            [-six.MAXSIZE, False, -six.MAXSIZE, Typecode.INT],
+            [str(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INT],
+            [str(six.MAXSIZE), False, str(six.MAXSIZE), Typecode.STRING],
+            ["1.1", True, 1.1, Typecode.FLOAT],
+            ["-1.1", False, "-1.1", Typecode.STRING],
+            ["a", True, "a", Typecode.STRING],
+            ["a", False, "a", Typecode.STRING],
+            [None, True, None, Typecode.NONE],
+            [None, False, None, Typecode.NONE],
+        ]
+    )
+    def test_normal(self, value, is_convert, expected_data, expected_typecode):
+        dp = DataProperty(value, is_convert=is_convert)
+        assert dp.data == expected_data
+        assert dp.typecode == expected_typecode
 
     @pytest.mark.parametrize(["value", "none_value", "expected"], [
         [None, None, None],
@@ -45,42 +54,41 @@ class Test_DataPeroperty_data:
         assert dp.data == expected
         assert dp.typecode == Typecode.NONE
 
+    @pytest.mark.parametrize(
+        ["value", "is_convert", "expected"],
+        [
+            [inf, True, OverflowError],
+            [inf, False, OverflowError],
+        ]
+    )
+    def test_exception(self, value, is_convert, expected):
+        with pytest.raises(expected):
+            DataProperty(value, is_convert=is_convert)
+
 
 class Test_DataPeroperty_set_data:
 
     @pytest.mark.parametrize(
         [
-            "value", "none_value", "replace_tabs_with_spaces", "tab_length",
+            "value", "none_value", "is_convert",
+            "replace_tabs_with_spaces", "tab_length",
             "expected"
         ],
         [
-            ["a\tb", None, True, 2, "a  b"],
-            ["\ta\t\tb\tc\t", None, True, 2, "  a    b  c  "],
-            ["a\tb", None, True, 4, "a    b"],
-            ["a\tb", None, False, 4, "a\tb"],
-            ["a\tb", None, True, None, "a\tb"],
+            ["a\tb", None, True, True, 2, "a  b"],
+            ["\ta\t\tb\tc\t", None, True, True, 2, "  a    b  c  "],
+            ["a\tb", None, True, True, 4, "a    b"],
+            ["a\tb", None, True, False, 4, "a\tb"],
+            ["a\tb", None, True, True, None, "a\tb"],
         ])
     def test_normal(
-            self, value, none_value,
+            self, value, none_value, is_convert,
             replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
-            value, none_value, replace_tabs_with_spaces, tab_length)
+            value, none_value, is_convert,
+            replace_tabs_with_spaces, tab_length)
+
         assert dp.data == expected
-
-
-class Test_DataPeroperty_typecode:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [1, Typecode.INT],
-        [1.0, Typecode.FLOAT],
-        [123.45, Typecode.FLOAT],
-        ["a", Typecode.STRING],
-        [None, Typecode.NONE],
-        [nan, Typecode.FLOAT],
-    ])
-    def test_normal(self, value, expected):
-        dp = DataProperty(value)
-        assert dp.typecode == expected
 
 
 class Test_DataPeroperty_align:

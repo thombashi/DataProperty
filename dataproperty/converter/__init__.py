@@ -37,6 +37,7 @@ def convert_value(value, none_return_value=None, is_convert=True):
 
     for type_factory in _type_factory_list:
         if type_factory.type_checker_factory.create(value, is_convert).is_type():
-            return type_factory.value_converter_factory.create(value).convert()
+            return type_factory.value_converter_factory.create(
+                value, is_convert).convert()
 
     return value

@@ -23,8 +23,9 @@ class ValueConverter(ValueConverterInterface):
     def convert(self):   # pragma: no cover
         pass
 
-    def __init__(self, value):
+    def __init__(self, value, is_convert=True):
         self._value = value
+        self._is_convert = is_convert
 
     def __repr__(self):
         return str(self.convert())
@@ -33,6 +34,9 @@ class ValueConverter(ValueConverterInterface):
 class IntegerConverter(ValueConverter):
 
     def convert(self):
+        if not self._is_convert:
+            return self._value
+
         try:
             return int(self._value)
         except (TypeError, ValueError, OverflowError):
@@ -42,6 +46,9 @@ class IntegerConverter(ValueConverter):
 class FloatConverter(ValueConverter):
 
     def convert(self):
+        if not self._is_convert:
+            return self._value
+
         try:
             return float(self._value)
         except (TypeError, ValueError):
@@ -65,8 +72,8 @@ class DateTimeConverter(ValueConverter):
         7200: "Africa/Tripoli",  # 0200
     }
 
-    def __init__(self, value):
-        super(DateTimeConverter, self).__init__(value)
+    def __init__(self, value, is_convert=True):
+        super(DateTimeConverter, self).__init__(value, is_convert)
 
         self.__datetime = None
 
@@ -74,6 +81,9 @@ class DateTimeConverter(ValueConverter):
         import datetime
         import dateutil.parser
         import pytz
+
+        if not self._is_convert:
+            return self._value
 
         if isinstance(self._value, datetime.datetime):
             self.__datetime = self._value

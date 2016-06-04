@@ -52,7 +52,7 @@ class Test_IntegerConverter_convert:
     ])
     def test_exception(self, value, expected):
         with pytest.raises(expected):
-            IntegerConverter(value).convert()
+            IntegerConverter(value, True).convert()
 
 
 class Test_FloatConverter_convert:

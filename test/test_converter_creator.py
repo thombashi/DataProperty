@@ -25,5 +25,5 @@ class Test_ConverterCreator(object):
     ])
     def test_normal(self, value, expected):
         creator = value()
-        type_checker = creator.create(None)
+        type_checker = creator.create(None, True)
         assert isinstance(type_checker, expected)
