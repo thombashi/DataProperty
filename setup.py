@@ -24,12 +24,13 @@ pytest_runner = ['pytest-runner'] if needs_pytest else []
 
 author = "Tsuyoshi Hombashi"
 email = "gogogo.vm@gmail.com"
+project_name = "DataProperty",
 
 setuptools.setup(
-    name="DataProperty",
+    name=project_name,
     version="0.3.0",
-    url="https://github.com/thombashi/DataProperty",
-    bugtrack_url="https://github.com/thombashi/DataProperty/issues",
+    url="https://github.com/thombashi/" + project_name,
+    bugtrack_url="https://github.com/thombashi/%s/issues" % (project_name),
 
     author=author,
     author_email=email,
