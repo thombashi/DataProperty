@@ -24,7 +24,7 @@ pytest_runner = ['pytest-runner'] if needs_pytest else []
 
 author = "Tsuyoshi Hombashi"
 email = "gogogo.vm@gmail.com"
-project_name = "DataProperty",
+project_name = "DataProperty"
 
 setuptools.setup(
     name=project_name,
