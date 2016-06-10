@@ -1,4 +1,5 @@
 from __future__ import with_statement
+import sys
 import os.path
 import setuptools
 
@@ -17,6 +18,9 @@ with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
 
 with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_require = [line.strip() for line in f if line.strip()]
+
+needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
+pytest_runner = ['pytest-runner'] if needs_pytest else []
 
 author = "Tsuyoshi Hombashi"
 email = "gogogo.vm@gmail.com"
@@ -38,7 +42,7 @@ setuptools.setup(
     maintainer=author,
     maintainer_email=email,
     packages=setuptools.find_packages(exclude=['test*']),
-    setup_requires=["pytest-runner"],
+    setup_requires=[] + pytest_runner,
     tests_require=tests_require,
 
     classifiers=[
