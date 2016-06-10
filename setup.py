@@ -19,17 +19,18 @@ with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
 with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_require = [line.strip() for line in f if line.strip()]
 
-needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
+needs_pytest = set(['pytest', 'test', 'ptr']).intersection(sys.argv)
 pytest_runner = ['pytest-runner'] if needs_pytest else []
 
 author = "Tsuyoshi Hombashi"
 email = "gogogo.vm@gmail.com"
+project_name = "DataProperty"
 
 setuptools.setup(
-    name="DataProperty",
-    version="0.3.0",
-    url="https://github.com/thombashi/DataProperty",
-    bugtrack_url="https://github.com/thombashi/DataProperty/issues",
+    name=project_name,
+    version="0.3.1",
+    url="https://github.com/thombashi/" + project_name,
+    bugtrack_url="https://github.com/thombashi/%s/issues" % (project_name),
 
     author=author,
     author_email=email,
