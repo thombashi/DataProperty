@@ -9,6 +9,7 @@ import abc
 
 import six
 
+from ._type_checker import NoneTypeChecker
 from ._type_checker import IntegerTypeChecker
 from ._type_checker import FloatTypeChecker
 from ._type_checker import DateTimeTypeChecker
@@ -20,6 +21,12 @@ class TypeCheckerCreatorInterface(object):
     @abc.abstractmethod
     def create(self, value, is_convert):   # pragma: no cover
         pass
+
+
+class NoneTypeCheckerCreator(TypeCheckerCreatorInterface):
+
+    def create(self, value, is_convert):
+        return NoneTypeChecker(value, is_convert)
 
 
 class IntegerTypeCheckerCreator(TypeCheckerCreatorInterface):
