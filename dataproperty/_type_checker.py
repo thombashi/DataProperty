@@ -113,9 +113,6 @@ class IntegerTypeChecker(TypeChecker):
             isinstance(self._value, float),
         ])
 
-    def _is_valid_after_convert(self):
-        return True
-
 
 class FloatTypeChecker(TypeChecker):
 
