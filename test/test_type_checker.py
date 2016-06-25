@@ -11,6 +11,7 @@ from dateutil.tz import tzoffset
 import pytest
 import six
 
+from dataproperty._type_checker import NoneTypeChecker
 from dataproperty._type_checker import IntegerTypeChecker
 from dataproperty._type_checker import FloatTypeChecker
 from dataproperty._type_checker import DateTimeTypeChecker
@@ -19,6 +20,26 @@ from dataproperty import Typecode
 
 nan = float("nan")
 inf = float("inf")
+
+
+class Test_NoneTypeChecker:
+
+    @pytest.mark.parametrize(["value", "is_convert", "expected"], [
+        [None, True, True],
+        [None, False, True],
+        [True, True, False],
+        [False, False, False],
+        ["None", True, False],
+        ["None", False, False],
+        [0, True, False],
+        [0, False, False],
+        [six.MAXSIZE, True, False],
+        [six.MAXSIZE, False, False],
+    ])
+    def test_normal_true(self, value, is_convert, expected):
+        type_checker = NoneTypeChecker(value, is_convert)
+        assert type_checker.is_type() == expected
+        assert type_checker.typecode == Typecode.NONE
 
 
 class Test_IntegerTypeChecker:
