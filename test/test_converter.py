@@ -23,22 +23,15 @@ inf = float("inf")
 
 class Test_IntegerConverter_convert:
 
-    @pytest.mark.parametrize(["value", "is_convert", "expected"], [
-        [0.1, True, 0],
-        [-0.1, False, -0.1],
-        [1, False, 1],
-        [-1, True, -1],
-        [.5, True, 0],
-        [0., False, 0],
-        [True, True, 1],
-        [True, False, 1],
-        [str(six.MAXSIZE), True, six.MAXSIZE],
-        [str(six.MAXSIZE), False, str(six.MAXSIZE)],
-        [str(-six.MAXSIZE), True, -six.MAXSIZE],
-        [str(-six.MAXSIZE), False, str(-six.MAXSIZE)],
+    @pytest.mark.parametrize(["value", "expected"], [
+        [six.MAXSIZE, six.MAXSIZE], [-six.MAXSIZE, -six.MAXSIZE],
+        [0., 0], [0.1, 0], [.5, 0],
+        [True, 1], [False, 0],
+        [str(six.MAXSIZE), six.MAXSIZE],
+        [str(-six.MAXSIZE), -six.MAXSIZE],
     ])
-    def test_normal(self, value, is_convert, expected):
-        assert IntegerConverter(value, is_convert).convert() == expected
+    def test_normal(self, value, expected):
+        assert IntegerConverter(value).convert() == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["", TypeConversionError],

@@ -68,8 +68,7 @@ class TypeChecker(TypeCheckerInterface):
         pass
 
     def _try_convert(self):
-        self._converted_value = self.creator.create(
-            self._value, self._is_convert).convert()
+        self._converted_value = self.creator.create(self._value).convert()
 
     @abc.abstractmethod
     def _is_valid_after_convert(self):
