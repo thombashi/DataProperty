@@ -17,6 +17,7 @@ from ._function import is_nan
 from ._function import get_number_of_digit
 from ._function import get_text_len
 
+from ._factory import NoneTypeFactory
 from ._factory import IntegerTypeFactory
 from ._factory import FloatTypeFactory
 from ._factory import DateTimeTypeFactory
@@ -183,8 +184,10 @@ class DataProperty(DataPeropertyInterface):
                 pass
 
     def __convert_value(self, value, none_return_value=None, is_convert=True):
-        if value is None:
-            self.__typecode = Typecode.NONE
+        checker = NoneTypeFactory().type_checker_factory.create(
+            value, is_convert)
+        if checker.is_type():
+            self.__typecode = checker.typecode
             return none_return_value
 
         for type_factory in self.__type_factory_list:
