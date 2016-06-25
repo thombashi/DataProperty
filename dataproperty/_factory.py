@@ -9,9 +9,11 @@ import abc
 
 import six
 
+from .converter import NoneConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import DateTimeConverterCreator
+from ._type_checker_creator import NoneTypeCheckerCreator
 from ._type_checker_creator import IntegerTypeCheckerCreator
 from ._type_checker_creator import FloatTypeCheckerCreator
 from ._type_checker_creator import DateTimeTypeCheckerCreator
@@ -30,6 +32,17 @@ class TypeConverterFactoryInterface(object):
     @abc.abstractproperty
     def value_converter_factory(self):   # pragma: no cover
         pass
+
+
+class NoneTypeFactory(TypeConverterFactoryInterface):
+
+    @property
+    def type_checker_factory(self):
+        return NoneTypeCheckerCreator()
+
+    @property
+    def value_converter_factory(self):
+        return NoneConverterCreator()
 
 
 class IntegerTypeFactory(TypeConverterFactoryInterface):
