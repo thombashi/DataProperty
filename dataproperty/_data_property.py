@@ -69,7 +69,8 @@ class DataProperty(DataPeropertyInterface):
         """
         Return the type code that corresponds to the type of the ``data``.
 
-        :return: One of the constants that are defined in the ``Typecode`` class.
+        :return:
+            One of the constants that are defined in the ``Typecode`` class.
         :rtype: int
         """
 
@@ -207,7 +208,8 @@ class DataProperty(DataPeropertyInterface):
             return none_return_value
 
         for type_factory in self.__type_factory_list:
-            if type_factory.type_checker_factory.create(value, is_convert).is_type():
+            if type_factory.type_checker_factory.create(
+                    value, is_convert).is_type():
                 return type_factory.value_converter_factory.create(
                     value).convert()
 
