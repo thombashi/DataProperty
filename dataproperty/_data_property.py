@@ -12,9 +12,6 @@ from ._container import MinMaxContainer
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
 from ._type_checker import FloatTypeChecker
-from ._type_checker_creator import IntegerTypeCheckerCreator
-from ._type_checker_creator import FloatTypeCheckerCreator
-from ._type_checker_creator import DateTimeTypeCheckerCreator
 
 from ._function import is_nan
 from ._function import get_number_of_digit
@@ -35,12 +32,6 @@ class DataProperty(DataPeropertyInterface):
         "__additional_format_len",
         "__str_len",
     )
-
-    __CHECKER_CREATOR_LIST = [
-        IntegerTypeCheckerCreator(),
-        FloatTypeCheckerCreator(),
-        DateTimeTypeCheckerCreator()
-    ]
 
     __type_factory_list = [
         IntegerTypeFactory(),
@@ -129,7 +120,6 @@ class DataProperty(DataPeropertyInterface):
 
         self.__set_data(
             data, none_value, is_convert, replace_tabs_with_spaces, tab_length)
-        self.__typecode = self.__get_typecode_from_data(data, is_convert)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
         integer_digits, decimal_places = get_number_of_digit(data)
@@ -181,17 +171,6 @@ class DataProperty(DataPeropertyInterface):
 
         return get_text_len(self.data)
 
-    def __get_typecode_from_data(self, data, is_convert):
-        if data is None:
-            return Typecode.NONE
-
-        for checker_creator in self.__CHECKER_CREATOR_LIST:
-            checker = checker_creator.create(data, is_convert)
-            if checker.is_type():
-                return checker.typecode
-
-        return Typecode.STRING
-
     def __set_data(
             self, data, none_value, is_convert,
             replace_tabs_with_spaces, tab_length):
@@ -205,13 +184,18 @@ class DataProperty(DataPeropertyInterface):
 
     def __convert_value(self, value, none_return_value=None, is_convert=True):
         if value is None:
+            self.__typecode = Typecode.NONE
             return none_return_value
 
         for type_factory in self.__type_factory_list:
-            if type_factory.type_checker_factory.create(
-                    value, is_convert).is_type():
+            checker = type_factory.type_checker_factory.create(
+                value, is_convert)
+            if checker.is_type():
+                self.__typecode = checker.typecode
                 return type_factory.value_converter_factory.create(
                     value).convert()
+
+        self.__typecode = Typecode.STRING
 
         return value
 
