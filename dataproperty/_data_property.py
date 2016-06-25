@@ -183,12 +183,12 @@ class DataProperty(DataPeropertyInterface):
             except (TypeError, AttributeError):
                 pass
 
-    def __convert_value(self, value, none_return_value=None, is_convert=True):
+    def __convert_value(self, value, none_value, is_convert):
         checker = NoneTypeFactory().type_checker_factory.create(
             value, is_convert)
         if checker.is_type():
             self.__typecode = checker.typecode
-            return none_return_value
+            return none_value
 
         for type_factory in self.__type_factory_list:
             checker = type_factory.type_checker_factory.create(
