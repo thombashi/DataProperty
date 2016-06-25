@@ -87,6 +87,9 @@ class NoneTypeChecker(TypeChecker):
     def _is_instance(self):
         return self._value is None
 
+    def _is_valid_after_convert(self):
+        return self._value is None
+
 
 class IntegerTypeChecker(TypeChecker):
 
