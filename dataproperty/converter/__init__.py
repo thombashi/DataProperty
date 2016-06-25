@@ -7,27 +7,19 @@
 from __future__ import absolute_import
 from collections import namedtuple
 
-from ._core import IntegerConverter
-from ._core import FloatConverter
-from ._core import DateTimeConverter
 from ._creator import IntegerConverterCreator
 from ._creator import FloatConverterCreator
 from ._creator import DateTimeConverterCreator
-from .._type_checker_creator import IntegerTypeCheckerCreator
-from .._type_checker_creator import FloatTypeCheckerCreator
-from .._type_checker_creator import DateTimeTypeCheckerCreator
 
+from ._factory import IntegerTypeFactory
+from ._factory import FloatTypeFactory
+from ._factory import DateTimeTypeFactory
 
-_ConverterFactory = namedtuple(
-    "ConverterFactory", "type_checker_factory value_converter_factory")
 
 _type_factory_list = [
-    _ConverterFactory(
-        IntegerTypeCheckerCreator(), IntegerConverterCreator()),
-    _ConverterFactory(
-        FloatTypeCheckerCreator(), FloatConverterCreator()),
-    _ConverterFactory(
-        DateTimeTypeCheckerCreator(), DateTimeConverterCreator()),
+    IntegerTypeFactory(),
+    FloatTypeFactory(),
+    DateTimeTypeFactory(),
 ]
 
 
