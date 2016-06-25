@@ -6,6 +6,7 @@
 """
 
 import datetime
+import itertools
 
 from dateutil.tz import tzoffset
 import pytest
@@ -27,15 +28,13 @@ class Test_NoneTypeChecker:
     @pytest.mark.parametrize(["value", "is_convert", "expected"], [
         [None, True, True],
         [None, False, True],
-        [True, True, False],
-        [False, False, False],
-        ["None", True, False],
-        ["None", False, False],
-        [0, True, False],
-        [0, False, False],
-        [six.MAXSIZE, True, False],
-        [six.MAXSIZE, False, False],
-    ])
+    ] + list(
+        itertools.product(
+            ["None", True, False, 0, six.MAXSIZE, inf, nan],
+            [True, False],
+            [False]
+        ))
+    )
     def test_normal_true(self, value, is_convert, expected):
         type_checker = NoneTypeChecker(value, is_convert)
         assert type_checker.is_type() == expected
