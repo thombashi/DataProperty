@@ -60,12 +60,12 @@ class TypeChecker(TypeCheckerInterface):
 
         return True
 
-    def _is_instance(self):
-        return False
-
     @abc.abstractmethod
-    def _is_exclude_instance(self):
+    def _is_instance(self):
         pass
+
+    def _is_exclude_instance(self):
+        return False
 
     def _try_convert(self):
         self._converted_value = self.creator.create(self._value).convert()
