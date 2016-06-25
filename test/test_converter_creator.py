@@ -8,9 +8,9 @@ from __future__ import absolute_import
 
 import pytest
 
-from dataproperty.converter import IntegerConverter
-from dataproperty.converter import FloatConverter
-from dataproperty.converter import DateTimeConverter
+from dataproperty.converter._core import IntegerConverter
+from dataproperty.converter._core import FloatConverter
+from dataproperty.converter._core import DateTimeConverter
 from dataproperty.converter import IntegerConverterCreator
 from dataproperty.converter import FloatConverterCreator
 from dataproperty.converter import DateTimeConverterCreator

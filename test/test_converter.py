@@ -12,9 +12,9 @@ import six
 from dataproperty import TypeConversionError
 from dataproperty import convert_value
 from dataproperty import is_nan
-from dataproperty.converter import IntegerConverter
-from dataproperty.converter import FloatConverter
-from dataproperty.converter import DateTimeConverter
+from dataproperty.converter._core import IntegerConverter
+from dataproperty.converter._core import FloatConverter
+from dataproperty.converter._core import DateTimeConverter
 
 
 nan = float("nan")
