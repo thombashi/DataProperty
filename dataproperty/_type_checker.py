@@ -60,9 +60,8 @@ class TypeChecker(TypeCheckerInterface):
 
         return True
 
-    @abc.abstractmethod
     def _is_instance(self):
-        pass
+        return False
 
     @abc.abstractmethod
     def _is_exclude_instance(self):
@@ -71,9 +70,8 @@ class TypeChecker(TypeCheckerInterface):
     def _try_convert(self):
         self._converted_value = self.creator.create(self._value).convert()
 
-    @abc.abstractmethod
     def _is_valid_after_convert(self):
-        pass
+        return True
 
 
 class NoneTypeChecker(TypeChecker):
@@ -88,12 +86,6 @@ class NoneTypeChecker(TypeChecker):
 
     def _is_instance(self):
         return self._value is None
-
-    def _is_exclude_instance(self):
-        return False
-
-    def _is_valid_after_convert(self):
-        return True
 
 
 class IntegerTypeChecker(TypeChecker):
@@ -157,9 +149,3 @@ class DateTimeTypeChecker(TypeChecker):
         import datetime
 
         return isinstance(self._value, datetime.datetime)
-
-    def _is_exclude_instance(self):
-        return False
-
-    def _is_valid_after_convert(self):
-        return True
