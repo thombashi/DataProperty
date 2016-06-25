@@ -16,10 +16,13 @@ from ._type_checker_creator import IntegerTypeCheckerCreator
 from ._type_checker_creator import FloatTypeCheckerCreator
 from ._type_checker_creator import DateTimeTypeCheckerCreator
 
-from .converter import convert_value
 from ._function import is_nan
 from ._function import get_number_of_digit
 from ._function import get_text_len
+
+from ._factory import IntegerTypeFactory
+from ._factory import FloatTypeFactory
+from ._factory import DateTimeTypeFactory
 
 
 class DataProperty(DataPeropertyInterface):
@@ -37,6 +40,12 @@ class DataProperty(DataPeropertyInterface):
         IntegerTypeCheckerCreator(),
         FloatTypeCheckerCreator(),
         DateTimeTypeCheckerCreator()
+    ]
+
+    __type_factory_list = [
+        IntegerTypeFactory(),
+        FloatTypeFactory(),
+        DateTimeTypeFactory(),
     ]
 
     @property
@@ -185,13 +194,24 @@ class DataProperty(DataPeropertyInterface):
     def __set_data(
             self, data, none_value, is_convert,
             replace_tabs_with_spaces, tab_length):
-        self.__data = convert_value(data, none_value, is_convert)
+        self.__data = self.__convert_value(data, none_value, is_convert)
 
         if replace_tabs_with_spaces:
             try:
                 self.__data = self.__data.replace("\t", " " * tab_length)
             except (TypeError, AttributeError):
                 pass
+
+    def __convert_value(self, value, none_return_value=None, is_convert=True):
+        if value is None:
+            return none_return_value
+
+        for type_factory in self.__type_factory_list:
+            if type_factory.type_checker_factory.create(value, is_convert).is_type():
+                return type_factory.value_converter_factory.create(
+                    value).convert()
+
+        return value
 
 
 class ColumnDataProperty(DataPeropertyInterface):
