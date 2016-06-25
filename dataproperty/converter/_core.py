@@ -30,6 +30,12 @@ class ValueConverter(ValueConverterInterface):
         return str(self.convert())
 
 
+class NoneConverter(ValueConverter):
+
+    def convert(self):
+        return self._value
+
+
 class IntegerConverter(ValueConverter):
 
     def convert(self):

@@ -11,6 +11,7 @@ import six
 
 from dataproperty import TypeConversionError
 from dataproperty import is_nan
+from dataproperty.converter._core import NoneConverter
 from dataproperty.converter._core import IntegerConverter
 from dataproperty.converter._core import FloatConverter
 from dataproperty.converter._core import DateTimeConverter
@@ -18,6 +19,19 @@ from dataproperty.converter._core import DateTimeConverter
 
 nan = float("nan")
 inf = float("inf")
+
+
+class Test_NoneConverter_convert:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [None, None],
+        [0, 0],
+        [six.MAXSIZE, six.MAXSIZE],
+        [False, False],
+        ["test_string", "test_string"],
+    ])
+    def test_normal(self, value, expected):
+        assert NoneConverter(value).convert() == expected
 
 
 class Test_IntegerConverter_convert:
