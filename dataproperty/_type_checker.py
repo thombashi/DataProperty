@@ -9,6 +9,7 @@ import abc
 
 import six
 
+from .converter import NoneConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import DateTimeConverterCreator
@@ -73,6 +74,26 @@ class TypeChecker(TypeCheckerInterface):
     @abc.abstractmethod
     def _is_valid_after_convert(self):
         pass
+
+
+class NoneTypeChecker(TypeChecker):
+
+    @property
+    def typecode(self):
+        return Typecode.NONE
+
+    @property
+    def creator(self):
+        return NoneConverterCreator()
+
+    def _is_instance(self):
+        return self._value is None
+
+    def _is_exclude_instance(self):
+        return False
+
+    def _is_valid_after_convert(self):
+        return True
 
 
 class IntegerTypeChecker(TypeChecker):

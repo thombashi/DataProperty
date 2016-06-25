@@ -9,6 +9,7 @@ import abc
 
 import six
 
+from ._core import NoneConverter
 from ._core import IntegerConverter
 from ._core import FloatConverter
 from ._core import DateTimeConverter
@@ -20,6 +21,12 @@ class ValueConverterCreatorInterface(object):
     @abc.abstractmethod
     def create(self, value):   # pragma: no cover
         pass
+
+
+class NoneConverterCreator(ValueConverterCreatorInterface):
+
+    def create(self, value):
+        return NoneConverter(value)
 
 
 class IntegerConverterCreator(ValueConverterCreatorInterface):
