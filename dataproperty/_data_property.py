@@ -181,7 +181,29 @@ class DataProperty(DataPeropertyInterface):
 
     def __set_data(
             self, data, none_value, is_convert):
-        self.__data = self.__convert_value(data, none_value, is_convert)
+        special_value_table = {
+            Typecode.NONE: none_value,
+        }
+
+        for type_factory in self.__type_factory_list:
+            checker = type_factory.type_checker_factory.create(
+                data, is_convert)
+            if not checker.is_type():
+                continue
+
+            self.__typecode = checker.typecode
+
+            special_value = special_value_table.get(self.__typecode)
+            if special_value is not None:
+                self.__data = special_value
+                return
+
+            self.__data = type_factory.value_converter_factory.create(
+                data).convert()
+            return
+
+        self.__typecode = Typecode.STRING
+        self.__data = str(data)
 
     def __replace_tabs(self, replace_tabs_with_spaces, tab_length):
         if not replace_tabs_with_spaces:
@@ -191,30 +213,6 @@ class DataProperty(DataPeropertyInterface):
             self.__data = self.__data.replace("\t", " " * tab_length)
         except (TypeError, AttributeError):
             pass
-
-    def __convert_value(self, value, none_value, is_convert):
-        special_value_table = {
-            Typecode.NONE: none_value,
-        }
-
-        for type_factory in self.__type_factory_list:
-            checker = type_factory.type_checker_factory.create(
-                value, is_convert)
-            if not checker.is_type():
-                continue
-
-            self.__typecode = checker.typecode
-
-            special_value = special_value_table.get(self.__typecode)
-            if special_value is not None:
-                return special_value
-
-            return type_factory.value_converter_factory.create(
-                value).convert()
-
-        self.__typecode = Typecode.STRING
-
-        return value
 
 
 class ColumnDataProperty(DataPeropertyInterface):
