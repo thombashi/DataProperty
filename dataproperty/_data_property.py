@@ -21,6 +21,7 @@ from ._factory import NoneTypeFactory
 from ._factory import IntegerTypeFactory
 from ._factory import FloatTypeFactory
 from ._factory import DateTimeTypeFactory
+from ._factory import InfinityTypeFactory
 
 
 class DataProperty(DataPeropertyInterface):
@@ -35,6 +36,7 @@ class DataProperty(DataPeropertyInterface):
     )
 
     __type_factory_list = [
+        InfinityTypeFactory(),
         IntegerTypeFactory(),
         FloatTypeFactory(),
         DateTimeTypeFactory(),
@@ -123,7 +125,11 @@ class DataProperty(DataPeropertyInterface):
             data, none_value, is_convert, replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
-        integer_digits, decimal_places = get_number_of_digit(data)
+        try:
+            integer_digits, decimal_places = get_number_of_digit(data)
+        except OverflowError:
+            integer_digits = float("nan")
+            decimal_places = float("nan")
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
