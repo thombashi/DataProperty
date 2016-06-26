@@ -10,3 +10,4 @@ from ._creator import NoneConverterCreator
 from ._creator import IntegerConverterCreator
 from ._creator import FloatConverterCreator
 from ._creator import DateTimeConverterCreator
+from ._creator import InfinityConverterCreator

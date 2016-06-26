@@ -13,6 +13,7 @@ from ._core import NoneConverter
 from ._core import IntegerConverter
 from ._core import FloatConverter
 from ._core import DateTimeConverter
+from ._core import InfinityConverter
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -45,3 +46,9 @@ class DateTimeConverterCreator(ValueConverterCreatorInterface):
 
     def create(self, value):
         return DateTimeConverter(value)
+
+
+class InfinityConverterCreator(ValueConverterCreatorInterface):
+
+    def create(self, value):
+        return InfinityConverter(value)
