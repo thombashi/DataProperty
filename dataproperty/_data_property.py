@@ -200,15 +200,17 @@ class DataProperty(DataPeropertyInterface):
         for type_factory in self.__type_factory_list:
             checker = type_factory.type_checker_factory.create(
                 value, is_convert)
-            if checker.is_type():
-                self.__typecode = checker.typecode
+            if not checker.is_type():
+                continue
 
-                special_value = special_value_table.get(self.__typecode)
-                if special_value is not None:
-                    return special_value
+            self.__typecode = checker.typecode
 
-                return type_factory.value_converter_factory.create(
-                    value).convert()
+            special_value = special_value_table.get(self.__typecode)
+            if special_value is not None:
+                return special_value
+
+            return type_factory.value_converter_factory.create(
+                value).convert()
 
         self.__typecode = Typecode.STRING
 
