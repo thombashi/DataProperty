@@ -67,12 +67,33 @@ class Test_DataPeroperty_set_data:
             ["a\tb", None, True, False, 4, "a\tb"],
             ["a\tb", None, True, True, None, "a\tb"],
         ])
-    def test_normal(
+    def test_normal_tab(
             self, value, none_value, is_convert,
             replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
-            value, none_value, is_convert,
+            value, none_value, float("inf"), is_convert,
             replace_tabs_with_spaces, tab_length)
+
+        assert dp.data == expected
+
+    @pytest.mark.parametrize(
+        ["value", "none_value", "inf_value", "is_convert", "expected"],
+        [
+            [None, "NONE", inf, True, "NONE"],
+            [None, "NONE", inf, False, "NONE"],
+            [inf, None, "Infinity", True, "Infinity"],
+            [inf, None, "Infinity", False, "Infinity"],
+            ["inf", None, "Infinity", True, "Infinity"],
+            ["inf", None, "Infinity", False, "inf"],
+        ]
+    )
+    def test_special(
+            self, value, none_value, inf_value, is_convert, expected):
+        dp = DataProperty(
+            value,
+            none_value=none_value,
+            inf_value=inf_value,
+            is_convert=is_convert)
 
         assert dp.data == expected
 
