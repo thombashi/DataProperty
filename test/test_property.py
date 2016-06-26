@@ -31,6 +31,8 @@ class Test_DataPeroperty_data_typecode:
             ["a", False, "a", Typecode.STRING],
             [None, True, None, Typecode.NONE],
             [None, False, None, Typecode.NONE],
+            ["inf", True, inf, Typecode.INFINITY],
+            ["inf", False, "inf", Typecode.STRING],
         ]
     )
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
@@ -48,17 +50,6 @@ class Test_DataPeroperty_data_typecode:
         dp = DataProperty(value, none_value)
         assert dp.data == expected
         assert dp.typecode == Typecode.NONE
-
-    @pytest.mark.parametrize(
-        ["value", "is_convert", "expected"],
-        [
-            [inf, True, OverflowError],
-            [inf, False, OverflowError],
-        ]
-    )
-    def test_exception(self, value, is_convert, expected):
-        with pytest.raises(expected):
-            DataProperty(value, is_convert=is_convert)
 
 
 class Test_DataPeroperty_set_data:
@@ -93,6 +84,7 @@ class Test_DataPeroperty_align:
         [1.0, Align.RIGHT],
         ["a", Align.LEFT],
         [None, Align.LEFT],
+        [inf, Align.LEFT],
         [nan, Align.RIGHT],
     ])
     def test_normal(self, value, expected):
@@ -115,6 +107,7 @@ class Test_DataPeroperty_str_len:
 
         ["a", 1],
         [None, 4],
+        [inf, 3],
     ])
     def test_normal(self, value, expected):
         dp = DataProperty(value)
@@ -142,6 +135,7 @@ class Test_DataPeroperty_integer_digits:
     @pytest.mark.parametrize(["value"], [
         [None],
         ["a"],
+        [inf],
         [nan],
     ])
     def test_abnormal(self, value):
@@ -163,6 +157,7 @@ class Test_DataPeroperty_decimal_places:
     @pytest.mark.parametrize(["value"], [
         [None],
         ["a"],
+        [inf],
         [nan],
     ])
     def test_abnormal(self, value):
@@ -184,6 +179,7 @@ class Test_DataPeroperty_additional_format_len:
 
         [None, 0],
         ["a", 0],
+        [inf, 0],
         [nan, 0],
     ])
     def test_normal(self, value, expected):
