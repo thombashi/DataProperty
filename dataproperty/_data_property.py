@@ -176,12 +176,16 @@ class DataProperty(DataPeropertyInterface):
             self, data, none_value, is_convert,
             replace_tabs_with_spaces, tab_length):
         self.__data = self.__convert_value(data, none_value, is_convert)
+        self.__replace_tabs(replace_tabs_with_spaces, tab_length)
 
-        if replace_tabs_with_spaces:
-            try:
-                self.__data = self.__data.replace("\t", " " * tab_length)
-            except (TypeError, AttributeError):
-                pass
+    def __replace_tabs(self, replace_tabs_with_spaces, tab_length):
+        if not replace_tabs_with_spaces:
+            return
+
+        try:
+            self.__data = self.__data.replace("\t", " " * tab_length)
+        except (TypeError, AttributeError):
+            pass
 
     def __convert_value(self, value, none_value, is_convert):
         checker = NoneTypeFactory().type_checker_factory.create(
