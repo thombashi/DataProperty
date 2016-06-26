@@ -180,7 +180,12 @@ class Test_InfinityChecker:
             [inf],
             [True, False],
             [True]
-        ))
+        )) + [
+            ["inf", True, True],
+            ["inf", False, False],
+            ["INF", True, True],
+            ["INF", False, False],
+        ]
     )
     def test_normal_true(self, value, is_convert, expected):
         type_checker = InfinityChecker(value, is_convert)
