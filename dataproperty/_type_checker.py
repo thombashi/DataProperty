@@ -13,6 +13,7 @@ from .converter import NoneConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import DateTimeConverterCreator
+from .converter import InfinityConverterCreator
 from ._error import TypeConversionError
 from ._typecode import Typecode
 
@@ -149,3 +150,20 @@ class DateTimeTypeChecker(TypeChecker):
         import datetime
 
         return isinstance(self._value, datetime.datetime)
+
+
+class InfinityChecker(TypeChecker):
+
+    @property
+    def typecode(self):
+        return Typecode.INFINITY
+
+    @property
+    def creator(self):
+        return InfinityConverterCreator()
+
+    def _is_instance(self):
+        return self._value == float("inf")
+
+    def _is_valid_after_convert(self):
+        return self._converted_value == float("inf")
