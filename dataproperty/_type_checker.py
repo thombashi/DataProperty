@@ -33,7 +33,7 @@ class TypeCheckerInterface(object):
 class TypeChecker(TypeCheckerInterface):
 
     @abc.abstractproperty
-    def creator(self):   # pragma: no cover
+    def _converter_creator(self):   # pragma: no cover
         pass
 
     def __init__(self, value, is_convert=True):
@@ -69,7 +69,8 @@ class TypeChecker(TypeCheckerInterface):
         return False
 
     def _try_convert(self):
-        self._converted_value = self.creator.create(self._value).convert()
+        self._converted_value = self._converter_creator.create(
+            self._value).convert()
 
     def _is_valid_after_convert(self):
         return True
@@ -82,7 +83,7 @@ class NoneTypeChecker(TypeChecker):
         return Typecode.NONE
 
     @property
-    def creator(self):
+    def _converter_creator(self):
         return NoneConverterCreator()
 
     def _is_instance(self):
@@ -99,7 +100,7 @@ class IntegerTypeChecker(TypeChecker):
         return Typecode.INT
 
     @property
-    def creator(self):
+    def _converter_creator(self):
         return IntegerConverterCreator()
 
     def _is_instance(self):
@@ -122,7 +123,7 @@ class FloatTypeChecker(TypeChecker):
         return Typecode.FLOAT
 
     @property
-    def creator(self):
+    def _converter_creator(self):
         return FloatConverterCreator()
 
     def _is_instance(self):
@@ -143,7 +144,7 @@ class DateTimeTypeChecker(TypeChecker):
         return Typecode.DATETIME
 
     @property
-    def creator(self):
+    def _converter_creator(self):
         return DateTimeConverterCreator()
 
     def _is_instance(self):
@@ -159,7 +160,7 @@ class InfinityChecker(TypeChecker):
         return Typecode.INFINITY
 
     @property
-    def creator(self):
+    def _converter_creator(self):
         return InfinityConverterCreator()
 
     def _is_instance(self):
