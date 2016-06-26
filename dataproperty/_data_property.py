@@ -36,6 +36,7 @@ class DataProperty(DataPeropertyInterface):
     )
 
     __type_factory_list = [
+        NoneTypeFactory(),
         InfinityTypeFactory(),
         IntegerTypeFactory(),
         FloatTypeFactory(),
@@ -192,17 +193,20 @@ class DataProperty(DataPeropertyInterface):
             pass
 
     def __convert_value(self, value, none_value, is_convert):
-        checker = NoneTypeFactory().type_checker_factory.create(
-            value, is_convert)
-        if checker.is_type():
-            self.__typecode = checker.typecode
-            return none_value
+        special_value_table = {
+            Typecode.NONE: none_value,
+        }
 
         for type_factory in self.__type_factory_list:
             checker = type_factory.type_checker_factory.create(
                 value, is_convert)
             if checker.is_type():
                 self.__typecode = checker.typecode
+
+                special_value = special_value_table.get(self.__typecode)
+                if special_value is not None:
+                    return special_value
+
                 return type_factory.value_converter_factory.create(
                     value).convert()
 
