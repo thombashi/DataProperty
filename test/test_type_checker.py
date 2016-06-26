@@ -16,6 +16,7 @@ from dataproperty._type_checker import NoneTypeChecker
 from dataproperty._type_checker import IntegerTypeChecker
 from dataproperty._type_checker import FloatTypeChecker
 from dataproperty._type_checker import DateTimeTypeChecker
+from dataproperty._type_checker import InfinityChecker
 from dataproperty import Typecode
 
 
@@ -165,3 +166,23 @@ class Test_DateTimeTypeChecker:
     ])
     def test_normal_false(self, value, is_convert):
         assert not DateTimeTypeChecker(value, is_convert).is_type()
+
+
+class Test_InfinityChecker:
+
+    @pytest.mark.parametrize(
+        ["value", "is_convert", "expected"],
+        list(itertools.product(
+            [0.0, six.MAXSIZE, "0", nan],
+            [True, False],
+            [False]
+        )) + list(itertools.product(
+            [inf],
+            [True, False],
+            [True]
+        ))
+    )
+    def test_normal_true(self, value, is_convert, expected):
+        type_checker = InfinityChecker(value, is_convert)
+        assert type_checker.is_type() == expected
+        assert type_checker.typecode == Typecode.INFINITY
