@@ -13,8 +13,6 @@ from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._typecode import Typecode
 
-from .converter import convert_value
-
 from ._data_property import ColumnDataProperty
 from ._data_property import DataProperty
 

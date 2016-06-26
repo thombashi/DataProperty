@@ -12,14 +12,16 @@ from ._container import MinMaxContainer
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
 from ._type_checker import FloatTypeChecker
-from ._type_checker_creator import IntegerTypeCheckerCreator
-from ._type_checker_creator import FloatTypeCheckerCreator
-from ._type_checker_creator import DateTimeTypeCheckerCreator
 
-from .converter import convert_value
 from ._function import is_nan
 from ._function import get_number_of_digit
 from ._function import get_text_len
+
+from ._factory import NoneTypeFactory
+from ._factory import IntegerTypeFactory
+from ._factory import FloatTypeFactory
+from ._factory import DateTimeTypeFactory
+from ._factory import InfinityTypeFactory
 
 
 class DataProperty(DataPeropertyInterface):
@@ -33,10 +35,12 @@ class DataProperty(DataPeropertyInterface):
         "__str_len",
     )
 
-    __CHECKER_CREATOR_LIST = [
-        IntegerTypeCheckerCreator(),
-        FloatTypeCheckerCreator(),
-        DateTimeTypeCheckerCreator()
+    __type_factory_list = [
+        NoneTypeFactory(),
+        InfinityTypeFactory(),
+        IntegerTypeFactory(),
+        FloatTypeFactory(),
+        DateTimeTypeFactory(),
     ]
 
     @property
@@ -60,7 +64,8 @@ class DataProperty(DataPeropertyInterface):
         """
         Return the type code that corresponds to the type of the ``data``.
 
-        :return: One of the constants that are defined in the ``Typecode`` class.
+        :return:
+            One of the constants that are defined in the ``Typecode`` class.
         :rtype: int
         """
 
@@ -113,16 +118,20 @@ class DataProperty(DataPeropertyInterface):
         return self.__additional_format_len
 
     def __init__(
-            self, data, none_value=None, is_convert=True,
+            self, data, none_value=None, inf_value=float("inf"),
+            is_convert=True,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__()
 
-        self.__set_data(
-            data, none_value, is_convert, replace_tabs_with_spaces, tab_length)
-        self.__typecode = self.__get_typecode_from_data(data, is_convert)
+        self.__set_data(data, none_value, inf_value, is_convert)
+        self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
-        integer_digits, decimal_places = get_number_of_digit(data)
+        try:
+            integer_digits, decimal_places = get_number_of_digit(data)
+        except OverflowError:
+            integer_digits = float("nan")
+            decimal_places = float("nan")
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
@@ -171,27 +180,41 @@ class DataProperty(DataPeropertyInterface):
 
         return get_text_len(self.data)
 
-    def __get_typecode_from_data(self, data, is_convert):
-        if data is None:
-            return Typecode.NONE
-
-        for checker_creator in self.__CHECKER_CREATOR_LIST:
-            checker = checker_creator.create(data, is_convert)
-            if checker.is_type():
-                return checker.typecode
-
-        return Typecode.STRING
-
     def __set_data(
-            self, data, none_value, is_convert,
-            replace_tabs_with_spaces, tab_length):
-        self.__data = convert_value(data, none_value, is_convert)
+            self, data, none_value, inf_value, is_convert):
+        special_value_table = {
+            Typecode.NONE: none_value,
+            Typecode.INFINITY: inf_value,
+        }
 
-        if replace_tabs_with_spaces:
-            try:
-                self.__data = self.__data.replace("\t", " " * tab_length)
-            except (TypeError, AttributeError):
-                pass
+        for type_factory in self.__type_factory_list:
+            checker = type_factory.type_checker_factory.create(
+                data, is_convert)
+            if not checker.is_type():
+                continue
+
+            self.__typecode = checker.typecode
+
+            special_value = special_value_table.get(self.__typecode)
+            if special_value is not None:
+                self.__data = special_value
+                return
+
+            self.__data = type_factory.value_converter_factory.create(
+                data).convert()
+            return
+
+        self.__typecode = Typecode.STRING
+        self.__data = str(data)
+
+    def __replace_tabs(self, replace_tabs_with_spaces, tab_length):
+        if not replace_tabs_with_spaces:
+            return
+
+        try:
+            self.__data = self.__data.replace("\t", " " * tab_length)
+        except (TypeError, AttributeError):
+            pass
 
 
 class ColumnDataProperty(DataPeropertyInterface):

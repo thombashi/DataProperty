@@ -13,6 +13,7 @@ class Typecode(object):
     FLOAT = 1 << 1
     STRING = 1 << 2
     DATETIME = 1 << 3
+    INFINITY = 1 << 4
 
     __TYPENAME_TABLE = {
         NONE:   "NONE",
@@ -20,6 +21,7 @@ class Typecode(object):
         FLOAT:  "FLOAT",
         STRING: "STRING",
         DATETIME: "DATETIME",
+        INFINITY: "INFINITY",
     }
 
     @classmethod

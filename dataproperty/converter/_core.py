@@ -23,20 +23,22 @@ class ValueConverter(ValueConverterInterface):
     def convert(self):   # pragma: no cover
         pass
 
-    def __init__(self, value, is_convert=True):
+    def __init__(self, value):
         self._value = value
-        self._is_convert = is_convert
 
     def __repr__(self):
         return str(self.convert())
 
 
+class NoneConverter(ValueConverter):
+
+    def convert(self):
+        return self._value
+
+
 class IntegerConverter(ValueConverter):
 
     def convert(self):
-        if not self._is_convert:
-            return self._value
-
         try:
             return int(self._value)
         except (TypeError, ValueError, OverflowError):
@@ -46,9 +48,6 @@ class IntegerConverter(ValueConverter):
 class FloatConverter(ValueConverter):
 
     def convert(self):
-        if not self._is_convert:
-            return self._value
-
         try:
             return float(self._value)
         except (TypeError, ValueError):
@@ -72,8 +71,8 @@ class DateTimeConverter(ValueConverter):
         7200: "Africa/Tripoli",  # 0200
     }
 
-    def __init__(self, value, is_convert=True):
-        super(DateTimeConverter, self).__init__(value, is_convert)
+    def __init__(self, value):
+        super(DateTimeConverter, self).__init__(value)
 
         self.__datetime = None
 
@@ -86,11 +85,9 @@ class DateTimeConverter(ValueConverter):
             self.__datetime = self._value
             return self.__datetime
 
-        if not self._is_convert:
-            return self._value
         try:
             self.__datetime = dateutil.parser.parse(self._value)
-        except (AttributeError, ValueError):
+        except (AttributeError, ValueError, OverflowError):
             raise TypeConversionError
 
         try:
@@ -119,3 +116,12 @@ class DateTimeConverter(ValueConverter):
 
     def __get_dst_timezone_name(self, offset):
         return self.__COMMON_DST_TIMEZONE_TABLE[offset]
+
+
+class InfinityConverter(ValueConverter):
+
+    def convert(self):
+        try:
+            return float(self._value)
+        except (TypeError, ValueError):
+            raise TypeConversionError

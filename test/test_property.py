@@ -31,6 +31,8 @@ class Test_DataPeroperty_data_typecode:
             ["a", False, "a", Typecode.STRING],
             [None, True, None, Typecode.NONE],
             [None, False, None, Typecode.NONE],
+            ["inf", True, inf, Typecode.INFINITY],
+            ["inf", False, "inf", Typecode.STRING],
         ]
     )
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
@@ -49,17 +51,6 @@ class Test_DataPeroperty_data_typecode:
         assert dp.data == expected
         assert dp.typecode == Typecode.NONE
 
-    @pytest.mark.parametrize(
-        ["value", "is_convert", "expected"],
-        [
-            [inf, True, OverflowError],
-            [inf, False, OverflowError],
-        ]
-    )
-    def test_exception(self, value, is_convert, expected):
-        with pytest.raises(expected):
-            DataProperty(value, is_convert=is_convert)
-
 
 class Test_DataPeroperty_set_data:
 
@@ -76,12 +67,33 @@ class Test_DataPeroperty_set_data:
             ["a\tb", None, True, False, 4, "a\tb"],
             ["a\tb", None, True, True, None, "a\tb"],
         ])
-    def test_normal(
+    def test_normal_tab(
             self, value, none_value, is_convert,
             replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
-            value, none_value, is_convert,
+            value, none_value, float("inf"), is_convert,
             replace_tabs_with_spaces, tab_length)
+
+        assert dp.data == expected
+
+    @pytest.mark.parametrize(
+        ["value", "none_value", "inf_value", "is_convert", "expected"],
+        [
+            [None, "NONE", inf, True, "NONE"],
+            [None, "NONE", inf, False, "NONE"],
+            [inf, None, "Infinity", True, "Infinity"],
+            [inf, None, "Infinity", False, "Infinity"],
+            ["inf", None, "Infinity", True, "Infinity"],
+            ["inf", None, "Infinity", False, "inf"],
+        ]
+    )
+    def test_special(
+            self, value, none_value, inf_value, is_convert, expected):
+        dp = DataProperty(
+            value,
+            none_value=none_value,
+            inf_value=inf_value,
+            is_convert=is_convert)
 
         assert dp.data == expected
 
@@ -93,6 +105,7 @@ class Test_DataPeroperty_align:
         [1.0, Align.RIGHT],
         ["a", Align.LEFT],
         [None, Align.LEFT],
+        [inf, Align.LEFT],
         [nan, Align.RIGHT],
     ])
     def test_normal(self, value, expected):
@@ -115,6 +128,7 @@ class Test_DataPeroperty_str_len:
 
         ["a", 1],
         [None, 4],
+        [inf, 3],
     ])
     def test_normal(self, value, expected):
         dp = DataProperty(value)
@@ -142,6 +156,7 @@ class Test_DataPeroperty_integer_digits:
     @pytest.mark.parametrize(["value"], [
         [None],
         ["a"],
+        [inf],
         [nan],
     ])
     def test_abnormal(self, value):
@@ -163,6 +178,7 @@ class Test_DataPeroperty_decimal_places:
     @pytest.mark.parametrize(["value"], [
         [None],
         ["a"],
+        [inf],
         [nan],
     ])
     def test_abnormal(self, value):
@@ -184,6 +200,7 @@ class Test_DataPeroperty_additional_format_len:
 
         [None, 0],
         ["a", 0],
+        [inf, 0],
         [nan, 0],
     ])
     def test_normal(self, value, expected):

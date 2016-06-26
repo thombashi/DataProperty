@@ -10,35 +10,41 @@ import pytest
 import six
 
 from dataproperty import TypeConversionError
-from dataproperty import convert_value
 from dataproperty import is_nan
-from dataproperty.converter import IntegerConverter
-from dataproperty.converter import FloatConverter
-from dataproperty.converter import DateTimeConverter
+from dataproperty.converter._core import NoneConverter
+from dataproperty.converter._core import IntegerConverter
+from dataproperty.converter._core import FloatConverter
+from dataproperty.converter._core import DateTimeConverter
 
 
 nan = float("nan")
 inf = float("inf")
 
 
+class Test_NoneConverter_convert:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [None, None],
+        [0, 0],
+        [six.MAXSIZE, six.MAXSIZE],
+        [False, False],
+        ["test_string", "test_string"],
+    ])
+    def test_normal(self, value, expected):
+        assert NoneConverter(value).convert() == expected
+
+
 class Test_IntegerConverter_convert:
 
-    @pytest.mark.parametrize(["value", "is_convert", "expected"], [
-        [0.1, True, 0],
-        [-0.1, False, -0.1],
-        [1, False, 1],
-        [-1, True, -1],
-        [.5, True, 0],
-        [0., False, 0],
-        [True, True, 1],
-        [True, False, 1],
-        [str(six.MAXSIZE), True, six.MAXSIZE],
-        [str(six.MAXSIZE), False, str(six.MAXSIZE)],
-        [str(-six.MAXSIZE), True, -six.MAXSIZE],
-        [str(-six.MAXSIZE), False, str(-six.MAXSIZE)],
+    @pytest.mark.parametrize(["value", "expected"], [
+        [six.MAXSIZE, six.MAXSIZE], [-six.MAXSIZE, -six.MAXSIZE],
+        [0., 0], [0.1, 0], [.5, 0],
+        [True, 1], [False, 0],
+        [str(six.MAXSIZE), six.MAXSIZE],
+        [str(-six.MAXSIZE), -six.MAXSIZE],
     ])
-    def test_normal(self, value, is_convert, expected):
-        assert IntegerConverter(value, is_convert).convert() == expected
+    def test_normal(self, value, expected):
+        assert IntegerConverter(value).convert() == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["", TypeConversionError],
@@ -140,36 +146,3 @@ class Test_DateTimeConverter_convert:
 
         with pytest.raises(expected):
             dt_converter.convert()
-
-
-class Test_convert_value:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        ["0", 0],
-        [str(six.MAXSIZE), six.MAXSIZE],
-        [str(-six.MAXSIZE), -six.MAXSIZE],
-        [0, 0],
-        [six.MAXSIZE, six.MAXSIZE],
-        [-six.MAXSIZE, -six.MAXSIZE],
-
-        ["0.0", 0],
-        [0.0, 0],
-
-        ["aaaaa", "aaaaa"],
-
-        [inf, inf],
-    ])
-    def test_normal(self, value, expected):
-        assert convert_value(value) == expected
-
-    @pytest.mark.parametrize(["value", "none_return_value", "expected"], [
-        [None, None, None],
-        ["1", None, 1],
-        [None, "null", "null"],
-        ["1", "null", 1],
-    ])
-    def test_none(self, value, none_return_value, expected):
-        assert convert_value(value, none_return_value) == expected
-
-    def test_abnormal(self):
-        assert is_nan(convert_value(nan))
