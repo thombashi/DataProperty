@@ -13,10 +13,12 @@ from .converter import NoneConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import DateTimeConverterCreator
+from .converter import InfinityConverterCreator
 from ._type_checker_creator import NoneTypeCheckerCreator
 from ._type_checker_creator import IntegerTypeCheckerCreator
 from ._type_checker_creator import FloatTypeCheckerCreator
 from ._type_checker_creator import DateTimeTypeCheckerCreator
+from ._type_checker_creator import InfinityCheckerCreator
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -76,3 +78,14 @@ class DateTimeTypeFactory(TypeConverterFactoryInterface):
     @property
     def value_converter_factory(self):
         return DateTimeConverterCreator()
+
+
+class InfinityTypeFactory(TypeConverterFactoryInterface):
+
+    @property
+    def type_checker_factory(self):
+        return InfinityCheckerCreator()
+
+    @property
+    def value_converter_factory(self):
+        return InfinityConverterCreator()
