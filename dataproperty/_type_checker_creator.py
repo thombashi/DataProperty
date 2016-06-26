@@ -13,6 +13,7 @@ from ._type_checker import NoneTypeChecker
 from ._type_checker import IntegerTypeChecker
 from ._type_checker import FloatTypeChecker
 from ._type_checker import DateTimeTypeChecker
+from ._type_checker import InfinityChecker
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -45,3 +46,9 @@ class DateTimeTypeCheckerCreator(TypeCheckerCreatorInterface):
 
     def create(self, value, is_convert):
         return DateTimeTypeChecker(value, is_convert)
+
+
+class InfinityCheckerCreator(TypeCheckerCreatorInterface):
+
+    def create(self, value, is_convert):
+        return InfinityChecker(value, is_convert)
