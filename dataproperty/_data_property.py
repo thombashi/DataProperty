@@ -121,8 +121,8 @@ class DataProperty(DataPeropertyInterface):
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__()
 
-        self.__set_data(
-            data, none_value, is_convert, replace_tabs_with_spaces, tab_length)
+        self.__set_data(data, none_value, is_convert)
+        self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
         try:
@@ -179,10 +179,8 @@ class DataProperty(DataPeropertyInterface):
         return get_text_len(self.data)
 
     def __set_data(
-            self, data, none_value, is_convert,
-            replace_tabs_with_spaces, tab_length):
+            self, data, none_value, is_convert):
         self.__data = self.__convert_value(data, none_value, is_convert)
-        self.__replace_tabs(replace_tabs_with_spaces, tab_length)
 
     def __replace_tabs(self, replace_tabs_with_spaces, tab_length):
         if not replace_tabs_with_spaces:
