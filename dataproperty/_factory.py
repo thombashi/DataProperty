@@ -13,7 +13,6 @@ from .converter import NopConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import DateTimeConverterCreator
-from .converter import InfinityConverterCreator
 from ._type_checker_creator import NoneTypeCheckerCreator
 from ._type_checker_creator import IntegerTypeCheckerCreator
 from ._type_checker_creator import FloatTypeCheckerCreator
@@ -88,4 +87,4 @@ class InfinityTypeFactory(TypeConverterFactoryInterface):
 
     @property
     def value_converter_factory(self):
-        return InfinityConverterCreator()
+        return FloatConverterCreator()
