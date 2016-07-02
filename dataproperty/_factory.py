@@ -18,6 +18,7 @@ from ._type_checker_creator import IntegerTypeCheckerCreator
 from ._type_checker_creator import FloatTypeCheckerCreator
 from ._type_checker_creator import DateTimeTypeCheckerCreator
 from ._type_checker_creator import InfinityCheckerCreator
+from ._type_checker_creator import NanCheckerCreator
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -84,6 +85,17 @@ class InfinityTypeFactory(TypeConverterFactoryInterface):
     @property
     def type_checker_factory(self):
         return InfinityCheckerCreator()
+
+    @property
+    def value_converter_factory(self):
+        return FloatConverterCreator()
+
+
+class NanTypeFactory(TypeConverterFactoryInterface):
+
+    @property
+    def type_checker_factory(self):
+        return NanCheckerCreator()
 
     @property
     def value_converter_factory(self):
