@@ -134,6 +134,24 @@ class Test_DataPeroperty_set_data:
 
         assert dp.data == expected
 
+    @pytest.mark.parametrize(
+        ["value", "nan_value", "is_convert", "expected"],
+        [
+            [nan, "not a number", True, "not a number"],
+            [nan, "not a number", False, "not a number"],
+            ["nan", "not a number", True, "not a number"],
+            ["nan", "not a number", False, "nan"],
+        ]
+    )
+    def test_special_nan(
+            self, value, nan_value, is_convert, expected):
+        dp = DataProperty(
+            value,
+            nan_value=nan_value,
+            is_convert=is_convert)
+
+        assert dp.data == expected
+
 
 class Test_DataPeroperty_align:
 
