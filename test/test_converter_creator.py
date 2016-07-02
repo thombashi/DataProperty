@@ -15,7 +15,7 @@ import dataproperty.converter._core as dpcc
 class Test_ConverterCreator(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [dpc.NoneConverterCreator, dpcc.NopConverter],
+        [dpc.NopConverterCreator, dpcc.NopConverter],
         [dpc.IntegerConverterCreator, dpcc.IntegerConverter],
         [dpc.FloatConverterCreator, dpcc.FloatConverter],
         [dpc.DateTimeConverterCreator, dpcc.DateTimeConverter],

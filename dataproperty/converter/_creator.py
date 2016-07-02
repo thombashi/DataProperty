@@ -24,7 +24,7 @@ class ValueConverterCreatorInterface(object):
         pass
 
 
-class NoneConverterCreator(ValueConverterCreatorInterface):
+class NopConverterCreator(ValueConverterCreatorInterface):
 
     def create(self, value):
         return NopConverter(value)

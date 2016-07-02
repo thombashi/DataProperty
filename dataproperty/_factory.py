@@ -9,7 +9,7 @@ import abc
 
 import six
 
-from .converter import NoneConverterCreator
+from .converter import NopConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import DateTimeConverterCreator
@@ -44,7 +44,7 @@ class NoneTypeFactory(TypeConverterFactoryInterface):
 
     @property
     def value_converter_factory(self):
-        return NoneConverterCreator()
+        return NopConverterCreator()
 
 
 class IntegerTypeFactory(TypeConverterFactoryInterface):

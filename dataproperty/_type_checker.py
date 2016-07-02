@@ -9,7 +9,7 @@ import abc
 
 import six
 
-from .converter import NoneConverterCreator
+from .converter import NopConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import DateTimeConverterCreator
@@ -85,7 +85,7 @@ class NoneTypeChecker(TypeChecker):
 
     @property
     def _converter_creator(self):
-        return NoneConverterCreator()
+        return NopConverterCreator()
 
     def _is_instance(self):
         return self._value is None
