@@ -14,6 +14,7 @@ class Typecode(object):
     STRING = 1 << 2
     DATETIME = 1 << 3
     INFINITY = 1 << 4
+    NAN = 1 << 5
 
     __TYPENAME_TABLE = {
         NONE:   "NONE",
@@ -22,6 +23,7 @@ class Typecode(object):
         STRING: "STRING",
         DATETIME: "DATETIME",
         INFINITY: "INFINITY",
+        NAN: "NAN",
     }
 
     @classmethod
