@@ -12,11 +12,7 @@ from dateutil.tz import tzoffset
 import pytest
 import six
 
-from dataproperty._type_checker import NoneTypeChecker
-from dataproperty._type_checker import IntegerTypeChecker
-from dataproperty._type_checker import FloatTypeChecker
-from dataproperty._type_checker import DateTimeTypeChecker
-from dataproperty._type_checker import InfinityChecker
+import dataproperty._type_checker as tc
 from dataproperty import Typecode
 
 
@@ -37,7 +33,7 @@ class Test_NoneTypeChecker:
         ))
     )
     def test_normal_true(self, value, is_convert, expected):
-        type_checker = NoneTypeChecker(value, is_convert)
+        type_checker = tc.NoneTypeChecker(value, is_convert)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.NONE
 
@@ -53,7 +49,7 @@ class Test_IntegerTypeChecker:
         [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
     ])
     def test_normal_true(self, value, is_convert):
-        type_checker = IntegerTypeChecker(value, is_convert)
+        type_checker = tc.IntegerTypeChecker(value, is_convert)
         assert type_checker.is_type()
         assert type_checker.typecode == Typecode.INT
 
@@ -83,7 +79,7 @@ class Test_IntegerTypeChecker:
         [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
     ])
     def test_normal_false(self, value, is_convert):
-        assert not IntegerTypeChecker(value, is_convert).is_type()
+        assert not tc.IntegerTypeChecker(value, is_convert).is_type()
 
 
 class Test_FloatTypeChecker:
@@ -108,7 +104,7 @@ class Test_FloatTypeChecker:
         [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
     ])
     def test_normal_true(self, value, is_convert):
-        type_checker = FloatTypeChecker(value, is_convert)
+        type_checker = tc.FloatTypeChecker(value, is_convert)
         assert type_checker.is_type()
         assert type_checker.typecode == Typecode.FLOAT
 
@@ -130,7 +126,7 @@ class Test_FloatTypeChecker:
         [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
     ])
     def test_normal_false(self, value, is_convert):
-        assert not FloatTypeChecker(value, is_convert).is_type()
+        assert not tc.FloatTypeChecker(value, is_convert).is_type()
 
 
 class Test_DateTimeTypeChecker:
@@ -152,7 +148,7 @@ class Test_DateTimeTypeChecker:
         ],
     ])
     def test_normal_true(self, value, is_convert):
-        type_checker = DateTimeTypeChecker(value, is_convert)
+        type_checker = tc.DateTimeTypeChecker(value, is_convert)
         assert type_checker.is_type()
         assert type_checker.typecode == Typecode.DATETIME
 
@@ -165,7 +161,7 @@ class Test_DateTimeTypeChecker:
         [six.MAXSIZE, True], [six.MAXSIZE, False],
     ])
     def test_normal_false(self, value, is_convert):
-        assert not DateTimeTypeChecker(value, is_convert).is_type()
+        assert not tc.DateTimeTypeChecker(value, is_convert).is_type()
 
 
 class Test_InfinityChecker:
@@ -188,6 +184,6 @@ class Test_InfinityChecker:
         ]
     )
     def test_normal_true(self, value, is_convert, expected):
-        type_checker = InfinityChecker(value, is_convert)
+        type_checker = tc.InfinityChecker(value, is_convert)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.INFINITY
