@@ -310,8 +310,7 @@ class ColumnDataProperty(DataPeropertyInterface):
 
         self.__update(dataprop)
 
-    @staticmethod
-    def __get_typecode_from_bitmap(typecode_bitmap):
+    def __get_typecode_from_bitmap(self):
         typecode_list = [
             Typecode.STRING,
             Typecode.FLOAT,
@@ -320,7 +319,7 @@ class ColumnDataProperty(DataPeropertyInterface):
         ]
 
         for typecode in typecode_list:
-            if typecode_bitmap & typecode:
+            if self.__typecode_bitmap & typecode:
                 return typecode
 
         return Typecode.STRING
