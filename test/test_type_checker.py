@@ -78,9 +78,6 @@ class Test_IntegerTypeChecker:
 class Test_FloatTypeChecker:
 
     @pytest.mark.parametrize(["value", "is_convert"], [
-        [0.0, True], [0.0, False],
-        [0.1, True], [0.1, False],
-        [-0.1, True], [-0.1, False],
         [1, True],
         [-1, True],
         ["0.0", True],
@@ -88,14 +85,15 @@ class Test_FloatTypeChecker:
         ["-0.1", True],
         ["1", True],
         ["-1", True],
-        [.5, True], [.5, False],
-        [0., True], [0., False],
         ["1e-05", True],
-        [nan, True], [nan, False],
-        [inf, True], [inf, False],
         [six.MAXSIZE, True], [-six.MAXSIZE, True],
         [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
-    ])
+    ] + list(
+        itertools.product(
+            [0.0, 0.1, -0.1, .5, 0., nan, inf],
+            [True, False],
+        ))
+    )
     def test_normal_true(self, value, is_convert):
         type_checker = tc.FloatTypeChecker(value, is_convert)
         assert type_checker.is_type()
@@ -110,14 +108,14 @@ class Test_FloatTypeChecker:
         ["-1", False],
         ["1", False],
         ["1e-05", False],
-        ["", True], ["", False],
-        [None, True], [None, False],
-        ["test", True], ["test", False],
-        ["inf", True], ["inf", False],
-        [True, True], [True, False],
         [six.MAXSIZE, False], [-six.MAXSIZE, False],
         [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
-    ])
+    ] + list(
+        itertools.product(
+            ["", None, "test", "inf", True],
+            [True, False],
+        ))
+    )
     def test_normal_false(self, value, is_convert):
         assert not tc.FloatTypeChecker(value, is_convert).is_type()
 
