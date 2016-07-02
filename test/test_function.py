@@ -216,6 +216,8 @@ class Test_is_datetime:
         [[], False],
         [1, False],
         [True, False],
+        [inf, False],
+        [nan, False],
     ])
     def test_normal(self, value, expected):
         assert is_datetime(value) == expected
