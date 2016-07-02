@@ -12,6 +12,7 @@ import six
 from ._core import NopConverter
 from ._core import IntegerConverter
 from ._core import FloatConverter
+from ._core import BoolConverter
 from ._core import DateTimeConverter
 
 
@@ -39,6 +40,12 @@ class FloatConverterCreator(ValueConverterCreatorInterface):
 
     def create(self, value):
         return FloatConverter(value)
+
+
+class BoolConverterCreator(ValueConverterCreatorInterface):
+
+    def create(self, value):
+        return BoolConverter(value)
 
 
 class DateTimeConverterCreator(ValueConverterCreatorInterface):

@@ -18,6 +18,7 @@ class Test_ConverterCreator(object):
         [dpc.NopConverterCreator, dpcc.NopConverter],
         [dpc.IntegerConverterCreator, dpcc.IntegerConverter],
         [dpc.FloatConverterCreator, dpcc.FloatConverter],
+        [dpc.BoolConverterCreator, dpcc.BoolConverter],
         [dpc.DateTimeConverterCreator, dpcc.DateTimeConverter],
     ])
     def test_normal(self, value, expected):
