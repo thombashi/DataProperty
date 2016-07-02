@@ -24,11 +24,11 @@ class Test_ColumnDataPeroperty:
         # single type values
         [[None, None], Typecode.NONE],
         [
-            [0, six.MAXSIZE, -six.MAXSIZE],
+            [0, six.MAXSIZE, str(six.MAXSIZE), -six.MAXSIZE],
             Typecode.INT,
         ],
         [
-            [0, 1.1, -six.MAXSIZE],
+            [0, 1.1, "0.01", -six.MAXSIZE],
             Typecode.FLOAT,
         ],
         [
@@ -40,14 +40,16 @@ class Test_ColumnDataPeroperty:
             Typecode.BOOL,
         ],
         [
-            [DATATIME_DATA, DATATIME_DATA],
+            [DATATIME_DATA, str(DATATIME_DATA), DATATIME_DATA],
             Typecode.DATETIME,
         ],
 
         # None mixed values
-        [[None, 1], Typecode.INT],
+        [[None, six.MAXSIZE, str(-six.MAXSIZE)], Typecode.INT],
         [[1.0, None], Typecode.FLOAT],
         [[None, "test"], Typecode.STRING],
+        [[None, True, "False"], Typecode.BOOL],
+        [[None, DATATIME_DATA, None], Typecode.DATETIME],
 
         # mixed values
         [[DATATIME_DATA, 1], Typecode.STRING],
