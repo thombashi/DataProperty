@@ -13,7 +13,7 @@ from ._function import is_not_empty_list_or_tuple
 class PropertyExtractor(object):
 
     def __init__(self):
-        from _data_property import default_bool_converter
+        from ._data_property import default_bool_converter
 
         self.header_list = []
         self.data_matrix = []
