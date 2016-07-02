@@ -120,6 +120,40 @@ class Test_FloatTypeChecker:
         assert not tc.FloatTypeChecker(value, is_convert).is_type()
 
 
+class Test_BoolTypeChecker:
+
+    @pytest.mark.parametrize(["value", "is_convert"], [
+        ["True", True],
+        ["False", True],
+        ["true", True],
+        ["false", True],
+    ] + list(
+        itertools.product(
+            [True, False],
+            [True, False],
+        ))
+    )
+    def test_normal_true(self, value, is_convert):
+        type_checker = tc.BoolTypeChecker(value, is_convert)
+        assert type_checker.is_type()
+        assert type_checker.typecode == Typecode.BOOL
+
+    @pytest.mark.parametrize(["value", "is_convert"], [
+        ["True", False],
+        ["False", False],
+        ["true", False],
+        ["false", False],
+    ] + list(
+        itertools.product(
+            [0, 1, "yes", "no", None, inf, nan],
+            [True, False],
+        ))
+    )
+    def test_normal_false(self, value, is_convert):
+        type_checker = tc.BoolTypeChecker(value, is_convert)
+        assert not type_checker.is_type()
+
+
 class Test_DateTimeTypeChecker:
 
     @pytest.mark.parametrize(["value", "is_convert"], [

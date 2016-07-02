@@ -12,6 +12,7 @@ import six
 from .converter import NopConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
+from .converter import BoolConverterCreator
 from .converter import DateTimeConverterCreator
 from ._error import TypeConversionError
 from ._function import is_nan
@@ -135,6 +136,23 @@ class FloatTypeChecker(TypeChecker):
 
     def _is_valid_after_convert(self):
         return self._converted_value != float("inf")
+
+
+class BoolTypeChecker(TypeChecker):
+
+    @property
+    def typecode(self):
+        return Typecode.BOOL
+
+    @property
+    def _converter_creator(self):
+        return BoolConverterCreator()
+
+    def _is_instance(self):
+        return isinstance(self._value, bool)
+
+    def _is_valid_after_convert(self):
+        return isinstance(self._converted_value, bool)
 
 
 class DateTimeTypeChecker(TypeChecker):
