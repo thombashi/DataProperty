@@ -306,17 +306,12 @@ class Test_get_number_of_digit:
     def test_normal(self, value, expected):
         assert get_number_of_digit(value) == expected
 
-    @pytest.mark.parametrize(["value", "expected1", "expected2"], [
-        [True, 1, 1],
-    ])
-    def test_annormal(self, value, expected1, expected2):
-        integer_digits, decimal_places = get_number_of_digit(value)
-        assert integer_digits == expected1
-        assert decimal_places == expected2
-
     @pytest.mark.parametrize(["value"], [
         [None],
-        ["0xff"], ["test"], ["テスト"],
+        [True],
+        [inf],
+        [nan],
+        ["0xff"], ["test"],
     ])
     def test_nan(self, value):
         integer_digits, decimal_places = get_number_of_digit(value)

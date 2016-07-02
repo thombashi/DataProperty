@@ -147,15 +147,17 @@ def _get_decimal_places(value, integer_digits):
 
 
 def get_number_of_digit(value):
+    nan = float("nan")
+
     try:
         integer_digits = get_integer_digit(value)
-    except (ValueError, TypeError):
-        integer_digits = float("nan")
+    except (ValueError, TypeError, OverflowError):
+        return (nan, nan)
 
     try:
         decimal_places = _get_decimal_places(value, integer_digits)
     except (ValueError, TypeError):
-        decimal_places = float("nan")
+        decimal_places = nan
 
     return (integer_digits, decimal_places)
 
