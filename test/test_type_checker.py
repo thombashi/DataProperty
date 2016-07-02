@@ -183,7 +183,7 @@ class Test_InfinityChecker:
             ["INF", False, False],
         ]
     )
-    def test_normal_true(self, value, is_convert, expected):
+    def test_normal(self, value, is_convert, expected):
         type_checker = tc.InfinityChecker(value, is_convert)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.INFINITY
