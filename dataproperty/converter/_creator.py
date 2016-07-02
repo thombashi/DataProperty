@@ -9,7 +9,7 @@ import abc
 
 import six
 
-from ._core import NoneConverter
+from ._core import NopConverter
 from ._core import IntegerConverter
 from ._core import FloatConverter
 from ._core import DateTimeConverter
@@ -27,7 +27,7 @@ class ValueConverterCreatorInterface(object):
 class NoneConverterCreator(ValueConverterCreatorInterface):
 
     def create(self, value):
-        return NoneConverter(value)
+        return NopConverter(value)
 
 
 class IntegerConverterCreator(ValueConverterCreatorInterface):

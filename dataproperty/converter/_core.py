@@ -30,7 +30,7 @@ class ValueConverter(ValueConverterInterface):
         return str(self.convert())
 
 
-class NoneConverter(ValueConverter):
+class NopConverter(ValueConverter):
 
     def convert(self):
         return self._value

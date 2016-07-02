@@ -11,7 +11,7 @@ import six
 
 from dataproperty import TypeConversionError
 from dataproperty import is_nan
-from dataproperty.converter._core import NoneConverter
+from dataproperty.converter._core import NopConverter
 from dataproperty.converter._core import IntegerConverter
 from dataproperty.converter._core import FloatConverter
 from dataproperty.converter._core import DateTimeConverter
@@ -31,7 +31,7 @@ class Test_NoneConverter_convert:
         ["test_string", "test_string"],
     ])
     def test_normal(self, value, expected):
-        assert NoneConverter(value).convert() == expected
+        assert NopConverter(value).convert() == expected
 
 
 class Test_IntegerConverter_convert:

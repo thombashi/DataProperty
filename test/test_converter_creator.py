@@ -9,7 +9,7 @@ from __future__ import absolute_import
 import pytest
 
 import dataproperty.converter as dpc
-from dataproperty.converter._core import NoneConverter
+from dataproperty.converter._core import NopConverter
 from dataproperty.converter._core import IntegerConverter
 from dataproperty.converter._core import FloatConverter
 from dataproperty.converter._core import DateTimeConverter
@@ -18,7 +18,7 @@ from dataproperty.converter._core import DateTimeConverter
 class Test_ConverterCreator(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [dpc.NoneConverterCreator, NoneConverter],
+        [dpc.NoneConverterCreator, NopConverter],
         [dpc.IntegerConverterCreator, IntegerConverter],
         [dpc.FloatConverterCreator, FloatConverter],
         [dpc.DateTimeConverterCreator, DateTimeConverter],
