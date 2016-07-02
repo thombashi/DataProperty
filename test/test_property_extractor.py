@@ -4,9 +4,15 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+import datetime
+
 import pytest
 
 from dataproperty import *
+
+
+nan = float("nan")
+inf = float("inf")
 
 
 @pytest.fixture
@@ -75,14 +81,23 @@ class Test_PropertyExtractor_extract_data_property_matrix:
 
 class Test_PropertyExtractor_extract_column_property_list:
     TEST_DATA_MATRIX = [
-        [1, 1.1,  "aa",   1,   1,     True,   float("inf"), float("nan")],
-        [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf",        "nan"],
-        [3, 3.33, "cccc", -3,  "ccc", "true", "infinity",   "NAN"],
+        [
+            1, 1.1,  "aa",   1,   1,     True,   inf,
+            nan, datetime.datetime(2017, 1, 1, 0, 0, 0)
+        ],
+        [
+            2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf",
+            "nan", "2017-01-01T01:23:45+0900"
+        ],
+        [
+            3, 3.33, "cccc", -3,  "ccc", "true", "infinity",
+            "NAN", "2017-11-01 01:23:45+0900"
+        ],
     ]
 
     @pytest.mark.parametrize(["header_list", "value"], [
         [
-            ["i", "f", "s", "if", "mix", "bool", "in", "nan"],
+            ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"],
             TEST_DATA_MATRIX,
         ],
         [
@@ -99,7 +114,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         prop_extractor.data_matrix = value
         col_prop_list = prop_extractor.extract_column_property_list()
 
-        assert len(col_prop_list) == 8
+        assert len(col_prop_list) == 9
 
         prop = col_prop_list[0]
         assert prop.typecode == Typecode.INT
@@ -162,6 +177,14 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 3
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == "s"
+
+        prop = col_prop_list[8]
+        assert prop.typecode == Typecode.DATETIME
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.padding_len == 25
         assert is_nan(prop.decimal_places)
         assert prop.format_str == "s"
 
