@@ -246,9 +246,6 @@ class Test_get_integer_digit:
         [99999999999999099999.99, 20], [-99999999999999099999.99, 20],
         ["10000000000000000000", 20], ["-10000000000000000000", 20],
         ["99999999999999099999.99", 20], ["-99999999999999099999.99", 20],
-
-        [True, 1],
-        [False, 1],
     ])
     def test_normal(self, value, expected):
         assert get_integer_digit(value) == expected
@@ -264,6 +261,8 @@ class Test_get_integer_digit:
         assert get_integer_digit(value) == expected
 
     @pytest.mark.parametrize(["value", 'exception'], [
+        [True, TypeError],
+        [False, TypeError],
         [None, TypeError],
         ["test", ValueError],
         ["a", ValueError],

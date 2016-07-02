@@ -99,6 +99,10 @@ def is_datetime(value):
 def get_integer_digit(value):
     abs_value = abs(float(value))
 
+    if not is_float(value):
+        # bool type value reaches this line
+        raise TypeError("invalid type '%s" % (type(value)))
+
     if abs_value == 0:
         return 1
 
