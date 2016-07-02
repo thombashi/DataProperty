@@ -42,11 +42,8 @@ class Test_ColumnDataPeroperty:
             Typecode.DATETIME,
         ],
         [[DATATIME_DATA, 1], Typecode.STRING],
-        [[1, DATATIME_DATA], Typecode.STRING],
-        [[DATATIME_DATA, 1.0], Typecode.STRING],
         [[1.0, DATATIME_DATA], Typecode.STRING],
-        [[DATATIME_DATA, "test"], Typecode.STRING],
-        [["test", DATATIME_DATA], Typecode.STRING],
+        [[DATATIME_DATA, "test", DATATIME_DATA], Typecode.STRING],
         [[1, DATATIME_DATA, 1.0, "test", None], Typecode.STRING],
     ])
     def test_normal_typecode(self, value_list, expected):
