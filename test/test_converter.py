@@ -10,7 +10,6 @@ import pytest
 import six
 
 from dataproperty import TypeConversionError
-from dataproperty import is_nan
 import dataproperty.converter._core as dpcc
 
 
