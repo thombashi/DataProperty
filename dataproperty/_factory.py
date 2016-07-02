@@ -12,10 +12,12 @@ import six
 from .converter import NopConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
+from .converter import BoolConverterCreator
 from .converter import DateTimeConverterCreator
 from ._type_checker_creator import NoneTypeCheckerCreator
 from ._type_checker_creator import IntegerTypeCheckerCreator
 from ._type_checker_creator import FloatTypeCheckerCreator
+from ._type_checker_creator import BoolTypeCheckerCreator
 from ._type_checker_creator import DateTimeTypeCheckerCreator
 from ._type_checker_creator import InfinityCheckerCreator
 from ._type_checker_creator import NanCheckerCreator
@@ -78,6 +80,17 @@ class DateTimeTypeFactory(TypeConverterFactoryInterface):
     @property
     def value_converter_factory(self):
         return DateTimeConverterCreator()
+
+
+class BoolTypeFactory(TypeConverterFactoryInterface):
+
+    @property
+    def type_checker_factory(self):
+        return BoolTypeCheckerCreator()
+
+    @property
+    def value_converter_factory(self):
+        return BoolConverterCreator()
 
 
 class InfinityTypeFactory(TypeConverterFactoryInterface):
