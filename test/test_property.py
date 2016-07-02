@@ -77,6 +77,13 @@ class Test_DataPeroperty_data_typecode:
         assert dp.typecode == Typecode.NONE
 
 
+def bool_converter_test(value):
+    if value:
+        return "true value"
+
+    return "false value"
+
+
 class Test_DataPeroperty_set_data:
 
     @pytest.mark.parametrize(
@@ -115,6 +122,23 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             none_value=none_value,
+            is_convert=is_convert)
+
+        assert dp.data == expected
+
+    @pytest.mark.parametrize(
+        ["value", "bool_converter", "is_convert", "expected"],
+        [
+            ["True", bool_converter_test, True, "true value"],
+            ["False", bool_converter_test, True, "false value"],
+            ["True", bool_converter_test, False, "True"],
+        ]
+    )
+    def test_special_bool(
+            self, value, bool_converter,  is_convert, expected):
+        dp = DataProperty(
+            value,
+            bool_converter=bool_converter,
             is_convert=is_convert)
 
         assert dp.data == expected
