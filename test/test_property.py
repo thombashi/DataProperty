@@ -300,6 +300,21 @@ class Test_DataPeroperty_repr:
             "data=None, typename=NONE, align=left, str_len=4, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
+        [
+            True,
+            "data=True, typename=BOOL, align=left, str_len=4, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+        [
+            inf,
+            "data=inf, typename=INFINITY, align=left, str_len=3, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+        [
+            nan,
+            "data=nan, typename=NAN, align=left, str_len=3, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
     ])
     def test_normal(self, value, expected):
         dp = DataProperty(value)
