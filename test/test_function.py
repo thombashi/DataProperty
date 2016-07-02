@@ -19,9 +19,8 @@ inf = float("inf")
 class Test_is_integer:
 
     @pytest.mark.parametrize(["value"], [
-        [0], [99999999999], [-99999999999],
-        [1234567890123456789], [-1234567890123456789],
-        ["0"], ["99999999999"], ["-99999999999"],
+        [0], [six.MAXSIZE], [-six.MAXSIZE],
+        ["0"], [str(six.MAXSIZE)], [str(-six.MAXSIZE)],
         [" 1"], ["1 "],
     ])
     def test_normal(self, value):
