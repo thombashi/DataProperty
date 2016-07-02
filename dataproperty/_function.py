@@ -161,3 +161,21 @@ def get_text_len(text):
         return len(str(text))
     except UnicodeEncodeError:
         return len(text)
+
+
+def strict_strtobool(value):
+    from distutils.util import strtobool
+
+    if isinstance(value, bool):
+        return value
+
+    try:
+        lower_text = value.lower()
+    except AttributeError:
+        raise ValueError("invalid value '%s'" % (str(value)))
+
+    binary_value = strtobool(lower_text)
+    if lower_text not in ["true", "false"]:
+        raise ValueError("invalid value '%s'" % (str(value)))
+
+    return bool(binary_value)
