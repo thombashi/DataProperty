@@ -187,3 +187,28 @@ class Test_InfinityChecker:
         type_checker = tc.InfinityChecker(value, is_convert)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.INFINITY
+
+
+class Test_NanChecker:
+
+    @pytest.mark.parametrize(
+        ["value", "is_convert", "expected"],
+        list(itertools.product(
+            [0.0, six.MAXSIZE, "0", inf],
+            [True, False],
+            [False]
+        )) + list(itertools.product(
+            [nan],
+            [True, False],
+            [True]
+        )) + [
+            ["nan", True, True],
+            ["nan", False, False],
+            ["NAN", True, True],
+            ["NAN", False, False],
+        ]
+    )
+    def test_normal(self, value, is_convert, expected):
+        type_checker = tc.NanChecker(value, is_convert)
+        assert type_checker.is_type() == expected
+        assert type_checker.typecode == Typecode.NAN
