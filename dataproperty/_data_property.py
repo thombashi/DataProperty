@@ -260,7 +260,6 @@ class ColumnDataProperty(DataPeropertyInterface):
 
     @property
     def typecode(self):
-        return self.__get_typecode_from_bitmap(self.__typecode_bitmap)
         return self.__get_typecode_from_bitmap()
 
     @property
