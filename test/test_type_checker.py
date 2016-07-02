@@ -41,13 +41,15 @@ class Test_NoneTypeChecker:
 class Test_IntegerTypeChecker:
 
     @pytest.mark.parametrize(["value", "is_convert"], [
-        [0, True], [0, False],
         ["0", True],
         [" 1 ", True],
-        [six.MAXSIZE, True], [six.MAXSIZE, False],
-        [-six.MAXSIZE, True], [-six.MAXSIZE, False],
         [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
-    ])
+    ] + list(
+        itertools.product(
+            [0, six.MAXSIZE, -six.MAXSIZE],
+            [True, False],
+        ))
+    )
     def test_normal_true(self, value, is_convert):
         type_checker = tc.IntegerTypeChecker(value, is_convert)
         assert type_checker.is_type()
