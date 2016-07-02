@@ -15,6 +15,7 @@ from .converter import FloatConverterCreator
 from .converter import DateTimeConverterCreator
 from .converter import InfinityConverterCreator
 from ._error import TypeConversionError
+from ._function import is_nan
 from ._typecode import Typecode
 
 
@@ -168,3 +169,20 @@ class InfinityChecker(TypeChecker):
 
     def _is_valid_after_convert(self):
         return self._converted_value == float("inf")
+
+
+class NanChecker(TypeChecker):
+
+    @property
+    def typecode(self):
+        return Typecode.NAN
+
+    @property
+    def _converter_creator(self):
+        return FloatConverterCreator()
+
+    def _is_instance(self):
+        return is_nan(self._value)
+
+    def _is_valid_after_convert(self):
+        return is_nan(self._converted_value)
