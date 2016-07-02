@@ -94,6 +94,10 @@ e.g. Extract property of a time value (from `str`)
 e.g. Extract property of a `bool` value.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. code:: python
+
+    DataProperty(True)
+
 ::
 
     data=True, typename=BOOL, align=left, str_len=4, integer_digits=nan, decimal_places=nan, additional_format_len=0
