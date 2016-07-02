@@ -30,8 +30,8 @@ Usage
 Extract property of data
 ------------------------
 
-e.g. float
-~~~~~~~~~~
+e.g. Extract property of a `float` value.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -42,8 +42,8 @@ e.g. float
 
     data=-1.0, typename=FLOAT, align=right, str_len=4, integer_digits=1, decimal_places=1, additional_format_len=1
 
-e.g. int
-~~~~~~~~
+e.g. Extract property of a `int` value.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -54,8 +54,8 @@ e.g. int
 
     data=123456789, typename=INT, align=right, str_len=9, integer_digits=9, decimal_places=0, additional_format_len=0
 
-e.g. string
-~~~~~~~~~~~
+e.g. Extract property of a `str` value.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
@@ -66,6 +66,14 @@ e.g. string
 
     data=abcdefgh, typename=STRING, align=left, str_len=8, integer_digits=nan, decimal_places=nan, additional_format_len=0
 
+e.g. Extract property of a `bool` value.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    data=True, typename=BOOL, align=left, str_len=4, integer_digits=nan, decimal_places=nan, additional_format_len=0
+
+
 Extract property of data for each data from a matrix
 ----------------------------------------------------
 
@@ -74,18 +82,18 @@ Extract property of data for each data from a matrix
     from dataproperty import PropertyExtractor, Typecode
     import six
 
-    data_matrix = [
-        [1, 1.1, "aa",  1,   1],
-        [2, 2.2, "bbb", 2.2, 2.2],
-        [3, 3.33, "cccc", -3, "ccc"],
-    ]
-    prop_extractor = PropertyExtractor()
-
     def display(prop_matrix, name):
         six.print_()
         six.print_("---------- %s ----------" % (name))
         for prop_list in prop_matrix:
             six.print_([getattr(prop, name) for prop in prop_list])
+
+    data_matrix = [
+        [1, 1.1,  "aa",   1,   1,     True,   float("inf"), float("nan")],
+        [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf",        "nan"],
+        [3, 3.33, "cccc", -3,  "ccc", "true", "infinity",   "NAN"],
+    ]
+    prop_extractor = PropertyExtractor()
 
     prop_extractor.data_matrix = data_matrix
     prop_matrix = prop_extractor.extract_data_property_matrix()
@@ -103,34 +111,35 @@ Extract property of data for each data from a matrix
 ::
 
     ---------- typename ----------
-    ['INT', 'FLOAT', 'STRING', 'INT', 'INT']
-    ['INT', 'FLOAT', 'STRING', 'FLOAT', 'FLOAT']
-    ['INT', 'FLOAT', 'STRING', 'INT', 'STRING']
+    ['INT', 'FLOAT', 'STRING', 'INT', 'INT', 'BOOL', 'INFINITY', 'NAN']
+    ['INT', 'FLOAT', 'STRING', 'FLOAT', 'FLOAT', 'BOOL', 'INFINITY', 'NAN']
+    ['INT', 'FLOAT', 'STRING', 'INT', 'STRING', 'BOOL', 'INFINITY', 'NAN']
 
     ---------- data ----------
-    [1, 1.1, 'aa', 1, 1]
-    [2, 2.2, 'bbb', 2.2, 2.2]
-    [3, 3.33, 'cccc', -3, 'ccc']
+    [1, 1.1, 'aa', 1, 1, True, inf, nan]
+    [2, 2.2, 'bbb', 2.2, 2.2, False, inf, nan]
+    [3, 3.33, 'cccc', -3, 'ccc', True, inf, nan]
 
     ---------- align ----------
-    [right, right, left, right, right]
-    [right, right, left, right, right]
-    [right, right, left, right, left]
+    [right, right, left, right, right, left, left, left]
+    [right, right, left, right, right, left, left, left]
+    [right, right, left, right, left, left, left, left]
 
     ---------- str_len ----------
-    [1, 3, 2, 1, 1]
-    [1, 3, 3, 3, 3]
-    [1, 4, 4, 2, 3]
+    [1, 3, 2, 1, 1, 4, 3, 3]
+    [1, 3, 3, 3, 3, 5, 3, 3]
+    [1, 4, 4, 2, 3, 4, 3, 3]
 
     ---------- integer_digits ----------
-    [1, 1, nan, 1, 1]
-    [1, 1, nan, 1, 1]
-    [1, 1, nan, 1, nan]
+    [1, 1, nan, 1, 1, nan, nan, nan]
+    [1, 1, nan, 1, 1, nan, nan, nan]
+    [1, 1, nan, 1, nan, nan, nan, nan]
 
     ---------- decimal_places ----------
-    [0, 1, nan, 0, 0]
-    [0, 1, nan, 1, 1]
-    [0, 2, nan, 0, nan]
+    [0, 1, nan, 0, 0, nan, nan, nan]
+    [0, 1, nan, 1, 1, nan, nan, nan]
+    [0, 2, nan, 0, nan, nan, nan, nan]
+
 
 Extract property of data for each column from a matrix
 ------------------------------------------------------
@@ -140,19 +149,20 @@ Extract property of data for each column from a matrix
     from dataproperty import PropertyExtractor, Typecode
     import six
 
-    data_matrix = [
-        [1, 1.1, "aa",  1,   1],
-        [2, 2.2, "bbb", 2.2, 2.2],
-        [3, 3.33, "cccc", -3, "ccc"],
-    ]
-    prop_extractor = PropertyExtractor()
-
     def display(prop_list, name):
         six.print_()
         six.print_("---------- %s ----------" % (name))
         six.print_([getattr(prop, name) for prop in prop_list])
 
-    prop_extractor.header_list = ["int", "float", "str", "num", "mix"]
+    data_matrix = [
+        [1, 1.1,  "aa",   1,   1,     True,   float("inf"), float("nan")],
+        [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf",        "nan"],
+        [3, 3.33, "cccc", -3,  "ccc", "true", "infinity",   "NAN"],
+    ]
+    prop_extractor = PropertyExtractor()
+
+    prop_extractor.header_list = [
+        "int", "float", "str", "num", "mix", "bool", "inf", "nan"]
     prop_extractor.data_matrix = data_matrix
     col_prop_list = prop_extractor.extract_column_property_list()
 
@@ -166,16 +176,17 @@ Extract property of data for each column from a matrix
 ::
 
     ---------- typename ----------
-    ['INT', 'FLOAT', 'STRING', 'FLOAT', 'STRING']
+    ['INT', 'FLOAT', 'STRING', 'FLOAT', 'STRING', 'BOOL', 'INFINITY', 'NAN']
 
     ---------- align ----------
-    [right, right, left, right, left]
+    [right, right, left, right, left, left, left, left]
 
     ---------- padding_len ----------
-    [3, 5, 4, 3, 3]
+    [3, 5, 4, 3, 3, 5, 3, 3]
 
     ---------- decimal_places ----------
-    [nan, 2, nan, 1, 1]
+    [nan, 2, nan, 1, 1, nan, nan, nan]
+
 
 Dependencies
 ============
