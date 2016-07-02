@@ -78,42 +78,57 @@ class Test_DataPeroperty_set_data:
 
     @pytest.mark.parametrize(
         [
-            "value", "none_value", "is_convert",
+            "value", "is_convert",
             "replace_tabs_with_spaces", "tab_length",
             "expected"
         ],
         [
-            ["a\tb", None, True, True, 2, "a  b"],
-            ["\ta\t\tb\tc\t", None, True, True, 2, "  a    b  c  "],
-            ["a\tb", None, True, True, 4, "a    b"],
-            ["a\tb", None, True, False, 4, "a\tb"],
-            ["a\tb", None, True, True, None, "a\tb"],
+            ["a\tb", True, True, 2, "a  b"],
+            ["\ta\t\tb\tc\t", True, True, 2, "  a    b  c  "],
+            ["a\tb", True, True, 4, "a    b"],
+            ["a\tb", True, False, 4, "a\tb"],
+            ["a\tb", True, True, None, "a\tb"],
         ])
     def test_normal_tab(
-            self, value, none_value, is_convert,
+            self, value, is_convert,
             replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
-            value, none_value, float("inf"), is_convert,
-            replace_tabs_with_spaces, tab_length)
+            value,
+            is_convert=is_convert,
+            replace_tabs_with_spaces=replace_tabs_with_spaces,
+            tab_length=tab_length)
 
         assert dp.data == expected
 
     @pytest.mark.parametrize(
-        ["value", "none_value", "inf_value", "is_convert", "expected"],
+        ["value", "none_value", "is_convert", "expected"],
         [
-            [None, "NONE", inf, True, "NONE"],
-            [None, "NONE", inf, False, "NONE"],
-            [inf, None, "Infinity", True, "Infinity"],
-            [inf, None, "Infinity", False, "Infinity"],
-            ["inf", None, "Infinity", True, "Infinity"],
-            ["inf", None, "Infinity", False, "inf"],
+            [None, "NONE", True, "NONE"],
+            [None, "NONE", False, "NONE"],
         ]
     )
-    def test_special(
-            self, value, none_value, inf_value, is_convert, expected):
+    def test_special_none(
+            self, value, none_value,  is_convert, expected):
         dp = DataProperty(
             value,
             none_value=none_value,
+            is_convert=is_convert)
+
+        assert dp.data == expected
+
+    @pytest.mark.parametrize(
+        ["value", "inf_value", "is_convert", "expected"],
+        [
+            [inf, "Infinity", True, "Infinity"],
+            [inf, "Infinity", False, "Infinity"],
+            ["inf", "Infinity", True, "Infinity"],
+            ["inf", "Infinity", False, "inf"],
+        ]
+    )
+    def test_special_inf(
+            self, value, inf_value, is_convert, expected):
+        dp = DataProperty(
+            value,
             inf_value=inf_value,
             is_convert=is_convert)
 
