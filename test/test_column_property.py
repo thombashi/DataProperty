@@ -66,10 +66,14 @@ class Test_ColumnDataPeroperty:
         [[None, nan], Typecode.NAN],
 
         # mixed values
-        [[DATATIME_DATA, 1], Typecode.STRING],
-        [[1.0, DATATIME_DATA], Typecode.STRING],
-        [[DATATIME_DATA, "test", DATATIME_DATA], Typecode.STRING],
-        [[1, DATATIME_DATA, 1.0, "test", None], Typecode.STRING],
+        [[True, 1], Typecode.STRING],
+        [[DATATIME_DATA, "test"], Typecode.STRING],
+        [[inf, 1.0], Typecode.STRING],
+        [[nan, 0.1], Typecode.STRING],
+        [
+            [1, 1.1, DATATIME_DATA, "test", None, True, inf, nan],
+            Typecode.STRING,
+        ],
     ])
     def test_normal_typecode(self, value_list, expected):
         col_prop = ColumnDataProperty()

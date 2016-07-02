@@ -302,13 +302,21 @@ class ColumnDataProperty(DataPeropertyInterface):
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
 
-        if all([
-            self.__typecode_bitmap & Typecode.DATETIME,
-            self.__typecode_bitmap & ~Typecode.DATETIME,
+        if any([
+            self.__is_not_single_typecode(Typecode.BOOL),
+            self.__is_not_single_typecode(Typecode.DATETIME),
+            self.__is_not_single_typecode(Typecode.INFINITY),
+            self.__is_not_single_typecode(Typecode.NAN),
         ]):
             self.__typecode_bitmap |= Typecode.STRING
 
         self.__update(dataprop)
+
+    def __is_not_single_typecode(self, typecode):
+        return all([
+            self.__typecode_bitmap & typecode,
+            self.__typecode_bitmap & ~typecode,
+        ])
 
     def __get_typecode_from_bitmap(self):
         typecode_list = [
