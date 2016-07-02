@@ -120,12 +120,13 @@ class DataProperty(DataPeropertyInterface):
         return self.__additional_format_len
 
     def __init__(
-            self, data, none_value=None, inf_value=float("inf"),
+            self, data,
+            none_value=None, inf_value=float("inf"), nan_value=float("nan"),
             is_convert=True,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__()
 
-        self.__set_data(data, none_value, inf_value, is_convert)
+        self.__set_data(data, none_value, inf_value, nan_value, is_convert)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
@@ -183,10 +184,11 @@ class DataProperty(DataPeropertyInterface):
         return get_text_len(self.data)
 
     def __set_data(
-            self, data, none_value, inf_value, is_convert):
+            self, data, none_value, inf_value, nan_value, is_convert):
         special_value_table = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
+            Typecode.NAN: nan_value,
         }
 
         for type_factory in self.__type_factory_list:
