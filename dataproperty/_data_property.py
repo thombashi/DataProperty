@@ -316,6 +316,7 @@ class ColumnDataProperty(DataPeropertyInterface):
             Typecode.FLOAT,
             Typecode.INT,
             Typecode.DATETIME,
+            Typecode.BOOL,
         ]
 
         for typecode in typecode_list:

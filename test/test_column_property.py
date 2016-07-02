@@ -21,10 +21,8 @@ class Test_ColumnDataPeroperty:
     DATATIME_DATA = datetime.datetime(2017, 1, 1)
 
     @pytest.mark.parametrize(["value_list", "expected"], [
+        # single type values
         [[None, None], Typecode.NONE],
-        [[None, 1], Typecode.INT],
-        [[1.0, None], Typecode.FLOAT],
-        [[None, "test"], Typecode.STRING],
         [
             [0, six.MAXSIZE, -six.MAXSIZE],
             Typecode.INT,
@@ -38,9 +36,20 @@ class Test_ColumnDataPeroperty:
             Typecode.STRING,
         ],
         [
+            [True, "True", False],
+            Typecode.BOOL,
+        ],
+        [
             [DATATIME_DATA, DATATIME_DATA],
             Typecode.DATETIME,
         ],
+
+        # None mixed values
+        [[None, 1], Typecode.INT],
+        [[1.0, None], Typecode.FLOAT],
+        [[None, "test"], Typecode.STRING],
+
+        # mixed values
         [[DATATIME_DATA, 1], Typecode.STRING],
         [[1.0, DATATIME_DATA], Typecode.STRING],
         [[DATATIME_DATA, "test", DATATIME_DATA], Typecode.STRING],
