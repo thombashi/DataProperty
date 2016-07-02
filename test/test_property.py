@@ -162,6 +162,7 @@ class Test_DataPeroperty_align:
         [1, Align.RIGHT],
         [1.0, Align.RIGHT],
         ["a", Align.LEFT],
+        [True, Align.LEFT],
         [None, Align.LEFT],
         [inf, Align.LEFT],
         [nan, Align.LEFT],
@@ -185,6 +186,7 @@ class Test_DataPeroperty_str_len:
         ["-123456789", 10],
 
         ["a", 1],
+        [True, 4],
         [None, 4],
         [inf, 3],
         [nan, 3],
@@ -214,6 +216,7 @@ class Test_DataPeroperty_integer_digits:
 
     @pytest.mark.parametrize(["value"], [
         [None],
+        [True],
         ["a"],
         [inf],
         [nan],
@@ -236,6 +239,7 @@ class Test_DataPeroperty_decimal_places:
 
     @pytest.mark.parametrize(["value"], [
         [None],
+        [True],
         ["a"],
         [inf],
         [nan],
@@ -258,6 +262,7 @@ class Test_DataPeroperty_additional_format_len:
         ["-0.01", 1],
 
         [None, 0],
+        [True, 0],
         ["a", 0],
         [inf, 0],
         [nan, 0],
