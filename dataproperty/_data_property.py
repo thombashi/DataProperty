@@ -37,8 +37,8 @@ class DataProperty(DataPeropertyInterface):
 
     __type_factory_list = [
         NoneTypeFactory(),
-        InfinityTypeFactory(),
         IntegerTypeFactory(),
+        InfinityTypeFactory(),
         FloatTypeFactory(),
         DateTimeTypeFactory(),
     ]
