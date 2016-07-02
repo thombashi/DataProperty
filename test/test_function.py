@@ -356,6 +356,8 @@ class Test_strict_strtobool:
         ["False", False],
         ["true", True],
         ["false", False],
+        ["TRUE", True],
+        ["FALSE", False],
     ])
     def test_normal(self, value, expected):
         assert strict_strtobool(value) == expected
