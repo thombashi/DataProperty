@@ -21,7 +21,7 @@ class Test_ColumnDataPeroperty:
     DATATIME_DATA = datetime.datetime(2017, 1, 1)
 
     @pytest.mark.parametrize(["value_list", "expected"], [
-        [[None, None], Typecode.STRING],
+        [[None, None], Typecode.NONE],
         [[None, 1], Typecode.INT],
         [[1.0, None], Typecode.FLOAT],
         [[None, "test"], Typecode.STRING],
@@ -142,5 +142,5 @@ class Test_ColumnDataPeroperty:
         col_prop = ColumnDataProperty()
         assert col_prop.align == Align.LEFT
         assert is_nan(col_prop.decimal_places)
-        assert col_prop.typecode == Typecode.STRING
+        assert col_prop.typecode == Typecode.NONE
         assert col_prop.padding_len == 0

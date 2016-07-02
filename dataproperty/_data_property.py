@@ -322,6 +322,9 @@ class ColumnDataProperty(DataPeropertyInterface):
             if self.__typecode_bitmap & typecode:
                 return typecode
 
+        if self.__typecode_bitmap == Typecode.NONE:
+            return Typecode.NONE
+
         return Typecode.STRING
 
     def __update(self, dataprop):
