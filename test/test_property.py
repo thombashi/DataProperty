@@ -29,8 +29,14 @@ class Test_DataPeroperty_data_typecode:
             ["-1.1", False, "-1.1", Typecode.STRING],
             ["a", True, "a", Typecode.STRING],
             ["a", False, "a", Typecode.STRING],
+
             [None, True, None, Typecode.NONE],
             [None, False, None, Typecode.NONE],
+            ["None", True, "None", Typecode.STRING],
+            ["None", False, "None", Typecode.STRING],
+
+            [inf, True, inf, Typecode.INFINITY],
+            [inf, False, inf, Typecode.INFINITY],
             ["inf", True, inf, Typecode.INFINITY],
             ["inf", False, "inf", Typecode.STRING],
         ]
