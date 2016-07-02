@@ -89,6 +89,36 @@ class Test_FloatConverter_convert:
             dpcc.FloatConverter(value).convert()
 
 
+class Test_BoolConverter_convert:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [True, True],
+        [False, False],
+        ["True", True],
+        ["False", False],
+        ["true", True],
+        ["false", False],
+    ])
+    def test_normal(self, value, expected):
+        assert dpcc.BoolConverter(value).convert() == expected
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        ["", TypeConversionError],
+        ["t", TypeConversionError],
+        ["f", TypeConversionError],
+        ["yes", TypeConversionError],
+        ["no", TypeConversionError],
+        [0, TypeConversionError],
+        [1, TypeConversionError],
+        [None, TypeConversionError],
+        [inf, TypeConversionError],
+        [nan, TypeConversionError],
+    ])
+    def test_exception(self, value, expected):
+        with pytest.raises(expected):
+            dpcc.BoolConverter(value).convert()
+
+
 class Test_DateTimeConverter_convert:
 
     @pytest.mark.parametrize(["value", "expected"], [

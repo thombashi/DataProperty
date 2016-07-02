@@ -54,6 +54,17 @@ class FloatConverter(ValueConverter):
             raise TypeConversionError
 
 
+class BoolConverter(ValueConverter):
+
+    def convert(self):
+        from .._function import strict_strtobool
+
+        try:
+            return strict_strtobool(self._value)
+        except ValueError:
+            raise TypeConversionError
+
+
 class DateTimeConverter(ValueConverter):
 
     __DAYS_TO_SECONDS_COEF = 60 ** 2 * 24
