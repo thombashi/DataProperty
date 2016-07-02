@@ -161,7 +161,7 @@ class InfinityChecker(TypeChecker):
 
     @property
     def _converter_creator(self):
-        return InfinityConverterCreator()
+        return FloatConverterCreator()
 
     def _is_instance(self):
         return self._value == float("inf")
