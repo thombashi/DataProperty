@@ -14,6 +14,7 @@ from ._type_checker import IntegerTypeChecker
 from ._type_checker import FloatTypeChecker
 from ._type_checker import DateTimeTypeChecker
 from ._type_checker import InfinityChecker
+from ._type_checker import NanChecker
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -52,3 +53,9 @@ class InfinityCheckerCreator(TypeCheckerCreatorInterface):
 
     def create(self, value, is_convert):
         return InfinityChecker(value, is_convert)
+
+
+class NanCheckerCreator(TypeCheckerCreatorInterface):
+
+    def create(self, value, is_convert):
+        return NanChecker(value, is_convert)
