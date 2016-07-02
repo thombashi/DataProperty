@@ -20,8 +20,14 @@ from ._function import get_text_len
 from ._factory import NoneTypeFactory
 from ._factory import IntegerTypeFactory
 from ._factory import FloatTypeFactory
+from ._factory import BoolTypeFactory
 from ._factory import DateTimeTypeFactory
 from ._factory import InfinityTypeFactory
+from ._factory import NanTypeFactory
+
+
+def default_bool_converter(value):
+    return value
 
 
 class DataProperty(DataPeropertyInterface):
@@ -37,9 +43,11 @@ class DataProperty(DataPeropertyInterface):
 
     __type_factory_list = [
         NoneTypeFactory(),
-        InfinityTypeFactory(),
         IntegerTypeFactory(),
+        InfinityTypeFactory(),
+        NanTypeFactory(),
         FloatTypeFactory(),
+        BoolTypeFactory(),
         DateTimeTypeFactory(),
     ]
 
@@ -118,12 +126,15 @@ class DataProperty(DataPeropertyInterface):
         return self.__additional_format_len
 
     def __init__(
-            self, data, none_value=None, inf_value=float("inf"),
+            self, data,
+            none_value=None, inf_value=float("inf"), nan_value=float("nan"),
+            bool_converter=default_bool_converter,
             is_convert=True,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__()
 
-        self.__set_data(data, none_value, inf_value, is_convert)
+        self.__set_data(
+            data, none_value, inf_value, nan_value, bool_converter, is_convert)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
@@ -181,10 +192,11 @@ class DataProperty(DataPeropertyInterface):
         return get_text_len(self.data)
 
     def __set_data(
-            self, data, none_value, inf_value, is_convert):
+            self, data, none_value, inf_value, nan_value, bool_converter, is_convert):
         special_value_table = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
+            Typecode.NAN: nan_value,
         }
 
         for type_factory in self.__type_factory_list:
@@ -202,6 +214,10 @@ class DataProperty(DataPeropertyInterface):
 
             self.__data = type_factory.value_converter_factory.create(
                 data).convert()
+
+            if self.typecode == Typecode.BOOL:
+                self.__data = bool_converter(self.__data)
+
             return
 
         self.__typecode = Typecode.STRING
@@ -244,7 +260,7 @@ class ColumnDataProperty(DataPeropertyInterface):
 
     @property
     def typecode(self):
-        return self.__get_typecode_from_bitmap(self.__typecode_bitmap)
+        return self.__get_typecode_from_bitmap()
 
     @property
     def padding_len(self):
@@ -286,26 +302,39 @@ class ColumnDataProperty(DataPeropertyInterface):
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
 
-        if all([
-            self.__typecode_bitmap & Typecode.DATETIME,
-            self.__typecode_bitmap & ~Typecode.DATETIME,
+        if any([
+            self.__is_not_single_typecode(Typecode.BOOL),
+            self.__is_not_single_typecode(Typecode.DATETIME),
+            self.__is_not_single_typecode(Typecode.INFINITY),
+            self.__is_not_single_typecode(Typecode.NAN),
         ]):
             self.__typecode_bitmap |= Typecode.STRING
 
         self.__update(dataprop)
 
-    @staticmethod
-    def __get_typecode_from_bitmap(typecode_bitmap):
+    def __is_not_single_typecode(self, typecode):
+        return all([
+            self.__typecode_bitmap & typecode,
+            self.__typecode_bitmap & ~typecode,
+        ])
+
+    def __get_typecode_from_bitmap(self):
         typecode_list = [
             Typecode.STRING,
             Typecode.FLOAT,
             Typecode.INT,
             Typecode.DATETIME,
+            Typecode.BOOL,
+            Typecode.INFINITY,
+            Typecode.NAN,
         ]
 
         for typecode in typecode_list:
-            if typecode_bitmap & typecode:
+            if self.__typecode_bitmap & typecode:
                 return typecode
+
+        if self.__typecode_bitmap == Typecode.NONE:
+            return Typecode.NONE
 
         return Typecode.STRING
 

@@ -31,3 +31,4 @@ from ._function import is_datetime
 from ._function import get_integer_digit
 from ._function import get_number_of_digit
 from ._function import get_text_len
+from ._function import strict_strtobool

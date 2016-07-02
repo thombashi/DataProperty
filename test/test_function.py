@@ -19,9 +19,8 @@ inf = float("inf")
 class Test_is_integer:
 
     @pytest.mark.parametrize(["value"], [
-        [0], [99999999999], [-99999999999],
-        [1234567890123456789], [-1234567890123456789],
-        ["0"], ["99999999999"], ["-99999999999"],
+        [0], [six.MAXSIZE], [-six.MAXSIZE],
+        ["0"], [str(six.MAXSIZE)], [str(-six.MAXSIZE)],
         [" 1"], ["1 "],
     ])
     def test_normal(self, value):
@@ -217,6 +216,8 @@ class Test_is_datetime:
         [[], False],
         [1, False],
         [True, False],
+        [inf, False],
+        [nan, False],
     ])
     def test_normal(self, value, expected):
         assert is_datetime(value) == expected
@@ -247,9 +248,6 @@ class Test_get_integer_digit:
         [99999999999999099999.99, 20], [-99999999999999099999.99, 20],
         ["10000000000000000000", 20], ["-10000000000000000000", 20],
         ["99999999999999099999.99", 20], ["-99999999999999099999.99", 20],
-
-        [True, 1],
-        [False, 1],
     ])
     def test_normal(self, value, expected):
         assert get_integer_digit(value) == expected
@@ -265,6 +263,8 @@ class Test_get_integer_digit:
         assert get_integer_digit(value) == expected
 
     @pytest.mark.parametrize(["value", 'exception'], [
+        [True, TypeError],
+        [False, TypeError],
         [None, TypeError],
         ["test", ValueError],
         ["a", ValueError],
@@ -308,22 +308,17 @@ class Test_get_number_of_digit:
     def test_normal(self, value, expected):
         assert get_number_of_digit(value) == expected
 
-    @pytest.mark.parametrize(["value", "expected1", "expected2"], [
-        [True, 1, 1],
-    ])
-    def test_annormal(self, value, expected1, expected2):
-        sig_digit, float_digit = get_number_of_digit(value)
-        assert sig_digit == expected1
-        assert float_digit == expected2
-
     @pytest.mark.parametrize(["value"], [
         [None],
-        ["0xff"], ["test"], ["テスト"],
+        [True],
+        [inf],
+        [nan],
+        ["0xff"], ["test"],
     ])
-    def test_abnormal(self, value):
-        sig_digit, float_digit = get_number_of_digit(value)
-        assert is_nan(sig_digit)
-        assert is_nan(float_digit)
+    def test_nan(self, value):
+        integer_digits, decimal_places = get_number_of_digit(value)
+        assert is_nan(integer_digits)
+        assert is_nan(decimal_places)
 
 
 class Test_get_text_len:
@@ -346,3 +341,33 @@ class Test_get_text_len:
     ])
     def test_normal(self, value, expected):
         assert get_text_len(value) == expected
+
+
+class Test_strict_strtobool:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [True, True],
+        [False, False],
+        ["True", True],
+        ["False", False],
+        ["true", True],
+        ["false", False],
+        ["TRUE", True],
+        ["FALSE", False],
+    ])
+    def test_normal(self, value, expected):
+        assert strict_strtobool(value) == expected
+
+    @pytest.mark.parametrize(["value", "exception"], [
+        [0, ValueError], [1, ValueError],
+        ["t", ValueError], ["f", ValueError],
+        ["y", ValueError], ["n", ValueError],
+        ["yes", ValueError], ["no", ValueError],
+        ["on", ValueError], ["off", ValueError],
+        [None, ValueError],
+        [nan, ValueError],
+        [inf, ValueError],
+    ])
+    def test_exception(self, value, exception):
+        with pytest.raises(exception):
+            strict_strtobool(value)

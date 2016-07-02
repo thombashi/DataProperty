@@ -75,14 +75,14 @@ class Test_PropertyExtractor_extract_data_property_matrix:
 
 class Test_PropertyExtractor_extract_column_property_list:
     TEST_DATA_MATRIX = [
-        [1, 1.1, "aa",  1,   1],
-        [2, 2.2, "bbb", 2.2, 2.2],
-        [3, 3.33, "cccc", -3, "ccc"],
+        [1, 1.1,  "aa",   1,   1,     True,   float("inf"), float("nan")],
+        [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf",        "nan"],
+        [3, 3.33, "cccc", -3,  "ccc", "true", "infinity",   "NAN"],
     ]
 
     @pytest.mark.parametrize(["header_list", "value"], [
         [
-            ["i", "f", "s", "if", "mix"],
+            ["i", "f", "s", "if", "mix", "bool", "in", "nan"],
             TEST_DATA_MATRIX,
         ],
         [
@@ -99,7 +99,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         prop_extractor.data_matrix = value
         col_prop_list = prop_extractor.extract_column_property_list()
 
-        assert len(col_prop_list) == 5
+        assert len(col_prop_list) == 8
 
         prop = col_prop_list[0]
         assert prop.typecode == Typecode.INT
@@ -139,6 +139,30 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 3
         assert prop.decimal_places == 1
+        assert prop.format_str == "s"
+
+        prop = col_prop_list[5]
+        assert prop.typecode == Typecode.BOOL
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.padding_len == 5
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == "s"
+
+        prop = col_prop_list[6]
+        assert prop.typecode == Typecode.INFINITY
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.padding_len == 3
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == "s"
+
+        prop = col_prop_list[7]
+        assert prop.typecode == Typecode.NAN
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.padding_len == 3
+        assert is_nan(prop.decimal_places)
         assert prop.format_str == "s"
 
     @pytest.mark.parametrize(["header_list", "value", "expected"], [

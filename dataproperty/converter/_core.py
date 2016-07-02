@@ -30,7 +30,7 @@ class ValueConverter(ValueConverterInterface):
         return str(self.convert())
 
 
-class NoneConverter(ValueConverter):
+class NopConverter(ValueConverter):
 
     def convert(self):
         return self._value
@@ -51,6 +51,17 @@ class FloatConverter(ValueConverter):
         try:
             return float(self._value)
         except (TypeError, ValueError):
+            raise TypeConversionError
+
+
+class BoolConverter(ValueConverter):
+
+    def convert(self):
+        from .._function import strict_strtobool
+
+        try:
+            return strict_strtobool(self._value)
+        except ValueError:
             raise TypeConversionError
 
 
@@ -116,12 +127,3 @@ class DateTimeConverter(ValueConverter):
 
     def __get_dst_timezone_name(self, offset):
         return self.__COMMON_DST_TIMEZONE_TABLE[offset]
-
-
-class InfinityConverter(ValueConverter):
-
-    def convert(self):
-        try:
-            return float(self._value)
-        except (TypeError, ValueError):
-            raise TypeConversionError

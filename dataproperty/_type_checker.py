@@ -9,12 +9,13 @@ import abc
 
 import six
 
-from .converter import NoneConverterCreator
+from .converter import NopConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
+from .converter import BoolConverterCreator
 from .converter import DateTimeConverterCreator
-from .converter import InfinityConverterCreator
 from ._error import TypeConversionError
+from ._function import is_nan
 from ._typecode import Typecode
 
 
@@ -84,7 +85,7 @@ class NoneTypeChecker(TypeChecker):
 
     @property
     def _converter_creator(self):
-        return NoneConverterCreator()
+        return NopConverterCreator()
 
     def _is_instance(self):
         return self._value is None
@@ -137,6 +138,23 @@ class FloatTypeChecker(TypeChecker):
         return self._converted_value != float("inf")
 
 
+class BoolTypeChecker(TypeChecker):
+
+    @property
+    def typecode(self):
+        return Typecode.BOOL
+
+    @property
+    def _converter_creator(self):
+        return BoolConverterCreator()
+
+    def _is_instance(self):
+        return isinstance(self._value, bool)
+
+    def _is_valid_after_convert(self):
+        return isinstance(self._converted_value, bool)
+
+
 class DateTimeTypeChecker(TypeChecker):
 
     @property
@@ -161,10 +179,27 @@ class InfinityChecker(TypeChecker):
 
     @property
     def _converter_creator(self):
-        return InfinityConverterCreator()
+        return FloatConverterCreator()
 
     def _is_instance(self):
         return self._value == float("inf")
 
     def _is_valid_after_convert(self):
         return self._converted_value == float("inf")
+
+
+class NanChecker(TypeChecker):
+
+    @property
+    def typecode(self):
+        return Typecode.NAN
+
+    @property
+    def _converter_creator(self):
+        return FloatConverterCreator()
+
+    def _is_instance(self):
+        return is_nan(self._value)
+
+    def _is_valid_after_convert(self):
+        return is_nan(self._converted_value)

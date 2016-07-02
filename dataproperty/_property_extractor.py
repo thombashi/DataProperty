@@ -13,10 +13,15 @@ from ._function import is_not_empty_list_or_tuple
 class PropertyExtractor(object):
 
     def __init__(self):
+        from ._data_property import default_bool_converter
+
         self.header_list = []
         self.data_matrix = []
         self.min_padding_len = 0
         self.none_value = None
+        self.inf_value = float("inf")
+        self.nan_value = float("nan")
+        self.bool_converter = default_bool_converter
         self.is_convert = True
 
     def extract_data_property_matrix(self):
@@ -50,6 +55,12 @@ class PropertyExtractor(object):
             return []
 
         return [
-            DataProperty(data, self.none_value, self.is_convert)
+            DataProperty(
+                data,
+                none_value=self.none_value,
+                inf_value=self.inf_value,
+                nan_value=self.nan_value,
+                bool_converter=self.bool_converter,
+                is_convert=self.is_convert)
             for data in data_list
         ]

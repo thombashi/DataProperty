@@ -12,11 +12,7 @@ from dateutil.tz import tzoffset
 import pytest
 import six
 
-from dataproperty._type_checker import NoneTypeChecker
-from dataproperty._type_checker import IntegerTypeChecker
-from dataproperty._type_checker import FloatTypeChecker
-from dataproperty._type_checker import DateTimeTypeChecker
-from dataproperty._type_checker import InfinityChecker
+import dataproperty._type_checker as tc
 from dataproperty import Typecode
 
 
@@ -37,7 +33,7 @@ class Test_NoneTypeChecker:
         ))
     )
     def test_normal_true(self, value, is_convert, expected):
-        type_checker = NoneTypeChecker(value, is_convert)
+        type_checker = tc.NoneTypeChecker(value, is_convert)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.NONE
 
@@ -45,53 +41,43 @@ class Test_NoneTypeChecker:
 class Test_IntegerTypeChecker:
 
     @pytest.mark.parametrize(["value", "is_convert"], [
-        [0, True], [0, False],
         ["0", True],
         [" 1 ", True],
-        [six.MAXSIZE, True], [six.MAXSIZE, False],
-        [-six.MAXSIZE, True], [-six.MAXSIZE, False],
         [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
-    ])
+    ] + list(
+        itertools.product(
+            [0, six.MAXSIZE, -six.MAXSIZE],
+            [True, False],
+        ))
+    )
     def test_normal_true(self, value, is_convert):
-        type_checker = IntegerTypeChecker(value, is_convert)
+        type_checker = tc.IntegerTypeChecker(value, is_convert)
         assert type_checker.is_type()
         assert type_checker.typecode == Typecode.INT
 
     @pytest.mark.parametrize(["value", "is_convert"], [
-        ["", True], ["", False],
-        [None, True], [None, False],
-        [nan, True], [nan, False],
-        [inf, True], [inf, False],
-        [0.5, True], [0.5, False],
-        ["0.5", True], ["0.5", False],
-        [.999, True], [.999, False],
-        [".999", True], [".999", False],
-        ["test", True], ["test", False],
-        ["1a1", True], ["1a1", False],
-        ["11a", True], ["11a", False],
-        ["a11", True], ["a11", False],
-        [True, True], [True, False],
-        [1e-05, True], [1e-05, False],
-        [-1e-05, True], [-1e-05, False],
-        ["1e-05", True], ["1e-05", False],
-        ["-1e-05", True], ["-1e-05", False],
-        [-0.00001, True], [-0.00001, False],
         ["0", False],
         ["0xff", True], ["0xff", False],
 
         [" 1 ", False],
         [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
-    ])
+    ] + list(
+        itertools.product(
+            [
+                None, True, nan, inf, 0.5, "0.5", .999, ".999",
+                "", "test", "1a1", "11a", "a11",
+                1e-05, -1e-05, "1e-05", "-1e-05",
+            ],
+            [True, False],
+        ))
+    )
     def test_normal_false(self, value, is_convert):
-        assert not IntegerTypeChecker(value, is_convert).is_type()
+        assert not tc.IntegerTypeChecker(value, is_convert).is_type()
 
 
 class Test_FloatTypeChecker:
 
     @pytest.mark.parametrize(["value", "is_convert"], [
-        [0.0, True], [0.0, False],
-        [0.1, True], [0.1, False],
-        [-0.1, True], [-0.1, False],
         [1, True],
         [-1, True],
         ["0.0", True],
@@ -99,16 +85,17 @@ class Test_FloatTypeChecker:
         ["-0.1", True],
         ["1", True],
         ["-1", True],
-        [.5, True], [.5, False],
-        [0., True], [0., False],
         ["1e-05", True],
-        [nan, True], [nan, False],
-        [inf, True], [inf, False],
         [six.MAXSIZE, True], [-six.MAXSIZE, True],
         [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
-    ])
+    ] + list(
+        itertools.product(
+            [0.0, 0.1, -0.1, .5, 0., nan, inf],
+            [True, False],
+        ))
+    )
     def test_normal_true(self, value, is_convert):
-        type_checker = FloatTypeChecker(value, is_convert)
+        type_checker = tc.FloatTypeChecker(value, is_convert)
         assert type_checker.is_type()
         assert type_checker.typecode == Typecode.FLOAT
 
@@ -121,16 +108,50 @@ class Test_FloatTypeChecker:
         ["-1", False],
         ["1", False],
         ["1e-05", False],
-        ["", True], ["", False],
-        [None, True], [None, False],
-        ["test", True], ["test", False],
-        ["inf", True], ["inf", False],
-        [True, True], [True, False],
         [six.MAXSIZE, False], [-six.MAXSIZE, False],
         [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
-    ])
+    ] + list(
+        itertools.product(
+            ["", None, "test", "inf", True],
+            [True, False],
+        ))
+    )
     def test_normal_false(self, value, is_convert):
-        assert not FloatTypeChecker(value, is_convert).is_type()
+        assert not tc.FloatTypeChecker(value, is_convert).is_type()
+
+
+class Test_BoolTypeChecker:
+
+    @pytest.mark.parametrize(["value", "is_convert"], [
+        ["True", True],
+        ["False", True],
+        ["true", True],
+        ["false", True],
+    ] + list(
+        itertools.product(
+            [True, False],
+            [True, False],
+        ))
+    )
+    def test_normal_true(self, value, is_convert):
+        type_checker = tc.BoolTypeChecker(value, is_convert)
+        assert type_checker.is_type()
+        assert type_checker.typecode == Typecode.BOOL
+
+    @pytest.mark.parametrize(["value", "is_convert"], [
+        ["True", False],
+        ["False", False],
+        ["true", False],
+        ["false", False],
+    ] + list(
+        itertools.product(
+            [0, 1, "yes", "no", None, inf, nan],
+            [True, False],
+        ))
+    )
+    def test_normal_false(self, value, is_convert):
+        type_checker = tc.BoolTypeChecker(value, is_convert)
+        assert not type_checker.is_type()
 
 
 class Test_DateTimeTypeChecker:
@@ -152,7 +173,7 @@ class Test_DateTimeTypeChecker:
         ],
     ])
     def test_normal_true(self, value, is_convert):
-        type_checker = DateTimeTypeChecker(value, is_convert)
+        type_checker = tc.DateTimeTypeChecker(value, is_convert)
         assert type_checker.is_type()
         assert type_checker.typecode == Typecode.DATETIME
 
@@ -165,7 +186,7 @@ class Test_DateTimeTypeChecker:
         [six.MAXSIZE, True], [six.MAXSIZE, False],
     ])
     def test_normal_false(self, value, is_convert):
-        assert not DateTimeTypeChecker(value, is_convert).is_type()
+        assert not tc.DateTimeTypeChecker(value, is_convert).is_type()
 
 
 class Test_InfinityChecker:
@@ -187,7 +208,32 @@ class Test_InfinityChecker:
             ["INF", False, False],
         ]
     )
-    def test_normal_true(self, value, is_convert, expected):
-        type_checker = InfinityChecker(value, is_convert)
+    def test_normal(self, value, is_convert, expected):
+        type_checker = tc.InfinityChecker(value, is_convert)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.INFINITY
+
+
+class Test_NanChecker:
+
+    @pytest.mark.parametrize(
+        ["value", "is_convert", "expected"],
+        list(itertools.product(
+            [0.0, six.MAXSIZE, "0", inf],
+            [True, False],
+            [False]
+        )) + list(itertools.product(
+            [nan],
+            [True, False],
+            [True]
+        )) + [
+            ["nan", True, True],
+            ["nan", False, False],
+            ["NAN", True, True],
+            ["NAN", False, False],
+        ]
+    )
+    def test_normal(self, value, is_convert, expected):
+        type_checker = tc.NanChecker(value, is_convert)
+        assert type_checker.is_type() == expected
+        assert type_checker.typecode == Typecode.NAN

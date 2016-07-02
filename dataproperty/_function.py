@@ -99,6 +99,10 @@ def is_datetime(value):
 def get_integer_digit(value):
     abs_value = abs(float(value))
 
+    if not is_float(value):
+        # bool type value reaches this line
+        raise TypeError("invalid type '%s" % (type(value)))
+
     if abs_value == 0:
         return 1
 
@@ -143,15 +147,17 @@ def _get_decimal_places(value, integer_digits):
 
 
 def get_number_of_digit(value):
+    nan = float("nan")
+
     try:
         integer_digits = get_integer_digit(value)
-    except (ValueError, TypeError):
-        integer_digits = float("nan")
+    except (ValueError, TypeError, OverflowError):
+        return (nan, nan)
 
     try:
         decimal_places = _get_decimal_places(value, integer_digits)
     except (ValueError, TypeError):
-        decimal_places = float("nan")
+        decimal_places = nan
 
     return (integer_digits, decimal_places)
 
@@ -161,3 +167,21 @@ def get_text_len(text):
         return len(str(text))
     except UnicodeEncodeError:
         return len(text)
+
+
+def strict_strtobool(value):
+    from distutils.util import strtobool
+
+    if isinstance(value, bool):
+        return value
+
+    try:
+        lower_text = value.lower()
+    except AttributeError:
+        raise ValueError("invalid value '%s'" % (str(value)))
+
+    binary_value = strtobool(lower_text)
+    if lower_text not in ["true", "false"]:
+        raise ValueError("invalid value '%s'" % (str(value)))
+
+    return bool(binary_value)

@@ -9,19 +9,17 @@ from __future__ import absolute_import
 import pytest
 
 import dataproperty.converter as dpc
-from dataproperty.converter._core import NoneConverter
-from dataproperty.converter._core import IntegerConverter
-from dataproperty.converter._core import FloatConverter
-from dataproperty.converter._core import DateTimeConverter
+import dataproperty.converter._core as dpcc
 
 
 class Test_ConverterCreator(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [dpc.NoneConverterCreator, NoneConverter],
-        [dpc.IntegerConverterCreator, IntegerConverter],
-        [dpc.FloatConverterCreator, FloatConverter],
-        [dpc.DateTimeConverterCreator, DateTimeConverter],
+        [dpc.NopConverterCreator, dpcc.NopConverter],
+        [dpc.IntegerConverterCreator, dpcc.IntegerConverter],
+        [dpc.FloatConverterCreator, dpcc.FloatConverter],
+        [dpc.BoolConverterCreator, dpcc.BoolConverter],
+        [dpc.DateTimeConverterCreator, dpcc.DateTimeConverter],
     ])
     def test_normal(self, value, expected):
         creator = value()

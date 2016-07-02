@@ -9,11 +9,11 @@ import abc
 
 import six
 
-from ._core import NoneConverter
+from ._core import NopConverter
 from ._core import IntegerConverter
 from ._core import FloatConverter
+from ._core import BoolConverter
 from ._core import DateTimeConverter
-from ._core import InfinityConverter
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -24,10 +24,10 @@ class ValueConverterCreatorInterface(object):
         pass
 
 
-class NoneConverterCreator(ValueConverterCreatorInterface):
+class NopConverterCreator(ValueConverterCreatorInterface):
 
     def create(self, value):
-        return NoneConverter(value)
+        return NopConverter(value)
 
 
 class IntegerConverterCreator(ValueConverterCreatorInterface):
@@ -42,13 +42,13 @@ class FloatConverterCreator(ValueConverterCreatorInterface):
         return FloatConverter(value)
 
 
+class BoolConverterCreator(ValueConverterCreatorInterface):
+
+    def create(self, value):
+        return BoolConverter(value)
+
+
 class DateTimeConverterCreator(ValueConverterCreatorInterface):
 
     def create(self, value):
         return DateTimeConverter(value)
-
-
-class InfinityConverterCreator(ValueConverterCreatorInterface):
-
-    def create(self, value):
-        return InfinityConverter(value)
