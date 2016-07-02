@@ -317,6 +317,8 @@ class ColumnDataProperty(DataPeropertyInterface):
             Typecode.INT,
             Typecode.DATETIME,
             Typecode.BOOL,
+            Typecode.INFINITY,
+            Typecode.NAN,
         ]
 
         for typecode in typecode_list:

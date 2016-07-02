@@ -17,6 +17,10 @@ from dataproperty import DataProperty
 from dataproperty import Typecode
 
 
+nan = float("nan")
+inf = float("inf")
+
+
 class Test_ColumnDataPeroperty:
     DATATIME_DATA = datetime.datetime(2017, 1, 1)
 
@@ -43,6 +47,14 @@ class Test_ColumnDataPeroperty:
             [DATATIME_DATA, str(DATATIME_DATA), DATATIME_DATA],
             Typecode.DATETIME,
         ],
+        [
+            [inf, "inf", "infinity", "INF"],
+            Typecode.INFINITY,
+        ],
+        [
+            [nan, "nan", "NAN"],
+            Typecode.NAN,
+        ],
 
         # None mixed values
         [[None, six.MAXSIZE, str(-six.MAXSIZE)], Typecode.INT],
@@ -50,6 +62,8 @@ class Test_ColumnDataPeroperty:
         [[None, "test"], Typecode.STRING],
         [[None, True, "False"], Typecode.BOOL],
         [[None, DATATIME_DATA, None], Typecode.DATETIME],
+        [[None, inf], Typecode.INFINITY],
+        [[None, nan], Typecode.NAN],
 
         # mixed values
         [[DATATIME_DATA, 1], Typecode.STRING],
