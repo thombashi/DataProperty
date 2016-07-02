@@ -12,6 +12,7 @@ import six
 from ._type_checker import NoneTypeChecker
 from ._type_checker import IntegerTypeChecker
 from ._type_checker import FloatTypeChecker
+from ._type_checker import BoolTypeChecker
 from ._type_checker import DateTimeTypeChecker
 from ._type_checker import InfinityChecker
 from ._type_checker import NanChecker
@@ -41,6 +42,12 @@ class FloatTypeCheckerCreator(TypeCheckerCreatorInterface):
 
     def create(self, value, is_convert):
         return FloatTypeChecker(value, is_convert)
+
+
+class BoolTypeCheckerCreator(TypeCheckerCreatorInterface):
+
+    def create(self, value, is_convert):
+        return BoolTypeChecker(value, is_convert)
 
 
 class DateTimeTypeCheckerCreator(TypeCheckerCreatorInterface):
