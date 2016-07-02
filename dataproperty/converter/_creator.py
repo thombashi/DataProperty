@@ -13,7 +13,6 @@ from ._core import NopConverter
 from ._core import IntegerConverter
 from ._core import FloatConverter
 from ._core import DateTimeConverter
-from ._core import InfinityConverter
 
 
 @six.add_metaclass(abc.ABCMeta)

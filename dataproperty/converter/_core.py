@@ -116,12 +116,3 @@ class DateTimeConverter(ValueConverter):
 
     def __get_dst_timezone_name(self, offset):
         return self.__COMMON_DST_TIMEZONE_TABLE[offset]
-
-
-class InfinityConverter(ValueConverter):
-
-    def convert(self):
-        try:
-            return float(self._value)
-        except (TypeError, ValueError):
-            raise TypeConversionError
