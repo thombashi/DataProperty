@@ -311,18 +311,18 @@ class Test_get_number_of_digit:
         [True, 1, 1],
     ])
     def test_annormal(self, value, expected1, expected2):
-        sig_digit, float_digit = get_number_of_digit(value)
-        assert sig_digit == expected1
-        assert float_digit == expected2
+        integer_digits, decimal_places = get_number_of_digit(value)
+        assert integer_digits == expected1
+        assert decimal_places == expected2
 
     @pytest.mark.parametrize(["value"], [
         [None],
         ["0xff"], ["test"], ["テスト"],
     ])
-    def test_abnormal(self, value):
-        sig_digit, float_digit = get_number_of_digit(value)
-        assert is_nan(sig_digit)
-        assert is_nan(float_digit)
+    def test_nan(self, value):
+        integer_digits, decimal_places = get_number_of_digit(value)
+        assert is_nan(integer_digits)
+        assert is_nan(decimal_places)
 
 
 class Test_get_text_len:
