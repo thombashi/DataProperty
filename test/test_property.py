@@ -39,11 +39,27 @@ class Test_DataPeroperty_data_typecode:
             [inf, False, inf, Typecode.INFINITY],
             ["inf", True, inf, Typecode.INFINITY],
             ["inf", False, "inf", Typecode.STRING],
+
+            ["nan", False, "nan", Typecode.STRING],
         ]
     )
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(value, is_convert=is_convert)
         assert dp.data == expected_data
+        assert dp.typecode == expected_typecode
+
+    @pytest.mark.parametrize(
+        ["value", "is_convert", "expected_data", "expected_typecode"],
+        [
+            [nan, True, nan, Typecode.NAN],
+            [nan, False, nan, Typecode.NAN],
+            ["nan", True, nan, Typecode.NAN],
+        ]
+    )
+    def test_normal_nan(
+            self, value, is_convert, expected_data, expected_typecode):
+        dp = DataProperty(value, is_convert=is_convert)
+        assert is_nan(dp.data)
         assert dp.typecode == expected_typecode
 
     @pytest.mark.parametrize(["value", "none_value", "expected"], [
@@ -135,6 +151,7 @@ class Test_DataPeroperty_str_len:
         ["a", 1],
         [None, 4],
         [inf, 3],
+        [nan, 3],
     ])
     def test_normal(self, value, expected):
         dp = DataProperty(value)
