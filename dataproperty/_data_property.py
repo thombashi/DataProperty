@@ -22,6 +22,7 @@ from ._factory import IntegerTypeFactory
 from ._factory import FloatTypeFactory
 from ._factory import DateTimeTypeFactory
 from ._factory import InfinityTypeFactory
+from ._factory import NanTypeFactory
 
 
 class DataProperty(DataPeropertyInterface):
@@ -39,6 +40,7 @@ class DataProperty(DataPeropertyInterface):
         NoneTypeFactory(),
         IntegerTypeFactory(),
         InfinityTypeFactory(),
+        NanTypeFactory(),
         FloatTypeFactory(),
         DateTimeTypeFactory(),
     ]

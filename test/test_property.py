@@ -106,7 +106,7 @@ class Test_DataPeroperty_align:
         ["a", Align.LEFT],
         [None, Align.LEFT],
         [inf, Align.LEFT],
-        [nan, Align.RIGHT],
+        [nan, Align.LEFT],
     ])
     def test_normal(self, value, expected):
         dp = DataProperty(value)
