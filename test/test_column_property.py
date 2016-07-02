@@ -68,8 +68,11 @@ class Test_ColumnDataPeroperty:
         # mixed values
         [[True, 1], Typecode.STRING],
         [[DATATIME_DATA, "test"], Typecode.STRING],
-        [[inf, 1.0], Typecode.STRING],
-        [[nan, 0.1], Typecode.STRING],
+        [[inf, 0.1], Typecode.FLOAT],
+        [[inf, "test"], Typecode.STRING],
+        [[nan, 0.1], Typecode.FLOAT],
+        [[nan, "test"], Typecode.STRING],
+        [[six.MAXSIZE, inf, nan], Typecode.FLOAT],
         [
             [1, 1.1, DATATIME_DATA, "test", None, True, inf, nan],
             Typecode.STRING,

@@ -309,7 +309,28 @@ class ColumnDataProperty(DataPeropertyInterface):
             self.__typecode_bitmap & ~typecode,
         ])
 
+    def __is_float_typecode(self):
+        number_typecode = (
+            Typecode.INT | Typecode.FLOAT | Typecode.INFINITY | Typecode.NAN)
+
+        if self.__is_not_single_typecode(number_typecode):
+            return False
+
+        if bin(self.__typecode_bitmap & number_typecode).count("1") >= 2:
+            return True
+
+        return False
+
     def __get_typecode_from_bitmap(self):
+        if self.__is_float_typecode():
+            return Typecode.FLOAT
+
+        if any([
+            self.__is_not_single_typecode(Typecode.BOOL),
+            self.__is_not_single_typecode(Typecode.DATETIME),
+        ]):
+            return Typecode.STRING
+
         typecode_list = [
             Typecode.STRING,
             Typecode.FLOAT,
@@ -319,14 +340,6 @@ class ColumnDataProperty(DataPeropertyInterface):
             Typecode.INFINITY,
             Typecode.NAN,
         ]
-
-        if any([
-            self.__is_not_single_typecode(Typecode.BOOL),
-            self.__is_not_single_typecode(Typecode.DATETIME),
-            self.__is_not_single_typecode(Typecode.INFINITY),
-            self.__is_not_single_typecode(Typecode.NAN),
-        ]):
-            return Typecode.STRING
 
         for typecode in typecode_list:
             if self.__typecode_bitmap & typecode:
