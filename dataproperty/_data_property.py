@@ -20,6 +20,7 @@ from ._function import get_text_len
 from ._factory import NoneTypeFactory
 from ._factory import IntegerTypeFactory
 from ._factory import FloatTypeFactory
+from ._factory import BoolTypeFactory
 from ._factory import DateTimeTypeFactory
 from ._factory import InfinityTypeFactory
 from ._factory import NanTypeFactory
@@ -42,6 +43,7 @@ class DataProperty(DataPeropertyInterface):
         InfinityTypeFactory(),
         NanTypeFactory(),
         FloatTypeFactory(),
+        BoolTypeFactory(),
         DateTimeTypeFactory(),
     ]
 

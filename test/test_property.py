@@ -30,6 +30,9 @@ class Test_DataPeroperty_data_typecode:
             ["a", True, "a", Typecode.STRING],
             ["a", False, "a", Typecode.STRING],
 
+            [True, True, True, Typecode.BOOL],
+            [False, False, False, Typecode.BOOL],
+
             [None, True, None, Typecode.NONE],
             [None, False, None, Typecode.NONE],
             ["None", True, "None", Typecode.STRING],
