@@ -13,7 +13,6 @@ from .converter import NopConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import DateTimeConverterCreator
-from .converter import InfinityConverterCreator
 from ._error import TypeConversionError
 from ._function import is_nan
 from ._typecode import Typecode

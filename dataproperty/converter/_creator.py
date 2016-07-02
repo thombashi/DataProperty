@@ -46,9 +46,3 @@ class DateTimeConverterCreator(ValueConverterCreatorInterface):
 
     def create(self, value):
         return DateTimeConverter(value)
-
-
-class InfinityConverterCreator(ValueConverterCreatorInterface):
-
-    def create(self, value):
-        return InfinityConverter(value)
