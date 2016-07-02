@@ -56,30 +56,21 @@ class Test_IntegerTypeChecker:
         assert type_checker.typecode == Typecode.INT
 
     @pytest.mark.parametrize(["value", "is_convert"], [
-        ["", True], ["", False],
-        [None, True], [None, False],
-        [nan, True], [nan, False],
-        [inf, True], [inf, False],
-        [0.5, True], [0.5, False],
-        ["0.5", True], ["0.5", False],
-        [.999, True], [.999, False],
-        [".999", True], [".999", False],
-        ["test", True], ["test", False],
-        ["1a1", True], ["1a1", False],
-        ["11a", True], ["11a", False],
-        ["a11", True], ["a11", False],
-        [True, True], [True, False],
-        [1e-05, True], [1e-05, False],
-        [-1e-05, True], [-1e-05, False],
-        ["1e-05", True], ["1e-05", False],
-        ["-1e-05", True], ["-1e-05", False],
-        [-0.00001, True], [-0.00001, False],
         ["0", False],
         ["0xff", True], ["0xff", False],
 
         [" 1 ", False],
         [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
-    ])
+    ] + list(
+        itertools.product(
+            [
+                None, True, nan, inf, 0.5, "0.5", .999, ".999",
+                "", "test", "1a1", "11a", "a11",
+                1e-05, -1e-05, "1e-05", "-1e-05",
+            ],
+            [True, False],
+        ))
+    )
     def test_normal_false(self, value, is_convert):
         assert not tc.IntegerTypeChecker(value, is_convert).is_type()
 
