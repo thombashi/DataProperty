@@ -20,10 +20,17 @@ def prop_extractor():
     return PropertyExtractor()
 
 
+def bool_converter_test(value):
+    return str(value).lower()
+
+
 class Test_PropertyExtractor_extract_data_property_matrix:
 
     @pytest.mark.parametrize(
-        ["value", "none_value", "inf_value", "nan_value"],
+        [
+            "value", "none_value", "inf_value", "nan_value",
+            "bool_converter",
+        ],
         [
             [
                 [
@@ -35,14 +42,17 @@ class Test_PropertyExtractor_extract_data_property_matrix:
                 "null",
                 "Infinity",
                 "NaN",
+                bool_converter_test,
             ],
         ])
     def test_normal(
-            self, prop_extractor, value, none_value, inf_value, nan_value):
+            self, prop_extractor, value, none_value, inf_value, nan_value,
+            bool_converter):
         prop_extractor.data_matrix = value
         prop_extractor.none_value = none_value
         prop_extractor.inf_value = inf_value
         prop_extractor.nan_value = nan_value
+        prop_extractor.bool_converter = bool_converter_test
         prop_matrix = prop_extractor.extract_data_property_matrix()
 
         assert len(prop_matrix) == 4
@@ -102,7 +112,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.format_str == "s"
 
         prop = prop_matrix[3][0]
-        assert prop.data is False
+        assert prop.data == "false"
         assert prop.typecode == Typecode.BOOL
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
