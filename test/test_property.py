@@ -12,6 +12,8 @@ import six
 from dataproperty import *
 
 
+DATATIME_DATA = datetime.datetime(2017, 1, 2, 3, 4, 5)
+
 nan = float("nan")
 inf = float("inf")
 
@@ -32,6 +34,25 @@ class Test_DataPeroperty_data_typecode:
 
             [True, True, True, Typecode.BOOL],
             [False, False, False, Typecode.BOOL],
+
+            [
+                "2017-01-02 03:04:05",
+                True,
+                datetime.datetime(2017, 1, 2, 3, 4, 5),
+                Typecode.DATETIME
+            ],
+            [
+                DATATIME_DATA,
+                True,
+                DATATIME_DATA,
+                Typecode.DATETIME
+            ],
+            [
+                "2017-01-02 03:04:05",
+                False,
+                "2017-01-02 03:04:05",
+                Typecode.STRING
+            ],
 
             [None, True, None, Typecode.NONE],
             [None, False, None, Typecode.NONE],
@@ -93,7 +114,6 @@ def datetime_converter_test_1(value):
 
 
 class Test_DataPeroperty_set_data:
-    DATATIME_DATA = datetime.datetime(2017, 1, 1, 0, 0, 0)
 
     @pytest.mark.parametrize(
         [
@@ -157,7 +177,7 @@ class Test_DataPeroperty_set_data:
         [
             [
                 DATATIME_DATA, datetime_converter_test_0,
-                True, "2017-01-01 00:00:00",
+                True, "2017-01-02 03:04:05",
             ],
             [
                 "2017-01-01 00:00:00", datetime_converter_test_1,
@@ -222,6 +242,7 @@ class Test_DataPeroperty_align:
         [1.0, Align.RIGHT],
         ["a", Align.LEFT],
         [True, Align.LEFT],
+        [DATATIME_DATA, Align.LEFT],
         [None, Align.LEFT],
         [inf, Align.LEFT],
         [nan, Align.LEFT],
@@ -276,6 +297,7 @@ class Test_DataPeroperty_integer_digits:
     @pytest.mark.parametrize(["value"], [
         [None],
         [True],
+        [DATATIME_DATA],
         ["a"],
         [inf],
         [nan],
@@ -299,6 +321,7 @@ class Test_DataPeroperty_decimal_places:
     @pytest.mark.parametrize(["value"], [
         [None],
         [True],
+        [DATATIME_DATA],
         ["a"],
         [inf],
         [nan],
@@ -322,6 +345,7 @@ class Test_DataPeroperty_additional_format_len:
 
         [None, 0],
         [True, 0],
+        [DATATIME_DATA, 0],
         ["a", 0],
         [inf, 0],
         [nan, 0],
@@ -362,6 +386,16 @@ class Test_DataPeroperty_repr:
         [
             True,
             "data=True, typename=BOOL, align=left, str_len=4, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+        [
+            DATATIME_DATA,
+            "data=2017-01-02 03:04:05, typename=DATETIME, align=left, str_len=19, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+        [
+            "2017-01-02 03:04:05",
+            "data=2017-01-02 03:04:05, typename=DATETIME, align=left, str_len=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
