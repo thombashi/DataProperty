@@ -248,6 +248,7 @@ class ColumnDataProperty(DataPeropertyInterface):
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
+        "__data_prop_list",
     )
 
     @property
@@ -272,7 +273,24 @@ class ColumnDataProperty(DataPeropertyInterface):
 
     @property
     def padding_len(self):
-        return self.__str_len
+        if self.typecode != Typecode.FLOAT:
+            return self.__str_len
+
+        max_len = self.__str_len
+        float_format = "%" + self.format_str
+
+        for data_prop in self.__data_prop_list:
+            if data_prop.typecode in [Typecode.INFINITY, Typecode.NAN]:
+                continue
+
+            try:
+                format_str = float_format % (data_prop.data)
+            except TypeError:
+                continue
+
+            max_len = max(max_len, len(format_str))
+
+        return max_len
 
     @property
     def minmax_integer_digits(self):
@@ -292,6 +310,7 @@ class ColumnDataProperty(DataPeropertyInterface):
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = MinMaxContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
+        self.__data_prop_list = []
 
     def __repr__(self):
         return ", ".join([
@@ -310,6 +329,7 @@ class ColumnDataProperty(DataPeropertyInterface):
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
         self.__update(dataprop)
+        self.__data_prop_list.append(dataprop)
 
     def __is_not_single_typecode(self, typecode):
         return all([
@@ -363,8 +383,6 @@ class ColumnDataProperty(DataPeropertyInterface):
 
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INT):
             self.__minmax_integer_digits.update(dataprop.integer_digits)
-
-        if dataprop.typecode == Typecode.FLOAT:
             self.__minmax_decimal_places.update(dataprop.decimal_places)
 
         self.__minmax_additional_format_len.update(
