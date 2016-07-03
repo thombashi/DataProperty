@@ -24,12 +24,16 @@ def bool_converter_test(value):
     return str(value).lower()
 
 
+def datetime_converter_test(value):
+    return value.strftime("%Y%m%d %H%M%S")
+
+
 class Test_PropertyExtractor_extract_data_property_matrix:
 
     @pytest.mark.parametrize(
         [
             "value", "none_value", "inf_value", "nan_value",
-            "bool_converter",
+            "bool_converter", "datetime_converter",
         ],
         [
             [
@@ -43,16 +47,18 @@ class Test_PropertyExtractor_extract_data_property_matrix:
                 "Infinity",
                 "NaN",
                 bool_converter_test,
+                datetime_converter_test,
             ],
         ])
     def test_normal(
             self, prop_extractor, value, none_value, inf_value, nan_value,
-            bool_converter):
+            bool_converter, datetime_converter):
         prop_extractor.data_matrix = value
         prop_extractor.none_value = none_value
         prop_extractor.inf_value = inf_value
         prop_extractor.nan_value = nan_value
         prop_extractor.bool_converter = bool_converter_test
+        prop_extractor.datetime_converter = datetime_converter
         prop_matrix = prop_extractor.extract_data_property_matrix()
 
         assert len(prop_matrix) == 4
@@ -117,6 +123,15 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 5
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == "s"
+
+        prop = prop_matrix[3][1]
+        assert prop.data == "20170101 000000"
+        assert prop.typecode == Typecode.DATETIME
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.str_len == 15
         assert is_nan(prop.decimal_places)
         assert prop.format_str == "s"
 

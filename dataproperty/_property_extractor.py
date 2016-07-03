@@ -14,6 +14,7 @@ class PropertyExtractor(object):
 
     def __init__(self):
         from ._data_property import default_bool_converter
+        from ._data_property import default_datetime_converter
 
         self.header_list = []
         self.data_matrix = []
@@ -22,6 +23,7 @@ class PropertyExtractor(object):
         self.inf_value = float("inf")
         self.nan_value = float("nan")
         self.bool_converter = default_bool_converter
+        self.datetime_converter = default_datetime_converter
         self.is_convert = True
 
     def extract_data_property_matrix(self):
@@ -61,6 +63,7 @@ class PropertyExtractor(object):
                 inf_value=self.inf_value,
                 nan_value=self.nan_value,
                 bool_converter=self.bool_converter,
+                datetime_converter=self.datetime_converter,
                 is_convert=self.is_convert)
             for data in data_list
         ]
