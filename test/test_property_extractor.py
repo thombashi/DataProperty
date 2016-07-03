@@ -30,6 +30,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
                     [None, "1"],
                     ["1.1", "a"],
                     [nan, inf],
+                    ["false", datetime.datetime(2017, 1, 1, 0, 0, 0)]
                 ],
                 "null",
                 "Infinity",
@@ -40,9 +41,11 @@ class Test_PropertyExtractor_extract_data_property_matrix:
             self, prop_extractor, value, none_value, inf_value, nan_value):
         prop_extractor.data_matrix = value
         prop_extractor.none_value = none_value
+        prop_extractor.inf_value = inf_value
+        prop_extractor.nan_value = nan_value
         prop_matrix = prop_extractor.extract_data_property_matrix()
 
-        assert len(prop_matrix) == 3
+        assert len(prop_matrix) == 4
 
         prop = prop_matrix[0][0]
         assert prop.data == "null"
@@ -81,7 +84,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.format_str == "s"
 
         prop = prop_matrix[2][0]
-        assert is_nan(prop.data)
+        assert prop.data == "NaN"
         assert prop.typecode == Typecode.NAN
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -90,11 +93,20 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.format_str == "s"
 
         prop = prop_matrix[2][1]
-        assert prop.data == inf
+        assert prop.data == "Infinity"
         assert prop.typecode == Typecode.INFINITY
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.str_len == 3
+        assert prop.str_len == 8
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == "s"
+
+        prop = prop_matrix[3][0]
+        assert prop.data is False
+        assert prop.typecode == Typecode.BOOL
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.str_len == 5
         assert is_nan(prop.decimal_places)
         assert prop.format_str == "s"
 
