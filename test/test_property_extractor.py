@@ -20,23 +20,48 @@ def prop_extractor():
     return PropertyExtractor()
 
 
+def bool_converter_test(value):
+    return str(value).lower()
+
+
+def datetime_converter_test(value):
+    return value.strftime("%Y%m%d %H%M%S")
+
+
 class Test_PropertyExtractor_extract_data_property_matrix:
 
-    @pytest.mark.parametrize(["value", "non_value"], [
+    @pytest.mark.parametrize(
+        [
+            "value", "none_value", "inf_value", "nan_value",
+            "bool_converter", "datetime_converter",
+        ],
         [
             [
-                [None, 1],
-                [1.1, "a"],
+                [
+                    [None, "1"],
+                    ["1.1", "a"],
+                    [nan, inf],
+                    ["false", datetime.datetime(2017, 1, 1, 0, 0, 0)]
+                ],
+                "null",
+                "Infinity",
+                "NaN",
+                bool_converter_test,
+                datetime_converter_test,
             ],
-            "null",
-        ],
-    ])
-    def test_normal(self, prop_extractor, value, non_value):
+        ])
+    def test_normal(
+            self, prop_extractor, value, none_value, inf_value, nan_value,
+            bool_converter, datetime_converter):
         prop_extractor.data_matrix = value
-        prop_extractor.none_value = non_value
+        prop_extractor.none_value = none_value
+        prop_extractor.inf_value = inf_value
+        prop_extractor.nan_value = nan_value
+        prop_extractor.bool_converter = bool_converter_test
+        prop_extractor.datetime_converter = datetime_converter
         prop_matrix = prop_extractor.extract_data_property_matrix()
 
-        assert len(prop_matrix) == 2
+        assert len(prop_matrix) == 4
 
         prop = prop_matrix[0][0]
         assert prop.data == "null"
@@ -48,6 +73,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.format_str == "s"
 
         prop = prop_matrix[0][1]
+        assert prop.data == 1
         assert prop.typecode == Typecode.INT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
@@ -56,6 +82,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.format_str == "d"
 
         prop = prop_matrix[1][0]
+        assert prop.data == 1.1
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
@@ -64,10 +91,47 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.format_str == ".1f"
 
         prop = prop_matrix[1][1]
+        assert prop.data == "a"
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 1
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == "s"
+
+        prop = prop_matrix[2][0]
+        assert prop.data == "NaN"
+        assert prop.typecode == Typecode.NAN
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.str_len == 3
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == "s"
+
+        prop = prop_matrix[2][1]
+        assert prop.data == "Infinity"
+        assert prop.typecode == Typecode.INFINITY
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.str_len == 8
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == "s"
+
+        prop = prop_matrix[3][0]
+        assert prop.data == "false"
+        assert prop.typecode == Typecode.BOOL
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.str_len == 5
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == "s"
+
+        prop = prop_matrix[3][1]
+        assert prop.data == "20170101 000000"
+        assert prop.typecode == Typecode.DATETIME
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.str_len == 15
         assert is_nan(prop.decimal_places)
         assert prop.format_str == "s"
 
