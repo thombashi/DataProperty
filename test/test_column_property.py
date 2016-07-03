@@ -87,7 +87,7 @@ class Test_ColumnDataPeroperty:
 
         assert col_prop.typecode == expected
 
-    def test_normal_0(self):
+    def test_normal_number_0(self):
         col_prop = ColumnDataProperty()
         col_prop.update_header(DataProperty("abc"))
 
@@ -113,7 +113,33 @@ class Test_ColumnDataPeroperty:
             "integer_digits=(min=1, max=2), decimal_places=(min=2, max=3), "
             "additional_format_len=(min=0, max=1)")
 
-    def test_normal_1(self):
+    def test_normal_number_1(self):
+        col_prop = ColumnDataProperty()
+        col_prop.update_header(DataProperty("abc"))
+
+        for value in [0, inf, nan]:
+            col_prop.update_body(DataProperty(value))
+
+        assert col_prop.align == Align.RIGHT
+        assert is_nan(col_prop.decimal_places)
+        assert col_prop.typecode == Typecode.FLOAT
+        assert col_prop.padding_len == 3
+
+        assert col_prop.minmax_integer_digits.min_value == 1
+        assert col_prop.minmax_integer_digits.max_value == 1
+
+        assert col_prop.minmax_decimal_places.min_value is None
+        assert col_prop.minmax_decimal_places.max_value is None
+
+        assert col_prop.minmax_additional_format_len.min_value == 0
+        assert col_prop.minmax_additional_format_len.max_value == 0
+
+        assert str(col_prop) == (
+            "typename=FLOAT, align=right, padding_len=3, "
+            "integer_digits=(min=1, max=1), decimal_places=(min=None, max=None), "
+            "additional_format_len=(min=0, max=0)")
+
+    def test_normal_mix_0(self):
         col_prop = ColumnDataProperty()
         col_prop.update_header(DataProperty("abc"))
 

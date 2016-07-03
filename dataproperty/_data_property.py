@@ -30,6 +30,10 @@ def default_bool_converter(value):
     return value
 
 
+def default_datetime_converter(value):
+    return value.strftime("%Y-%m-%dT%H:%M:%S%z")
+
+
 class DataProperty(DataPeropertyInterface):
     __slots__ = (
         "__data",
@@ -129,12 +133,13 @@ class DataProperty(DataPeropertyInterface):
             self, data,
             none_value=None, inf_value=float("inf"), nan_value=float("nan"),
             bool_converter=default_bool_converter,
+            datetime_converter=default_datetime_converter,
             is_convert=True,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__()
 
-        self.__set_data(
-            data, none_value, inf_value, nan_value, bool_converter, is_convert)
+        self.__set_data(data, none_value, inf_value, nan_value, is_convert)
+        self.__convert_data(bool_converter, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
@@ -192,7 +197,7 @@ class DataProperty(DataPeropertyInterface):
         return get_text_len(self.data)
 
     def __set_data(
-            self, data, none_value, inf_value, nan_value, bool_converter, is_convert):
+            self, data, none_value, inf_value, nan_value, is_convert):
         special_value_table = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
@@ -215,13 +220,16 @@ class DataProperty(DataPeropertyInterface):
             self.__data = type_factory.value_converter_factory.create(
                 data).convert()
 
-            if self.typecode == Typecode.BOOL:
-                self.__data = bool_converter(self.__data)
-
             return
 
         self.__typecode = Typecode.STRING
         self.__data = str(data)
+
+    def __convert_data(self, bool_converter, datetime_converter):
+        if self.typecode == Typecode.BOOL:
+            self.__data = bool_converter(self.__data)
+        elif self.typecode == Typecode.DATETIME:
+            self.__data = datetime_converter(self.__data)
 
     def __replace_tabs(self, replace_tabs_with_spaces, tab_length):
         if not replace_tabs_with_spaces:

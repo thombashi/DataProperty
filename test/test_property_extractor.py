@@ -184,7 +184,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.DATETIME
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 25
+        assert prop.padding_len == 24
         assert is_nan(prop.decimal_places)
         assert prop.format_str == "s"
 
