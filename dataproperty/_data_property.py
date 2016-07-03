@@ -31,7 +31,7 @@ def default_bool_converter(value):
 
 
 def default_datetime_converter(value):
-    return value.strftime("%Y-%m-%dT%H:%M:%S%z")
+    return value
 
 
 class DataProperty(DataPeropertyInterface):
