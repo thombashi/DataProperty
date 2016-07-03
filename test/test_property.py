@@ -84,7 +84,16 @@ def bool_converter_test(value):
     return "false value"
 
 
+def datetime_converter_test_0(value):
+    return value.strftime("%Y-%m-%d %H:%M:%S%z")
+
+
+def datetime_converter_test_1(value):
+    return value.strftime("%Y/%m/%d %H:%M:%S")
+
+
 class Test_DataPeroperty_set_data:
+    DATATIME_DATA = datetime.datetime(2017, 1, 1, 0, 0, 0)
 
     @pytest.mark.parametrize(
         [
@@ -139,6 +148,32 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             bool_converter=bool_converter,
+            is_convert=is_convert)
+
+        assert dp.data == expected
+
+    @pytest.mark.parametrize(
+        ["value", "datetime_converter", "is_convert", "expected"],
+        [
+            [
+                DATATIME_DATA, datetime_converter_test_0,
+                True, "2017-01-01 00:00:00",
+            ],
+            [
+                "2017-01-01 00:00:00", datetime_converter_test_1,
+                True, "2017/01/01 00:00:00",
+            ],
+            [
+                "2017-01-01", datetime_converter_test_0,
+                False, "2017-01-01",
+            ],
+        ]
+    )
+    def test_special_datetime(
+            self, value, datetime_converter,  is_convert, expected):
+        dp = DataProperty(
+            value,
+            datetime_converter=datetime_converter,
             is_convert=is_convert)
 
         assert dp.data == expected
