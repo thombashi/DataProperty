@@ -185,7 +185,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
         assert prop.padding_len == 1
-        assert is_nan(prop.decimal_places)
+        assert prop.decimal_places == 0
         assert prop.format_str == "d"
 
         prop = col_prop_list[1]
@@ -208,7 +208,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
-        assert prop.padding_len == 3
+        assert prop.padding_len == 4
         assert prop.decimal_places == 1
         assert prop.format_str == ".1f"
 
