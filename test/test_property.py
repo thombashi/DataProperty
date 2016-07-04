@@ -32,6 +32,9 @@ class Test_DataPeroperty_data_typecode:
             ["a", True, "a", Typecode.STRING],
             ["a", False, "a", Typecode.STRING],
 
+            ["3.3.5", True, "3.3.5", Typecode.STRING],
+            ["51.0.2704.106", True, "51.0.2704.106", Typecode.STRING],
+
             [True, True, True, Typecode.BOOL],
             [False, False, False, Typecode.BOOL],
 
