@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 import abc
+import re
 
 from .._error import TypeConversionError
 
@@ -82,6 +83,8 @@ class DateTimeConverter(ValueConverter):
         7200: "Africa/Tripoli",  # 0200
     }
 
+    __RE_VERSION_STR = re.compile("\d+\.\d+\.\d")
+
     def __init__(self, value):
         super(DateTimeConverter, self).__init__(value)
 
@@ -95,6 +98,8 @@ class DateTimeConverter(ValueConverter):
         if isinstance(self._value, datetime.datetime):
             self.__datetime = self._value
             return self.__datetime
+
+        self.__validate_datetime_string()
 
         try:
             self.__datetime = dateutil.parser.parse(self._value)
@@ -128,3 +133,19 @@ class DateTimeConverter(ValueConverter):
 
     def __get_dst_timezone_name(self, offset):
         return self.__COMMON_DST_TIMEZONE_TABLE[offset]
+
+    def __validate_datetime_string(self):
+        """
+        This validation is required for version string (such as "3.3.5").
+        A version string is converted to a datetime value if this
+        validation is not executed.
+        """
+
+        try:
+            if self.__RE_VERSION_STR.search(self._value) is not None:
+                raise TypeConversionError(
+                    "invalid datetime string: version string found " +
+                    self._value)
+        except TypeError:
+            raise TypeConversionError(
+                "invalid datetime string: " + str(self._value))
