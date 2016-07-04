@@ -99,7 +99,8 @@ class DateTimeConverter(ValueConverter):
         try:
             self.__datetime = dateutil.parser.parse(self._value)
         except (AttributeError, ValueError, OverflowError):
-            raise TypeConversionError
+            raise TypeConversionError(
+                "failed to parse as datetime: " + str(self._value))
 
         try:
             dst_timezone_name = self.__get_dst_timezone_name(
