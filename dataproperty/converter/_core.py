@@ -49,9 +49,14 @@ class IntegerConverter(ValueConverter):
 class FloatConverter(ValueConverter):
 
     def convert(self):
+        import decimal
+
+        if isinstance(self._value, float):
+            return self._value
+
         try:
-            return float(self._value)
-        except (TypeError, ValueError):
+            return decimal.Decimal(self._value)
+        except (TypeError, ValueError, decimal.InvalidOperation):
             raise TypeConversionError
 
 

@@ -5,6 +5,7 @@
 """
 
 import datetime
+from decimal import Decimal
 from dateutil.tz import tzoffset
 import pytest
 import six
@@ -66,13 +67,13 @@ class Test_FloatConverter_convert:
         [1, 1.0],
         [-1, -1.0],
         ["0.0", 0.0],
-        ["0.1", 0.1],
-        ["-0.1", -0.1],
+        ["0.1", Decimal("0.1")],
+        ["-0.1", Decimal("-0.1")],
         ["1", 1.0],
         ["-1", -1.0],
         [.5, .5],
         [0., 0.0],
-        ["1e-05", 1e-05],
+        ["1e-05", Decimal('0.00001')],
         [inf, inf],
         [True, 1.0],
     ])

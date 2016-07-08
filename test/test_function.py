@@ -6,6 +6,7 @@
 """
 
 import datetime
+from decimal import Decimal
 
 from dataproperty import *
 import pytest
@@ -22,6 +23,7 @@ class Test_is_integer:
         [0], [six.MAXSIZE], [-six.MAXSIZE],
         ["0"], [str(six.MAXSIZE)], [str(-six.MAXSIZE)],
         [" 1"], ["1 "],
+        [Decimal(0)],
     ])
     def test_normal(self, value):
         assert is_integer(value)
@@ -84,11 +86,13 @@ class Test_is_nan:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [nan, True],
+        [Decimal("nan"), True],
 
         [None, False],
         ["nan", False],
         ["１", False],
         [inf, False],
+        [Decimal("inf"), False],
         [1, False],
         [0.1, False],
         [True, False],
@@ -111,6 +115,8 @@ class Test_is_not_empty_string:
         [[], False],
         [1, False],
         [True, False],
+        [nan, False],
+        [Decimal("nan"), False],
     ])
     def test_normal(self, value, expected):
         assert is_not_empty_string(value) == expected
