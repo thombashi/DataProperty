@@ -97,9 +97,11 @@ def is_datetime(value):
 
 
 def get_integer_digit(value):
+    from ._type_checker import FloatTypeChecker
+
     abs_value = abs(float(value))
 
-    if not is_float(value):
+    if not FloatTypeChecker(value).is_type():
         # bool type value reaches this line
         raise TypeError("invalid type '%s" % (type(value)))
 
