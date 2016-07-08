@@ -132,7 +132,6 @@ class FloatTypeChecker(TypeChecker):
         return any([
             isinstance(self._value, float),
             isinstance(self._value, Decimal),
-            self._value == float("inf"),
         ])
 
     def _is_exclude_instance(self):
