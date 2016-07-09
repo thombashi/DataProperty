@@ -34,7 +34,24 @@ def default_datetime_converter(value):
     return value
 
 
-class DataProperty(DataPeropertyInterface):
+class DataPeropertyBase(DataPeropertyInterface):
+    __slots__ = ()
+
+    @property
+    def format_str(self):
+        if self.typecode == Typecode.INT:
+            return "d"
+
+        if self.typecode == Typecode.FLOAT:
+            if is_nan(self.decimal_places):
+                return "f"
+
+            return ".%df" % (self.decimal_places)
+
+        return "s"
+
+
+class DataProperty(DataPeropertyBase):
     __slots__ = (
         "__data",
         "__typecode",
@@ -82,19 +99,6 @@ class DataProperty(DataPeropertyInterface):
         """
 
         return self.__typecode
-
-    @property
-    def format_str(self):
-        if self.typecode == Typecode.INT:
-            return "d"
-
-        if self.typecode == Typecode.FLOAT:
-            if is_nan(self.decimal_places):
-                return "f"
-
-            return ".%df" % (self.decimal_places)
-
-        return "s"
 
     @property
     def data(self):
@@ -241,7 +245,7 @@ class DataProperty(DataPeropertyInterface):
             pass
 
 
-class ColumnDataProperty(DataPeropertyInterface):
+class ColumnDataProperty(DataPeropertyBase):
     __slots__ = (
         "__typecode_bitmap",
         "__str_len",
