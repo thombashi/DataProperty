@@ -60,6 +60,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         prop_extractor.nan_value = nan_value
         prop_extractor.bool_converter = bool_converter_test
         prop_extractor.datetime_converter = datetime_converter
+        prop_extractor.datetime_format_str = "s"
         prop_matrix = prop_extractor.extract_data_property_matrix()
 
         assert len(prop_matrix) == 4
@@ -134,7 +135,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 15
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "%Y-%m-%dT%H:%M:%S%z"
+        assert prop.format_str == "s"
 
     @pytest.mark.parametrize(["value", "expected"], [
         [None, TypeError],
@@ -249,7 +250,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.DATETIME
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 25
+        assert prop.padding_len == 24
         assert is_nan(prop.decimal_places)
         assert prop.format_str == "%Y-%m-%dT%H:%M:%S%z"
 

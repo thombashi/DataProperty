@@ -24,6 +24,7 @@ class PropertyExtractor(object):
         self.nan_value = float("nan")
         self.bool_converter = default_bool_converter
         self.datetime_converter = default_datetime_converter
+        self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
         self.is_convert = True
 
     def extract_data_property_matrix(self):
@@ -39,7 +40,8 @@ class PropertyExtractor(object):
 
         for col_idx, col_prop_list in enumerate(zip(*data_prop_matrix)):
             column_prop = ColumnDataProperty(
-                min_padding_len=self.min_padding_len)
+                min_padding_len=self.min_padding_len,
+                datetime_format_str=self.datetime_format_str)
 
             if is_not_empty_list_or_tuple(header_prop_list):
                 header_prop = header_prop_list[col_idx]
@@ -64,6 +66,7 @@ class PropertyExtractor(object):
                 nan_value=self.nan_value,
                 bool_converter=self.bool_converter,
                 datetime_converter=self.datetime_converter,
+                datetime_format_str=self.datetime_format_str,
                 is_convert=self.is_convert)
             for data in data_list
         ]
