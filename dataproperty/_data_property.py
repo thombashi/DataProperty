@@ -37,14 +37,18 @@ def default_datetime_converter(value):
 
 
 class DataPeropertyBase(DataPeropertyInterface):
-    __slots__ = ()
+    __slots__ = ("__datetime_format_str")
 
     @property
     def format_str(self):
-        if self.typecode == Typecode.INT:
-            return "d"
-        elif self.typecode == Typecode.BOOL:
-            return ""
+        format_str = {
+            Typecode.INT: "d",
+            Typecode.BOOL: "",
+            Typecode.DATETIME: self.__datetime_format_str,
+        }.get(self.typecode)
+
+        if format_str is not None:
+            return format_str
 
         if self.typecode in (Typecode.FLOAT, Typecode.INFINITY, Typecode.NAN):
             if is_nan(self.decimal_places):
@@ -53,6 +57,9 @@ class DataPeropertyBase(DataPeropertyInterface):
             return ".%df" % (self.decimal_places)
 
         return "s"
+
+    def __init__(self, datetime_format_str):
+        self.__datetime_format_str = datetime_format_str
 
 
 class DataProperty(DataPeropertyBase):
@@ -143,9 +150,10 @@ class DataProperty(DataPeropertyBase):
             none_value=None, inf_value=float("inf"), nan_value=float("nan"),
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
+            datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
             is_convert=True,
             replace_tabs_with_spaces=True, tab_length=2):
-        super(DataProperty, self).__init__()
+        super(DataProperty, self).__init__(datetime_format_str)
 
         self.__set_data(data, none_value, inf_value, nan_value, is_convert)
         self.__convert_data(bool_converter, datetime_converter)
@@ -338,7 +346,12 @@ class ColumnDataProperty(DataPeropertyBase):
     def type_factory(self):
         return self.__FACTORY_TABLE.get(self.typecode)
 
-    def __init__(self, min_padding_len=0):
+    def __init__(
+            self,
+            min_padding_len=0,
+            datetime_format_str="%Y-%m-%dT%H:%M:%S%z"):
+        super(ColumnDataProperty, self).__init__(datetime_format_str)
+
         self.__typecode_bitmap = Typecode.NONE
         self.__str_len = min_padding_len
         self.__minmax_integer_digits = MinMaxContainer()

@@ -134,7 +134,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 15
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "s"
+        assert prop.format_str == "%Y-%m-%dT%H:%M:%S%z"
 
     @pytest.mark.parametrize(["value", "expected"], [
         [None, TypeError],
@@ -251,7 +251,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 25
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "s"
+        assert prop.format_str == "%Y-%m-%dT%H:%M:%S%z"
 
     @pytest.mark.parametrize(["header_list", "value", "expected"], [
         [
