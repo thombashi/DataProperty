@@ -9,6 +9,7 @@ import math
 
 from ._align_getter import align_getter
 from ._container import MinMaxContainer
+from ._error import TypeConversionError
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
 from ._type_checker import FloatTypeChecker
@@ -18,6 +19,7 @@ from ._function import get_number_of_digit
 from ._function import get_text_len
 
 from ._factory import NoneTypeFactory
+from ._factory import StringTypeFactory
 from ._factory import IntegerTypeFactory
 from ._factory import FloatTypeFactory
 from ._factory import BoolTypeFactory
@@ -34,7 +36,34 @@ def default_datetime_converter(value):
     return value
 
 
-class DataProperty(DataPeropertyInterface):
+class DataPeropertyBase(DataPeropertyInterface):
+    __slots__ = ("__datetime_format_str")
+
+    @property
+    def format_str(self):
+        format_str = {
+            Typecode.NONE: "",
+            Typecode.INT: "d",
+            Typecode.BOOL: "",
+            Typecode.DATETIME: self.__datetime_format_str,
+        }.get(self.typecode)
+
+        if format_str is not None:
+            return format_str
+
+        if self.typecode in (Typecode.FLOAT, Typecode.INFINITY, Typecode.NAN):
+            if is_nan(self.decimal_places):
+                return "f"
+
+            return ".%df" % (self.decimal_places)
+
+        return "s"
+
+    def __init__(self, datetime_format_str):
+        self.__datetime_format_str = datetime_format_str
+
+
+class DataProperty(DataPeropertyBase):
     __slots__ = (
         "__data",
         "__typecode",
@@ -53,6 +82,7 @@ class DataProperty(DataPeropertyInterface):
         FloatTypeFactory(),
         BoolTypeFactory(),
         DateTimeTypeFactory(),
+        StringTypeFactory(),
     ]
 
     @property
@@ -82,19 +112,6 @@ class DataProperty(DataPeropertyInterface):
         """
 
         return self.__typecode
-
-    @property
-    def format_str(self):
-        if self.typecode == Typecode.INT:
-            return "d"
-
-        if self.typecode == Typecode.FLOAT:
-            if is_nan(self.decimal_places):
-                return "f"
-
-            return ".%df" % (self.decimal_places)
-
-        return "s"
 
     @property
     def data(self):
@@ -134,9 +151,10 @@ class DataProperty(DataPeropertyInterface):
             none_value=None, inf_value=float("inf"), nan_value=float("nan"),
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
+            datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
             is_convert=True,
             replace_tabs_with_spaces=True, tab_length=2):
-        super(DataProperty, self).__init__()
+        super(DataProperty, self).__init__(datetime_format_str)
 
         self.__set_data(data, none_value, inf_value, nan_value, is_convert)
         self.__convert_data(bool_converter, datetime_converter)
@@ -154,8 +172,16 @@ class DataProperty(DataPeropertyInterface):
         self.__str_len = self.__get_str_len()
 
     def __repr__(self):
-        return ", ".join([
-            ("data=%" + self.format_str) % (self.data),
+        element_list = []
+
+        if self.typecode == Typecode.DATETIME:
+            element_list.append(
+                "data={:s}".format(str(self.data)))
+        else:
+            element_list.append(
+                ("data={:" + self.format_str + "}").format(self.data))
+
+        element_list.extend([
             "typename=" + Typecode.get_typename(self.typecode),
             "align=" + str(self.align),
             "str_len=" + str(self.str_len),
@@ -163,6 +189,8 @@ class DataProperty(DataPeropertyInterface):
             "decimal_places=" + str(self.decimal_places),
             "additional_format_len=" + str(self.additional_format_len),
         ])
+
+        return ", ".join(element_list)
 
     def __get_additional_format_len(self):
         if not FloatTypeChecker(self.data).is_type():
@@ -194,6 +222,10 @@ class DataProperty(DataPeropertyInterface):
         if self.typecode == Typecode.FLOAT:
             return self.__get_base_float_len() + self.additional_format_len
 
+        if self.typecode == Typecode.DATETIME:
+            full_format_str = "{:" + self.format_str + "}"
+            return len(full_format_str.format(self.data))
+
         return get_text_len(self.data)
 
     def __set_data(
@@ -222,8 +254,8 @@ class DataProperty(DataPeropertyInterface):
 
             return
 
-        self.__typecode = Typecode.STRING
-        self.__data = str(data)
+        raise TypeConversionError(
+            "failed to convert: " + Typecode.get_typename(self.__typecode))
 
     def __convert_data(self, bool_converter, datetime_converter):
         if self.typecode == Typecode.BOOL:
@@ -241,7 +273,7 @@ class DataProperty(DataPeropertyInterface):
             pass
 
 
-class ColumnDataProperty(DataPeropertyInterface):
+class ColumnDataProperty(DataPeropertyBase):
     __slots__ = (
         "__typecode_bitmap",
         "__str_len",
@@ -250,6 +282,17 @@ class ColumnDataProperty(DataPeropertyInterface):
         "__minmax_additional_format_len",
         "__data_prop_list",
     )
+
+    __FACTORY_TABLE = {
+        Typecode.NONE: NoneTypeFactory(),
+        Typecode.STRING: StringTypeFactory(),
+        Typecode.INT: IntegerTypeFactory(),
+        Typecode.INFINITY: InfinityTypeFactory(),
+        Typecode.NAN: NanTypeFactory(),
+        Typecode.FLOAT: FloatTypeFactory(),
+        Typecode.BOOL: BoolTypeFactory(),
+        Typecode.DATETIME: DateTimeTypeFactory(),
+    }
 
     @property
     def align(self):
@@ -304,7 +347,16 @@ class ColumnDataProperty(DataPeropertyInterface):
     def minmax_additional_format_len(self):
         return self.__minmax_additional_format_len
 
-    def __init__(self, min_padding_len=0):
+    @property
+    def type_factory(self):
+        return self.__FACTORY_TABLE.get(self.typecode)
+
+    def __init__(
+            self,
+            min_padding_len=0,
+            datetime_format_str="%Y-%m-%dT%H:%M:%S%z"):
+        super(ColumnDataProperty, self).__init__(datetime_format_str)
+
         self.__typecode_bitmap = Typecode.NONE
         self.__str_len = min_padding_len
         self.__minmax_integer_digits = MinMaxContainer()

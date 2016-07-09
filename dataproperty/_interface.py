@@ -28,16 +28,3 @@ class DataPeropertyInterface(object):
     @abc.abstractproperty
     def typecode(self):   # pragma: no cover
         pass
-
-    @property
-    def format_str(self):
-        if self.typecode == Typecode.INT:
-            return "d"
-
-        if self.typecode == Typecode.FLOAT:
-            if is_nan(self.decimal_places):
-                return "f"
-
-            return ".%df" % (self.decimal_places)
-
-        return "s"

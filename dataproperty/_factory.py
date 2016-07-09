@@ -10,11 +10,13 @@ import abc
 import six
 
 from .converter import NopConverterCreator
+from .converter import StringConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import BoolConverterCreator
 from .converter import DateTimeConverterCreator
 from ._type_checker_creator import NoneTypeCheckerCreator
+from ._type_checker_creator import StringTypeCheckerCreator
 from ._type_checker_creator import IntegerTypeCheckerCreator
 from ._type_checker_creator import FloatTypeCheckerCreator
 from ._type_checker_creator import BoolTypeCheckerCreator
@@ -47,6 +49,17 @@ class NoneTypeFactory(TypeConverterFactoryInterface):
     @property
     def value_converter_factory(self):
         return NopConverterCreator()
+
+
+class StringTypeFactory(TypeConverterFactoryInterface):
+
+    @property
+    def type_checker_factory(self):
+        return StringTypeCheckerCreator()
+
+    @property
+    def value_converter_factory(self):
+        return StringConverterCreator()
 
 
 class IntegerTypeFactory(TypeConverterFactoryInterface):

@@ -37,13 +37,19 @@ class NopConverter(ValueConverter):
         return self._value
 
 
+class StringConverter(ValueConverter):
+
+    def convert(self):
+        return str(self._value)
+
+
 class IntegerConverter(ValueConverter):
 
     def convert(self):
         try:
             return int(self._value)
         except (TypeError, ValueError, OverflowError):
-            raise TypeConversionError
+            raise TypeConversionError("failed to convert: " + str(self._value))
 
 
 class FloatConverter(ValueConverter):
@@ -57,7 +63,7 @@ class FloatConverter(ValueConverter):
         try:
             return decimal.Decimal(self._value)
         except (TypeError, ValueError, decimal.InvalidOperation):
-            raise TypeConversionError
+            raise TypeConversionError("failed to convert: " + str(self._value))
 
 
 class BoolConverter(ValueConverter):
@@ -68,7 +74,7 @@ class BoolConverter(ValueConverter):
         try:
             return strict_strtobool(self._value)
         except ValueError:
-            raise TypeConversionError
+            raise TypeConversionError("failed to convert: " + str(self._value))
 
 
 class DateTimeConverter(ValueConverter):

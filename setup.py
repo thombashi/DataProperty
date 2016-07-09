@@ -28,7 +28,7 @@ project_name = "DataProperty"
 
 setuptools.setup(
     name=project_name,
-    version="0.6.0",
+    version="0.7.0",
     url="https://github.com/thombashi/" + project_name,
     bugtrack_url="https://github.com/thombashi/%s/issues" % (project_name),
 
@@ -54,7 +54,6 @@ setuptools.setup(
         "Operating System :: POSIX",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.3",

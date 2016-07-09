@@ -109,12 +109,16 @@ def bool_converter_test(value):
     return "false value"
 
 
-def datetime_converter_test_0(value):
+def datetime_converter_tostr_0(value):
     return value.strftime("%Y-%m-%d %H:%M:%S%z")
 
 
-def datetime_converter_test_1(value):
+def datetime_converter_tostr_1(value):
     return value.strftime("%Y/%m/%d %H:%M:%S")
+
+
+def datetime_converter_test_raw(value):
+    return value
 
 
 class Test_DataPeroperty_set_data:
@@ -177,27 +181,40 @@ class Test_DataPeroperty_set_data:
         assert dp.data == expected
 
     @pytest.mark.parametrize(
-        ["value", "datetime_converter", "is_convert", "expected"],
+        [
+            "value", "datetime_converter", "datetime_format_str",
+            "is_convert", "expected",
+        ],
         [
             [
-                DATATIME_DATA, datetime_converter_test_0,
+                DATATIME_DATA, datetime_converter_tostr_0,
+                "s",
                 True, "2017-01-02 03:04:05",
             ],
             [
-                "2017-01-01 00:00:00", datetime_converter_test_1,
+                "2017-01-01 00:00:00", datetime_converter_tostr_1,
+                "s",
                 True, "2017/01/01 00:00:00",
             ],
             [
-                "2017-01-01", datetime_converter_test_0,
-                False, "2017-01-01",
+                "2017-01-01 00:00:00", datetime_converter_test_raw,
+                "%Y-%m-%dT%H:%M:%S",
+                True, datetime.datetime(2017, 1, 1, 0, 0, 0),
+            ],
+            [
+                "2017-01-01 00:00:00", datetime_converter_test_raw,
+                "s",
+                False, "2017-01-01 00:00:00",
             ],
         ]
     )
     def test_special_datetime(
-            self, value, datetime_converter,  is_convert, expected):
+            self, value, datetime_converter, datetime_format_str,
+            is_convert, expected):
         dp = DataProperty(
             value,
             datetime_converter=datetime_converter,
+            datetime_format_str=datetime_format_str,
             is_convert=is_convert)
 
         assert dp.data == expected
@@ -400,6 +417,11 @@ class Test_DataPeroperty_repr:
         [
             "2017-01-02 03:04:05",
             "data=2017-01-02 03:04:05, typename=DATETIME, align=left, str_len=19, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+        [
+            "2017-01-02 03:04:05+0900",
+            "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, str_len=24, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [

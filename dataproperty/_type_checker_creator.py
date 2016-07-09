@@ -10,6 +10,7 @@ import abc
 import six
 
 from ._type_checker import NoneTypeChecker
+from ._type_checker import StringTypeChecker
 from ._type_checker import IntegerTypeChecker
 from ._type_checker import FloatTypeChecker
 from ._type_checker import BoolTypeChecker
@@ -30,6 +31,12 @@ class NoneTypeCheckerCreator(TypeCheckerCreatorInterface):
 
     def create(self, value, is_convert):
         return NoneTypeChecker(value, is_convert)
+
+
+class StringTypeCheckerCreator(TypeCheckerCreatorInterface):
+
+    def create(self, value, is_convert):
+        return StringTypeChecker(value, is_convert)
 
 
 class IntegerTypeCheckerCreator(TypeCheckerCreatorInterface):

@@ -31,6 +31,21 @@ class Test_NoneConverter_convert:
         assert dpcc.NopConverter(value).convert() == expected
 
 
+class Test_StringConverter_convert:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [None, "None"],
+        [six.MAXSIZE, str(six.MAXSIZE)],
+        [-six.MAXSIZE, str(-six.MAXSIZE)],
+        [inf, "inf"],
+        [nan, "nan"],
+        [True, "True"],
+        [datetime.datetime(2017, 1, 2, 3, 4, 5), "2017-01-02 03:04:05"],
+    ])
+    def test_normal(self, value, expected):
+        assert dpcc.StringConverter(value).convert() == expected
+
+
 class Test_IntegerConverter_convert:
 
     @pytest.mark.parametrize(["value", "expected"], [
