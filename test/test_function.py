@@ -68,6 +68,7 @@ class Test_is_float:
         [.5], [0.],
         ["1e-05"],
         [nan], [inf],
+        ["inf"],
     ])
     def test_normal(self, value):
         assert is_float(value)
@@ -75,7 +76,6 @@ class Test_is_float:
     @pytest.mark.parametrize(["value"], [
         [None],
         ["test"],
-        ["inf"],
         [True],
     ])
     def test_abnormal(self, value):

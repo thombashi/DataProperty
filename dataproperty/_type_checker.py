@@ -137,9 +137,6 @@ class FloatTypeChecker(TypeChecker):
     def _is_exclude_instance(self):
         return isinstance(self._value, bool)
 
-    def _is_valid_after_convert(self):
-        return self._converted_value != float("inf")
-
 
 class BoolTypeChecker(TypeChecker):
 
