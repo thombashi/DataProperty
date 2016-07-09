@@ -114,9 +114,10 @@ def get_integer_digit(value):
 def _get_decimal_places(value, integer_digits):
     from collections import namedtuple
     from six.moves import range
+    from ._type_checker import IntegerTypeChecker
 
     float_digit_len = 0
-    if is_integer(value):
+    if IntegerTypeChecker(value).is_type():
         abs_value = abs(int(value))
     else:
         abs_value = abs(float(value))
