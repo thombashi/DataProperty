@@ -270,6 +270,17 @@ class ColumnDataProperty(DataPeropertyBase):
         "__data_prop_list",
     )
 
+    __FACTORY_TABLE = {
+        Typecode.NONE: NoneTypeFactory(),
+        Typecode.STRING: StringTypeFactory(),
+        Typecode.INT: IntegerTypeFactory(),
+        Typecode.INFINITY: InfinityTypeFactory(),
+        Typecode.NAN: NanTypeFactory(),
+        Typecode.FLOAT: FloatTypeFactory(),
+        Typecode.BOOL: BoolTypeFactory(),
+        Typecode.DATETIME: DateTimeTypeFactory(),
+    }
+
     @property
     def align(self):
         return align_getter.get_align_from_typecode(self.typecode)
@@ -322,6 +333,10 @@ class ColumnDataProperty(DataPeropertyBase):
     @property
     def minmax_additional_format_len(self):
         return self.__minmax_additional_format_len
+
+    @property
+    def type_factory(self):
+        return self.__FACTORY_TABLE.get(self.typecode)
 
     def __init__(self, min_padding_len=0):
         self.__typecode_bitmap = Typecode.NONE
