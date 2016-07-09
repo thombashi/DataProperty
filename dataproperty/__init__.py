@@ -11,7 +11,7 @@ from ._error import TypeConversionError
 from ._align import Align
 from ._align_getter import align_getter
 from ._container import MinMaxContainer
-from ._typecode import Typecode
+from .type import Typecode
 
 from ._data_property import ColumnDataProperty
 from ._data_property import DataProperty

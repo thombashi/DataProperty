@@ -12,7 +12,7 @@ from dateutil.tz import tzoffset
 import pytest
 import six
 
-import dataproperty._type_checker as tc
+import dataproperty.type as tc
 from dataproperty import Typecode
 from decimal import Decimal
 

@@ -8,21 +8,20 @@ from __future__ import absolute_import
 
 import pytest
 
-import dataproperty._type_checker_creator as tcc
-import dataproperty._type_checker as tc
+import dataproperty.type as tc
 
 
 class Test_TypeCheckerCreator(object):
 
     @pytest.mark.parametrize(["value", "is_convert", "expected"], [
-        [tcc.NoneTypeCheckerCreator, True, tc.NoneTypeChecker],
-        [tcc.NoneTypeCheckerCreator, False, tc.NoneTypeChecker],
-        [tcc.IntegerTypeCheckerCreator, True, tc.IntegerTypeChecker],
-        [tcc.IntegerTypeCheckerCreator, False, tc.IntegerTypeChecker],
-        [tcc.FloatTypeCheckerCreator, True, tc.FloatTypeChecker],
-        [tcc.FloatTypeCheckerCreator, False, tc.FloatTypeChecker],
-        [tcc.DateTimeTypeCheckerCreator, True, tc.DateTimeTypeChecker],
-        [tcc.DateTimeTypeCheckerCreator, False, tc.DateTimeTypeChecker],
+        [tc.NoneTypeCheckerCreator, True, tc.NoneTypeChecker],
+        [tc.NoneTypeCheckerCreator, False, tc.NoneTypeChecker],
+        [tc.IntegerTypeCheckerCreator, True, tc.IntegerTypeChecker],
+        [tc.IntegerTypeCheckerCreator, False, tc.IntegerTypeChecker],
+        [tc.FloatTypeCheckerCreator, True, tc.FloatTypeChecker],
+        [tc.FloatTypeCheckerCreator, False, tc.FloatTypeChecker],
+        [tc.DateTimeTypeCheckerCreator, True, tc.DateTimeTypeChecker],
+        [tc.DateTimeTypeCheckerCreator, False, tc.DateTimeTypeChecker],
     ])
     def test_normal(self, value, is_convert, expected):
         creator = value()

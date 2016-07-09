@@ -16,7 +16,7 @@ def is_integer(value):
         Use IntegerTypeChecker class instead of this function.
     """
 
-    from ._type_checker import IntegerTypeChecker
+    from .type import IntegerTypeChecker
 
     return IntegerTypeChecker(value).is_type()
 
@@ -38,7 +38,7 @@ def is_float(value):
         Use FloatTypeChecker class instead of this function.
     """
 
-    from ._type_checker import FloatTypeChecker
+    from .type import FloatTypeChecker
 
     return FloatTypeChecker(value).is_type()
 
@@ -97,7 +97,7 @@ def is_datetime(value):
 
 
 def get_integer_digit(value):
-    from ._type_checker import FloatTypeChecker
+    from .type import FloatTypeChecker
 
     abs_value = abs(float(value))
 
@@ -114,7 +114,7 @@ def get_integer_digit(value):
 def _get_decimal_places(value, integer_digits):
     from collections import namedtuple
     from six.moves import range
-    from ._type_checker import IntegerTypeChecker
+    from .type import IntegerTypeChecker
 
     float_digit_len = 0
     if IntegerTypeChecker(value).is_type():
