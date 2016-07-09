@@ -9,14 +9,14 @@ import abc
 
 import six
 
-from ._type_checker import NoneTypeChecker
-from ._type_checker import StringTypeChecker
-from ._type_checker import IntegerTypeChecker
-from ._type_checker import FloatTypeChecker
-from ._type_checker import BoolTypeChecker
-from ._type_checker import DateTimeTypeChecker
-from ._type_checker import InfinityChecker
-from ._type_checker import NanChecker
+from ._checker import NoneTypeChecker
+from ._checker import StringTypeChecker
+from ._checker import IntegerTypeChecker
+from ._checker import FloatTypeChecker
+from ._checker import BoolTypeChecker
+from ._checker import DateTimeTypeChecker
+from ._checker import InfinityChecker
+from ._checker import NanChecker
 
 
 @six.add_metaclass(abc.ABCMeta)

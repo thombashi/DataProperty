@@ -15,14 +15,14 @@ from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import BoolConverterCreator
 from .converter import DateTimeConverterCreator
-from ._type_checker_creator import NoneTypeCheckerCreator
-from ._type_checker_creator import StringTypeCheckerCreator
-from ._type_checker_creator import IntegerTypeCheckerCreator
-from ._type_checker_creator import FloatTypeCheckerCreator
-from ._type_checker_creator import BoolTypeCheckerCreator
-from ._type_checker_creator import DateTimeTypeCheckerCreator
-from ._type_checker_creator import InfinityCheckerCreator
-from ._type_checker_creator import NanCheckerCreator
+from .type import NoneTypeCheckerCreator
+from .type import StringTypeCheckerCreator
+from .type import IntegerTypeCheckerCreator
+from .type import FloatTypeCheckerCreator
+from .type import BoolTypeCheckerCreator
+from .type import DateTimeTypeCheckerCreator
+from .type import InfinityCheckerCreator
+from .type import NanCheckerCreator
 
 
 @six.add_metaclass(abc.ABCMeta)

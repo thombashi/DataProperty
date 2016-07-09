@@ -10,7 +10,7 @@ import abc
 import six
 
 from ._function import is_nan
-from ._typecode import Typecode
+from .type import Typecode
 
 
 @six.add_metaclass(abc.ABCMeta)

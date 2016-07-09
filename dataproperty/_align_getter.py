@@ -7,7 +7,7 @@
 from __future__ import absolute_import
 
 from ._align import Align
-from ._typecode import Typecode
+from .type import Typecode
 
 
 class AlignGetter(object):

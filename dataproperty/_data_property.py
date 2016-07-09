@@ -11,8 +11,8 @@ from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._error import TypeConversionError
 from ._interface import DataPeropertyInterface
-from ._typecode import Typecode
-from ._type_checker import FloatTypeChecker
+from .type import Typecode
+from .type import FloatTypeChecker
 
 from ._function import is_nan
 from ._function import get_number_of_digit
