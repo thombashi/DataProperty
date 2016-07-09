@@ -9,6 +9,7 @@ import math
 
 from ._align_getter import align_getter
 from ._container import MinMaxContainer
+from ._error import TypeConversionError
 from ._interface import DataPeropertyInterface
 from ._typecode import Typecode
 from ._type_checker import FloatTypeChecker
