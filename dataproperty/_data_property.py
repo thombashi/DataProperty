@@ -223,7 +223,6 @@ class DataProperty(DataPeropertyBase):
 
         if self.typecode == Typecode.DATETIME:
             full_format_str = "{:" + self.format_str + "}"
-            print full_format_str, self.data, type(self.data)
             return len(full_format_str.format(self.data))
 
         return get_text_len(self.data)
