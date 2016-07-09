@@ -188,7 +188,7 @@ class InfinityChecker(TypeChecker):
         ])
 
     def _is_valid_after_convert(self):
-        return self._converted_value == float("inf")
+        return self._converted_value in (float("inf"), Decimal("inf"))
 
 
 class NanChecker(TypeChecker):

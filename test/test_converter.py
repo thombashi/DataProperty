@@ -64,18 +64,15 @@ class Test_FloatConverter_convert:
         [0.0, 0.0],
         [0.1, 0.1],
         [-0.1, -0.1],
-        [1, 1.0],
-        [-1, -1.0],
-        ["0.0", 0.0],
-        ["0.1", Decimal("0.1")],
+        [1, Decimal("1")], [-1, Decimal("-1")],
+        ["0.0", Decimal("0.0")], ["0.1", Decimal("0.1")],
         ["-0.1", Decimal("-0.1")],
-        ["1", 1.0],
-        ["-1", -1.0],
+        ["1", Decimal("1")], ["-1", Decimal("-1")],
         [.5, .5],
         [0., 0.0],
         ["1e-05", Decimal('0.00001')],
         [inf, inf],
-        [True, 1.0],
+        [True, Decimal("1")],
     ])
     def test_normal(self, value, expected):
         assert dpcc.FloatConverter(value).convert() == expected
