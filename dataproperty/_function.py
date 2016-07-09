@@ -97,9 +97,11 @@ def is_datetime(value):
 
 
 def get_integer_digit(value):
+    from ._type_checker import FloatTypeChecker
+
     abs_value = abs(float(value))
 
-    if not is_float(value):
+    if not FloatTypeChecker(value).is_type():
         # bool type value reaches this line
         raise TypeError("invalid type '%s" % (type(value)))
 
@@ -112,9 +114,10 @@ def get_integer_digit(value):
 def _get_decimal_places(value, integer_digits):
     from collections import namedtuple
     from six.moves import range
+    from ._type_checker import IntegerTypeChecker
 
     float_digit_len = 0
-    if is_integer(value):
+    if IntegerTypeChecker(value).is_type():
         abs_value = abs(int(value))
     else:
         abs_value = abs(float(value))

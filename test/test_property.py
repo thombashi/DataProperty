@@ -5,6 +5,7 @@
 """
 
 import datetime
+from decimal import Decimal
 
 import pytest
 import six
@@ -27,7 +28,7 @@ class Test_DataPeroperty_data_typecode:
             [-six.MAXSIZE, False, -six.MAXSIZE, Typecode.INT],
             [str(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INT],
             [str(six.MAXSIZE), False, str(six.MAXSIZE), Typecode.STRING],
-            ["1.1", True, 1.1, Typecode.FLOAT],
+            ["1.1", True, Decimal("1.1"), Typecode.FLOAT],
             ["-1.1", False, "-1.1", Typecode.STRING],
             ["a", True, "a", Typecode.STRING],
             ["a", False, "a", Typecode.STRING],

@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 import abc
+from decimal import Decimal
 
 import six
 
@@ -128,14 +129,13 @@ class FloatTypeChecker(TypeChecker):
         return FloatConverterCreator()
 
     def _is_instance(self):
-        return any(
-            [isinstance(self._value, float), self._value == float("inf")])
+        return any([
+            isinstance(self._value, float),
+            isinstance(self._value, Decimal),
+        ])
 
     def _is_exclude_instance(self):
         return isinstance(self._value, bool)
-
-    def _is_valid_after_convert(self):
-        return self._converted_value != float("inf")
 
 
 class BoolTypeChecker(TypeChecker):
@@ -182,10 +182,10 @@ class InfinityChecker(TypeChecker):
         return FloatConverterCreator()
 
     def _is_instance(self):
-        return self._value == float("inf")
+        return self._value in (float("inf"), Decimal("inf"))
 
     def _is_valid_after_convert(self):
-        return self._converted_value == float("inf")
+        return self._converted_value in (float("inf"), Decimal("inf"))
 
 
 class NanChecker(TypeChecker):

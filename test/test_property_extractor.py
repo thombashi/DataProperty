@@ -5,6 +5,7 @@
 """
 
 import datetime
+from decimal import Decimal
 
 import pytest
 
@@ -82,7 +83,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.format_str == "d"
 
         prop = prop_matrix[1][0]
-        assert prop.data == 1.1
+        assert prop.data == Decimal("1.1")
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
