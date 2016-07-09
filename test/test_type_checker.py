@@ -39,6 +39,28 @@ class Test_NoneTypeChecker:
         assert type_checker.typecode == Typecode.NONE
 
 
+class Test_StringTypeChecker:
+
+    @pytest.mark.parametrize(["value", "is_convert", "expected"], [
+        [None, True, True],
+        [None, False, False],
+        [six.MAXSIZE, True, True],
+        [six.MAXSIZE, False, False],
+        [inf, True, True],
+        [inf, False, False],
+    ] + list(
+        itertools.product(
+            ["None"],
+            [True, False],
+            [True]
+        ))
+    )
+    def test_normal_true(self, value, is_convert, expected):
+        type_checker = tc.StringTypeChecker(value, is_convert)
+        assert type_checker.is_type() == expected
+        assert type_checker.typecode == Typecode.STRING
+
+
 class Test_IntegerTypeChecker:
 
     @pytest.mark.parametrize(["value", "is_convert"], [

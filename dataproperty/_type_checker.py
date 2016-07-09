@@ -11,6 +11,7 @@ from decimal import Decimal
 import six
 
 from .converter import NopConverterCreator
+from .converter import StringConverterCreator
 from .converter import IntegerConverterCreator
 from .converter import FloatConverterCreator
 from .converter import BoolConverterCreator
@@ -93,6 +94,23 @@ class NoneTypeChecker(TypeChecker):
 
     def _is_valid_after_convert(self):
         return self._value is None
+
+
+class StringTypeChecker(TypeChecker):
+
+    @property
+    def typecode(self):
+        return Typecode.STRING
+
+    @property
+    def _converter_creator(self):
+        return StringConverterCreator()
+
+    def _is_instance(self):
+        return isinstance(self._value, six.string_types)
+
+    def _is_valid_after_convert(self):
+        return isinstance(self._converted_value, six.string_types)
 
 
 class IntegerTypeChecker(TypeChecker):
