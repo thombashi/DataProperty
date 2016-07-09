@@ -18,6 +18,7 @@ from ._function import get_number_of_digit
 from ._function import get_text_len
 
 from ._factory import NoneTypeFactory
+from ._factory import StringTypeFactory
 from ._factory import IntegerTypeFactory
 from ._factory import FloatTypeFactory
 from ._factory import BoolTypeFactory
@@ -72,6 +73,7 @@ class DataProperty(DataPeropertyBase):
         FloatTypeFactory(),
         BoolTypeFactory(),
         DateTimeTypeFactory(),
+        StringTypeFactory(),
     ]
 
     @property
@@ -238,8 +240,8 @@ class DataProperty(DataPeropertyBase):
 
             return
 
-        self.__typecode = Typecode.STRING
-        self.__data = str(data)
+        raise TypeConversionError(
+            "failed to convert: " + Typecode.get_typename(self.__typecode))
 
     def __convert_data(self, bool_converter, datetime_converter):
         if self.typecode == Typecode.BOOL:
