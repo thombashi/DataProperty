@@ -161,7 +161,7 @@ Extract property of data for each data from a matrix
     ---------- str_len ----------
     [1, 3, 2, 1, 1, 4, 3, 3, 19]
     [1, 3, 3, 3, 3, 5, 3, 3, 19]
-    [1, 4, 4, 2, 3, 4, 3, 3, 25]
+    [1, 4, 4, 2, 3, 4, 3, 3, 24]
 
     ---------- integer_digits ----------
     [1, 1, nan, 1, 1, nan, nan, nan, nan]
@@ -218,10 +218,10 @@ Extract property of data for each column from a matrix
     [right, right, left, right, left, left, left, left, left]
 
     ---------- padding_len ----------
-    [3, 5, 4, 3, 3, 5, 3, 3, 25]
+    [3, 5, 4, 4, 3, 5, 3, 3, 24]
 
     ---------- decimal_places ----------
-    [nan, 2, nan, 1, 1, nan, nan, nan, nan]
+    [0, 2, nan, 1, 1, nan, nan, nan, nan]
 
 
 Dependencies
