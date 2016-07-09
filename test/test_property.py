@@ -73,7 +73,6 @@ class Test_DataPeroperty_data_typecode:
     )
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(value, is_convert=is_convert)
-        print dp
         assert dp.data == expected_data
         assert dp.typecode == expected_typecode
 
@@ -101,15 +100,6 @@ class Test_DataPeroperty_data_typecode:
         dp = DataProperty(value, none_value)
         assert dp.data == expected
         assert dp.typecode == Typecode.NONE
-
-    """
-    @pytest.mark.parametrize(["value", "expected"], [
-        ["1e9999999999999999999", TypeError],
-    ])
-    def test_exception(self, value, expected):
-        with pytest.raises(expected):
-            dp = DataProperty(value, none_value)
-    """
 
 
 def bool_converter_test(value):
