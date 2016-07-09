@@ -37,6 +37,12 @@ class NopConverter(ValueConverter):
         return self._value
 
 
+class StringConverter(ValueConverter):
+
+    def convert(self):
+        return str(self._value)
+
+
 class IntegerConverter(ValueConverter):
 
     def convert(self):
