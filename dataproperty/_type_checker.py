@@ -182,10 +182,7 @@ class InfinityChecker(TypeChecker):
         return FloatConverterCreator()
 
     def _is_instance(self):
-        return any([
-            self._value == float("inf"),
-            self._value == Decimal("inf"),
-        ])
+        return self._value in (float("inf"), Decimal("inf"))
 
     def _is_valid_after_convert(self):
         return self._converted_value in (float("inf"), Decimal("inf"))
