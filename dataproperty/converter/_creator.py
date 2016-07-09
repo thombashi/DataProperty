@@ -10,6 +10,7 @@ import abc
 import six
 
 from ._core import NopConverter
+from ._core import StringConverter
 from ._core import IntegerConverter
 from ._core import FloatConverter
 from ._core import BoolConverter
@@ -28,6 +29,12 @@ class NopConverterCreator(ValueConverterCreatorInterface):
 
     def create(self, value):
         return NopConverter(value)
+
+
+class StringConverterCreator(ValueConverterCreatorInterface):
+
+    def create(self, value):
+        return StringConverter(value)
 
 
 class IntegerConverterCreator(ValueConverterCreatorInterface):

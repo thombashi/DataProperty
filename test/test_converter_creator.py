@@ -16,6 +16,7 @@ class Test_ConverterCreator(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         [dpc.NopConverterCreator, dpcc.NopConverter],
+        [dpc.StringConverterCreator, dpcc.StringConverter],
         [dpc.IntegerConverterCreator, dpcc.IntegerConverter],
         [dpc.FloatConverterCreator, dpcc.FloatConverter],
         [dpc.BoolConverterCreator, dpcc.BoolConverter],
