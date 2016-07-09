@@ -42,6 +42,7 @@ class DataPeropertyBase(DataPeropertyInterface):
     @property
     def format_str(self):
         format_str = {
+            Typecode.NONE: "",
             Typecode.INT: "d",
             Typecode.BOOL: "",
             Typecode.DATETIME: self.__datetime_format_str,

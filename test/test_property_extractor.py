@@ -72,7 +72,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 4
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "s"
+        assert prop.format_str == ""
 
         prop = prop_matrix[0][1]
         assert prop.data == 1
