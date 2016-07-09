@@ -107,7 +107,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 3
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "s"
+        assert prop.format_str == "f"
 
         prop = prop_matrix[2][1]
         assert prop.data == "Infinity"
@@ -116,7 +116,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 8
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "s"
+        assert prop.format_str == "f"
 
         prop = prop_matrix[3][0]
         assert prop.data == "false"
@@ -125,7 +125,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 5
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "s"
+        assert prop.format_str == ""
 
         prop = prop_matrix[3][1]
         assert prop.data == "20170101 000000"
@@ -227,7 +227,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 5
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "s"
+        assert prop.format_str == ""
 
         prop = col_prop_list[6]
         assert prop.typecode == Typecode.INFINITY
@@ -235,7 +235,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 3
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "s"
+        assert prop.format_str == "f"
 
         prop = col_prop_list[7]
         assert prop.typecode == Typecode.NAN
@@ -243,7 +243,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 3
         assert is_nan(prop.decimal_places)
-        assert prop.format_str == "s"
+        assert prop.format_str == "f"
 
         prop = col_prop_list[8]
         assert prop.typecode == Typecode.DATETIME

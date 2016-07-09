@@ -41,8 +41,10 @@ class DataPeropertyBase(DataPeropertyInterface):
     def format_str(self):
         if self.typecode == Typecode.INT:
             return "d"
+        elif self.typecode == Typecode.BOOL:
+            return ""
 
-        if self.typecode == Typecode.FLOAT:
+        if self.typecode in (Typecode.FLOAT, Typecode.INFINITY, Typecode.NAN):
             if is_nan(self.decimal_places):
                 return "f"
 
