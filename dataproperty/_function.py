@@ -89,6 +89,11 @@ def is_datetime(value):
     """
     :return: ``True``` if type of `value` is datetime.datetime.
     :rtype: bool
+
+    .. warning::
+
+        This function will be deleted in the future.
+        Use IntegerTypeChecker class instead of this function.
     """
 
     import datetime
