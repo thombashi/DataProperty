@@ -160,8 +160,16 @@ class DataProperty(DataPeropertyBase):
         self.__str_len = self.__get_str_len()
 
     def __repr__(self):
-        return ", ".join([
-            ("data=%" + self.format_str) % (self.data),
+        element_list = []
+
+        if self.typecode == Typecode.DATETIME:
+            element_list.append(
+                "data={:s}".format(str(self.data)))
+        else:
+            element_list.append(
+                ("data={:" + self.format_str + "}").format(self.data))
+
+        element_list.extend([
             "typename=" + Typecode.get_typename(self.typecode),
             "align=" + str(self.align),
             "str_len=" + str(self.str_len),
@@ -169,6 +177,8 @@ class DataProperty(DataPeropertyBase):
             "decimal_places=" + str(self.decimal_places),
             "additional_format_len=" + str(self.additional_format_len),
         ])
+
+        return ", ".join(element_list)
 
     def __get_additional_format_len(self):
         if not FloatTypeChecker(self.data).is_type():
