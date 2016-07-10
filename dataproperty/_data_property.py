@@ -320,15 +320,15 @@ class ColumnDataProperty(DataPeropertyBase):
             return self.__str_len
 
         max_len = self.__str_len
-        full_format_str = "{:" + self.format_str + "}"
+        col_format_str = "{:" + self.format_str + "}"
 
         for data_prop in self.__data_prop_list:
             if data_prop.typecode in [Typecode.INFINITY, Typecode.NAN]:
                 continue
 
             try:
-                formatted_value = full_format_str.format(data_prop.data)
-            except ValueError:
+                formatted_value = col_format_str.format(data_prop.data)
+            except (TypeError, ValueError):
                 continue
 
             max_len = max(max_len, len(formatted_value))
