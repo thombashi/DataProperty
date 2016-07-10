@@ -425,6 +425,11 @@ class Test_DataPeroperty_repr:
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
+            "2017-01-02 03:04:05+09:00",
+            "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, str_len=24, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+        [
             inf,
             "data=inf, typename=INFINITY, align=left, str_len=3, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
