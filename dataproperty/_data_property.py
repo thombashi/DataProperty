@@ -376,7 +376,7 @@ class ColumnDataProperty(DataPeropertyBase):
         ])
 
     def update_header(self, dataprop):
-        self.__update(dataprop)
+        self.__str_len = max(self.__str_len, dataprop.str_len)
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
