@@ -108,7 +108,7 @@ def get_integer_digit(value):
 
     if not FloatTypeChecker(value).is_type():
         # bool type value reaches this line
-        raise TypeError("invalid type '%s" % (type(value)))
+        raise TypeError("invalid type '{:s}".format(type(value)))
 
     if abs_value == 0:
         return 1
@@ -186,10 +186,10 @@ def strict_strtobool(value):
     try:
         lower_text = value.lower()
     except AttributeError:
-        raise ValueError("invalid value '%s'" % (str(value)))
+        raise ValueError("invalid value '{:s}'".format(str(value)))
 
     binary_value = strtobool(lower_text)
     if lower_text not in ["true", "false"]:
-        raise ValueError("invalid value '%s'" % (str(value)))
+        raise ValueError("invalid value '{:s}'".format(str(value)))
 
     return bool(binary_value)

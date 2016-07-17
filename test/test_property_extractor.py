@@ -254,20 +254,31 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert is_nan(prop.decimal_places)
         assert prop.format_str == "%Y-%m-%dT%H:%M:%S%z"
 
-    @pytest.mark.parametrize(["header_list", "value", "expected"], [
-        [
-            None,
-            None,
-            TypeError
-        ],
-        [
-            ["i", "f", "s", "if", "mix"],
-            None,
-            TypeError
-        ],
-    ])
-    def test_exception(self, prop_extractor, header_list, value, expected):
-        with pytest.raises(expected):
-            prop_extractor.header_list = header_list
-            prop_extractor.data_matrix = value
-            prop_extractor.extract_column_property_list()
+    def test_normal_empty_value(self, prop_extractor):
+        prop_extractor.header_list = ["a", "22", "cccc"]
+        prop_extractor.data_matrix = None
+        col_prop_list = prop_extractor.extract_column_property_list()
+
+        prop = col_prop_list[0]
+        assert prop.typecode == Typecode.NONE
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.padding_len == 1
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == ""
+
+        prop = col_prop_list[1]
+        assert prop.typecode == Typecode.NONE
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.padding_len == 2
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == ""
+
+        prop = col_prop_list[2]
+        assert prop.typecode == Typecode.NONE
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.padding_len == 4
+        assert is_nan(prop.decimal_places)
+        assert prop.format_str == ""

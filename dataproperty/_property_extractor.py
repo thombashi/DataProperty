@@ -7,7 +7,6 @@
 from ._data_property import DataProperty
 from ._data_property import ColumnDataProperty
 from ._function import is_empty_list_or_tuple
-from ._function import is_not_empty_list_or_tuple
 
 
 class PropertyExtractor(object):
@@ -34,23 +33,32 @@ class PropertyExtractor(object):
         ]
 
     def extract_column_property_list(self):
-        data_prop_matrix = self.extract_data_property_matrix()
         header_prop_list = self.__extract_data_property_list(self.header_list)
         column_prop_list = []
 
-        for col_idx, col_prop_list in enumerate(zip(*data_prop_matrix)):
+        for header_prop in header_prop_list:
             column_prop = ColumnDataProperty(
                 min_padding_len=self.min_padding_len,
                 datetime_format_str=self.datetime_format_str)
+            column_prop.update_header(header_prop)
+            column_prop_list.append(column_prop)
 
-            if is_not_empty_list_or_tuple(header_prop_list):
-                header_prop = header_prop_list[col_idx]
-                column_prop.update_header(header_prop)
+        try:
+            data_prop_matrix = self.extract_data_property_matrix()
+        except TypeError:
+            return column_prop_list
+
+        for col_idx, col_prop_list in enumerate(zip(*data_prop_matrix)):
+            try:
+                column_prop_list[col_idx]
+            except IndexError:
+                column_prop_list.append(
+                    ColumnDataProperty(
+                        min_padding_len=self.min_padding_len,
+                        datetime_format_str=self.datetime_format_str))
 
             for prop in col_prop_list:
-                column_prop.update_body(prop)
-
-            column_prop_list.append(column_prop)
+                column_prop_list[col_idx].update_body(prop)
 
         return column_prop_list
 

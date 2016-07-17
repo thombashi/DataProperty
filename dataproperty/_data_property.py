@@ -55,7 +55,7 @@ class DataPeropertyBase(DataPeropertyInterface):
             if is_nan(self.decimal_places):
                 return "f"
 
-            return ".%df" % (self.decimal_places)
+            return ".{:d}f".format(self.decimal_places)
 
         return "s"
 
@@ -369,18 +369,26 @@ class ColumnDataProperty(DataPeropertyBase):
             "typename=" + Typecode.get_typename(self.typecode),
             "align=" + str(self.align),
             "padding_len=" + str(self.padding_len),
-            "integer_digits=(%s)" % (str(self.minmax_integer_digits)),
-            "decimal_places=(%s)" % (str(self.minmax_decimal_places)),
-            "additional_format_len=(%s)" % (
+            "integer_digits=({:s})".format(str(self.minmax_integer_digits)),
+            "decimal_places=({:s})".format(str(self.minmax_decimal_places)),
+            "additional_format_len=({:s})".format(
                 str(self.minmax_additional_format_len)),
         ])
 
     def update_header(self, dataprop):
-        self.__update(dataprop)
+        self.__str_len = max(self.__str_len, dataprop.str_len)
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
-        self.__update(dataprop)
+        self.__str_len = max(self.__str_len, dataprop.str_len)
+
+        if dataprop.typecode in (Typecode.FLOAT, Typecode.INT):
+            self.__minmax_integer_digits.update(dataprop.integer_digits)
+            self.__minmax_decimal_places.update(dataprop.decimal_places)
+
+        self.__minmax_additional_format_len.update(
+            dataprop.additional_format_len)
+
         self.__data_prop_list.append(dataprop)
 
     def __is_not_single_typecode(self, typecode):
@@ -429,13 +437,3 @@ class ColumnDataProperty(DataPeropertyBase):
             return Typecode.NONE
 
         return Typecode.STRING
-
-    def __update(self, dataprop):
-        self.__str_len = max(self.__str_len, dataprop.str_len)
-
-        if dataprop.typecode in (Typecode.FLOAT, Typecode.INT):
-            self.__minmax_integer_digits.update(dataprop.integer_digits)
-            self.__minmax_decimal_places.update(dataprop.decimal_places)
-
-        self.__minmax_additional_format_len.update(
-            dataprop.additional_format_len)
