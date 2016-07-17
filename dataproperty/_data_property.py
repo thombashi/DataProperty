@@ -55,7 +55,7 @@ class DataPeropertyBase(DataPeropertyInterface):
             if is_nan(self.decimal_places):
                 return "f"
 
-            return ".%df" % (self.decimal_places)
+            return ".{:d}f".format(self.decimal_places)
 
         return "s"
 
@@ -369,9 +369,9 @@ class ColumnDataProperty(DataPeropertyBase):
             "typename=" + Typecode.get_typename(self.typecode),
             "align=" + str(self.align),
             "padding_len=" + str(self.padding_len),
-            "integer_digits=(%s)" % (str(self.minmax_integer_digits)),
-            "decimal_places=(%s)" % (str(self.minmax_decimal_places)),
-            "additional_format_len=(%s)" % (
+            "integer_digits=({:s})".format(str(self.minmax_integer_digits)),
+            "decimal_places=({:s})".format(str(self.minmax_decimal_places)),
+            "additional_format_len=({:s})".format(
                 str(self.minmax_additional_format_len)),
         ])
 
