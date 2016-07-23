@@ -77,6 +77,20 @@ def is_list_or_tuple(value):
     return any([_is_list(value), _is_tuple(value)])
 
 
+def is_empty_sequence(value):
+    try:
+        return value is None or len(value) == 0
+    except TypeError:
+        return False
+
+
+def is_not_empty_sequence(value):
+    try:
+        return len(value) > 0
+    except TypeError:
+        return False
+
+
 def is_empty_list_or_tuple(value):
     return value is None or (is_list_or_tuple(value) and len(value) == 0)
 
