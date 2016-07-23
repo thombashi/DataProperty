@@ -11,6 +11,7 @@ from decimal import Decimal
 from dataproperty import *
 import pytest
 import six
+from six.moves import range
 
 
 nan = float("nan")
@@ -217,14 +218,14 @@ class Test_is_empty_sequence:
         [(), True],
         [[], True],
         ["", True],
-        [xrange(0), True],
+        [range(0), True],
 
         [[1], False],
         [["a"] * 200000, False],
         [(1,), False],
         [("a",) * 200000, False],
         ["aaa", False],
-        [xrange(0, 10), False],
+        [range(0, 10), False],
 
         [True, False],
         [False, False],
@@ -245,12 +246,12 @@ class Test_is_not_empty_sequence:
         [(1,), True],
         [("a",) * 200000, True],
         ["a" * 200000, True],
-        [xrange(0, 10), True],
+        [range(0, 10), True],
 
         [(), False],
         [[], False],
         [None, False],
-        [xrange(0), False],
+        [range(0), False],
 
         [True, False],
         [False, False],
