@@ -92,10 +92,24 @@ def is_not_empty_sequence(value):
 
 
 def is_empty_list_or_tuple(value):
+    """
+    .. warning::
+
+        This function will be deleted in the future.
+        Use is_not_empty_sequence function instead of this.
+    """
+
     return value is None or (is_list_or_tuple(value) and len(value) == 0)
 
 
 def is_not_empty_list_or_tuple(value):
+    """
+    .. warning::
+
+        This function will be deleted in the future.
+        Use is_not_empty_sequence function instead of this.
+    """
+
     return is_list_or_tuple(value) and len(value) > 0
 
 
