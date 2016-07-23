@@ -6,7 +6,7 @@
 
 from ._data_property import DataProperty
 from ._data_property import ColumnDataProperty
-from ._function import is_empty_list_or_tuple
+from ._function import is_empty_sequence
 
 
 class PropertyExtractor(object):
@@ -63,7 +63,7 @@ class PropertyExtractor(object):
         return column_prop_list
 
     def __extract_data_property_list(self, data_list):
-        if is_empty_list_or_tuple(data_list):
+        if is_empty_sequence(data_list):
             return []
 
         return [
