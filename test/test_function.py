@@ -11,6 +11,7 @@ from decimal import Decimal
 from dataproperty import *
 import pytest
 import six
+from six.moves import range
 
 
 nan = float("nan")
@@ -209,6 +210,58 @@ class Test_is_not_empty_list_or_tuple:
     ])
     def test_abnormal(self, value, expected):
         assert is_not_empty_list_or_tuple(value) == expected
+
+
+class Test_is_empty_sequence:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [(), True],
+        [[], True],
+        ["", True],
+        [range(0), True],
+
+        [[1], False],
+        [["a"] * 200000, False],
+        [(1,), False],
+        [("a",) * 200000, False],
+        ["aaa", False],
+        [range(0, 10), False],
+
+        [True, False],
+        [False, False],
+        [six.MAXSIZE, False],
+        [0.1, False],
+        [nan, False],
+        [inf, False],
+    ])
+    def test_normal(self, value, expected):
+        assert is_empty_sequence(value) == expected
+
+
+class Test_is_not_empty_sequence:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [[1], True],
+        [["a"] * 200000, True],
+        [(1,), True],
+        [("a",) * 200000, True],
+        ["a" * 200000, True],
+        [range(0, 10), True],
+
+        [(), False],
+        [[], False],
+        [None, False],
+        [range(0), False],
+
+        [True, False],
+        [False, False],
+        [six.MAXSIZE, False],
+        [0.1, False],
+        [nan, False],
+        [inf, False],
+    ])
+    def test_normal(self, value, expected):
+        assert is_not_empty_sequence(value) == expected
 
 
 class Test_is_datetime:

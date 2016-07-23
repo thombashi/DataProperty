@@ -25,6 +25,8 @@ from ._function import is_nan
 from ._function import is_empty_string
 from ._function import is_not_empty_string
 from ._function import is_list_or_tuple
+from ._function import is_empty_sequence
+from ._function import is_not_empty_sequence
 from ._function import is_empty_list_or_tuple
 from ._function import is_not_empty_list_or_tuple
 from ._function import is_datetime

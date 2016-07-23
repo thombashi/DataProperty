@@ -142,7 +142,12 @@ class Test_PropertyExtractor_extract_data_property_matrix:
     ])
     def test_exception(self, prop_extractor, value, expected):
         with pytest.raises(expected):
-            prop_extractor.extract_data_property_matrix(value)
+            prop_extractor.data_matrix = value
+            prop_extractor.extract_data_property_matrix()
+
+    def test_empty(self, prop_extractor):
+        prop_extractor.data_matrix = []
+        assert prop_extractor.extract_data_property_matrix() == []
 
 
 class Test_PropertyExtractor_extract_column_property_list:
