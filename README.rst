@@ -227,7 +227,7 @@ Extract property of data for each column from a matrix
 Dependencies
 ============
 
-Python 2.6+ or 3.3+
+Python 2.7 or 3.3+
 
 - `python-dateutil <https://dateutil.readthedocs.io/en/stable/>`__
 - `pytz <https://pypi.python.org/pypi/pytz/>`__
