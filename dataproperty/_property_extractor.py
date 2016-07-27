@@ -4,6 +4,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from six.moves import zip
+
 from ._data_property import DataProperty
 from ._data_property import ColumnDataProperty
 from ._function import is_empty_sequence
