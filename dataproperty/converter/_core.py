@@ -5,6 +5,7 @@
 """
 
 from __future__ import absolute_import
+from __future__ import division
 import abc
 import re
 
@@ -80,7 +81,7 @@ class BoolConverter(ValueConverter):
 class DateTimeConverter(ValueConverter):
 
     __DAYS_TO_SECONDS_COEF = 60 ** 2 * 24
-    __MICROSECONDS_TO_SECONDS_COEF = 1000.0 ** 2
+    __MICROSECONDS_TO_SECONDS_COEF = 1000 ** 2
     __COMMON_DST_TIMEZONE_TABLE = {
         -36000: "America/Adak",  # -1000
         -32400: "US/Alaska",  # -0900
@@ -139,7 +140,7 @@ class DateTimeConverter(ValueConverter):
                 self.__DAYS_TO_SECONDS_COEF +
                 float(dt.seconds)
             ) +
-            float(dt.microseconds / self.__MICROSECONDS_TO_SECONDS_COEF)
+            dt.microseconds / self.__MICROSECONDS_TO_SECONDS_COEF
         )
 
     def __get_dst_timezone_name(self, offset):
