@@ -32,6 +32,10 @@ class TypeCheckerInterface(object):
     def is_type(self):  # pragma: no cover
         pass
 
+    @abc.abstractmethod
+    def validate(self):  # pragma: no cover
+        pass
+
 
 class TypeChecker(TypeCheckerInterface):
 
@@ -63,6 +67,21 @@ class TypeChecker(TypeCheckerInterface):
             return False
 
         return True
+
+    def validate(self, message=None):
+        """
+        :raises ValueError:
+            If the value is not matched the type to be expected.
+        """
+
+        if self.is_type():
+            return
+
+        if message is None:
+            message = "invalid value type: expected={:s}".format(
+                Typecode.get_typename(self.typecode))
+
+        raise ValueError(message)
 
     @abc.abstractmethod
     def _is_instance(self):
