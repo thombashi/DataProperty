@@ -25,18 +25,22 @@ from ._typecode import Typecode
 class TypeCheckerInterface(object):
 
     @abc.abstractproperty
-    def typecode(self):   # pragma: no cover
+    def typecode(self):  # pragma: no cover
         pass
 
     @abc.abstractmethod
-    def is_type(self):   # pragma: no cover
+    def is_type(self):  # pragma: no cover
+        pass
+
+    @abc.abstractmethod
+    def validate(self):  # pragma: no cover
         pass
 
 
 class TypeChecker(TypeCheckerInterface):
 
     @abc.abstractproperty
-    def _converter_creator(self):   # pragma: no cover
+    def _converter_creator(self):  # pragma: no cover
         pass
 
     def __init__(self, value, is_convert=True):
@@ -63,6 +67,21 @@ class TypeChecker(TypeCheckerInterface):
             return False
 
         return True
+
+    def validate(self, exception_type=TypeError, message=None):
+        """
+        :raises ValueError:
+            If the value is not matched the type to be expected.
+        """
+
+        if self.is_type():
+            return
+
+        if message is None:
+            message = "invalid value type: expected={:s}".format(
+                Typecode.get_typename(self.typecode))
+
+        raise exception_type(message)
 
     @abc.abstractmethod
     def _is_instance(self):

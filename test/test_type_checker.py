@@ -21,7 +21,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_NoneTypeChecker:
+class Test_NoneTypeChecker_is_type:
 
     @pytest.mark.parametrize(["value", "is_convert", "expected"], [
         [None, True, True],
@@ -39,7 +39,37 @@ class Test_NoneTypeChecker:
         assert type_checker.typecode == Typecode.NONE
 
 
-class Test_StringTypeChecker:
+class Test_NoneTypeChecker_validate:
+
+    @pytest.mark.parametrize(["value", "is_convert"], [
+        [None, True],
+        [None, False],
+    ])
+    def test_normal(self, value, is_convert):
+        type_checker = tc.NoneTypeChecker(value, is_convert)
+        type_checker.validate()
+
+    @pytest.mark.parametrize(
+        ["value", "is_convert", "exception_type", "expected"],
+        list(itertools.product(
+            ["None", True, False, 0, six.MAXSIZE, inf, nan],
+            [True, False],
+            [ValueError],
+            [ValueError]
+        )) + list(itertools.product(
+            ["None", True, False, 0, six.MAXSIZE, inf, nan],
+            [True, False],
+            [TypeError],
+            [TypeError]
+        ))
+    )
+    def test_exception(self, value, is_convert, exception_type, expected):
+        type_checker = tc.NoneTypeChecker(value, is_convert)
+        with pytest.raises(expected):
+            type_checker.validate(exception_type=exception_type)
+
+
+class Test_StringTypeChecker_is_type:
 
     @pytest.mark.parametrize(["value", "is_convert", "expected"], [
         [None, True, True],
@@ -61,7 +91,37 @@ class Test_StringTypeChecker:
         assert type_checker.typecode == Typecode.STRING
 
 
-class Test_IntegerTypeChecker:
+class Test_StringTypeChecker_validate:
+
+    @pytest.mark.parametrize(["value", "is_convert"],  [
+        [None, True],
+        [six.MAXSIZE, True],
+        [inf, True],
+    ] + list(
+        itertools.product(
+            ["None"],
+            [True, False],
+        ))
+    )
+    def test_normal(self, value, is_convert):
+        type_checker = tc.StringTypeChecker(value, is_convert)
+        type_checker.validate()
+
+    @pytest.mark.parametrize(
+        ["value", "is_convert", "exception_type", "expected"],
+        [
+            [None, False, ValueError, ValueError],
+            [six.MAXSIZE, False, TypeError, TypeError],
+            [inf, False, ValueError, ValueError],
+        ]
+    )
+    def test_exception(self, value, is_convert, exception_type, expected):
+        type_checker = tc.StringTypeChecker(value, is_convert)
+        with pytest.raises(expected):
+            type_checker.validate(exception_type=exception_type)
+
+
+class Test_IntegerTypeChecker_is_type:
 
     @pytest.mark.parametrize(["value", "is_convert"], [
         ["0", True],
@@ -99,7 +159,46 @@ class Test_IntegerTypeChecker:
         assert not tc.IntegerTypeChecker(value, is_convert).is_type()
 
 
-class Test_FloatTypeChecker:
+class Test_IntegerTypeChecker_validate:
+
+    @pytest.mark.parametrize(["value", "is_convert"],  [
+        ["0", True],
+        [" 1 ", True],
+        [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
+        [Decimal("1"), True],
+    ] + list(
+        itertools.product(
+            [0, six.MAXSIZE, -six.MAXSIZE],
+            [True, False],
+        ))
+    )
+    def test_normal(self, value, is_convert):
+        type_checker = tc.IntegerTypeChecker(value, is_convert)
+        type_checker.validate()
+
+    @pytest.mark.parametrize(["value", "is_convert"], [
+        ["0", False],
+        ["0xff", True], ["0xff", False],
+        [" 1 ", False],
+        [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
+        [Decimal("1"), False],
+    ] + list(
+        itertools.product(
+            [
+                None, True, nan, inf, 0.5, "0.5", .999, ".999",
+                "", "test", "1a1", "11a", "a11",
+                1e-05, -1e-05, "1e-05", "-1e-05",
+            ],
+            [True, False],
+        ))
+    )
+    def test_exception(self, value, is_convert):
+        type_checker = tc.IntegerTypeChecker(value, is_convert)
+        with pytest.raises(TypeError):
+            type_checker.validate()
+
+
+class Test_FloatTypeChecker_is_type:
 
     @pytest.mark.parametrize(["value", "is_convert"], [
         [1, True],
@@ -142,7 +241,7 @@ class Test_FloatTypeChecker:
         assert not tc.FloatTypeChecker(value, is_convert).is_type()
 
 
-class Test_BoolTypeChecker:
+class Test_BoolTypeChecker_is_type:
 
     @pytest.mark.parametrize(["value", "is_convert"], [
         ["True", True],
@@ -176,7 +275,7 @@ class Test_BoolTypeChecker:
         assert not type_checker.is_type()
 
 
-class Test_DateTimeTypeChecker:
+class Test_DateTimeTypeChecker_is_type:
 
     @pytest.mark.parametrize(["value", "is_convert"], [
         [
@@ -211,7 +310,7 @@ class Test_DateTimeTypeChecker:
         assert not tc.DateTimeTypeChecker(value, is_convert).is_type()
 
 
-class Test_InfinityChecker:
+class Test_InfinityChecker_is_type:
 
     @pytest.mark.parametrize(
         ["value", "is_convert", "expected"],
@@ -236,7 +335,7 @@ class Test_InfinityChecker:
         assert type_checker.typecode == Typecode.INFINITY
 
 
-class Test_NanChecker:
+class Test_NanChecker_is_type:
 
     @pytest.mark.parametrize(
         ["value", "is_convert", "expected"],

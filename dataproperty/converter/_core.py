@@ -15,14 +15,14 @@ from .._error import TypeConversionError
 class ValueConverterInterface(object):
 
     @abc.abstractmethod
-    def convert(self):   # pragma: no cover
+    def convert(self):  # pragma: no cover
         pass
 
 
 class ValueConverter(ValueConverterInterface):
 
     @abc.abstractmethod
-    def convert(self):   # pragma: no cover
+    def convert(self):  # pragma: no cover
         pass
 
     def __init__(self, value):
