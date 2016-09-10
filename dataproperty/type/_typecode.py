@@ -30,4 +30,8 @@ class Typecode(object):
 
     @classmethod
     def get_typename(cls, typecode):
-        return cls.__TYPENAME_TABLE.get(typecode)
+        type_name = cls.__TYPENAME_TABLE.get(typecode)
+        if type_name is None:
+            raise ValueError("unknown typecode: {}".format(typecode))
+
+        return type_name
