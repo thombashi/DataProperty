@@ -21,7 +21,7 @@ from ._core import DateTimeConverter
 class ValueConverterCreatorInterface(object):
 
     @abc.abstractmethod
-    def create(self, value):   # pragma: no cover
+    def create(self, value):  # pragma: no cover
         pass
 
 

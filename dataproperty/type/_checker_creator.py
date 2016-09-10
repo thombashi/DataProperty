@@ -23,7 +23,7 @@ from ._checker import NanChecker
 class TypeCheckerCreatorInterface(object):
 
     @abc.abstractmethod
-    def create(self, value, is_convert):   # pragma: no cover
+    def create(self, value, is_convert):  # pragma: no cover
         pass
 
 

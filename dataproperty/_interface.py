@@ -15,13 +15,13 @@ class DataPeropertyInterface(object):
     __slots__ = ()
 
     @abc.abstractproperty
-    def align(self):   # pragma: no cover
+    def align(self):  # pragma: no cover
         pass
 
     @abc.abstractproperty
-    def decimal_places(self):   # pragma: no cover
+    def decimal_places(self):  # pragma: no cover
         pass
 
     @abc.abstractproperty
-    def typecode(self):   # pragma: no cover
+    def typecode(self):  # pragma: no cover
         pass

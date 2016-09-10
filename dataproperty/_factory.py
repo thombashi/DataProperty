@@ -32,11 +32,11 @@ class TypeConverterFactoryInterface(object):
     """
 
     @abc.abstractproperty
-    def type_checker_factory(self):   # pragma: no cover
+    def type_checker_factory(self):  # pragma: no cover
         pass
 
     @abc.abstractproperty
-    def value_converter_factory(self):   # pragma: no cover
+    def value_converter_factory(self):  # pragma: no cover
         pass
 
 

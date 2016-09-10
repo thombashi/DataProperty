@@ -25,18 +25,18 @@ from ._typecode import Typecode
 class TypeCheckerInterface(object):
 
     @abc.abstractproperty
-    def typecode(self):   # pragma: no cover
+    def typecode(self):  # pragma: no cover
         pass
 
     @abc.abstractmethod
-    def is_type(self):   # pragma: no cover
+    def is_type(self):  # pragma: no cover
         pass
 
 
 class TypeChecker(TypeCheckerInterface):
 
     @abc.abstractproperty
-    def _converter_creator(self):   # pragma: no cover
+    def _converter_creator(self):  # pragma: no cover
         pass
 
     def __init__(self, value, is_convert=True):
