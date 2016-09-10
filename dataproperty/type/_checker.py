@@ -68,7 +68,7 @@ class TypeChecker(TypeCheckerInterface):
 
         return True
 
-    def validate(self, message=None):
+    def validate(self, exception_type=TypeError, message=None):
         """
         :raises ValueError:
             If the value is not matched the type to be expected.
@@ -81,7 +81,7 @@ class TypeChecker(TypeCheckerInterface):
             message = "invalid value type: expected={:s}".format(
                 Typecode.get_typename(self.typecode))
 
-        raise ValueError(message)
+        raise exception_type(message)
 
     @abc.abstractmethod
     def _is_instance(self):

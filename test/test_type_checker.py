@@ -50,17 +50,23 @@ class Test_NoneTypeChecker_validate:
         type_checker.validate()
 
     @pytest.mark.parametrize(
-        ["value", "is_convert", "expected"],
+        ["value", "is_convert", "exception_type", "expected"],
         list(itertools.product(
             ["None", True, False, 0, six.MAXSIZE, inf, nan],
             [True, False],
+            [ValueError],
             [ValueError]
+        )) + list(itertools.product(
+            ["None", True, False, 0, six.MAXSIZE, inf, nan],
+            [True, False],
+            [TypeError],
+            [TypeError]
         ))
     )
-    def test_exception(self, value, is_convert, expected):
+    def test_exception(self, value, is_convert, exception_type, expected):
         type_checker = tc.NoneTypeChecker(value, is_convert)
         with pytest.raises(expected):
-            type_checker.validate()
+            type_checker.validate(exception_type=exception_type)
 
 
 class Test_StringTypeChecker_is_type:
@@ -101,15 +107,18 @@ class Test_StringTypeChecker_validate:
         type_checker = tc.StringTypeChecker(value, is_convert)
         type_checker.validate()
 
-    @pytest.mark.parametrize(["value", "is_convert", "expected"], [
-        [None, False, ValueError],
-        [six.MAXSIZE, False, ValueError],
-        [inf, False, ValueError],
-    ])
-    def test_exception(self, value, is_convert, expected):
+    @pytest.mark.parametrize(
+        ["value", "is_convert", "exception_type", "expected"],
+        [
+            [None, False, ValueError, ValueError],
+            [six.MAXSIZE, False, TypeError, TypeError],
+            [inf, False, ValueError, ValueError],
+        ]
+    )
+    def test_exception(self, value, is_convert, exception_type, expected):
         type_checker = tc.StringTypeChecker(value, is_convert)
         with pytest.raises(expected):
-            type_checker.validate()
+            type_checker.validate(exception_type=exception_type)
 
 
 class Test_IntegerTypeChecker_is_type:
@@ -185,7 +194,7 @@ class Test_IntegerTypeChecker_validate:
     )
     def test_exception(self, value, is_convert):
         type_checker = tc.IntegerTypeChecker(value, is_convert)
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             type_checker.validate()
 
 
