@@ -78,8 +78,8 @@ class TypeChecker(TypeCheckerInterface):
             return
 
         if message is None:
-            message = "invalid value type: expected={:s}".format(
-                Typecode.get_typename(self.typecode))
+            message = "invalid value type: expected-type={:s}, value={}".format(
+                Typecode.get_typename(self.typecode), self._value)
 
         raise exception_type(message)
 
