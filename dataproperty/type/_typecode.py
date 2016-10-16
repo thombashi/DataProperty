@@ -19,10 +19,10 @@ class Typecode(object):
     BOOL = 1 << 6
 
     DEFAULT_TYPENAME_TABLE = {
-        NONE:   "NONE",
-        INT:    "INTEGER",
-        FLOAT:  "FLOAT",
+        NONE: "NONE",
+        INT: "INTEGER",
         INTEGER: "INTEGER",
+        FLOAT: "FLOAT",
         STRING: "STRING",
         DATETIME: "DATETIME",
         INFINITY: "INFINITY",
