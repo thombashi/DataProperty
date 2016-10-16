@@ -9,7 +9,8 @@ from __future__ import absolute_import
 
 class Typecode(object):
     NONE = 0
-    INT = 1 << 0
+    INT = 1 << 0  # delete in the future
+    INTEGER = 1 << 0
     FLOAT = 1 << 1
     STRING = 1 << 2
     DATETIME = 1 << 3
@@ -21,6 +22,7 @@ class Typecode(object):
         NONE:   "NONE",
         INT:    "INTEGER",
         FLOAT:  "FLOAT",
+        INTEGER: "INTEGER",
         STRING: "STRING",
         DATETIME: "DATETIME",
         INFINITY: "INFINITY",
