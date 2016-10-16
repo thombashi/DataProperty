@@ -27,7 +27,7 @@ project_name = "DataProperty"
 
 setuptools.setup(
     name=project_name,
-    version="0.9.0",
+    version="0.10.0",
     url="https://github.com/thombashi/" + project_name,
     bugtrack_url="https://github.com/thombashi/{:s}/issues".format(
         project_name),
@@ -37,7 +37,7 @@ setuptools.setup(
     description=summary,
     include_package_data=True,
     install_requires=install_requires,
-    keywords=["property"],
+    keywords=["data", "property"],
     license="MIT License",
     long_description=long_description,
     maintainer=author,

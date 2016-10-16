@@ -25,3 +25,7 @@ class DataPeropertyInterface(object):
     @abc.abstractproperty
     def typecode(self):  # pragma: no cover
         pass
+
+    @abc.abstractproperty
+    def typename(self):  # pragma: no cover
+        pass

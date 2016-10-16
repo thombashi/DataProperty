@@ -381,7 +381,7 @@ class Test_DataPeroperty_repr:
     @pytest.mark.parametrize(["value", "expected"], [
         [
             0,
-            "data=0, typename=INT, align=right, str_len=1, "
+            "data=0, typename=INTEGER, align=right, str_len=1, "
             "integer_digits=1, decimal_places=0, additional_format_len=0",
         ],
         [
