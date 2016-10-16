@@ -19,7 +19,7 @@ class Typecode(object):
 
     DEFAULT_TYPENAME_TABLE = {
         NONE:   "NONE",
-        INT:    "INT",
+        INT:    "INTEGER",
         FLOAT:  "FLOAT",
         STRING: "STRING",
         DATETIME: "DATETIME",
