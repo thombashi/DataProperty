@@ -40,6 +40,10 @@ class DataPeropertyBase(DataPeropertyInterface):
     __slots__ = ("__datetime_format_str")
 
     @property
+    def typename(self):
+        return Typecode.get_typename(self.typecode)
+
+    @property
     def format_str(self):
         format_str = {
             Typecode.NONE: "",
@@ -182,7 +186,7 @@ class DataProperty(DataPeropertyBase):
                 ("data={:" + self.format_str + "}").format(self.data))
 
         element_list.extend([
-            "typename=" + Typecode.get_typename(self.typecode),
+            "typename=" + self.typename,
             "align=" + str(self.align),
             "str_len=" + str(self.str_len),
             "integer_digits=" + str(self.integer_digits),
@@ -254,8 +258,7 @@ class DataProperty(DataPeropertyBase):
 
             return
 
-        raise TypeConversionError(
-            "failed to convert: " + Typecode.get_typename(self.__typecode))
+        raise TypeConversionError("failed to convert: " + self.typename)
 
     def __convert_data(self, bool_converter, datetime_converter):
         if self.typecode == Typecode.BOOL:
@@ -366,7 +369,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __repr__(self):
         return ", ".join([
-            "typename=" + Typecode.get_typename(self.typecode),
+            "typename=" + self.typename,
             "align=" + str(self.align),
             "padding_len=" + str(self.padding_len),
             "integer_digits=({:s})".format(str(self.minmax_integer_digits)),
