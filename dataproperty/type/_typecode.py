@@ -17,7 +17,7 @@ class Typecode(object):
     NAN = 1 << 5
     BOOL = 1 << 6
 
-    __TYPENAME_TABLE = {
+    TYPENAME_TABLE = {
         NONE:   "NONE",
         INT:    "INT",
         FLOAT:  "FLOAT",
@@ -30,7 +30,7 @@ class Typecode(object):
 
     @classmethod
     def get_typename(cls, typecode):
-        type_name = cls.__TYPENAME_TABLE.get(typecode)
+        type_name = cls.TYPENAME_TABLE.get(typecode)
         if type_name is None:
             raise ValueError("unknown typecode: {}".format(typecode))
 
