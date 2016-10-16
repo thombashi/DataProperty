@@ -17,7 +17,7 @@ class Typecode(object):
     NAN = 1 << 5
     BOOL = 1 << 6
 
-    TYPENAME_TABLE = {
+    DEFAULT_TYPENAME_TABLE = {
         NONE:   "NONE",
         INT:    "INT",
         FLOAT:  "FLOAT",
@@ -27,6 +27,8 @@ class Typecode(object):
         NAN: "NAN",
         BOOL: "BOOL",
     }
+
+    TYPENAME_TABLE = DEFAULT_TYPENAME_TABLE
 
     @classmethod
     def get_typename(cls, typecode):
