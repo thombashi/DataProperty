@@ -41,7 +41,10 @@ class NopConverter(ValueConverter):
 class StringConverter(ValueConverter):
 
     def convert(self):
-        return str(self._value)
+        try:
+            return str(self._value)
+        except UnicodeEncodeError:
+            return self._value
 
 
 class IntegerConverter(ValueConverter):
@@ -50,7 +53,11 @@ class IntegerConverter(ValueConverter):
         try:
             return int(self._value)
         except (TypeError, ValueError, OverflowError):
-            raise TypeConversionError("failed to convert: " + str(self._value))
+            try:
+                raise TypeConversionError(
+                    "failed to convert: {}".format(self._value))
+            except UnicodeEncodeError:
+                raise TypeConversionError("failed to convert to integer")
 
 
 class FloatConverter(ValueConverter):
@@ -64,7 +71,11 @@ class FloatConverter(ValueConverter):
         try:
             return decimal.Decimal(self._value)
         except (TypeError, ValueError, decimal.InvalidOperation):
-            raise TypeConversionError("failed to convert: " + str(self._value))
+            try:
+                raise TypeConversionError(
+                    "failed to convert: {}".format(self._value))
+            except UnicodeEncodeError:
+                raise TypeConversionError("failed to convert to float")
 
 
 class BoolConverter(ValueConverter):
@@ -75,7 +86,11 @@ class BoolConverter(ValueConverter):
         try:
             return strict_strtobool(self._value)
         except ValueError:
-            raise TypeConversionError("failed to convert: " + str(self._value))
+            try:
+                raise TypeConversionError(
+                    "failed to convert: {}".format(self._value))
+            except UnicodeEncodeError:
+                raise TypeConversionError("failed to convert to bool")
 
 
 class DateTimeConverter(ValueConverter):
@@ -116,8 +131,11 @@ class DateTimeConverter(ValueConverter):
         try:
             self.__datetime = dateutil.parser.parse(self._value)
         except (AttributeError, ValueError, OverflowError):
-            raise TypeConversionError(
-                "failed to parse as datetime: " + str(self._value))
+            try:
+                raise TypeConversionError(
+                    "failed to parse as a datetime: {}".format(self._value))
+            except UnicodeEncodeError:
+                raise TypeConversionError("failed to parse as a datetime")
 
         try:
             dst_timezone_name = self.__get_dst_timezone_name(
@@ -159,5 +177,9 @@ class DateTimeConverter(ValueConverter):
                     "invalid datetime string: version string found " +
                     self._value)
         except TypeError:
-            raise TypeConversionError(
-                "invalid datetime string: " + str(self._value))
+            try:
+                raise TypeConversionError(
+                    "invalid datetime string: {}".format(self._value))
+            except UnicodeEncodeError:
+                raise TypeConversionError(
+                    "invalid datetime string")
