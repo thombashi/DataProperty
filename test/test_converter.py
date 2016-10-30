@@ -41,6 +41,7 @@ class Test_StringConverter_convert:
         [nan, "nan"],
         [True, "True"],
         [datetime.datetime(2017, 1, 2, 3, 4, 5), "2017-01-02 03:04:05"],
+        [u"あ", u"あ"],
     ])
     def test_normal(self, value, expected):
         assert dpcc.StringConverter(value).convert() == expected
@@ -67,6 +68,7 @@ class Test_IntegerConverter_convert:
         ["-0.1", TypeConversionError],
         ["1e-05", TypeConversionError],
         [inf, TypeConversionError],
+        [u"あ", TypeConversionError],
     ])
     def test_exception(self, value, expected):
         with pytest.raises(expected):
@@ -96,6 +98,7 @@ class Test_FloatConverter_convert:
         ["", TypeConversionError],
         [None, TypeConversionError],
         ["test", TypeConversionError],
+        [u"あ", TypeConversionError],
     ])
     def test_exception(self, value, expected):
         with pytest.raises(expected):
@@ -126,6 +129,7 @@ class Test_BoolConverter_convert:
         [None, TypeConversionError],
         [inf, TypeConversionError],
         [nan, TypeConversionError],
+        [u"あ", TypeConversionError],
     ])
     def test_exception(self, value, expected):
         with pytest.raises(expected):
@@ -179,6 +183,7 @@ class Test_DateTimeConverter_convert:
         ["invalid time string", TypeConversionError],
         [None, TypeConversionError],
         [11111, TypeConversionError],
+        [u"あ", TypeConversionError],
     ])
     def test_exception(self, value, expected):
         dt_converter = dpcc.DateTimeConverter(value)
