@@ -24,6 +24,7 @@ class ValueConverterInterface(object):
 
 
 class ValueConverter(ValueConverterInterface):
+    __slots__ = ("_value")
 
     def __init__(self, value):
         self._value = value

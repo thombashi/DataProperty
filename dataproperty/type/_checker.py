@@ -48,6 +48,12 @@ class TypeCheckerInterface(object):
 
 
 class TypeChecker(TypeCheckerInterface):
+    __slots__ = (
+        "_value",
+        "_converted_value",
+        "__is_strict",
+        "__converter"
+    )
 
     @abc.abstractproperty
     def _converter_class(self):  # pragma: no cover
