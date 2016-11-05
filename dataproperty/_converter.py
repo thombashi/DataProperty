@@ -25,7 +25,12 @@ class ValueConverter(ValueConverterInterface):
         self._value = value
 
     def __repr__(self):
-        return str(self.convert())
+        try:
+            string = str(self.convert())
+        except TypeConversionError:
+            string = "[ValueConverter ERROR] failed to convert"
+
+        return string
 
 
 class NopConverter(ValueConverter):
