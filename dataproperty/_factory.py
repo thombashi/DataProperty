@@ -17,7 +17,7 @@ from ._converter import (
     BoolConverter,
     DateTimeConverter
 )
-from .type import (
+from ._type_checker import (
     NoneTypeChecker,
     StringTypeChecker,
     IntegerTypeChecker,

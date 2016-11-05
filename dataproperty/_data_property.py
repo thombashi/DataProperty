@@ -26,8 +26,8 @@ from ._function import (
     get_number_of_digit,
     get_text_len
 )
-from .type import Typecode
-from .type import FloatTypeChecker
+from ._typecode import Typecode
+from ._type_checker import FloatTypeChecker
 
 
 def default_bool_converter(value):
