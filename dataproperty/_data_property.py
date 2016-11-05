@@ -352,11 +352,9 @@ class ColumnDataProperty(DataPeropertyBase):
     def minmax_additional_format_len(self):
         return self.__minmax_additional_format_len
 
-    """
     @property
     def type_factory(self):
         return self.__FACTORY_TABLE.get(self.typecode)
-    """
 
     def __init__(
             self,
