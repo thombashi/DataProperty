@@ -46,12 +46,6 @@ class TypeFactoryInterface(object):
 
 class BaseTypeFactory(TypeFactoryInterface):
 
-    """
-    @property
-    def data(self):
-        return self.__data
-    """
-
     def __init__(self, data, is_strict):
         self._data = data
         self._is_strict = is_strict
