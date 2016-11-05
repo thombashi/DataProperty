@@ -21,10 +21,6 @@ class ValueConverterInterface(object):
 
 class ValueConverter(ValueConverterInterface):
 
-    @abc.abstractmethod
-    def convert(self):  # pragma: no cover
-        pass
-
     def __init__(self, value):
         self._value = value
 
