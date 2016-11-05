@@ -13,12 +13,12 @@ def is_integer(value):
     .. warning::
 
         This function will be deleted in the future.
-        Use IntegerTypeChecker class instead of this function.
+        Use IntegerType class instead of this function.
     """
 
-    from ._type_checker import IntegerTypeChecker
+    from ._type import IntegerType
 
-    return IntegerTypeChecker(value).is_type()
+    return IntegerType(value).is_type()
 
 
 def is_hex(value):
@@ -35,12 +35,12 @@ def is_float(value):
     .. warning::
 
         This function will be deleted in the future.
-        Use FloatTypeChecker class instead of this function.
+        Use FloatType class instead of this function.
     """
 
-    from ._type_checker import FloatTypeChecker
+    from ._type import FloatType
 
-    return FloatTypeChecker(value).is_type()
+    return FloatType(value).is_type()
 
 
 def is_nan(value):
@@ -121,20 +121,20 @@ def is_datetime(value):
     .. warning::
 
         This function will be deleted in the future.
-        Use IntegerTypeChecker class instead of this function.
+        Use DateTimeType class instead of this function.
     """
 
-    import datetime
+    from ._type import DateTimeType
 
-    return value is not None and isinstance(value, datetime.datetime)
+    return DateTimeType(value).is_type()
 
 
 def get_integer_digit(value):
-    from ._type_checker import FloatTypeChecker
+    from ._type import FloatType
 
     abs_value = abs(float(value))
 
-    if not FloatTypeChecker(value).is_convertible_type():
+    if not FloatType(value).is_type():
         # bool type value reaches this line
         raise TypeError("invalid type '{:s}".format(type(value)))
 
@@ -147,10 +147,10 @@ def get_integer_digit(value):
 def _get_decimal_places(value, integer_digits):
     from collections import namedtuple
     from six.moves import range
-    from ._type_checker import IntegerTypeChecker
+    from ._type import IntegerType
 
     float_digit_len = 0
-    if IntegerTypeChecker(value).is_type():
+    if IntegerType(value).is_type():
         abs_value = abs(int(value))
     else:
         abs_value = abs(float(value))

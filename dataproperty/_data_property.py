@@ -27,7 +27,7 @@ from ._function import (
     get_text_len
 )
 from ._typecode import Typecode
-from ._type_checker import FloatTypeChecker
+from ._type import FloatType
 
 
 def default_bool_converter(value):
@@ -199,7 +199,7 @@ class DataProperty(DataPeropertyBase):
         return ", ".join(element_list)
 
     def __get_additional_format_len(self):
-        if not FloatTypeChecker(self.data).is_type():
+        if not FloatType(self.data).is_type():
             return 0
 
         format_len = 0

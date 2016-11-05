@@ -33,4 +33,14 @@ from ._function import (
     strict_strtobool
 )
 from ._property_extractor import PropertyExtractor
+from ._type import (
+    NoneType,
+    StringType,
+    IntegerType,
+    FloatType,
+    DateTimeType,
+    BoolType,
+    InfinityType,
+    NanType
+)
 from ._typecode import Typecode
