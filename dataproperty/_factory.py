@@ -45,6 +45,7 @@ class TypeFactoryInterface(object):
 
 
 class BaseTypeFactory(TypeFactoryInterface):
+    __slots__ = ("_data", "_is_strict")
 
     def __init__(self, data, is_strict):
         self._data = data
