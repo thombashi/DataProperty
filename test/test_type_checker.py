@@ -13,7 +13,7 @@ import pytest
 import six
 
 from dataproperty._type_checker import *
-from dataproperty import Typecode
+from dataproperty import *
 from decimal import Decimal
 
 
@@ -34,9 +34,16 @@ class Test_NoneTypeChecker_is_type:
         ))
     )
     def test_normal_true(self, value, is_convert, expected):
-        type_checker = NoneTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+        expected_typecode = Typecode.NONE
+
+        type_checker = NoneTypeChecker(value, is_strict)
+        typeobj = NoneType(value, is_strict)
+
         assert type_checker.is_type() == expected
-        assert type_checker.typecode == Typecode.NONE
+        assert type_checker.typecode == expected_typecode
+        assert typeobj.is_type() == expected
+        assert typeobj.typecode == expected_typecode
 
 
 class Test_NoneTypeChecker_validate:
@@ -46,7 +53,9 @@ class Test_NoneTypeChecker_validate:
         [None, False],
     ])
     def test_normal(self, value, is_convert):
-        type_checker = NoneTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+
+        type_checker = NoneTypeChecker(value, is_strict)
         type_checker.validate()
 
     @pytest.mark.parametrize(
@@ -64,7 +73,9 @@ class Test_NoneTypeChecker_validate:
         ))
     )
     def test_exception(self, value, is_convert, exception_type, expected):
-        type_checker = NoneTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+
+        type_checker = NoneTypeChecker(value, is_strict)
         with pytest.raises(expected):
             type_checker.validate(exception_type=exception_type)
 
@@ -86,7 +97,10 @@ class Test_StringTypeChecker_is_type:
         ))
     )
     def test_normal_true(self, value, is_convert, expected):
-        type_checker = StringTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+        expected_typecode = Typecode.STRING
+
+        type_checker = StringTypeChecker(value, is_strict)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.STRING
 
@@ -104,7 +118,9 @@ class Test_StringTypeChecker_validate:
         ))
     )
     def test_normal(self, value, is_convert):
-        type_checker = StringTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+
+        type_checker = StringTypeChecker(value, is_strict)
         type_checker.validate()
 
     @pytest.mark.parametrize(
@@ -116,7 +132,9 @@ class Test_StringTypeChecker_validate:
         ]
     )
     def test_exception(self, value, is_convert, exception_type, expected):
-        type_checker = StringTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+
+        type_checker = StringTypeChecker(value, is_strict)
         with pytest.raises(expected):
             type_checker.validate(exception_type=exception_type)
 
@@ -135,9 +153,12 @@ class Test_IntegerTypeChecker_is_type:
         ))
     )
     def test_normal_true(self, value, is_convert):
-        type_checker = IntegerTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+        expected_typecode = Typecode.INTEGER
+
+        type_checker = IntegerTypeChecker(value, is_strict)
         assert type_checker.is_type()
-        assert type_checker.typecode == Typecode.INT
+        assert type_checker.typecode == Typecode.INTEGER
 
     @pytest.mark.parametrize(["value", "is_convert"], [
         ["0", False],
@@ -156,7 +177,9 @@ class Test_IntegerTypeChecker_is_type:
         ))
     )
     def test_normal_false(self, value, is_convert):
-        assert not IntegerTypeChecker(value, not is_convert).is_type()
+        is_strict = not is_convert
+
+        assert not IntegerTypeChecker(value, is_strict).is_type()
 
 
 class Test_IntegerTypeChecker_validate:
@@ -173,7 +196,9 @@ class Test_IntegerTypeChecker_validate:
         ))
     )
     def test_normal(self, value, is_convert):
-        type_checker = IntegerTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+
+        type_checker = IntegerTypeChecker(value, is_strict)
         type_checker.validate()
 
     @pytest.mark.parametrize(["value", "is_convert"], [
@@ -193,7 +218,9 @@ class Test_IntegerTypeChecker_validate:
         ))
     )
     def test_exception(self, value, is_convert):
-        type_checker = IntegerTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+
+        type_checker = IntegerTypeChecker(value, is_strict)
         with pytest.raises(TypeError):
             type_checker.validate()
 
@@ -217,7 +244,10 @@ class Test_FloatTypeChecker_is_type:
         ))
     )
     def test_normal_true(self, value, is_convert):
-        type_checker = FloatTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+        expected_typecode = Typecode.FLOAT
+
+        type_checker = FloatTypeChecker(value, is_strict)
         assert type_checker.is_type()
         assert type_checker.typecode == Typecode.FLOAT
 
@@ -238,7 +268,9 @@ class Test_FloatTypeChecker_is_type:
         ))
     )
     def test_normal_false(self, value, is_convert):
-        assert not FloatTypeChecker(value, not is_convert).is_type()
+        is_strict = not is_convert
+
+        assert not FloatTypeChecker(value, is_strict).is_type()
 
 
 class Test_BoolTypeChecker_is_type:
@@ -255,7 +287,10 @@ class Test_BoolTypeChecker_is_type:
         ))
     )
     def test_normal_true(self, value, is_convert):
-        type_checker = BoolTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+        expected_typecode = Typecode.BOOL
+
+        type_checker = BoolTypeChecker(value, is_strict)
         assert type_checker.is_type()
         assert type_checker.typecode == Typecode.BOOL
 
@@ -271,7 +306,9 @@ class Test_BoolTypeChecker_is_type:
         ))
     )
     def test_normal_false(self, value, is_convert):
-        type_checker = BoolTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+
+        type_checker = BoolTypeChecker(value, is_strict)
         assert not type_checker.is_type()
 
 
@@ -294,7 +331,10 @@ class Test_DateTimeTypeChecker_is_type:
         ],
     ])
     def test_normal_true(self, value, is_convert):
-        type_checker = DateTimeTypeChecker(value, not is_convert)
+        is_strict = not is_convert
+        expected_typecode = Typecode.DATETIME
+
+        type_checker = DateTimeTypeChecker(value, is_strict)
         assert type_checker.is_type()
         assert type_checker.typecode == Typecode.DATETIME
 
@@ -307,7 +347,9 @@ class Test_DateTimeTypeChecker_is_type:
         [six.MAXSIZE, True], [six.MAXSIZE, False],
     ])
     def test_normal_false(self, value, is_convert):
-        assert not DateTimeTypeChecker(value, not is_convert).is_type()
+        is_strict = not is_convert
+
+        assert not DateTimeTypeChecker(value, is_strict).is_type()
 
 
 class Test_InfinityChecker_is_type:
@@ -330,7 +372,10 @@ class Test_InfinityChecker_is_type:
         ]
     )
     def test_normal(self, value, is_convert, expected):
-        type_checker = InfinityChecker(value, not is_convert)
+        is_strict = not is_convert
+        expected_typecode = Typecode.INFINITY
+
+        type_checker = InfinityChecker(value, is_strict)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.INFINITY
 
@@ -355,6 +400,8 @@ class Test_NanChecker_is_type:
         ]
     )
     def test_normal(self, value, is_convert, expected):
-        type_checker = NanChecker(value, not is_convert)
+        is_strict = not is_convert
+
+        type_checker = NanChecker(value, is_strict)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.NAN
