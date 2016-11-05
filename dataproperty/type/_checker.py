@@ -57,8 +57,7 @@ class TypeChecker(TypeCheckerInterface):
     def __init__(self, value, is_strict=False):
         self._value = value
         self._converted_value = None
-        self._is_strict = is_strict
-
+        self.__is_strict = is_strict
         self.__converter = self._converter_class(value)
 
     def is_type(self):
@@ -67,7 +66,7 @@ class TypeChecker(TypeCheckerInterface):
             False: self.is_convertible_type,
         }
 
-        return __CHECKER_TABLE[self._is_strict]()
+        return __CHECKER_TABLE[self.__is_strict]()
 
     def is_strict_type(self):
         return self._is_instance()
