@@ -134,7 +134,7 @@ def get_integer_digit(value):
 
     abs_value = abs(float(value))
 
-    if not FloatTypeChecker(value).is_type():
+    if not FloatTypeChecker(value).is_convertible_type():
         # bool type value reaches this line
         raise TypeError("invalid type '{:s}".format(type(value)))
 

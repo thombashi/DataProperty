@@ -9,7 +9,7 @@ from __future__ import division
 import abc
 import re
 
-from .._error import TypeConversionError
+from ._error import TypeConversionError
 
 
 class ValueConverterInterface(object):
@@ -81,7 +81,7 @@ class FloatConverter(ValueConverter):
 class BoolConverter(ValueConverter):
 
     def convert(self):
-        from .._function import strict_strtobool
+        from ._function import strict_strtobool
 
         try:
             return strict_strtobool(self._value)

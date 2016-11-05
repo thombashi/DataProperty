@@ -10,12 +10,15 @@ from decimal import Decimal
 
 import six
 
-from ..converter import NopConverterCreator
-from ..converter import StringConverterCreator
-from ..converter import IntegerConverterCreator
-from ..converter import FloatConverterCreator
-from ..converter import BoolConverterCreator
-from ..converter import DateTimeConverterCreator
+from .._converter import (
+    NopConverter,
+    StringConverter,
+    IntegerConverter,
+    FloatConverter,
+    BoolConverter,
+    DateTimeConverter
+)
+
 from .._error import TypeConversionError
 from .._function import is_nan
 from ._typecode import Typecode
@@ -33,6 +36,14 @@ class TypeCheckerInterface(object):
         pass
 
     @abc.abstractmethod
+    def is_strict_type(self):  # pragma: no cover
+        pass
+
+    @abc.abstractmethod
+    def is_convertible_type(self):  # pragma: no cover
+        pass
+
+    @abc.abstractmethod
     def validate(self):  # pragma: no cover
         pass
 
@@ -40,22 +51,32 @@ class TypeCheckerInterface(object):
 class TypeChecker(TypeCheckerInterface):
 
     @abc.abstractproperty
-    def _converter_creator(self):  # pragma: no cover
+    def _converter_class(self):  # pragma: no cover
         pass
 
-    def __init__(self, value, is_convert=True):
+    def __init__(self, value, is_strict=False):
         self._value = value
         self._converted_value = None
-        self._is_convert = is_convert
+        self._is_strict = is_strict
+
+        self.__converter = self._converter_class(value)
 
     def is_type(self):
-        if self._is_instance():
+        __CHECKER_TABLE = {
+            True: self.is_strict_type,
+            False: self.is_convertible_type,
+        }
+
+        return __CHECKER_TABLE[self._is_strict]()
+
+    def is_strict_type(self):
+        return self._is_instance()
+
+    def is_convertible_type(self):
+        if self.is_strict_type():
             return True
 
         if self._is_exclude_instance():
-            return False
-
-        if not self._is_convert:
             return False
 
         try:
@@ -91,8 +112,7 @@ class TypeChecker(TypeCheckerInterface):
         return False
 
     def _try_convert(self):
-        self._converted_value = self._converter_creator.create(
-            self._value).convert()
+        self._converted_value = self.__converter.convert()
 
     def _is_valid_after_convert(self):
         return True
@@ -105,8 +125,8 @@ class NoneTypeChecker(TypeChecker):
         return Typecode.NONE
 
     @property
-    def _converter_creator(self):
-        return NopConverterCreator()
+    def _converter_class(self):
+        return NopConverter
 
     def _is_instance(self):
         return self._value is None
@@ -122,8 +142,8 @@ class StringTypeChecker(TypeChecker):
         return Typecode.STRING
 
     @property
-    def _converter_creator(self):
-        return StringConverterCreator()
+    def _converter_class(self):
+        return StringConverter
 
     def _is_instance(self):
         return isinstance(self._value, six.string_types)
@@ -139,8 +159,8 @@ class IntegerTypeChecker(TypeChecker):
         return Typecode.INT
 
     @property
-    def _converter_creator(self):
-        return IntegerConverterCreator()
+    def _converter_class(self):
+        return IntegerConverter
 
     def _is_instance(self):
         if isinstance(self._value, six.integer_types):
@@ -162,8 +182,8 @@ class FloatTypeChecker(TypeChecker):
         return Typecode.FLOAT
 
     @property
-    def _converter_creator(self):
-        return FloatConverterCreator()
+    def _converter_class(self):
+        return FloatConverter
 
     def _is_instance(self):
         return any([
@@ -182,8 +202,8 @@ class BoolTypeChecker(TypeChecker):
         return Typecode.BOOL
 
     @property
-    def _converter_creator(self):
-        return BoolConverterCreator()
+    def _converter_class(self):
+        return BoolConverter
 
     def _is_instance(self):
         return isinstance(self._value, bool)
@@ -199,8 +219,8 @@ class DateTimeTypeChecker(TypeChecker):
         return Typecode.DATETIME
 
     @property
-    def _converter_creator(self):
-        return DateTimeConverterCreator()
+    def _converter_class(self):
+        return DateTimeConverter
 
     def _is_instance(self):
         import datetime
@@ -215,8 +235,8 @@ class InfinityChecker(TypeChecker):
         return Typecode.INFINITY
 
     @property
-    def _converter_creator(self):
-        return FloatConverterCreator()
+    def _converter_class(self):
+        return FloatConverter
 
     def _is_instance(self):
         return self._value in (float("inf"), Decimal("inf"))
@@ -232,8 +252,8 @@ class NanChecker(TypeChecker):
         return Typecode.NAN
 
     @property
-    def _converter_creator(self):
-        return FloatConverterCreator()
+    def _converter_class(self):
+        return FloatConverter
 
     def _is_instance(self):
         return is_nan(self._value)

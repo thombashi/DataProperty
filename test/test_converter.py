@@ -11,7 +11,7 @@ import pytest
 import six
 
 from dataproperty import TypeConversionError
-import dataproperty.converter._core as dpcc
+import dataproperty._converter as dpcc
 
 
 nan = float("nan")

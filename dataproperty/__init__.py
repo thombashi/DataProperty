@@ -18,19 +18,21 @@ from ._data_property import DataProperty
 
 from ._property_extractor import PropertyExtractor
 
-from ._function import is_integer
-from ._function import is_hex
-from ._function import is_float
-from ._function import is_nan
-from ._function import is_empty_string
-from ._function import is_not_empty_string
-from ._function import is_list_or_tuple
-from ._function import is_empty_sequence
-from ._function import is_not_empty_sequence
-from ._function import is_empty_list_or_tuple
-from ._function import is_not_empty_list_or_tuple
-from ._function import is_datetime
-from ._function import get_integer_digit
-from ._function import get_number_of_digit
-from ._function import get_text_len
-from ._function import strict_strtobool
+from ._function import (
+    is_integer,
+    is_hex,
+    is_float,
+    is_nan,
+    is_empty_string,
+    is_not_empty_string,
+    is_list_or_tuple,
+    is_empty_sequence,
+    is_not_empty_sequence,
+    is_empty_list_or_tuple,
+    is_not_empty_list_or_tuple,
+    is_datetime,
+    get_integer_digit,
+    get_number_of_digit,
+    get_text_len,
+    strict_strtobool
+)
