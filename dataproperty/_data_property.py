@@ -11,21 +11,23 @@ from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._error import TypeConversionError
 from ._interface import DataPeropertyInterface
-from .type import Typecode
-from .type import FloatTypeChecker
-
-from ._function import is_nan
-from ._function import get_number_of_digit
-from ._function import get_text_len
-
-from ._factory import NoneTypeFactory
-from ._factory import StringTypeFactory
-from ._factory import IntegerTypeFactory
-from ._factory import FloatTypeFactory
-from ._factory import BoolTypeFactory
-from ._factory import DateTimeTypeFactory
-from ._factory import InfinityTypeFactory
-from ._factory import NanTypeFactory
+from ._factory import (
+    NoneTypeFactory,
+    StringTypeFactory,
+    IntegerTypeFactory,
+    FloatTypeFactory,
+    BoolTypeFactory,
+    DateTimeTypeFactory,
+    InfinityTypeFactory,
+    NanTypeFactory
+)
+from ._function import (
+    is_nan,
+    get_number_of_digit,
+    get_text_len
+)
+from ._typecode import Typecode
+from ._type import FloatType
 
 
 def default_bool_converter(value):
@@ -78,15 +80,15 @@ class DataProperty(DataPeropertyBase):
         "__str_len",
     )
 
-    __type_factory_list = [
-        NoneTypeFactory(),
-        IntegerTypeFactory(),
-        InfinityTypeFactory(),
-        NanTypeFactory(),
-        FloatTypeFactory(),
-        BoolTypeFactory(),
-        DateTimeTypeFactory(),
-        StringTypeFactory(),
+    __type_factory_class_list = [
+        NoneTypeFactory,
+        IntegerTypeFactory,
+        InfinityTypeFactory,
+        NanTypeFactory,
+        FloatTypeFactory,
+        BoolTypeFactory,
+        DateTimeTypeFactory,
+        StringTypeFactory,
     ]
 
     @property
@@ -156,11 +158,11 @@ class DataProperty(DataPeropertyBase):
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
-            is_convert=True,
+            is_strict=False,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__(datetime_format_str)
 
-        self.__set_data(data, none_value, inf_value, nan_value, is_convert)
+        self.__set_data(data, none_value, inf_value, nan_value, is_strict)
         self.__convert_data(bool_converter, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
@@ -197,7 +199,7 @@ class DataProperty(DataPeropertyBase):
         return ", ".join(element_list)
 
     def __get_additional_format_len(self):
-        if not FloatTypeChecker(self.data).is_type():
+        if not FloatType(self.data).is_type():
             return 0
 
         format_len = 0
@@ -233,16 +235,17 @@ class DataProperty(DataPeropertyBase):
         return get_text_len(self.data)
 
     def __set_data(
-            self, data, none_value, inf_value, nan_value, is_convert):
+            self, data, none_value, inf_value, nan_value, is_strict):
         special_value_table = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
             Typecode.NAN: nan_value,
         }
 
-        for type_factory in self.__type_factory_list:
-            checker = type_factory.type_checker_factory.create(
-                data, is_convert)
+        for type_factory_class in self.__type_factory_class_list:
+            type_factory = type_factory_class(data, is_strict)
+            checker = type_factory.create_type_checker()
+
             if not checker.is_type():
                 continue
 
@@ -253,8 +256,7 @@ class DataProperty(DataPeropertyBase):
                 self.__data = special_value
                 return
 
-            self.__data = type_factory.value_converter_factory.create(
-                data).convert()
+            self.__data = type_factory.create_type_converter().convert()
 
             return
 
@@ -287,14 +289,14 @@ class ColumnDataProperty(DataPeropertyBase):
     )
 
     __FACTORY_TABLE = {
-        Typecode.NONE: NoneTypeFactory(),
-        Typecode.STRING: StringTypeFactory(),
-        Typecode.INT: IntegerTypeFactory(),
-        Typecode.INFINITY: InfinityTypeFactory(),
-        Typecode.NAN: NanTypeFactory(),
-        Typecode.FLOAT: FloatTypeFactory(),
-        Typecode.BOOL: BoolTypeFactory(),
-        Typecode.DATETIME: DateTimeTypeFactory(),
+        Typecode.NONE: NoneTypeFactory,
+        Typecode.STRING: StringTypeFactory,
+        Typecode.INT: IntegerTypeFactory,
+        Typecode.INFINITY: InfinityTypeFactory,
+        Typecode.NAN: NanTypeFactory,
+        Typecode.FLOAT: FloatTypeFactory,
+        Typecode.BOOL: BoolTypeFactory,
+        Typecode.DATETIME: DateTimeTypeFactory,
     }
 
     @property
@@ -350,9 +352,11 @@ class ColumnDataProperty(DataPeropertyBase):
     def minmax_additional_format_len(self):
         return self.__minmax_additional_format_len
 
+    """
     @property
     def type_factory(self):
         return self.__FACTORY_TABLE.get(self.typecode)
+    """
 
     def __init__(
             self,

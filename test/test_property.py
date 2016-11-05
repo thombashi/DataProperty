@@ -72,7 +72,7 @@ class Test_DataPeroperty_data_typecode:
         ]
     )
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
-        dp = DataProperty(value, is_convert=is_convert)
+        dp = DataProperty(value, is_strict=not is_convert)
         assert dp.data == expected_data
         assert dp.typecode == expected_typecode
 
@@ -86,7 +86,7 @@ class Test_DataPeroperty_data_typecode:
     )
     def test_normal_nan(
             self, value, is_convert, expected_data, expected_typecode):
-        dp = DataProperty(value, is_convert=is_convert)
+        dp = DataProperty(value, is_strict=not is_convert)
         assert is_nan(dp.data)
         assert dp.typecode == expected_typecode
 
@@ -141,7 +141,7 @@ class Test_DataPeroperty_set_data:
             replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
             value,
-            is_convert=is_convert,
+            is_strict=not is_convert,
             replace_tabs_with_spaces=replace_tabs_with_spaces,
             tab_length=tab_length)
 
@@ -155,11 +155,11 @@ class Test_DataPeroperty_set_data:
         ]
     )
     def test_special_none(
-            self, value, none_value,  is_convert, expected):
+            self, value, none_value, is_convert, expected):
         dp = DataProperty(
             value,
             none_value=none_value,
-            is_convert=is_convert)
+            is_strict=not is_convert)
 
         assert dp.data == expected
 
@@ -176,7 +176,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             bool_converter=bool_converter,
-            is_convert=is_convert)
+            is_strict=not is_convert)
 
         assert dp.data == expected
 
@@ -215,7 +215,7 @@ class Test_DataPeroperty_set_data:
             value,
             datetime_converter=datetime_converter,
             datetime_format_str=datetime_format_str,
-            is_convert=is_convert)
+            is_strict=not is_convert)
 
         assert dp.data == expected
 
@@ -233,7 +233,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             inf_value=inf_value,
-            is_convert=is_convert)
+            is_strict=not is_convert)
 
         assert dp.data == expected
 
@@ -251,7 +251,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             nan_value=nan_value,
-            is_convert=is_convert)
+            is_strict=not is_convert)
 
         assert dp.data == expected
 

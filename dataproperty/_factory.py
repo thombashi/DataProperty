@@ -9,120 +9,116 @@ import abc
 
 import six
 
-from .converter import NopConverterCreator
-from .converter import StringConverterCreator
-from .converter import IntegerConverterCreator
-from .converter import FloatConverterCreator
-from .converter import BoolConverterCreator
-from .converter import DateTimeConverterCreator
-from .type import NoneTypeCheckerCreator
-from .type import StringTypeCheckerCreator
-from .type import IntegerTypeCheckerCreator
-from .type import FloatTypeCheckerCreator
-from .type import BoolTypeCheckerCreator
-from .type import DateTimeTypeCheckerCreator
-from .type import InfinityCheckerCreator
-from .type import NanCheckerCreator
+from ._converter import (
+    NopConverter,
+    StringConverter,
+    IntegerConverter,
+    FloatConverter,
+    BoolConverter,
+    DateTimeConverter
+)
+from ._type_checker import (
+    NoneTypeChecker,
+    StringTypeChecker,
+    IntegerTypeChecker,
+    FloatTypeChecker,
+    BoolTypeChecker,
+    DateTimeTypeChecker,
+    InfinityChecker,
+    NanChecker
+)
 
 
 @six.add_metaclass(abc.ABCMeta)
-class TypeConverterFactoryInterface(object):
+class TypeFactoryInterface(object):
     """
     Abstract factory class of type converter.
     """
 
-    @abc.abstractproperty
-    def type_checker_factory(self):  # pragma: no cover
+    @abc.abstractmethod
+    def create_type_checker(self):  # pragma: no cover
         pass
 
-    @abc.abstractproperty
-    def value_converter_factory(self):  # pragma: no cover
+    @abc.abstractmethod
+    def create_type_converter(self):  # pragma: no cover
         pass
 
 
-class NoneTypeFactory(TypeConverterFactoryInterface):
+class BaseTypeFactory(TypeFactoryInterface):
+    __slots__ = ("_data", "_is_strict")
 
-    @property
-    def type_checker_factory(self):
-        return NoneTypeCheckerCreator()
-
-    @property
-    def value_converter_factory(self):
-        return NopConverterCreator()
+    def __init__(self, data, is_strict):
+        self._data = data
+        self._is_strict = is_strict
 
 
-class StringTypeFactory(TypeConverterFactoryInterface):
+class NoneTypeFactory(BaseTypeFactory):
 
-    @property
-    def type_checker_factory(self):
-        return StringTypeCheckerCreator()
+    def create_type_checker(self):
+        return NoneTypeChecker(self._data, self._is_strict)
 
-    @property
-    def value_converter_factory(self):
-        return StringConverterCreator()
+    def create_type_converter(self):
+        return NopConverter(self._data)
 
 
-class IntegerTypeFactory(TypeConverterFactoryInterface):
+class StringTypeFactory(BaseTypeFactory):
 
-    @property
-    def type_checker_factory(self):
-        return IntegerTypeCheckerCreator()
+    def create_type_checker(self):
+        return StringTypeChecker(self._data, self._is_strict)
 
-    @property
-    def value_converter_factory(self):
-        return IntegerConverterCreator()
+    def create_type_converter(self):
+        return StringConverter(self._data)
 
 
-class FloatTypeFactory(TypeConverterFactoryInterface):
+class IntegerTypeFactory(BaseTypeFactory):
 
-    @property
-    def type_checker_factory(self):
-        return FloatTypeCheckerCreator()
+    def create_type_checker(self):
+        return IntegerTypeChecker(self._data, self._is_strict)
 
-    @property
-    def value_converter_factory(self):
-        return FloatConverterCreator()
+    def create_type_converter(self):
+        return IntegerConverter(self._data)
 
 
-class DateTimeTypeFactory(TypeConverterFactoryInterface):
+class FloatTypeFactory(BaseTypeFactory):
 
-    @property
-    def type_checker_factory(self):
-        return DateTimeTypeCheckerCreator()
+    def create_type_checker(self):
+        return FloatTypeChecker(self._data, self._is_strict)
 
-    @property
-    def value_converter_factory(self):
-        return DateTimeConverterCreator()
+    def create_type_converter(self):
+        return FloatConverter(self._data)
 
 
-class BoolTypeFactory(TypeConverterFactoryInterface):
+class DateTimeTypeFactory(BaseTypeFactory):
 
-    @property
-    def type_checker_factory(self):
-        return BoolTypeCheckerCreator()
+    def create_type_checker(self):
+        return DateTimeTypeChecker(self._data, self._is_strict)
 
-    @property
-    def value_converter_factory(self):
-        return BoolConverterCreator()
+    def create_type_converter(self):
+        return DateTimeConverter(self._data)
 
 
-class InfinityTypeFactory(TypeConverterFactoryInterface):
+class BoolTypeFactory(BaseTypeFactory):
 
-    @property
-    def type_checker_factory(self):
-        return InfinityCheckerCreator()
+    def create_type_checker(self):
+        return BoolTypeChecker(self._data, self._is_strict)
 
-    @property
-    def value_converter_factory(self):
-        return FloatConverterCreator()
+    def create_type_converter(self):
+        return BoolConverter(self._data)
 
 
-class NanTypeFactory(TypeConverterFactoryInterface):
+class InfinityTypeFactory(BaseTypeFactory):
 
-    @property
-    def type_checker_factory(self):
-        return NanCheckerCreator()
+    def create_type_checker(self):
+        return InfinityChecker(self._data, self._is_strict)
 
-    @property
-    def value_converter_factory(self):
-        return FloatConverterCreator()
+    def create_type_converter(self):
+        return FloatConverter(self._data)
+
+
+class NanTypeFactory(BaseTypeFactory):
+
+    def create_type_checker(self):
+        return NanChecker(self._data, self._is_strict)
+
+    def create_type_converter(self):
+        return FloatConverter(self._data)

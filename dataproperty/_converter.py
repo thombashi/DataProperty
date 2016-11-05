@@ -9,7 +9,7 @@ from __future__ import division
 import abc
 import re
 
-from .._error import TypeConversionError
+from ._error import TypeConversionError
 
 
 class ValueConverterInterface(object):
@@ -18,18 +18,30 @@ class ValueConverterInterface(object):
     def convert(self):  # pragma: no cover
         pass
 
+    @abc.abstractmethod
+    def try_convert(self):  # pragma: no cover
+        pass
+
 
 class ValueConverter(ValueConverterInterface):
-
-    @abc.abstractmethod
-    def convert(self):  # pragma: no cover
-        pass
+    __slots__ = ("_value")
 
     def __init__(self, value):
         self._value = value
 
     def __repr__(self):
-        return str(self.convert())
+        try:
+            string = str(self.convert())
+        except TypeConversionError:
+            string = "[ValueConverter ERROR] failed to convert"
+
+        return string
+
+    def try_convert(self):
+        try:
+            return self.convert()
+        except TypeConversionError:
+            return None
 
 
 class NopConverter(ValueConverter):
@@ -81,7 +93,7 @@ class FloatConverter(ValueConverter):
 class BoolConverter(ValueConverter):
 
     def convert(self):
-        from .._function import strict_strtobool
+        from ._function import strict_strtobool
 
         try:
             return strict_strtobool(self._value)

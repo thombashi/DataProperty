@@ -28,7 +28,7 @@ class PropertyExtractor(object):
         self.bool_converter = default_bool_converter
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
-        self.is_convert = True
+        self.is_strict = False
 
     def extract_data_property_matrix(self):
         return [
@@ -79,6 +79,6 @@ class PropertyExtractor(object):
                 bool_converter=self.bool_converter,
                 datetime_converter=self.datetime_converter,
                 datetime_format_str=self.datetime_format_str,
-                is_convert=self.is_convert)
+                is_strict=self.is_strict)
             for data in data_list
         ]
