@@ -24,9 +24,9 @@ class Test_DataPeroperty_data_typecode:
     @pytest.mark.parametrize(
         ["value", "is_convert", "expected_data", "expected_typecode"],
         [
-            [six.MAXSIZE, True, six.MAXSIZE, Typecode.INT],
-            [-six.MAXSIZE, False, -six.MAXSIZE, Typecode.INT],
-            [str(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INT],
+            [six.MAXSIZE, True, six.MAXSIZE, Typecode.INTEGER],
+            [-six.MAXSIZE, False, -six.MAXSIZE, Typecode.INTEGER],
+            [str(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INTEGER],
             [str(six.MAXSIZE), False, str(six.MAXSIZE), Typecode.STRING],
             ["1.1", True, Decimal("1.1"), Typecode.FLOAT],
             ["-1.1", False, "-1.1", Typecode.STRING],

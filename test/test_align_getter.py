@@ -18,7 +18,7 @@ class Test_AlignGetter_get_align_from_typecode:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [Typecode.STRING, Align.LEFT],
-        [Typecode.INT, Align.RIGHT],
+        [Typecode.INTEGER, Align.RIGHT],
         [Typecode.FLOAT, Align.RIGHT],
         [Typecode.NONE, Align.LEFT],
     ])
@@ -27,14 +27,14 @@ class Test_AlignGetter_get_align_from_typecode:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [Typecode.STRING, Align.RIGHT],
-        [Typecode.INT, Align.LEFT],
+        [Typecode.INTEGER, Align.LEFT],
         [Typecode.FLOAT, Align.CENTER],
         [Typecode.NONE, Align.LEFT],
     ])
     def test_setter(self, align_getter, value, expected):
         align_getter.typecode_align_table = {
             Typecode.STRING: Align.RIGHT,
-            Typecode.INT: Align.LEFT,
+            Typecode.INTEGER: Align.LEFT,
             Typecode.FLOAT: Align.CENTER,
         }
 
@@ -42,7 +42,7 @@ class Test_AlignGetter_get_align_from_typecode:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [Typecode.STRING, Align.LEFT],
-        [Typecode.INT, Align.RIGHT],
+        [Typecode.INTEGER, Align.RIGHT],
         [Typecode.FLOAT, Align.RIGHT],
         [Typecode.NONE, Align.CENTER],
     ])

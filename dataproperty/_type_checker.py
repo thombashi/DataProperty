@@ -156,7 +156,7 @@ class IntegerTypeChecker(TypeChecker):
 
     @property
     def typecode(self):
-        return Typecode.INT
+        return Typecode.INTEGER
 
     @property
     def _converter_class(self):
