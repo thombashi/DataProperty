@@ -18,7 +18,6 @@ from .._converter import (
     BoolConverter,
     DateTimeConverter
 )
-
 from .._error import TypeConversionError
 from .._function import is_nan
 from ._typecode import Typecode

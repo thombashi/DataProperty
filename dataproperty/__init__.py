@@ -6,18 +6,14 @@
 
 from __future__ import absolute_import
 
-from ._error import TypeConversionError
-
 from ._align import Align
 from ._align_getter import align_getter
 from ._container import MinMaxContainer
-from .type import Typecode
-
-from ._data_property import ColumnDataProperty
-from ._data_property import DataProperty
-
-from ._property_extractor import PropertyExtractor
-
+from ._data_property import (
+    ColumnDataProperty,
+    DataProperty
+)
+from ._error import TypeConversionError
 from ._function import (
     is_integer,
     is_hex,
@@ -36,3 +32,5 @@ from ._function import (
     get_text_len,
     strict_strtobool
 )
+from ._property_extractor import PropertyExtractor
+from .type import Typecode
