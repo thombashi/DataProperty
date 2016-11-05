@@ -79,9 +79,8 @@ class TypeChecker(TypeCheckerInterface):
         if self._is_exclude_instance():
             return False
 
-        try:
-            self._try_convert()
-        except TypeConversionError:
+        self._converted_value = self.__converter.try_convert()
+        if self._converted_value is None:
             return False
 
         if not self._is_valid_after_convert():
@@ -110,9 +109,6 @@ class TypeChecker(TypeCheckerInterface):
 
     def _is_exclude_instance(self):
         return False
-
-    def _try_convert(self):
-        self._converted_value = self.__converter.convert()
 
     def _is_valid_after_convert(self):
         return True
