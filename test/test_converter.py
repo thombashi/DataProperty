@@ -18,7 +18,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_NoneConverter_convert:
+class Test_NopConverter_convert:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [None, None],
@@ -28,7 +28,9 @@ class Test_NoneConverter_convert:
         ["test_string", "test_string"],
     ])
     def test_normal(self, value, expected):
-        assert dpcc.NopConverter(value).convert() == expected
+        converter = dpcc.NopConverter(value)
+        assert converter.convert() == expected
+        assert converter.try_convert() == expected
 
 
 class Test_StringConverter_convert:
@@ -44,7 +46,9 @@ class Test_StringConverter_convert:
         [u"あ", u"あ"],
     ])
     def test_normal(self, value, expected):
-        assert dpcc.StringConverter(value).convert() == expected
+        converter = dpcc.StringConverter(value)
+        assert converter.convert() == expected
+        assert converter.try_convert() == expected
 
 
 class Test_IntegerConverter_convert:
@@ -57,7 +61,9 @@ class Test_IntegerConverter_convert:
         [str(-six.MAXSIZE), -six.MAXSIZE],
     ])
     def test_normal(self, value, expected):
-        assert dpcc.IntegerConverter(value).convert() == expected
+        converter = dpcc.IntegerConverter(value)
+        assert converter.convert() == expected
+        assert converter.try_convert() == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["", TypeConversionError],
@@ -71,8 +77,12 @@ class Test_IntegerConverter_convert:
         [u"あ", TypeConversionError],
     ])
     def test_exception(self, value, expected):
+        converter = dpcc.IntegerConverter(value)
+
         with pytest.raises(expected):
-            dpcc.IntegerConverter(value).convert()
+            converter.convert()
+
+        assert converter.try_convert() is None
 
 
 class Test_FloatConverter_convert:
@@ -92,7 +102,9 @@ class Test_FloatConverter_convert:
         [True, Decimal("1")],
     ])
     def test_normal(self, value, expected):
-        assert dpcc.FloatConverter(value).convert() == expected
+        converter = dpcc.FloatConverter(value)
+        assert converter.convert() == expected
+        assert converter.try_convert() == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["", TypeConversionError],
@@ -101,8 +113,12 @@ class Test_FloatConverter_convert:
         [u"あ", TypeConversionError],
     ])
     def test_exception(self, value, expected):
+        converter = dpcc.FloatConverter(value)
+
         with pytest.raises(expected):
-            dpcc.FloatConverter(value).convert()
+            converter.convert()
+
+        assert converter.try_convert() is None
 
 
 class Test_BoolConverter_convert:
@@ -132,8 +148,12 @@ class Test_BoolConverter_convert:
         [u"あ", TypeConversionError],
     ])
     def test_exception(self, value, expected):
+        converter = dpcc.BoolConverter(value)
+
         with pytest.raises(expected):
-            dpcc.BoolConverter(value).convert()
+            converter.convert()
+
+        assert converter.try_convert() is None
 
 
 class Test_DateTimeConverter_convert:
@@ -151,9 +171,10 @@ class Test_DateTimeConverter_convert:
         ],
     ])
     def test_normal(self, value, expected):
-        dt_converter = dpcc.DateTimeConverter(value)
+        converter = dpcc.DateTimeConverter(value)
 
-        assert dt_converter.convert() == expected
+        assert converter.convert() == expected
+        assert converter.try_convert() == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         [
@@ -186,7 +207,9 @@ class Test_DateTimeConverter_convert:
         [u"あ", TypeConversionError],
     ])
     def test_exception(self, value, expected):
-        dt_converter = dpcc.DateTimeConverter(value)
+        converter = dpcc.DateTimeConverter(value)
 
         with pytest.raises(expected):
-            dt_converter.convert()
+            converter.convert()
+
+        assert converter.try_convert() is None

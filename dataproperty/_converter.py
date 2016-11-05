@@ -18,6 +18,10 @@ class ValueConverterInterface(object):
     def convert(self):  # pragma: no cover
         pass
 
+    @abc.abstractmethod
+    def try_convert(self):  # pragma: no cover
+        pass
+
 
 class ValueConverter(ValueConverterInterface):
 
@@ -31,6 +35,12 @@ class ValueConverter(ValueConverterInterface):
             string = "[ValueConverter ERROR] failed to convert"
 
         return string
+
+    def try_convert(self):
+        try:
+            return self.convert()
+        except TypeConversionError:
+            return None
 
 
 class NopConverter(ValueConverter):
