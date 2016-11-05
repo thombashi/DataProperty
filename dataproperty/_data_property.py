@@ -49,7 +49,7 @@ class DataPeropertyBase(DataPeropertyInterface):
     def format_str(self):
         format_str = {
             Typecode.NONE: "",
-            Typecode.INT: "d",
+            Typecode.INTEGER: "d",
             Typecode.BOOL: "",
             Typecode.DATETIME: self.__datetime_format_str,
         }.get(self.typecode)
@@ -222,7 +222,7 @@ class DataProperty(DataPeropertyBase):
         return float_len
 
     def __get_str_len(self):
-        if self.typecode == Typecode.INT:
+        if self.typecode == Typecode.INTEGER:
             return self.integer_digits + self.additional_format_len
 
         if self.typecode == Typecode.FLOAT:
@@ -291,7 +291,7 @@ class ColumnDataProperty(DataPeropertyBase):
     __FACTORY_TABLE = {
         Typecode.NONE: NoneTypeFactory,
         Typecode.STRING: StringTypeFactory,
-        Typecode.INT: IntegerTypeFactory,
+        Typecode.INTEGER: IntegerTypeFactory,
         Typecode.INFINITY: InfinityTypeFactory,
         Typecode.NAN: NanTypeFactory,
         Typecode.FLOAT: FloatTypeFactory,
@@ -389,7 +389,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__typecode_bitmap |= dataprop.typecode
         self.__str_len = max(self.__str_len, dataprop.str_len)
 
-        if dataprop.typecode in (Typecode.FLOAT, Typecode.INT):
+        if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
             self.__minmax_integer_digits.update(dataprop.integer_digits)
             self.__minmax_decimal_places.update(dataprop.decimal_places)
 
@@ -406,7 +406,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __is_float_typecode(self):
         number_typecode = (
-            Typecode.INT | Typecode.FLOAT | Typecode.INFINITY | Typecode.NAN)
+            Typecode.INTEGER | Typecode.FLOAT | Typecode.INFINITY | Typecode.NAN)
 
         if self.__is_not_single_typecode(number_typecode):
             return False
@@ -429,7 +429,7 @@ class ColumnDataProperty(DataPeropertyBase):
         typecode_list = [
             Typecode.STRING,
             Typecode.FLOAT,
-            Typecode.INT,
+            Typecode.INTEGER,
             Typecode.DATETIME,
             Typecode.BOOL,
             Typecode.INFINITY,

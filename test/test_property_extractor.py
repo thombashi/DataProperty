@@ -76,7 +76,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
 
         prop = prop_matrix[0][1]
         assert prop.data == 1
-        assert prop.typecode == Typecode.INT
+        assert prop.typecode == Typecode.INTEGER
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
         assert prop.str_len == 1
@@ -188,7 +188,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert len(col_prop_list) == 9
 
         prop = col_prop_list[0]
-        assert prop.typecode == Typecode.INT
+        assert prop.typecode == Typecode.INTEGER
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
         assert prop.padding_len == 1

@@ -29,7 +29,7 @@ class Test_ColumnDataPeroperty:
         [[None, None], Typecode.NONE],
         [
             [0, six.MAXSIZE, str(six.MAXSIZE), -six.MAXSIZE],
-            Typecode.INT,
+            Typecode.INTEGER,
         ],
         [
             [0, 1.1, "0.01", -six.MAXSIZE],
@@ -57,7 +57,7 @@ class Test_ColumnDataPeroperty:
         ],
 
         # None mixed values
-        [[None, six.MAXSIZE, str(-six.MAXSIZE)], Typecode.INT],
+        [[None, six.MAXSIZE, str(-six.MAXSIZE)], Typecode.INTEGER],
         [[1.0, None], Typecode.FLOAT],
         [[None, "test"], Typecode.STRING],
         [[None, True, "False"], Typecode.BOOL],
