@@ -37,15 +37,7 @@ class PropertyExtractor(object):
         ]
 
     def extract_column_property_list(self):
-        header_prop_list = self.__extract_data_property_list(self.header_list)
-        column_prop_list = []
-
-        for header_prop in header_prop_list:
-            column_prop = ColumnDataProperty(
-                min_padding_len=self.min_padding_len,
-                datetime_format_str=self.datetime_format_str)
-            column_prop.update_header(header_prop)
-            column_prop_list.append(column_prop)
+        column_prop_list = self.__extract_header_data_prop_list()
 
         try:
             data_prop_matrix = self.extract_data_property_matrix()
@@ -63,6 +55,19 @@ class PropertyExtractor(object):
 
             for prop in col_prop_list:
                 column_prop_list[col_idx].update_body(prop)
+
+        return column_prop_list
+
+    def __extract_header_data_prop_list(self):
+        header_prop_list = self.__extract_data_property_list(self.header_list)
+        column_prop_list = []
+
+        for header_prop in header_prop_list:
+            column_prop = ColumnDataProperty(
+                min_padding_len=self.min_padding_len,
+                datetime_format_str=self.datetime_format_str)
+            column_prop.update_header(header_prop)
+            column_prop_list.append(column_prop)
 
         return column_prop_list
 
