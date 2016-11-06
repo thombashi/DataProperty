@@ -13,6 +13,16 @@ from ._data_property import ColumnDataProperty
 from ._function import is_empty_sequence
 
 
+class MissmatchProcessing(object):
+    """
+    TODO: testing
+    """
+
+    EXCEPTION = 1 << 1
+    TRIM = 1 << 2
+    EXTEND = 1 << 3
+
+
 class PropertyExtractor(object):
 
     def __init__(self):
@@ -29,6 +39,8 @@ class PropertyExtractor(object):
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
         self.is_strict = False
+
+        self.mismatch_processing = MissmatchProcessing.TRIM
 
     def extract_data_property_matrix(self):
         return [
@@ -48,10 +60,23 @@ class PropertyExtractor(object):
             try:
                 column_prop_list[col_idx]
             except IndexError:
-                column_prop_list.append(
-                    ColumnDataProperty(
-                        min_padding_len=self.min_padding_len,
-                        datetime_format_str=self.datetime_format_str))
+                if self.mismatch_processing == MissmatchProcessing.EXCEPTION:
+                    raise
+
+                if any([
+                    self.mismatch_processing == MissmatchProcessing.EXTEND,
+                    all([
+                        self.mismatch_processing == MissmatchProcessing.TRIM,
+                        is_empty_sequence(self.header_list),
+                    ])
+                ]):
+                    column_prop_list.append(
+                        ColumnDataProperty(
+                            min_padding_len=self.min_padding_len,
+                            datetime_format_str=self.datetime_format_str))
+                elif self.mismatch_processing == MissmatchProcessing.TRIM:
+                    # ignore columns that longer than header column
+                    continue
 
             for prop in col_prop_list:
                 column_prop_list[col_idx].update_body(prop)
