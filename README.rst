@@ -1,17 +1,25 @@
 **DataProperty**
 
+.. image:: https://badge.fury.io/py/DataProperty.svg
+    :target: https://badge.fury.io/py/DataProperty
+
 .. image:: https://img.shields.io/pypi/pyversions/DataProperty.svg
    :target: https://pypi.python.org/pypi/DataProperty
-.. image:: https://travis-ci.org/thombashi/DataProperty.svg?branch=master
+
+.. image:: https://img.shields.io/travis/thombashi/DataProperty/master.svg?label=Linux
     :target: https://travis-ci.org/thombashi/DataProperty
-.. image:: https://ci.appveyor.com/api/projects/status/6ybxtfnle9lhykr9?svg=true
+
+.. image:: https://img.shields.io/appveyor/ci/thombashi/dataproperty/master.svg?label=Windows
     :target: https://ci.appveyor.com/project/thombashi/dataproperty
+
 .. image:: https://coveralls.io/repos/github/thombashi/DataProperty/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/DataProperty?branch=master
 
+    
 .. contents:: Table of contents
    :backlinks: top
    :local:
+
 
 Summary
 =======

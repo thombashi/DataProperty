@@ -178,8 +178,8 @@ class DateTimeConverter(ValueConverter):
 
     def __validate_datetime_string(self):
         """
-        This validation is required for version string (such as "3.3.5").
-        A version string is converted to a datetime value if this
+        This will require validating version string (such as "3.3.5").
+        A version string could be converted to a datetime value if this
         validation is not executed.
         """
 
