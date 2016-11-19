@@ -292,7 +292,7 @@ class Test_PropertyExtractor_extract_column_property_list:
     def test_normal_not_strict(self, prop_extractor, header_list, value):
         prop_extractor.header_list = header_list
         prop_extractor.data_matrix = value
-        prop_extractor.is_strict_mapping = NOT_STRICT_TYPE_MAPPING
+        prop_extractor.is_strict_type_mapping = NOT_STRICT_TYPE_MAPPING
         col_prop_list = prop_extractor.extract_column_property_list()
 
         assert len(col_prop_list) == 9

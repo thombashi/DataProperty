@@ -37,7 +37,7 @@ class PropertyExtractor(object):
         self.bool_converter = default_bool_converter
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
-        self.is_strict_mapping = DEFAULT_IS_STRICT_TYPE_MAPPING
+        self.is_strict_type_mapping = DEFAULT_IS_STRICT_TYPE_MAPPING
 
         self.mismatch_processing = MissmatchProcessing.TRIM
 
@@ -110,6 +110,6 @@ class PropertyExtractor(object):
                 bool_converter=self.bool_converter,
                 datetime_converter=self.datetime_converter,
                 datetime_format_str=self.datetime_format_str,
-                is_strict_mapping=self.is_strict_mapping)
+                is_strict_type_mapping=self.is_strict_type_mapping)
             for data in data_list
         ]

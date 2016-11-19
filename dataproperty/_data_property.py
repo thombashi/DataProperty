@@ -177,12 +177,12 @@ class DataProperty(DataPeropertyBase):
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
-            is_strict_mapping=DEFAULT_IS_STRICT_TYPE_MAPPING,
+            is_strict_type_mapping=DEFAULT_IS_STRICT_TYPE_MAPPING,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__(datetime_format_str)
 
         self.__set_data(
-            data, none_value, inf_value, nan_value, is_strict_mapping)
+            data, none_value, inf_value, nan_value, is_strict_type_mapping)
         self.__convert_data(bool_converter, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
@@ -266,7 +266,7 @@ class DataProperty(DataPeropertyBase):
         return self.__get_text_len()
 
     def __set_data(
-            self, data, none_value, inf_value, nan_value, is_strict_mapping):
+            self, data, none_value, inf_value, nan_value, is_strict_type_mapping):
         special_value_table = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
@@ -274,7 +274,7 @@ class DataProperty(DataPeropertyBase):
         }
 
         for type_factory_class in self.__type_factory_class_list:
-            is_strict = is_strict_mapping.get(type_factory_class(
+            is_strict = is_strict_type_mapping.get(type_factory_class(
                 None, None).create_type_checker().typecode, False)
             type_factory = type_factory_class(data, is_strict)
             checker = type_factory.create_type_checker()
