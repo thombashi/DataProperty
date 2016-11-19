@@ -59,7 +59,7 @@ class Test_DataPeroperty_data_typecode:
             [False, False, False, Typecode.BOOL],
 
             ["100-0002", True,
-                datetime.datetime(100, 2, 19, 0, 0), Typecode.DATETIME],
+                datetime.datetime(100, 2, 20, 0, 0), Typecode.DATETIME],
             ["100-0002", False, "100-0002", Typecode.STRING],
 
             [{}, True, {}, Typecode.DICTIONARY],

@@ -268,6 +268,7 @@ class Test_get_number_of_digit:
 class Test_to_unicode:
 
     @pytest.mark.parametrize(["value", "expected"], [
+        [u"吾輩は猫である", u"吾輩は猫である"],
         ["吾輩は猫である", u"吾輩は猫である"],
         [None, u"None"],
         ["", u""],

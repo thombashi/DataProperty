@@ -47,7 +47,7 @@ class Test_StringConverter_convert:
         [nan, "nan"],
         [True, "True"],
         [datetime.datetime(2017, 1, 2, 3, 4, 5), "2017-01-02 03:04:05"],
-        [u"あ", u"あ"],
+        [u"吾輩は猫である", u"吾輩は猫である"],
     ])
     def test_normal(self, value, expected):
         converter = dpcc.StringConverter(value)

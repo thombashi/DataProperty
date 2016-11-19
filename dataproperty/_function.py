@@ -248,8 +248,10 @@ def to_unicode(value):
     for codec in _codec_list:
         try:
             return value.decode(codec)
-        except (UnicodeEncodeError, UnicodeDecodeError):
-            pass
+        except UnicodeDecodeError:
+            continue
+        except UnicodeEncodeError:
+            return value
         except AttributeError:
             return str(value)
 
