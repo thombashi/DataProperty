@@ -18,6 +18,8 @@ class Typecode(object):
     NAN = 1 << 5
     BOOL = 1 << 6
 
+    LIST = [NONE, INT, INTEGER, FLOAT, STRING, DATETIME, INFINITY, NAN, BOOL]
+
     DEFAULT_TYPENAME_TABLE = {
         NONE: "NONE",
         INT: "INTEGER",

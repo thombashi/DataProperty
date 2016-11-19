@@ -8,8 +8,11 @@ from __future__ import absolute_import
 
 from six.moves import zip
 
-from ._data_property import DataProperty
-from ._data_property import ColumnDataProperty
+from ._data_property import (
+    DataProperty,
+    ColumnDataProperty,
+    DEFAULT_IS_STRICT_TYPE_MAPPING
+)
 from ._function import is_empty_sequence
 
 
@@ -34,7 +37,7 @@ class PropertyExtractor(object):
         self.bool_converter = default_bool_converter
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
-        self.is_strict = False
+        self.is_strict_mapping = DEFAULT_IS_STRICT_TYPE_MAPPING
 
         self.mismatch_processing = MissmatchProcessing.TRIM
 
@@ -107,6 +110,6 @@ class PropertyExtractor(object):
                 bool_converter=self.bool_converter,
                 datetime_converter=self.datetime_converter,
                 datetime_format_str=self.datetime_format_str,
-                is_strict=self.is_strict)
+                is_strict_mapping=self.is_strict_mapping)
             for data in data_list
         ]

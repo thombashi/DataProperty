@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 import math
+import itertools
 
 from ._align_getter import align_getter
 from ._container import MinMaxContainer
@@ -27,6 +28,21 @@ from ._function import (
 )
 from ._typecode import Typecode
 from ._type import FloatType
+
+
+DEFAULT_IS_STRICT_TYPE_MAPPING = {
+    Typecode.NONE: False,
+    Typecode.INTEGER: False,
+    Typecode.FLOAT: False,
+    Typecode.STRING: False,
+    Typecode.DATETIME: True,
+    Typecode.INFINITY: False,
+    Typecode.NAN: False,
+    Typecode.BOOL: False,
+}
+
+STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
+NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
 
 
 def default_bool_converter(value):
@@ -157,11 +173,12 @@ class DataProperty(DataPeropertyBase):
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
-            is_strict=False,
+            is_strict_mapping=DEFAULT_IS_STRICT_TYPE_MAPPING,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__(datetime_format_str)
 
-        self.__set_data(data, none_value, inf_value, nan_value, is_strict)
+        self.__set_data(
+            data, none_value, inf_value, nan_value, is_strict_mapping)
         self.__convert_data(bool_converter, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
@@ -240,7 +257,7 @@ class DataProperty(DataPeropertyBase):
         return self.__get_text_len()
 
     def __set_data(
-            self, data, none_value, inf_value, nan_value, is_strict):
+            self, data, none_value, inf_value, nan_value, is_strict_mapping):
         special_value_table = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
@@ -248,6 +265,8 @@ class DataProperty(DataPeropertyBase):
         }
 
         for type_factory_class in self.__type_factory_class_list:
+            is_strict = is_strict_mapping.get(type_factory_class(
+                None, None).create_type_checker().typecode, False)
             type_factory = type_factory_class(data, is_strict)
             checker = type_factory.create_type_checker()
 

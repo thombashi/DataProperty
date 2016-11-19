@@ -45,7 +45,7 @@ class Test_ColumnDataPeroperty:
         ],
         [
             [DATATIME_DATA, str(DATATIME_DATA), DATATIME_DATA],
-            Typecode.DATETIME,
+            Typecode.STRING,
         ],
         [
             [inf, "inf", "infinity", "INF"],

@@ -11,7 +11,10 @@ from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._data_property import (
     ColumnDataProperty,
-    DataProperty
+    DataProperty,
+    DEFAULT_IS_STRICT_TYPE_MAPPING,
+    NOT_STRICT_TYPE_MAPPING,
+    STRICT_TYPE_MAPPING
 )
 from ._error import TypeConversionError
 from ._function import (
