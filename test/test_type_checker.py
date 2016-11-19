@@ -98,7 +98,6 @@ class Test_StringTypeChecker_is_type:
     )
     def test_normal_true(self, value, is_convert, expected):
         is_strict = not is_convert
-        expected_typecode = Typecode.STRING
 
         type_checker = StringTypeChecker(value, is_strict)
         assert type_checker.is_type() == expected
@@ -156,7 +155,6 @@ class Test_IntegerTypeChecker_is_type:
     )
     def test_normal_true(self, value, is_convert):
         is_strict = not is_convert
-        expected_typecode = Typecode.INTEGER
 
         type_checker = IntegerTypeChecker(value, is_strict)
         assert type_checker.is_type()
@@ -247,7 +245,6 @@ class Test_FloatTypeChecker_is_type:
     )
     def test_normal_true(self, value, is_convert):
         is_strict = not is_convert
-        expected_typecode = Typecode.FLOAT
 
         type_checker = FloatTypeChecker(value, is_strict)
         assert type_checker.is_type()
@@ -290,7 +287,6 @@ class Test_BoolTypeChecker_is_type:
     )
     def test_normal_true(self, value, is_convert):
         is_strict = not is_convert
-        expected_typecode = Typecode.BOOL
 
         type_checker = BoolTypeChecker(value, is_strict)
         assert type_checker.is_type()
@@ -334,7 +330,6 @@ class Test_DateTimeTypeChecker_is_type:
     ])
     def test_normal_true(self, value, is_convert):
         is_strict = not is_convert
-        expected_typecode = Typecode.DATETIME
 
         type_checker = DateTimeTypeChecker(value, is_strict)
         assert type_checker.is_type()
@@ -375,7 +370,6 @@ class Test_InfinityChecker_is_type:
     )
     def test_normal(self, value, is_convert, expected):
         is_strict = not is_convert
-        expected_typecode = Typecode.INFINITY
 
         type_checker = InfinityChecker(value, is_strict)
         assert type_checker.is_type() == expected
