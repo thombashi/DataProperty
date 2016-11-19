@@ -14,10 +14,6 @@ from ._function import is_empty_sequence
 
 
 class MissmatchProcessing(object):
-    """
-    TODO: testing
-    """
-
     EXCEPTION = 1 << 1
     TRIM = 1 << 2
     EXTEND = 1 << 3
@@ -61,7 +57,9 @@ class PropertyExtractor(object):
                 column_prop_list[col_idx]
             except IndexError:
                 if self.mismatch_processing == MissmatchProcessing.EXCEPTION:
-                    raise
+                    raise ValueError(
+                        "column not found: col-size={}, col-index={}".format(
+                            len(column_prop_list), col_idx))
 
                 if any([
                     self.mismatch_processing == MissmatchProcessing.EXTEND,

@@ -287,3 +287,49 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.padding_len == 4
         assert is_nan(prop.decimal_places)
         assert prop.format_str == ""
+
+    @pytest.mark.parametrize(
+        ["header_list", "value", "mismatch_processing", "expected"],
+        [
+            [
+                ["i", "f", "s", "if", "mix"],
+                TEST_DATA_MATRIX,
+                MissmatchProcessing.TRIM,
+                5,
+            ],
+            [
+                None,
+                TEST_DATA_MATRIX,
+                MissmatchProcessing.EXTEND,
+                9
+            ],
+        ])
+    def test_normal_mismatch_processing(
+            self, prop_extractor, header_list, value, mismatch_processing,
+            expected):
+        prop_extractor.header_list = header_list
+        prop_extractor.data_matrix = value
+        prop_extractor.mismatch_processing = mismatch_processing
+        col_prop_list = prop_extractor.extract_column_property_list()
+
+        assert len(col_prop_list) == expected
+
+    @pytest.mark.parametrize(
+        ["header_list", "value", "mismatch_processing", "expected"],
+        [
+            [
+                ["i", "f", "s", "if", "mix"],
+                TEST_DATA_MATRIX,
+                MissmatchProcessing.EXCEPTION,
+                ValueError,
+            ],
+        ])
+    def test_exception_mismatch_processing(
+            self, prop_extractor, header_list, value, mismatch_processing,
+            expected):
+        prop_extractor.header_list = header_list
+        prop_extractor.data_matrix = value
+        prop_extractor.mismatch_processing = mismatch_processing
+
+        with pytest.raises(expected):
+            prop_extractor.extract_column_property_list()
