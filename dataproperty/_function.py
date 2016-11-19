@@ -43,17 +43,6 @@ def is_float(value):
     return FloatType(value).is_type()
 
 
-def is_nan(value):
-    """
-    .. warning::
-
-        This function will be deleted in the future.
-        Use NanType class instead of this function.
-    """
-
-    return value != value
-
-
 def is_empty_string(value):
     try:
         return len(value.strip()) == 0

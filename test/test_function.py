@@ -36,25 +36,6 @@ class Test_is_hex:
         assert not is_hex(value)
 
 
-class Test_is_nan:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [nan, True],
-        [Decimal("nan"), True],
-
-        [None, False],
-        ["nan", False],
-        ["１", False],
-        [inf, False],
-        [Decimal("inf"), False],
-        [1, False],
-        [0.1, False],
-        [True, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_nan(value) == expected
-
-
 class Test_is_not_empty_string:
 
     @pytest.mark.parametrize(["value", "expected"], [
@@ -261,8 +242,8 @@ class Test_get_number_of_digit:
     ])
     def test_nan(self, value):
         integer_digits, decimal_places = get_number_of_digit(value)
-        assert is_nan(integer_digits)
-        assert is_nan(decimal_places)
+        assert NanType(integer_digits).is_type()
+        assert NanType(decimal_places).is_type()
 
 
 class Test_to_unicode:

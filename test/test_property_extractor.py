@@ -87,7 +87,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 4
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
         prop = prop_matrix[0][1]
@@ -114,7 +114,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 1
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "s"
 
         prop = prop_matrix[2][0]
@@ -123,7 +123,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 3
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
         prop = prop_matrix[2][1]
@@ -132,7 +132,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 8
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
         prop = prop_matrix[3][0]
@@ -141,7 +141,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 5
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
         prop = prop_matrix[3][1]
@@ -150,7 +150,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.str_len == 15
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "s"
 
     @pytest.mark.parametrize(["value", "expected"], [
@@ -224,7 +224,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 4
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "s"
 
         prop = col_prop_list[3]
@@ -248,7 +248,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 5
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
         prop = col_prop_list[6]
@@ -256,7 +256,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 3
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
         prop = col_prop_list[7]
@@ -264,7 +264,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 3
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
         prop = col_prop_list[8]
@@ -272,7 +272,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 24
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "s"
 
     @pytest.mark.parametrize(["header_list", "value"], [
@@ -318,7 +318,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 4
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "s"
 
         prop = col_prop_list[3]
@@ -342,7 +342,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 5
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
         prop = col_prop_list[6]
@@ -350,7 +350,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 3
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
         prop = col_prop_list[7]
@@ -358,7 +358,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 3
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
         prop = col_prop_list[8]
@@ -366,7 +366,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 24
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "%Y-%m-%dT%H:%M:%S%z"
 
     def test_normal_empty_value(self, prop_extractor):
@@ -379,7 +379,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 1
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
         prop = col_prop_list[1]
@@ -387,7 +387,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 2
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
         prop = col_prop_list[2]
@@ -395,7 +395,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.padding_len == 4
-        assert is_nan(prop.decimal_places)
+        assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
     @pytest.mark.parametrize(

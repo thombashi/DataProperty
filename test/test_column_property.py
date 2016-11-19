@@ -9,12 +9,13 @@ import datetime
 import pytest
 import six
 
-
-from dataproperty import is_nan
-from dataproperty import Align
-from dataproperty import ColumnDataProperty
-from dataproperty import DataProperty
-from dataproperty import Typecode
+from dataproperty import (
+    Align,
+    ColumnDataProperty,
+    DataProperty,
+    NanType,
+    Typecode
+)
 
 
 nan = float("nan")
@@ -248,6 +249,6 @@ class Test_ColumnDataPeroperty:
     def test_null(self):
         col_prop = ColumnDataProperty()
         assert col_prop.align == Align.LEFT
-        assert is_nan(col_prop.decimal_places)
+        assert NanType(col_prop.decimal_places).is_type()
         assert col_prop.typecode == Typecode.NONE
         assert col_prop.padding_len == 0

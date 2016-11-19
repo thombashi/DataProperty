@@ -23,11 +23,9 @@ from ._factory import (
     NanTypeFactory,
     DictionaryTypeFactory
 )
-from ._function import (
-    is_nan,
-    get_number_of_digit
-)
+from ._function import get_number_of_digit
 from ._typecode import Typecode
+from ._type_checker import NanChecker
 from ._type import FloatType
 
 
@@ -76,7 +74,7 @@ class DataPeropertyBase(DataPeropertyInterface):
             return format_str
 
         if self.typecode in (Typecode.FLOAT, Typecode.INFINITY, Typecode.NAN):
-            if is_nan(self.decimal_places):
+            if NanChecker(self.decimal_places).is_type():
                 return "f"
 
             return ".{:d}f".format(self.decimal_places)
@@ -343,7 +341,7 @@ class ColumnDataProperty(DataPeropertyBase):
         except TypeError:
             return float("nan")
 
-        if is_nan(avg):
+        if NanChecker(avg).is_type():
             return float("nan")
 
         return int(math.ceil(avg))

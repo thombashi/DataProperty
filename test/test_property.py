@@ -117,7 +117,7 @@ class Test_DataPeroperty_data_typecode:
         dp = DataProperty(
             value,
             is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
-        assert is_nan(dp.data)
+        assert NanType(dp.data).is_type()
         assert dp.typecode == expected_typecode
 
     @pytest.mark.parametrize(["value", "none_value", "expected"], [
@@ -315,7 +315,7 @@ class Test_DataPeroperty_str_len:
     ])
     def test_abnormal(self, value, expected):
         dp = DataProperty(value)
-        is_nan(dp.str_len)
+        NanType(dp.str_len).is_type()
 
 
 class Test_DataPeroperty_integer_digits:
@@ -339,7 +339,7 @@ class Test_DataPeroperty_integer_digits:
     ])
     def test_abnormal(self, value):
         dp = DataProperty(value)
-        is_nan(dp.integer_digits)
+        NanType(dp.integer_digits).is_type()
 
 
 class Test_DataPeroperty_decimal_places:
@@ -363,7 +363,7 @@ class Test_DataPeroperty_decimal_places:
     ])
     def test_abnormal(self, value):
         dp = DataProperty(value)
-        is_nan(dp.decimal_places)
+        NanType(dp.decimal_places).is_type()
 
 
 class Test_DataPeroperty_additional_format_len:

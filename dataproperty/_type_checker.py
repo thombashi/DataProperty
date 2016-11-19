@@ -20,7 +20,6 @@ from ._converter import (
     DictionaryConverter
 )
 from ._error import TypeConversionError
-from ._function import is_nan
 from ._typecode import Typecode
 
 
@@ -262,10 +261,14 @@ class NanChecker(TypeChecker):
         return FloatConverter
 
     def _is_instance(self):
-        return is_nan(self._value)
+        return self.__is_nan(self._value)
 
     def _is_valid_after_convert(self):
-        return is_nan(self._converted_value)
+        return self.__is_nan(self._converted_value)
+
+    @staticmethod
+    def __is_nan(value):
+        return value != value
 
 
 class DictionaryTypeChecker(TypeChecker):

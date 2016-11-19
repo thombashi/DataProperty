@@ -21,7 +21,6 @@ from ._function import (
     is_integer,
     is_hex,
     is_float,
-    is_nan,
     is_empty_string,
     is_not_empty_string,
     is_list_or_tuple,
