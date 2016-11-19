@@ -207,12 +207,12 @@ class DataProperty(DataPeropertyBase):
                 ("data={:" + self.format_str + "}").format(self.data))
 
         element_list.extend([
-            "typename=" + self.typename,
-            "align=" + str(self.align),
-            "str_len=" + str(self.str_len),
-            "integer_digits=" + str(self.integer_digits),
-            "decimal_places=" + str(self.decimal_places),
-            "additional_format_len=" + str(self.additional_format_len),
+            "typename={:s}".format(self.typename),
+            "align={:s}".format(self.align),
+            "str_len={:d}".format(self.str_len),
+            "integer_digits={}".format(self.integer_digits),
+            "decimal_places={}".format(self.decimal_places),
+            "additional_format_len={:d}".format(self.additional_format_len),
         ])
 
         return ", ".join(element_list)
