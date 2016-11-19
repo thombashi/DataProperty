@@ -29,8 +29,7 @@ from ._function import (
     is_datetime,
     get_integer_digit,
     get_number_of_digit,
-    get_text_len,
-    strict_strtobool
+    get_text_len
 )
 from ._property_extractor import PropertyExtractor
 from ._type import (
