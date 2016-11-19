@@ -10,6 +10,7 @@ import abc
 import re
 
 from ._error import TypeConversionError
+from ._function import to_unicode
 
 
 class ValueConverterInterface(object):
@@ -53,10 +54,7 @@ class NopConverter(ValueConverter):
 class StringConverter(ValueConverter):
 
     def convert(self):
-        try:
-            return str(self._value)
-        except UnicodeEncodeError:
-            return self._value
+        return to_unicode(self._value)
 
 
 class IntegerConverter(ValueConverter):
