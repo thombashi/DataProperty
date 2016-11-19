@@ -295,3 +295,26 @@ class Test_is_multibyte_str:
     ])
     def test_normal(self, value, expected):
         assert is_multibyte_str(value) == expected
+
+
+class Test_get_ascii_char_width:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [u"吾輩は猫である", 14],
+        [u"いaろbはc", 9],
+        [u"abcdef", 6],
+        [u"", 0],
+    ])
+    def test_normal(self, value, expected):
+        assert get_ascii_char_width(value) == expected
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        ["abcdef", TypeError],
+        [None, TypeError],
+        [True, TypeError],
+        [1, TypeError],
+        [nan, TypeError],
+    ])
+    def test_exception(self, value, expected):
+        with pytest.raises(expected):
+            get_ascii_char_width(value)

@@ -272,3 +272,17 @@ def is_multibyte_str(text):
         return True
 
     return False
+
+
+def get_ascii_char_width(unicode_str):
+    import unicodedata
+
+    width = 0
+    for c in unicode_str:
+        char_width = unicodedata.east_asian_width(c)
+        if char_width in u"WFA":
+            width += 2
+        else:
+            width += 1
+
+    return width
