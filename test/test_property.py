@@ -62,6 +62,9 @@ class Test_DataPeroperty_data_typecode:
                 datetime.datetime(100, 2, 19, 0, 0), Typecode.DATETIME],
             ["100-0002", False, "100-0002", Typecode.STRING],
 
+            [{}, True, {}, Typecode.DICTIONARY],
+            [{}, False, {}, Typecode.DICTIONARY],
+
             [
                 "2017-01-02 03:04:05",
                 True,
@@ -460,6 +463,12 @@ class Test_DataPeroperty_repr:
             nan,
             DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=nan, typename=NAN, align=left, str_len=3, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+        [
+            {"a": 1},
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
+            "data={'a': 1}, typename=DICTIONARY, align=left, str_len=8, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
     ])

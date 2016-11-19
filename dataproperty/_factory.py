@@ -15,7 +15,8 @@ from ._converter import (
     IntegerConverter,
     FloatConverter,
     BoolConverter,
-    DateTimeConverter
+    DateTimeConverter,
+    DictionaryConverter
 )
 from ._type_checker import (
     NoneTypeChecker,
@@ -25,7 +26,8 @@ from ._type_checker import (
     BoolTypeChecker,
     DateTimeTypeChecker,
     InfinityChecker,
-    NanChecker
+    NanChecker,
+    DictionaryTypeChecker
 )
 
 
@@ -122,3 +124,12 @@ class NanTypeFactory(BaseTypeFactory):
 
     def create_type_converter(self):
         return FloatConverter(self._data)
+
+
+class DictionaryTypeFactory(BaseTypeFactory):
+
+    def create_type_checker(self):
+        return DictionaryTypeChecker(self._data, self._is_strict)
+
+    def create_type_converter(self):
+        return DictionaryConverter(self._data)

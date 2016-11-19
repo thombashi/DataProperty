@@ -405,3 +405,33 @@ class Test_NanChecker_is_type:
         type_checker = NanChecker(value, is_strict)
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.NAN
+
+
+class Test_DictionaryTypeChecker_is_type:
+
+    @pytest.mark.parametrize(["value", "is_strict"], [
+        [[["a", 1]], False],
+        [(("a", 1), ), False]
+    ] + list(
+        itertools.product(
+            [{}],
+            [True, False],
+        ))
+    )
+    def test_normal_true(self, value, is_strict):
+        type_checker = DictionaryTypeChecker(value, is_strict)
+        assert type_checker.is_type()
+        assert type_checker.typecode == Typecode.DICTIONARY
+
+    @pytest.mark.parametrize(["value", "is_strict"], [
+        [[["a", 1]], True],
+        [(("a", 1), ), True]
+    ] + list(
+        itertools.product(
+            [1, "a", nan, True],
+            [True, False],
+        ))
+    )
+    def test_normal_false(self, value, is_strict):
+        type_checker = DictionaryTypeChecker(value, is_strict)
+        assert not type_checker.is_type()

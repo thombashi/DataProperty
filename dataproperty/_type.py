@@ -16,7 +16,8 @@ from ._factory import (
     DateTimeTypeFactory,
     BoolTypeFactory,
     InfinityTypeFactory,
-    NanTypeFactory
+    NanTypeFactory,
+    DictionaryTypeFactory
 )
 from ._type_checker import TypeCheckerInterface
 
@@ -110,3 +111,10 @@ class NanType(BaseType):
     @property
     def _factory_class(self):
         return NanTypeFactory
+
+
+class DictionaryType(BaseType):
+
+    @property
+    def _factory_class(self):
+        return DictionaryTypeFactory

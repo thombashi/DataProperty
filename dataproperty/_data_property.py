@@ -20,7 +20,8 @@ from ._factory import (
     BoolTypeFactory,
     DateTimeTypeFactory,
     InfinityTypeFactory,
-    NanTypeFactory
+    NanTypeFactory,
+    DictionaryTypeFactory
 )
 from ._function import (
     is_nan,
@@ -39,6 +40,7 @@ DEFAULT_IS_STRICT_TYPE_MAPPING = {
     Typecode.INFINITY: False,
     Typecode.NAN: False,
     Typecode.BOOL: False,
+    Typecode.DICTIONARY: True,
 }
 
 STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
@@ -102,6 +104,7 @@ class DataProperty(DataPeropertyBase):
         NanTypeFactory,
         FloatTypeFactory,
         BoolTypeFactory,
+        DictionaryTypeFactory,
         DateTimeTypeFactory,
         StringTypeFactory,
     ]

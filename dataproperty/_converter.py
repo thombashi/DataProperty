@@ -211,3 +211,16 @@ class DateTimeConverter(ValueConverter):
             except UnicodeEncodeError:
                 raise TypeConversionError(
                     "invalid datetime string")
+
+
+class DictionaryConverter(ValueConverter):
+
+    def convert(self):
+        try:
+            return dict(self._value)
+        except (TypeError, ValueError):
+            try:
+                raise TypeConversionError(
+                    "failed to convert: {}".format(self._value))
+            except UnicodeEncodeError:
+                raise TypeConversionError("failed to convert to bool")
