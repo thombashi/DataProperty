@@ -69,6 +69,7 @@ class DataPeropertyBase(DataPeropertyInterface):
             Typecode.INTEGER: "d",
             Typecode.BOOL: "",
             Typecode.DATETIME: self.__datetime_format_str,
+            Typecode.DICTIONARY: "",
         }.get(self.typecode)
 
         if format_str is not None:
@@ -208,7 +209,7 @@ class DataProperty(DataPeropertyBase):
 
         element_list.extend([
             "typename={:s}".format(self.typename),
-            "align={:s}".format(self.align),
+            "align={}".format(self.align),
             "str_len={:d}".format(self.str_len),
             "integer_digits={}".format(self.integer_digits),
             "decimal_places={}".format(self.decimal_places),
