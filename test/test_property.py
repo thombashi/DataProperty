@@ -19,6 +19,25 @@ nan = float("nan")
 inf = float("inf")
 
 
+def bool_converter_test(value):
+    if value:
+        return "true value"
+
+    return "false value"
+
+
+def datetime_converter_tostr_0(value):
+    return value.strftime("%Y-%m-%d %H:%M:%S%z")
+
+
+def datetime_converter_tostr_1(value):
+    return value.strftime("%Y/%m/%d %H:%M:%S")
+
+
+def datetime_converter_test_raw(value):
+    return value
+
+
 class Test_DataPeroperty_data_typecode:
 
     @pytest.mark.parametrize(
@@ -100,25 +119,6 @@ class Test_DataPeroperty_data_typecode:
         dp = DataProperty(value, none_value)
         assert dp.data == expected
         assert dp.typecode == Typecode.NONE
-
-
-def bool_converter_test(value):
-    if value:
-        return "true value"
-
-    return "false value"
-
-
-def datetime_converter_tostr_0(value):
-    return value.strftime("%Y-%m-%d %H:%M:%S%z")
-
-
-def datetime_converter_tostr_1(value):
-    return value.strftime("%Y/%m/%d %H:%M:%S")
-
-
-def datetime_converter_test_raw(value):
-    return value
 
 
 class Test_DataPeroperty_set_data:
