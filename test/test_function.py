@@ -270,6 +270,7 @@ class Test_to_unicode:
     @pytest.mark.parametrize(["value", "expected"], [
         [u"吾輩は猫である", u"吾輩は猫である"],
         ["吾輩は猫である", u"吾輩は猫である"],
+        ["abcdef", u"abcdef"],
         [None, u"None"],
         ["", u""],
         [True, u"True"],
@@ -278,3 +279,19 @@ class Test_to_unicode:
     ])
     def test_normal(self, value, expected):
         assert to_unicode(value) == expected
+
+
+class Test_is_multibyte_str:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [u"吾輩は猫である", True],
+        ["吾輩は猫である", True],
+        ["abcdef", False],
+        [None, False],
+        ["", False],
+        [True, False],
+        [[], False],
+        [1, False],
+    ])
+    def test_normal(self, value, expected):
+        assert is_multibyte_str(value) == expected

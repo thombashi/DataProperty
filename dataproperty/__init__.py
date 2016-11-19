@@ -30,6 +30,7 @@ from ._function import (
     is_empty_list_or_tuple,
     is_not_empty_list_or_tuple,
     is_datetime,
+    is_multibyte_str,
     get_integer_digit,
     get_number_of_digit,
     to_unicode

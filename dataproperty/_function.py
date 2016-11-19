@@ -256,3 +256,19 @@ def to_unicode(value):
             return str(value)
 
     raise ValueError("unknown codec: {}".format(value))
+
+
+def is_multibyte_str(text):
+    from ._type_checker import StringTypeChecker
+
+    if not StringTypeChecker(text).is_type():
+        return False
+
+    unicode_text = to_unicode(text)
+
+    try:
+        unicode_text.encode("ascii")
+    except UnicodeEncodeError:
+        return True
+
+    return False
