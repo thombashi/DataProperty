@@ -153,6 +153,11 @@ class StringTypeChecker(TypeChecker):
 
 
 class IntegerTypeChecker(TypeChecker):
+    """
+    is_type() behave differently from float.is_integer()
+
+    examples:
+    """
 
     @property
     def typecode(self):
