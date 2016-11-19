@@ -31,7 +31,8 @@ from ._function import (
     is_not_empty_list_or_tuple,
     is_datetime,
     get_integer_digit,
-    get_number_of_digit
+    get_number_of_digit,
+    to_unicode
 )
 from ._property_extractor import (
     PropertyExtractor,

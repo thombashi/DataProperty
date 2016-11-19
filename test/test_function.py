@@ -263,3 +263,17 @@ class Test_get_number_of_digit:
         integer_digits, decimal_places = get_number_of_digit(value)
         assert is_nan(integer_digits)
         assert is_nan(decimal_places)
+
+
+class Test_to_unicode:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        ["吾輩は猫である", u"吾輩は猫である"],
+        [None, u"None"],
+        ["", u""],
+        [True, u"True"],
+        [[], u"[]"],
+        [1, u"1"],
+    ])
+    def test_normal(self, value, expected):
+        assert to_unicode(value) == expected
