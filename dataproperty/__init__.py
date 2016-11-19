@@ -45,6 +45,7 @@ from ._type import (
     DateTimeType,
     BoolType,
     InfinityType,
-    NanType
+    NanType,
+    DictionaryType
 )
 from ._typecode import Typecode
