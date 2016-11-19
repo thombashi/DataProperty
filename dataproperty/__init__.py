@@ -31,7 +31,10 @@ from ._function import (
     get_number_of_digit,
     get_text_len
 )
-from ._property_extractor import PropertyExtractor
+from ._property_extractor import (
+    PropertyExtractor,
+    MissmatchProcessing
+)
 from ._type import (
     NoneType,
     StringType,
