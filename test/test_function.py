@@ -115,56 +115,6 @@ class Test_is_list_or_tuple:
         assert is_list_or_tuple(value) == expected
 
 
-class Test_is_empty_list_or_tuple:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [(), True],
-        [[], True],
-        [None, True],
-
-        [[1], False],
-        [["a"] * 200000, False],
-        [(1,), False],
-        [("a",) * 200000, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_empty_list_or_tuple(value) == expected
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [nan, False],
-        [0, False],
-        ["aaa", False],
-        [True, False],
-    ])
-    def test_abnormal(self, value, expected):
-        assert is_empty_list_or_tuple(value) == expected
-
-
-class Test_is_not_empty_list_or_tuple:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [(), False],
-        [[], False],
-        [None, False],
-
-        [[1], True],
-        [["a"] * 200000, True],
-        [(1,), True],
-        [("a",) * 200000, True],
-    ])
-    def test_normal(self, value, expected):
-        assert is_not_empty_list_or_tuple(value) == expected
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [nan, False],
-        [0, False],
-        ["aaa", False],
-        [True, False],
-    ])
-    def test_abnormal(self, value, expected):
-        assert is_not_empty_list_or_tuple(value) == expected
-
-
 class Test_is_empty_sequence:
 
     @pytest.mark.parametrize(["value", "expected"], [
@@ -215,24 +165,6 @@ class Test_is_not_empty_sequence:
     ])
     def test_normal(self, value, expected):
         assert is_not_empty_sequence(value) == expected
-
-
-class Test_is_datetime:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [datetime.datetime(2016, 1, 1), True],
-
-        [None, False],
-        ["", False],
-        ["テスト", False],
-        [[], False],
-        [1, False],
-        [True, False],
-        [inf, False],
-        [nan, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_datetime(value) == expected
 
 
 class Test_get_integer_digit:
