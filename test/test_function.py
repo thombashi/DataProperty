@@ -378,25 +378,3 @@ class Test_get_number_of_digit:
         integer_digits, decimal_places = get_number_of_digit(value)
         assert is_nan(integer_digits)
         assert is_nan(decimal_places)
-
-
-class Test_get_text_len:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        ["", 0],
-        [
-            "aaaaaaaaaaaaaaaaaaaa"
-            "aaaaaaaaaaaaaaaaaaaa"
-            "aaaaaaaaaaaaaaaaaaaa"
-            "aaaaaaaaaaaaaaaaaaaa"
-            "aaaaaaaaaaaaaaaaaaaa",
-            100
-        ],
-        [u"あ", 1],
-
-        [None, 4],
-        [nan, 3],
-        [inf, 3],
-    ])
-    def test_normal(self, value, expected):
-        assert get_text_len(value) == expected

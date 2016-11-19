@@ -23,8 +23,7 @@ from ._factory import (
 )
 from ._function import (
     is_nan,
-    get_number_of_digit,
-    get_text_len
+    get_number_of_digit
 )
 from ._typecode import Typecode
 from ._type import FloatType
@@ -221,6 +220,12 @@ class DataProperty(DataPeropertyBase):
 
         return float_len
 
+    def __get_text_len(self):
+        try:
+            return len(str(self.data))
+        except UnicodeEncodeError:
+            return len(self.data)
+
     def __get_len_as_str(self):
         if self.typecode == Typecode.INTEGER:
             return self.integer_digits + self.additional_format_len
@@ -232,7 +237,7 @@ class DataProperty(DataPeropertyBase):
             full_format_str = "{:" + self.format_str + "}"
             return len(full_format_str.format(self.data))
 
-        return get_text_len(self.data)
+        return self.__get_text_len()
 
     def __set_data(
             self, data, none_value, inf_value, nan_value, is_strict):

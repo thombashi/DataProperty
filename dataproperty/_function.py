@@ -209,10 +209,3 @@ def get_number_of_digit(value):
         decimal_places = nan
 
     return (integer_digits, decimal_places)
-
-
-def get_text_len(text):
-    try:
-        return len(str(text))
-    except UnicodeEncodeError:
-        return len(text)

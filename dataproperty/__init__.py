@@ -28,8 +28,7 @@ from ._function import (
     is_not_empty_list_or_tuple,
     is_datetime,
     get_integer_digit,
-    get_number_of_digit,
-    get_text_len
+    get_number_of_digit
 )
 from ._property_extractor import (
     PropertyExtractor,
