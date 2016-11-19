@@ -175,7 +175,7 @@ class DataProperty(DataPeropertyBase):
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
-        self.__str_len = self.__get_str_len()
+        self.__str_len = self.__get_len_as_str()
 
     def __repr__(self):
         element_list = []
@@ -221,7 +221,7 @@ class DataProperty(DataPeropertyBase):
 
         return float_len
 
-    def __get_str_len(self):
+    def __get_len_as_str(self):
         if self.typecode == Typecode.INTEGER:
             return self.integer_digits + self.additional_format_len
 
