@@ -394,6 +394,22 @@ class Test_DataPeroperty_repr:
 
     @pytest.mark.parametrize(["value", "is_strict_mapping", "expected"], [
         [
+            "100-0004",
+            NOT_STRICT_TYPE_MAPPING,
+            100
+        ],
+        [
+            {"a": 1},
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
+            100
+        ],
+    ])
+    def test_smoke(self, value, is_strict_mapping, expected):
+        dp = DataProperty(value, is_strict_mapping=is_strict_mapping)
+        assert len(str(dp)) > expected
+
+    @pytest.mark.parametrize(["value", "is_strict_mapping", "expected"], [
+        [
             0,
             DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=0, typename=INTEGER, align=right, str_len=1, "
@@ -448,12 +464,6 @@ class Test_DataPeroperty_repr:
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
-            "100-0004",
-            NOT_STRICT_TYPE_MAPPING,
-            "data=0100-04-19 00:00:00, typename=DATETIME, align=left, str_len=19, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
-        ],
-        [
             inf,
             DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=inf, typename=INFINITY, align=left, str_len=3, "
@@ -463,12 +473,6 @@ class Test_DataPeroperty_repr:
             nan,
             DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=nan, typename=NAN, align=left, str_len=3, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
-        ],
-        [
-            {"a": 1},
-            DEFAULT_IS_STRICT_TYPE_MAPPING,
-            "data={'a': 1}, typename=DICTIONARY, align=left, str_len=8, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
     ])
