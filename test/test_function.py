@@ -18,31 +18,6 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_is_integer:
-
-    @pytest.mark.parametrize(["value"], [
-        [0], [six.MAXSIZE], [-six.MAXSIZE],
-        ["0"], [str(six.MAXSIZE)], [str(-six.MAXSIZE)],
-        [" 1"], ["1 "],
-        [Decimal(0)],
-    ])
-    def test_normal(self, value):
-        assert is_integer(value)
-
-    @pytest.mark.parametrize(["value"], [
-        [None], [nan], [inf],
-        [0.5], ["0.5"],
-        [.999], [".999"],
-        [""], ["test"], ["1a1"], ["11a"], ["a11"],
-        [True],
-        [1e-05], [-1e-05],
-        ["1e-05"], ["-1e-05"],
-        [-0.00001],
-    ])
-    def test_abnormal(self, value):
-        assert not is_integer(value)
-
-
 class Test_is_hex:
 
     @pytest.mark.parametrize(["value"], [
@@ -59,28 +34,6 @@ class Test_is_hex:
     ])
     def test_abnormal(self, value):
         assert not is_hex(value)
-
-
-class Test_is_float:
-
-    @pytest.mark.parametrize(["value"], [
-        [0.0], [0.1], [-0.1], [1], [-1],
-        ["0.0"], ["0.1"], ["-0.1"], ["1"], ["-1"],
-        [.5], [0.],
-        ["1e-05"],
-        [nan], [inf],
-        ["inf"],
-    ])
-    def test_normal(self, value):
-        assert is_float(value)
-
-    @pytest.mark.parametrize(["value"], [
-        [None],
-        ["test"],
-        [True],
-    ])
-    def test_abnormal(self, value):
-        assert not is_float(value)
 
 
 class Test_is_nan:
