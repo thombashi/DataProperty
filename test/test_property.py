@@ -291,6 +291,9 @@ class Test_DataPeroperty_str_len:
         ["-123456789", 10],
 
         ["a", 1],
+        ["a" * 1000, 1000],
+        [u"あ", 1],
+
         [True, 4],
         [None, 4],
         [inf, 3],

@@ -111,6 +111,7 @@ class Test_StringTypeChecker_validate:
         [None, True],
         [six.MAXSIZE, True],
         [inf, True],
+        ["", False],
     ] + list(
         itertools.product(
             ["None"],
@@ -129,6 +130,7 @@ class Test_StringTypeChecker_validate:
             [None, False, ValueError, ValueError],
             [six.MAXSIZE, False, TypeError, TypeError],
             [inf, False, ValueError, ValueError],
+            [nan, False, TypeError, TypeError],
         ]
     )
     def test_exception(self, value, is_convert, exception_type, expected):
