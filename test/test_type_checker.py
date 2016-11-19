@@ -327,6 +327,10 @@ class Test_DateTimeTypeChecker_is_type:
             "2017-03-22T10:00:00+0900",
             True,
         ],
+        [
+            "100-0004",
+            True,
+        ],
     ])
     def test_normal_true(self, value, is_convert):
         is_strict = not is_convert

@@ -252,7 +252,12 @@ class DataProperty(DataPeropertyBase):
 
         if self.typecode == Typecode.DATETIME:
             full_format_str = "{:" + self.format_str + "}"
-            return len(full_format_str.format(self.data))
+            try:
+                return len(full_format_str.format(self.data))
+            except ValueError:
+                # reach to this line if the year <1900.
+                # the datetime strftime() methods require year >= 1900.
+                return len(str(self.data))
 
         return self.__get_text_len()
 

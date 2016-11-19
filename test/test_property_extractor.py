@@ -31,6 +31,21 @@ def datetime_converter_test(value):
 
 class Test_PropertyExtractor_extract_data_property_matrix:
 
+    @pytest.mark.parametrize(["value"], [
+        [
+            [
+                ["山田", "太郎", "2001/1/1", "100-0002",
+                             "東京都千代田区皇居外苑", "03-1234-5678"],
+                ["山田", "次郎", "2001/1/2", "251-0036",
+                             "神奈川県藤沢市江の島１丁目", "03-9999-9999"],
+            ],
+        ],
+    ])
+    def test_smoke(self, prop_extractor, value):
+        prop_extractor.data_matrix = value
+
+        assert len(prop_extractor.extract_data_property_matrix()) > 0
+
     @pytest.mark.parametrize(
         [
             "value", "none_value", "inf_value", "nan_value",
@@ -50,7 +65,8 @@ class Test_PropertyExtractor_extract_data_property_matrix:
                 bool_converter_test,
                 datetime_converter_test,
             ],
-        ])
+        ]
+    )
     def test_normal(
             self, prop_extractor, value, none_value, inf_value, nan_value,
             bool_converter, datetime_converter):

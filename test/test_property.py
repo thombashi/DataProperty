@@ -58,6 +58,10 @@ class Test_DataPeroperty_data_typecode:
             [True, True, True, Typecode.BOOL],
             [False, False, False, Typecode.BOOL],
 
+            ["100-0002", True,
+                datetime.datetime(100, 2, 19, 0, 0), Typecode.DATETIME],
+            ["100-0002", False, "100-0002", Typecode.STRING],
+
             [
                 "2017-01-02 03:04:05",
                 True,
@@ -438,6 +442,12 @@ class Test_DataPeroperty_repr:
             "2017-01-02 03:04:05+0900",
             NOT_STRICT_TYPE_MAPPING,
             "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, str_len=24, "
+            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+        ],
+        [
+            "100-0004",
+            NOT_STRICT_TYPE_MAPPING,
+            "data=0100-04-19 00:00:00, typename=DATETIME, align=left, str_len=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
