@@ -400,33 +400,3 @@ class Test_get_text_len:
     ])
     def test_normal(self, value, expected):
         assert get_text_len(value) == expected
-
-
-class Test_strict_strtobool:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [True, True],
-        [False, False],
-        ["True", True],
-        ["False", False],
-        ["true", True],
-        ["false", False],
-        ["TRUE", True],
-        ["FALSE", False],
-    ])
-    def test_normal(self, value, expected):
-        assert strict_strtobool(value) == expected
-
-    @pytest.mark.parametrize(["value", "exception"], [
-        [0, ValueError], [1, ValueError],
-        ["t", ValueError], ["f", ValueError],
-        ["y", ValueError], ["n", ValueError],
-        ["yes", ValueError], ["no", ValueError],
-        ["on", ValueError], ["off", ValueError],
-        [None, ValueError],
-        [nan, ValueError],
-        [inf, ValueError],
-    ])
-    def test_exception(self, value, exception):
-        with pytest.raises(exception):
-            strict_strtobool(value)
