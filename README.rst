@@ -25,12 +25,14 @@ Summary
 =======
 Python library for extract property from data.
 
+
 Installation
 ============
 
 ::
 
     pip install DataProperty
+
 
 Usage
 =====
@@ -234,7 +236,7 @@ Extract for each column property from a matrix
 Dependencies
 ============
 
-Python 2.7 or 3.3+
+Python 2.7+ or 3.3+
 
 - `python-dateutil <https://dateutil.readthedocs.io/en/stable/>`__
 - `pytz <https://pypi.python.org/pypi/pytz/>`__
