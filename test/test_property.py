@@ -318,6 +318,21 @@ class Test_DataPeroperty_str_len:
         NanType(dp.str_len).is_type()
 
 
+class Test_DataPeroperty_get_padding_len:
+
+    @pytest.mark.parametrize(["value", "ascii_char_width", "expected"], [
+        [1, 8, 8],
+        ["000", 8, 8],
+
+        ["a" * 1000, 8, 8],
+        [u"あ", 8, 7],
+        [u"いろは", 8, 5],
+    ])
+    def test_normal(self, value, ascii_char_width, expected):
+        dp = DataProperty(value)
+        assert dp.get_padding_len(ascii_char_width) == expected
+
+
 class Test_DataPeroperty_integer_digits:
 
     @pytest.mark.parametrize(["value", "expected"], [

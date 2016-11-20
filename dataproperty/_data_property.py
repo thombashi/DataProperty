@@ -229,6 +229,9 @@ class DataProperty(DataPeropertyBase):
 
         return u", ".join(element_list)
 
+    def get_padding_len(self, ascii_char_width):
+        return ascii_char_width - (self.ascii_char_width - self.str_len)
+
     def __get_additional_format_len(self):
         if not FloatType(self.data).is_type():
             return 0
