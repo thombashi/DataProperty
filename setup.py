@@ -1,3 +1,6 @@
+# encoding: utf-8
+
+import io
 import sys
 import os.path
 import setuptools
@@ -6,10 +9,10 @@ import setuptools
 MISC_DIR = "misc"
 REQUIREMENT_DIR = "requirements"
 
-with open("README.rst") as fp:
-    long_description = fp.read()
+with io.open("README.rst", encoding="utf8") as f:
+    long_description = f.read()
 
-with open(os.path.join(MISC_DIR, "summary.txt")) as f:
+with io.open(os.path.join(MISC_DIR, "summary.txt"), encoding="utf8") as f:
     summary = f.read()
 
 with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
