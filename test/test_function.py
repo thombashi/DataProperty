@@ -251,6 +251,7 @@ class Test_to_unicode:
     @pytest.mark.parametrize(["value", "expected"], [
         [u"吾輩は猫である", u"吾輩は猫である"],
         ["吾輩は猫である", u"吾輩は猫である"],
+        ["マルチバイト文字", u"マルチバイト文字"],
         ["abcdef", u"abcdef"],
         [None, u"None"],
         ["", u""],
@@ -259,7 +260,10 @@ class Test_to_unicode:
         [1, u"1"],
     ])
     def test_normal(self, value, expected):
-        assert to_unicode(value) == expected
+        unicode_str = to_unicode(value)
+
+        assert unicode_str == expected
+        assert to_unicode(unicode_str) == unicode_str
 
 
 class Test_is_multibyte_str:
@@ -290,7 +294,7 @@ class Test_get_ascii_char_width:
         assert get_ascii_char_width(value) == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
-        ["abcdef", TypeError],
+        [six.b("abcdef"), TypeError],
         [None, TypeError],
         [True, TypeError],
         [1, TypeError],
