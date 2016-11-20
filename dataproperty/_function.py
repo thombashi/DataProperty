@@ -242,7 +242,7 @@ def to_unicode(value):
         except UnicodeEncodeError:
             return value
         except AttributeError:
-            return str(value)
+            return u"{}".format(value)
 
     raise ValueError("unknown codec: {}".format(value))
 
