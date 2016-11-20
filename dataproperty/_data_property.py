@@ -23,7 +23,11 @@ from ._factory import (
     NanTypeFactory,
     DictionaryTypeFactory
 )
-from ._function import get_number_of_digit
+from ._function import (
+    get_number_of_digit,
+    get_ascii_char_width,
+    to_unicode
+)
 from ._typecode import Typecode
 from ._type_checker import NanChecker
 from ._type import FloatType
@@ -94,6 +98,7 @@ class DataProperty(DataPeropertyBase):
         "__decimal_places",
         "__additional_format_len",
         "__str_len",
+        "__ascii_char_width",
     )
 
     __type_factory_class_list = [
@@ -155,6 +160,10 @@ class DataProperty(DataPeropertyBase):
         return self.__str_len
 
     @property
+    def ascii_char_width(self):
+        return self.__ascii_char_width
+
+    @property
     def integer_digits(self):
         """
         :return:
@@ -193,28 +202,32 @@ class DataProperty(DataPeropertyBase):
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
-        self.__str_len = self.__get_len_as_str()
+        self.__calc_length()
 
     def __repr__(self):
         element_list = []
 
         if self.typecode == Typecode.DATETIME:
             element_list.append(
-                "data={:s}".format(str(self.data)))
+                u"data={:s}".format(str(self.data)))
         else:
-            element_list.append(
-                ("data={:" + self.format_str + "}").format(self.data))
-
+            try:
+                element_list.append(
+                    (u"data={:" + self.format_str + u"}").format(self.data))
+            except UnicodeEncodeError:
+                element_list.append(
+                    (u"data={}").format(to_unicode(self.data)))
         element_list.extend([
-            "typename={:s}".format(self.typename),
-            "align={}".format(self.align),
-            "str_len={:d}".format(self.str_len),
-            "integer_digits={}".format(self.integer_digits),
-            "decimal_places={}".format(self.decimal_places),
-            "additional_format_len={:d}".format(self.additional_format_len),
+            u"typename={:s}".format(self.typename),
+            u"align={}".format(self.align),
+            u"str_len={:d}".format(self.str_len),
+            u"ascii_char_width={:d}".format(self.ascii_char_width),
+            u"integer_digits={}".format(self.integer_digits),
+            u"decimal_places={}".format(self.decimal_places),
+            u"additional_format_len={:d}".format(self.additional_format_len),
         ])
 
-        return ", ".join(element_list)
+        return u", ".join(element_list)
 
     def __get_additional_format_len(self):
         if not FloatType(self.data).is_type():
@@ -239,29 +252,34 @@ class DataProperty(DataPeropertyBase):
 
         return float_len
 
-    def __get_text_len(self):
-        try:
-            return len(str(self.data))
-        except UnicodeEncodeError:
-            return len(self.data)
-
-    def __get_len_as_str(self):
+    def __calc_length(self):
         if self.typecode == Typecode.INTEGER:
-            return self.integer_digits + self.additional_format_len
+            self.__str_len = self.integer_digits + self.additional_format_len
+            self.__ascii_char_width = self.__str_len
+            return
 
         if self.typecode == Typecode.FLOAT:
-            return self.__get_base_float_len() + self.additional_format_len
+            self.__str_len = (
+                self.__get_base_float_len() + self.additional_format_len)
+            self.__ascii_char_width = self.__str_len
+            return
 
         if self.typecode == Typecode.DATETIME:
             full_format_str = "{:" + self.format_str + "}"
+
             try:
-                return len(full_format_str.format(self.data))
+                self.__str_len = len(full_format_str.format(self.data))
             except ValueError:
                 # reach to this line if the year <1900.
                 # the datetime strftime() methods require year >= 1900.
-                return len(str(self.data))
+                self.__str_len = len(str(self.data))
 
-        return self.__get_text_len()
+            self.__ascii_char_width = self.__str_len
+            return
+
+        unicode_str = to_unicode(self.data)
+        self.__str_len = len(unicode_str)
+        self.__ascii_char_width = get_ascii_char_width(unicode_str)
 
     def __set_data(
             self, data, none_value, inf_value, nan_value, is_strict_type_mapping):
