@@ -207,7 +207,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.INTEGER
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
-        assert prop.padding_len == 1
+        assert prop.ascii_char_width == 1
         assert prop.decimal_places == 0
         assert prop.format_str == "d"
 
@@ -215,7 +215,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
-        assert prop.padding_len == 4
+        assert prop.ascii_char_width == 4
         assert prop.decimal_places == 2
         assert prop.format_str == ".2f"
 
@@ -223,7 +223,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 4
+        assert prop.ascii_char_width == 4
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "s"
 
@@ -231,7 +231,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
-        assert prop.padding_len == 4
+        assert prop.ascii_char_width == 4
         assert prop.decimal_places == 1
         assert prop.format_str == ".1f"
 
@@ -239,7 +239,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 3
+        assert prop.ascii_char_width == 3
         assert prop.decimal_places == 1
         assert prop.format_str == "s"
 
@@ -247,7 +247,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.BOOL
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 5
+        assert prop.ascii_char_width == 5
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
@@ -255,7 +255,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.INFINITY
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 3
+        assert prop.ascii_char_width == 3
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
@@ -263,7 +263,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.NAN
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 3
+        assert prop.ascii_char_width == 3
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
@@ -271,7 +271,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 24
+        assert prop.ascii_char_width == 24
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "s"
 
@@ -301,7 +301,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.INTEGER
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
-        assert prop.padding_len == 1
+        assert prop.ascii_char_width == 1
         assert prop.decimal_places == 0
         assert prop.format_str == "d"
 
@@ -309,7 +309,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
-        assert prop.padding_len == 4
+        assert prop.ascii_char_width == 4
         assert prop.decimal_places == 2
         assert prop.format_str == ".2f"
 
@@ -317,7 +317,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 4
+        assert prop.ascii_char_width == 4
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "s"
 
@@ -325,7 +325,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
-        assert prop.padding_len == 4
+        assert prop.ascii_char_width == 4
         assert prop.decimal_places == 1
         assert prop.format_str == ".1f"
 
@@ -333,7 +333,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 3
+        assert prop.ascii_char_width == 3
         assert prop.decimal_places == 1
         assert prop.format_str == "s"
 
@@ -341,7 +341,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.BOOL
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 5
+        assert prop.ascii_char_width == 5
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
@@ -349,7 +349,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.INFINITY
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 3
+        assert prop.ascii_char_width == 3
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
@@ -357,7 +357,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.NAN
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 3
+        assert prop.ascii_char_width == 3
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
@@ -365,7 +365,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.DATETIME
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 24
+        assert prop.ascii_char_width == 24
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "%Y-%m-%dT%H:%M:%S%z"
 
@@ -378,7 +378,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.NONE
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 1
+        assert prop.ascii_char_width == 1
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
@@ -386,7 +386,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.NONE
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 2
+        assert prop.ascii_char_width == 2
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
@@ -394,7 +394,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.NONE
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.padding_len == 4
+        assert prop.ascii_char_width == 4
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 

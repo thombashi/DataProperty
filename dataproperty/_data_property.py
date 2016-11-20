@@ -331,6 +331,7 @@ class ColumnDataProperty(DataPeropertyBase):
     __slots__ = (
         "__typecode_bitmap",
         "__str_len",
+        "__ascii_char_width",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
@@ -370,11 +371,19 @@ class ColumnDataProperty(DataPeropertyBase):
 
     @property
     def padding_len(self):
-        if self.typecode != Typecode.FLOAT:
-            return self.__str_len
+        """
+        mark as delete.
+        """
 
-        max_len = self.__str_len
-        col_format_str = "{:" + self.format_str + "}"
+        return self.ascii_char_width
+
+    @property
+    def ascii_char_width(self):
+        if self.typecode != Typecode.FLOAT:
+            return self.__ascii_char_width
+
+        max_len = self.__ascii_char_width
+        col_format_str = u"{:" + self.format_str + u"}"
 
         for data_prop in self.__data_prop_list:
             if data_prop.typecode in [Typecode.INFINITY, Typecode.NAN]:
@@ -385,7 +394,7 @@ class ColumnDataProperty(DataPeropertyBase):
             except (TypeError, ValueError):
                 continue
 
-            max_len = max(max_len, len(formatted_value))
+            max_len = max(max_len, get_ascii_char_width(formatted_value))
 
         return max_len
 
@@ -413,6 +422,8 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__typecode_bitmap = Typecode.NONE
         self.__str_len = min_padding_len
+        self.__ascii_char_width = min_padding_len
+
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = MinMaxContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -422,7 +433,7 @@ class ColumnDataProperty(DataPeropertyBase):
         return ", ".join([
             "typename=" + self.typename,
             "align=" + str(self.align),
-            "padding_len=" + str(self.padding_len),
+            "ascii_char_width=" + str(self.padding_len),
             "integer_digits=({:s})".format(str(self.minmax_integer_digits)),
             "decimal_places=({:s})".format(str(self.minmax_decimal_places)),
             "additional_format_len=({:s})".format(
@@ -431,10 +442,14 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def update_header(self, dataprop):
         self.__str_len = max(self.__str_len, dataprop.str_len)
+        self.__ascii_char_width = max(
+            self.__ascii_char_width, dataprop.ascii_char_width)
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
         self.__str_len = max(self.__str_len, dataprop.str_len)
+        self.__ascii_char_width = max(
+            self.__ascii_char_width, dataprop.ascii_char_width)
 
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
             self.__minmax_integer_digits.update(dataprop.integer_digits)
