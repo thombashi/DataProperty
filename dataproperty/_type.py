@@ -16,7 +16,8 @@ from ._factory import (
     DateTimeTypeFactory,
     BoolTypeFactory,
     InfinityTypeFactory,
-    NanTypeFactory
+    NanTypeFactory,
+    DictionaryTypeFactory
 )
 from ._type_checker import TypeCheckerInterface
 
@@ -36,6 +37,16 @@ class BaseType(TypeCheckerInterface, ValueConverterInterface):
     @property
     def typecode(self):
         return self.__checker.typecode
+
+    def __repr__(self):
+        element_list = [
+            "is_type={}".format(self.is_type()),
+            "is_strict_type={}".format(self.is_strict_type()),
+            "is_convertible_type={}".format(self.is_convertible_type()),
+            "try_convert={}".format(self.try_convert()),
+        ]
+
+        return ", ".join(element_list)
 
     def is_type(self):
         return self.__checker.is_type()
@@ -110,3 +121,10 @@ class NanType(BaseType):
     @property
     def _factory_class(self):
         return NanTypeFactory
+
+
+class DictionaryType(BaseType):
+
+    @property
+    def _factory_class(self):
+        return DictionaryTypeFactory

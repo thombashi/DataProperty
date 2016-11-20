@@ -17,6 +17,12 @@ class Typecode(object):
     INFINITY = 1 << 4
     NAN = 1 << 5
     BOOL = 1 << 6
+    DICTIONARY = 1 << 7
+
+    LIST = [
+        NONE, INT, INTEGER, FLOAT, STRING, DATETIME, INFINITY, NAN, BOOL,
+        DICTIONARY,
+    ]
 
     DEFAULT_TYPENAME_TABLE = {
         NONE: "NONE",
@@ -28,6 +34,7 @@ class Typecode(object):
         INFINITY: "INFINITY",
         NAN: "NAN",
         BOOL: "BOOL",
+        DICTIONARY: "DICTIONARY",
     }
 
     TYPENAME_TABLE = DEFAULT_TYPENAME_TABLE

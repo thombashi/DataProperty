@@ -8,16 +8,15 @@ from __future__ import absolute_import
 
 from six.moves import zip
 
-from ._data_property import DataProperty
-from ._data_property import ColumnDataProperty
+from ._data_property import (
+    DataProperty,
+    ColumnDataProperty,
+    DEFAULT_IS_STRICT_TYPE_MAPPING
+)
 from ._function import is_empty_sequence
 
 
 class MissmatchProcessing(object):
-    """
-    TODO: testing
-    """
-
     EXCEPTION = 1 << 1
     TRIM = 1 << 2
     EXTEND = 1 << 3
@@ -38,7 +37,7 @@ class PropertyExtractor(object):
         self.bool_converter = default_bool_converter
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
-        self.is_strict = False
+        self.is_strict_type_mapping = dict(DEFAULT_IS_STRICT_TYPE_MAPPING)
 
         self.mismatch_processing = MissmatchProcessing.TRIM
 
@@ -61,7 +60,9 @@ class PropertyExtractor(object):
                 column_prop_list[col_idx]
             except IndexError:
                 if self.mismatch_processing == MissmatchProcessing.EXCEPTION:
-                    raise
+                    raise ValueError(
+                        "column not found: col-size={}, col-index={}".format(
+                            len(column_prop_list), col_idx))
 
                 if any([
                     self.mismatch_processing == MissmatchProcessing.EXTEND,
@@ -109,6 +110,6 @@ class PropertyExtractor(object):
                 bool_converter=self.bool_converter,
                 datetime_converter=self.datetime_converter,
                 datetime_format_str=self.datetime_format_str,
-                is_strict=self.is_strict)
+                is_strict_type_mapping=self.is_strict_type_mapping)
             for data in data_list
         ]

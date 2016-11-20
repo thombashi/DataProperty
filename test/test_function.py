@@ -18,31 +18,6 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_is_integer:
-
-    @pytest.mark.parametrize(["value"], [
-        [0], [six.MAXSIZE], [-six.MAXSIZE],
-        ["0"], [str(six.MAXSIZE)], [str(-six.MAXSIZE)],
-        [" 1"], ["1 "],
-        [Decimal(0)],
-    ])
-    def test_normal(self, value):
-        assert is_integer(value)
-
-    @pytest.mark.parametrize(["value"], [
-        [None], [nan], [inf],
-        [0.5], ["0.5"],
-        [.999], [".999"],
-        [""], ["test"], ["1a1"], ["11a"], ["a11"],
-        [True],
-        [1e-05], [-1e-05],
-        ["1e-05"], ["-1e-05"],
-        [-0.00001],
-    ])
-    def test_abnormal(self, value):
-        assert not is_integer(value)
-
-
 class Test_is_hex:
 
     @pytest.mark.parametrize(["value"], [
@@ -59,47 +34,6 @@ class Test_is_hex:
     ])
     def test_abnormal(self, value):
         assert not is_hex(value)
-
-
-class Test_is_float:
-
-    @pytest.mark.parametrize(["value"], [
-        [0.0], [0.1], [-0.1], [1], [-1],
-        ["0.0"], ["0.1"], ["-0.1"], ["1"], ["-1"],
-        [.5], [0.],
-        ["1e-05"],
-        [nan], [inf],
-        ["inf"],
-    ])
-    def test_normal(self, value):
-        assert is_float(value)
-
-    @pytest.mark.parametrize(["value"], [
-        [None],
-        ["test"],
-        [True],
-    ])
-    def test_abnormal(self, value):
-        assert not is_float(value)
-
-
-class Test_is_nan:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [nan, True],
-        [Decimal("nan"), True],
-
-        [None, False],
-        ["nan", False],
-        ["１", False],
-        [inf, False],
-        [Decimal("inf"), False],
-        [1, False],
-        [0.1, False],
-        [True, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_nan(value) == expected
 
 
 class Test_is_not_empty_string:
@@ -162,56 +96,6 @@ class Test_is_list_or_tuple:
         assert is_list_or_tuple(value) == expected
 
 
-class Test_is_empty_list_or_tuple:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [(), True],
-        [[], True],
-        [None, True],
-
-        [[1], False],
-        [["a"] * 200000, False],
-        [(1,), False],
-        [("a",) * 200000, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_empty_list_or_tuple(value) == expected
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [nan, False],
-        [0, False],
-        ["aaa", False],
-        [True, False],
-    ])
-    def test_abnormal(self, value, expected):
-        assert is_empty_list_or_tuple(value) == expected
-
-
-class Test_is_not_empty_list_or_tuple:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [(), False],
-        [[], False],
-        [None, False],
-
-        [[1], True],
-        [["a"] * 200000, True],
-        [(1,), True],
-        [("a",) * 200000, True],
-    ])
-    def test_normal(self, value, expected):
-        assert is_not_empty_list_or_tuple(value) == expected
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [nan, False],
-        [0, False],
-        ["aaa", False],
-        [True, False],
-    ])
-    def test_abnormal(self, value, expected):
-        assert is_not_empty_list_or_tuple(value) == expected
-
-
 class Test_is_empty_sequence:
 
     @pytest.mark.parametrize(["value", "expected"], [
@@ -262,24 +146,6 @@ class Test_is_not_empty_sequence:
     ])
     def test_normal(self, value, expected):
         assert is_not_empty_sequence(value) == expected
-
-
-class Test_is_datetime:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [datetime.datetime(2016, 1, 1), True],
-
-        [None, False],
-        ["", False],
-        ["テスト", False],
-        [[], False],
-        [1, False],
-        [True, False],
-        [inf, False],
-        [nan, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_datetime(value) == expected
 
 
 class Test_get_integer_digit:
@@ -376,57 +242,64 @@ class Test_get_number_of_digit:
     ])
     def test_nan(self, value):
         integer_digits, decimal_places = get_number_of_digit(value)
-        assert is_nan(integer_digits)
-        assert is_nan(decimal_places)
+        assert NanType(integer_digits).is_type()
+        assert NanType(decimal_places).is_type()
 
 
-class Test_get_text_len:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        ["", 0],
-        [
-            "aaaaaaaaaaaaaaaaaaaa"
-            "aaaaaaaaaaaaaaaaaaaa"
-            "aaaaaaaaaaaaaaaaaaaa"
-            "aaaaaaaaaaaaaaaaaaaa"
-            "aaaaaaaaaaaaaaaaaaaa",
-            100
-        ],
-        [u"あ", 1],
-
-        [None, 4],
-        [nan, 3],
-        [inf, 3],
-    ])
-    def test_normal(self, value, expected):
-        assert get_text_len(value) == expected
-
-
-class Test_strict_strtobool:
+class Test_to_unicode:
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [True, True],
-        [False, False],
-        ["True", True],
-        ["False", False],
-        ["true", True],
-        ["false", False],
-        ["TRUE", True],
-        ["FALSE", False],
+        [u"吾輩は猫である", u"吾輩は猫である"],
+        ["吾輩は猫である", u"吾輩は猫である"],
+        ["マルチバイト文字", u"マルチバイト文字"],
+        ["abcdef", u"abcdef"],
+        [None, u"None"],
+        ["", u""],
+        [True, u"True"],
+        [[], u"[]"],
+        [1, u"1"],
     ])
     def test_normal(self, value, expected):
-        assert strict_strtobool(value) == expected
+        unicode_str = to_unicode(value)
 
-    @pytest.mark.parametrize(["value", "exception"], [
-        [0, ValueError], [1, ValueError],
-        ["t", ValueError], ["f", ValueError],
-        ["y", ValueError], ["n", ValueError],
-        ["yes", ValueError], ["no", ValueError],
-        ["on", ValueError], ["off", ValueError],
-        [None, ValueError],
-        [nan, ValueError],
-        [inf, ValueError],
+        assert unicode_str == expected
+        assert to_unicode(unicode_str) == unicode_str
+
+
+class Test_is_multibyte_str:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [u"吾輩は猫である", True],
+        ["吾輩は猫である", True],
+        ["abcdef", False],
+        [None, False],
+        ["", False],
+        [True, False],
+        [[], False],
+        [1, False],
     ])
-    def test_exception(self, value, exception):
-        with pytest.raises(exception):
-            strict_strtobool(value)
+    def test_normal(self, value, expected):
+        assert is_multibyte_str(value) == expected
+
+
+class Test_get_ascii_char_width:
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [u"吾輩は猫である", 14],
+        [u"いaろbはc", 9],
+        [u"abcdef", 6],
+        [u"", 0],
+    ])
+    def test_normal(self, value, expected):
+        assert get_ascii_char_width(value) == expected
+
+    @pytest.mark.parametrize(["value", "expected"], [
+        [six.b("abcdef"), TypeError],
+        [None, TypeError],
+        [True, TypeError],
+        [1, TypeError],
+        [nan, TypeError],
+    ])
+    def test_exception(self, value, expected):
+        with pytest.raises(expected):
+            get_ascii_char_width(value)

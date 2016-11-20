@@ -19,6 +19,25 @@ nan = float("nan")
 inf = float("inf")
 
 
+def bool_converter_test(value):
+    if value:
+        return "true value"
+
+    return "false value"
+
+
+def datetime_converter_tostr_0(value):
+    return value.strftime("%Y-%m-%d %H:%M:%S%z")
+
+
+def datetime_converter_tostr_1(value):
+    return value.strftime("%Y/%m/%d %H:%M:%S")
+
+
+def datetime_converter_test_raw(value):
+    return value
+
+
 class Test_DataPeroperty_data_typecode:
 
     @pytest.mark.parametrize(
@@ -38,6 +57,13 @@ class Test_DataPeroperty_data_typecode:
 
             [True, True, True, Typecode.BOOL],
             [False, False, False, Typecode.BOOL],
+
+            ["100-0002", True,
+                datetime.datetime(100, 2, 20, 0, 0), Typecode.DATETIME],
+            ["100-0002", False, "100-0002", Typecode.STRING],
+
+            [{}, True, {}, Typecode.DICTIONARY],
+            [{}, False, {}, Typecode.DICTIONARY],
 
             [
                 "2017-01-02 03:04:05",
@@ -72,7 +98,9 @@ class Test_DataPeroperty_data_typecode:
         ]
     )
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
-        dp = DataProperty(value, is_strict=not is_convert)
+        dp = DataProperty(
+            value,
+            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
         assert dp.data == expected_data
         assert dp.typecode == expected_typecode
 
@@ -86,8 +114,10 @@ class Test_DataPeroperty_data_typecode:
     )
     def test_normal_nan(
             self, value, is_convert, expected_data, expected_typecode):
-        dp = DataProperty(value, is_strict=not is_convert)
-        assert is_nan(dp.data)
+        dp = DataProperty(
+            value,
+            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+        assert NanType(dp.data).is_type()
         assert dp.typecode == expected_typecode
 
     @pytest.mark.parametrize(["value", "none_value", "expected"], [
@@ -100,25 +130,6 @@ class Test_DataPeroperty_data_typecode:
         dp = DataProperty(value, none_value)
         assert dp.data == expected
         assert dp.typecode == Typecode.NONE
-
-
-def bool_converter_test(value):
-    if value:
-        return "true value"
-
-    return "false value"
-
-
-def datetime_converter_tostr_0(value):
-    return value.strftime("%Y-%m-%d %H:%M:%S%z")
-
-
-def datetime_converter_tostr_1(value):
-    return value.strftime("%Y/%m/%d %H:%M:%S")
-
-
-def datetime_converter_test_raw(value):
-    return value
 
 
 class Test_DataPeroperty_set_data:
@@ -141,7 +152,7 @@ class Test_DataPeroperty_set_data:
             replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
             value,
-            is_strict=not is_convert,
+            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING,
             replace_tabs_with_spaces=replace_tabs_with_spaces,
             tab_length=tab_length)
 
@@ -159,7 +170,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             none_value=none_value,
-            is_strict=not is_convert)
+            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -176,7 +187,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             bool_converter=bool_converter,
-            is_strict=not is_convert)
+            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -215,7 +226,7 @@ class Test_DataPeroperty_set_data:
             value,
             datetime_converter=datetime_converter,
             datetime_format_str=datetime_format_str,
-            is_strict=not is_convert)
+            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -233,7 +244,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             inf_value=inf_value,
-            is_strict=not is_convert)
+            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -251,7 +262,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             nan_value=nan_value,
-            is_strict=not is_convert)
+            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -287,6 +298,9 @@ class Test_DataPeroperty_str_len:
         ["-123456789", 10],
 
         ["a", 1],
+        ["a" * 1000, 1000],
+        [u"あ", 1],
+
         [True, 4],
         [None, 4],
         [inf, 3],
@@ -301,7 +315,22 @@ class Test_DataPeroperty_str_len:
     ])
     def test_abnormal(self, value, expected):
         dp = DataProperty(value)
-        is_nan(dp.str_len)
+        NanType(dp.str_len).is_type()
+
+
+class Test_DataPeroperty_get_padding_len:
+
+    @pytest.mark.parametrize(["value", "ascii_char_width", "expected"], [
+        [1, 8, 8],
+        ["000", 8, 8],
+
+        ["a" * 1000, 8, 8],
+        [u"あ", 8, 7],
+        [u"いろは", 8, 5],
+    ])
+    def test_normal(self, value, ascii_char_width, expected):
+        dp = DataProperty(value)
+        assert dp.get_padding_len(ascii_char_width) == expected
 
 
 class Test_DataPeroperty_integer_digits:
@@ -325,7 +354,7 @@ class Test_DataPeroperty_integer_digits:
     ])
     def test_abnormal(self, value):
         dp = DataProperty(value)
-        is_nan(dp.integer_digits)
+        NanType(dp.integer_digits).is_type()
 
 
 class Test_DataPeroperty_decimal_places:
@@ -349,7 +378,7 @@ class Test_DataPeroperty_decimal_places:
     ])
     def test_abnormal(self, value):
         dp = DataProperty(value)
-        is_nan(dp.decimal_places)
+        NanType(dp.decimal_places).is_type()
 
 
 class Test_DataPeroperty_additional_format_len:
@@ -378,68 +407,108 @@ class Test_DataPeroperty_additional_format_len:
 
 class Test_DataPeroperty_repr:
 
-    @pytest.mark.parametrize(["value", "expected"], [
+    @pytest.mark.parametrize(["value", "is_strict_type_mapping", "expected"], [
+        [
+            "100-0004",
+            NOT_STRICT_TYPE_MAPPING,
+            100
+        ],
+        [
+            {"a": 1},
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
+            100
+        ],
+        [
+            "マルチバイト文字",
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
+            100
+        ],
+
+    ])
+    def test_smoke(self, value, is_strict_type_mapping, expected):
+        dp = DataProperty(value, is_strict_type_mapping=is_strict_type_mapping)
+        assert len(dp.__repr__()) > expected
+
+    @pytest.mark.parametrize(["value", "is_strict_type_mapping", "expected"], [
         [
             0,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=0, typename=INTEGER, align=right, str_len=1, "
+            "ascii_char_width=1, "
             "integer_digits=1, decimal_places=0, additional_format_len=0",
         ],
         [
             -1.0,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=-1.0, typename=FLOAT, align=right, str_len=4, "
+            "ascii_char_width=4, "
             "integer_digits=1, decimal_places=1, additional_format_len=1",
         ],
         [
             -12.234,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=-12.23, typename=FLOAT, align=right, str_len=6, "
+            "ascii_char_width=6, "
             "integer_digits=2, decimal_places=2, additional_format_len=1",
         ],
         [
             "abcdefg",
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=abcdefg, typename=STRING, align=left, str_len=7, "
+            "ascii_char_width=7, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             None,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=None, typename=NONE, align=left, str_len=4, "
+            "ascii_char_width=4, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             True,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=True, typename=BOOL, align=left, str_len=4, "
+            "ascii_char_width=4, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             DATATIME_DATA,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=2017-01-02 03:04:05, typename=DATETIME, align=left, str_len=19, "
+            "ascii_char_width=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05",
-            "data=2017-01-02 03:04:05, typename=DATETIME, align=left, str_len=19, "
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
+            "data=2017-01-02 03:04:05, typename=STRING, align=left, str_len=19, "
+            "ascii_char_width=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05+0900",
+            NOT_STRICT_TYPE_MAPPING,
             "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, str_len=24, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
-        ],
-        [
-            "2017-01-02 03:04:05+09:00",
-            "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, str_len=24, "
+            "ascii_char_width=24, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             inf,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=inf, typename=INFINITY, align=left, str_len=3, "
+            "ascii_char_width=3, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             nan,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=nan, typename=NAN, align=left, str_len=3, "
+            "ascii_char_width=3, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
     ])
-    def test_normal(self, value, expected):
-        dp = DataProperty(value)
+    def test_normal(self, value, is_strict_type_mapping, expected):
+        dp = DataProperty(value, is_strict_type_mapping=is_strict_type_mapping)
+        print(dp)
         assert str(dp) == expected

@@ -10,6 +10,7 @@ import abc
 import re
 
 from ._error import TypeConversionError
+from ._function import to_unicode
 
 
 class ValueConverterInterface(object):
@@ -53,10 +54,7 @@ class NopConverter(ValueConverter):
 class StringConverter(ValueConverter):
 
     def convert(self):
-        try:
-            return str(self._value)
-        except UnicodeEncodeError:
-            return self._value
+        return to_unicode(self._value)
 
 
 class IntegerConverter(ValueConverter):
@@ -93,16 +91,32 @@ class FloatConverter(ValueConverter):
 class BoolConverter(ValueConverter):
 
     def convert(self):
-        from ._function import strict_strtobool
-
         try:
-            return strict_strtobool(self._value)
+            return self.__strict_strtobool(self._value)
         except ValueError:
             try:
                 raise TypeConversionError(
                     "failed to convert: {}".format(self._value))
             except UnicodeEncodeError:
                 raise TypeConversionError("failed to convert to bool")
+
+    @staticmethod
+    def __strict_strtobool(value):
+        from distutils.util import strtobool
+
+        if isinstance(value, bool):
+            return value
+
+        try:
+            lower_text = value.lower()
+        except AttributeError:
+            raise ValueError("invalid value '{}'".format(str(value)))
+
+        binary_value = strtobool(lower_text)
+        if lower_text not in ["true", "false"]:
+            raise ValueError("invalid value '{}'".format(str(value)))
+
+        return bool(binary_value)
 
 
 class DateTimeConverter(ValueConverter):
@@ -195,3 +209,16 @@ class DateTimeConverter(ValueConverter):
             except UnicodeEncodeError:
                 raise TypeConversionError(
                     "invalid datetime string")
+
+
+class DictionaryConverter(ValueConverter):
+
+    def convert(self):
+        try:
+            return dict(self._value)
+        except (TypeError, ValueError):
+            try:
+                raise TypeConversionError(
+                    "failed to convert: {}".format(self._value))
+            except UnicodeEncodeError:
+                raise TypeConversionError("failed to convert to bool")

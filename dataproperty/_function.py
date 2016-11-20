@@ -43,10 +43,6 @@ def is_float(value):
     return FloatType(value).is_type()
 
 
-def is_nan(value):
-    return value != value
-
-
 def is_empty_string(value):
     try:
         return len(value.strip()) == 0
@@ -74,6 +70,12 @@ def _is_tuple(value):
 
 
 def is_list_or_tuple(value):
+    """
+    .. warning::
+
+        This function will be deleted in the future.
+    """
+
     return any([_is_list(value), _is_tuple(value)])
 
 
@@ -96,7 +98,7 @@ def is_empty_list_or_tuple(value):
     .. warning::
 
         This function will be deleted in the future.
-        Use is_not_empty_sequence function instead of this.
+        Use is_not_empty_sequence function instead of this function.
     """
 
     return value is None or (is_list_or_tuple(value) and len(value) == 0)
@@ -107,7 +109,7 @@ def is_not_empty_list_or_tuple(value):
     .. warning::
 
         This function will be deleted in the future.
-        Use is_not_empty_sequence function instead of this.
+        Use is_not_empty_sequence function instead of this function.
     """
 
     return is_list_or_tuple(value) and len(value) > 0
@@ -198,26 +200,78 @@ def get_number_of_digit(value):
     return (integer_digits, decimal_places)
 
 
-def get_text_len(text):
+_codec_list = (
+    'ascii',
+    'utf_8', 'utf_8_sig',
+    'utf_7',
+    'utf_16', 'utf_16_be', 'utf_16_le',
+    'utf_32', 'utf_32_be', 'utf_32_le',
+
+    'big5', 'big5hkscs',
+    'cp037', 'cp424', 'cp437', 'cp500', 'cp720',
+    'cp737', 'cp775', 'cp850', 'cp852', 'cp855',
+    'cp856', 'cp857', 'cp858', 'cp860', 'cp861',
+    'cp862', 'cp863', 'cp864', 'cp865', 'cp866',
+    'cp869', 'cp874', 'cp875', 'cp932', 'cp949',
+    'cp950', 'cp1006', 'cp1026', 'cp1140', 'cp1250',
+    'cp1251', 'cp1252', 'cp1253', 'cp1254', 'cp1255',
+    'cp1256', 'cp1257', 'cp1258',
+    'euc_jp', 'euc_jis_2004', 'euc_jisx0213', 'euc_kr',
+    'gb2312', 'gbk', 'gb18030',
+    'hz',
+    'iso2022_jp', 'iso2022_jp_1', 'iso2022_jp_2', 'iso2022_jp_2004',
+    'iso2022_jp_3', 'iso2022_jp_ext', 'iso2022_kr',
+    'latin_1',
+    'iso8859_2', 'iso8859_3', 'iso8859_4', 'iso8859_5', 'iso8859_6',
+    'iso8859_7', 'iso8859_8', 'iso8859_9', 'iso8859_10', 'iso8859_11',
+    'iso8859_13', 'iso8859_14', 'iso8859_15', 'iso8859_16',
+    'johab',
+    'koi8_r', 'koi8_u',
+    'mac_cyrillic', 'mac_greek', 'mac_iceland', 'mac_latin2', 'mac_roman', 'mac_turkish',
+    'ptcp154',
+    'shift_jis', 'shift_jis_2004', 'shift_jisx0213',
+)
+
+
+def to_unicode(value):
+    for codec in _codec_list:
+        try:
+            return value.decode(codec)
+        except UnicodeDecodeError:
+            continue
+        except UnicodeEncodeError:
+            return value
+        except AttributeError:
+            return u"{}".format(value)
+
+    raise ValueError("unknown codec: {}".format(value))
+
+
+def is_multibyte_str(text):
+    from ._type_checker import StringTypeChecker
+
+    if not StringTypeChecker(text).is_type():
+        return False
+
+    unicode_text = to_unicode(text)
+
     try:
-        return len(str(text))
+        unicode_text.encode("ascii")
     except UnicodeEncodeError:
-        return len(text)
+        return True
+
+    return False
 
 
-def strict_strtobool(value):
-    from distutils.util import strtobool
+def get_ascii_char_width(unicode_str):
+    import unicodedata
 
-    if isinstance(value, bool):
-        return value
+    width = 0
+    for c in unicode_str:
+        char_width = unicodedata.east_asian_width(c)
+        if char_width in u"WFA":
+            width += 2
+        else:
+            width += 1
 
-    try:
-        lower_text = value.lower()
-    except AttributeError:
-        raise ValueError("invalid value '{:s}'".format(str(value)))
-
-    binary_value = strtobool(lower_text)
-    if lower_text not in ["true", "false"]:
-        raise ValueError("invalid value '{:s}'".format(str(value)))
-
-    return bool(binary_value)
+    return width

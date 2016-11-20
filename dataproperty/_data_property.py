@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 import math
+import itertools
 
 from ._align_getter import align_getter
 from ._container import MinMaxContainer
@@ -19,15 +20,33 @@ from ._factory import (
     BoolTypeFactory,
     DateTimeTypeFactory,
     InfinityTypeFactory,
-    NanTypeFactory
+    NanTypeFactory,
+    DictionaryTypeFactory
 )
 from ._function import (
-    is_nan,
     get_number_of_digit,
-    get_text_len
+    get_ascii_char_width,
+    to_unicode
 )
 from ._typecode import Typecode
+from ._type_checker import NanChecker
 from ._type import FloatType
+
+
+DEFAULT_IS_STRICT_TYPE_MAPPING = {
+    Typecode.NONE: False,
+    Typecode.INTEGER: False,
+    Typecode.FLOAT: False,
+    Typecode.STRING: False,
+    Typecode.DATETIME: True,
+    Typecode.INFINITY: False,
+    Typecode.NAN: False,
+    Typecode.BOOL: False,
+    Typecode.DICTIONARY: True,
+}
+
+STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
+NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
 
 
 def default_bool_converter(value):
@@ -52,13 +71,14 @@ class DataPeropertyBase(DataPeropertyInterface):
             Typecode.INTEGER: "d",
             Typecode.BOOL: "",
             Typecode.DATETIME: self.__datetime_format_str,
+            Typecode.DICTIONARY: "",
         }.get(self.typecode)
 
         if format_str is not None:
             return format_str
 
         if self.typecode in (Typecode.FLOAT, Typecode.INFINITY, Typecode.NAN):
-            if is_nan(self.decimal_places):
+            if NanChecker(self.decimal_places).is_type():
                 return "f"
 
             return ".{:d}f".format(self.decimal_places)
@@ -78,6 +98,7 @@ class DataProperty(DataPeropertyBase):
         "__decimal_places",
         "__additional_format_len",
         "__str_len",
+        "__ascii_char_width",
     )
 
     __type_factory_class_list = [
@@ -87,6 +108,7 @@ class DataProperty(DataPeropertyBase):
         NanTypeFactory,
         FloatTypeFactory,
         BoolTypeFactory,
+        DictionaryTypeFactory,
         DateTimeTypeFactory,
         StringTypeFactory,
     ]
@@ -138,6 +160,10 @@ class DataProperty(DataPeropertyBase):
         return self.__str_len
 
     @property
+    def ascii_char_width(self):
+        return self.__ascii_char_width
+
+    @property
     def integer_digits(self):
         """
         :return:
@@ -158,11 +184,12 @@ class DataProperty(DataPeropertyBase):
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
-            is_strict=False,
+            is_strict_type_mapping=DEFAULT_IS_STRICT_TYPE_MAPPING,
             replace_tabs_with_spaces=True, tab_length=2):
         super(DataProperty, self).__init__(datetime_format_str)
 
-        self.__set_data(data, none_value, inf_value, nan_value, is_strict)
+        self.__set_data(
+            data, none_value, inf_value, nan_value, is_strict_type_mapping)
         self.__convert_data(bool_converter, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
@@ -175,28 +202,35 @@ class DataProperty(DataPeropertyBase):
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
-        self.__str_len = self.__get_str_len()
+        self.__calc_length()
 
     def __repr__(self):
         element_list = []
 
         if self.typecode == Typecode.DATETIME:
             element_list.append(
-                "data={:s}".format(str(self.data)))
+                u"data={:s}".format(str(self.data)))
         else:
-            element_list.append(
-                ("data={:" + self.format_str + "}").format(self.data))
-
+            try:
+                element_list.append(
+                    (u"data={:" + self.format_str + u"}").format(self.data))
+            except UnicodeEncodeError:
+                element_list.append(
+                    (u"data={}").format(to_unicode(self.data)))
         element_list.extend([
-            "typename=" + self.typename,
-            "align=" + str(self.align),
-            "str_len=" + str(self.str_len),
-            "integer_digits=" + str(self.integer_digits),
-            "decimal_places=" + str(self.decimal_places),
-            "additional_format_len=" + str(self.additional_format_len),
+            u"typename={:s}".format(self.typename),
+            u"align={}".format(self.align),
+            u"str_len={:d}".format(self.str_len),
+            u"ascii_char_width={:d}".format(self.ascii_char_width),
+            u"integer_digits={}".format(self.integer_digits),
+            u"decimal_places={}".format(self.decimal_places),
+            u"additional_format_len={:d}".format(self.additional_format_len),
         ])
 
-        return ", ".join(element_list)
+        return u", ".join(element_list)
+
+    def get_padding_len(self, ascii_char_width):
+        return ascii_char_width - (self.ascii_char_width - self.str_len)
 
     def __get_additional_format_len(self):
         if not FloatType(self.data).is_type():
@@ -221,21 +255,37 @@ class DataProperty(DataPeropertyBase):
 
         return float_len
 
-    def __get_str_len(self):
+    def __calc_length(self):
         if self.typecode == Typecode.INTEGER:
-            return self.integer_digits + self.additional_format_len
+            self.__str_len = self.integer_digits + self.additional_format_len
+            self.__ascii_char_width = self.__str_len
+            return
 
         if self.typecode == Typecode.FLOAT:
-            return self.__get_base_float_len() + self.additional_format_len
+            self.__str_len = (
+                self.__get_base_float_len() + self.additional_format_len)
+            self.__ascii_char_width = self.__str_len
+            return
 
         if self.typecode == Typecode.DATETIME:
             full_format_str = "{:" + self.format_str + "}"
-            return len(full_format_str.format(self.data))
 
-        return get_text_len(self.data)
+            try:
+                self.__str_len = len(full_format_str.format(self.data))
+            except ValueError:
+                # reach to this line if the year <1900.
+                # the datetime strftime() methods require year >= 1900.
+                self.__str_len = len(str(self.data))
+
+            self.__ascii_char_width = self.__str_len
+            return
+
+        unicode_str = to_unicode(self.data)
+        self.__str_len = len(unicode_str)
+        self.__ascii_char_width = get_ascii_char_width(unicode_str)
 
     def __set_data(
-            self, data, none_value, inf_value, nan_value, is_strict):
+            self, data, none_value, inf_value, nan_value, is_strict_type_mapping):
         special_value_table = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
@@ -243,6 +293,8 @@ class DataProperty(DataPeropertyBase):
         }
 
         for type_factory_class in self.__type_factory_class_list:
+            is_strict = is_strict_type_mapping.get(type_factory_class(
+                None, None).create_type_checker().typecode, False)
             type_factory = type_factory_class(data, is_strict)
             checker = type_factory.create_type_checker()
 
@@ -282,6 +334,7 @@ class ColumnDataProperty(DataPeropertyBase):
     __slots__ = (
         "__typecode_bitmap",
         "__str_len",
+        "__ascii_char_width",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
@@ -310,7 +363,7 @@ class ColumnDataProperty(DataPeropertyBase):
         except TypeError:
             return float("nan")
 
-        if is_nan(avg):
+        if NanChecker(avg).is_type():
             return float("nan")
 
         return int(math.ceil(avg))
@@ -321,11 +374,19 @@ class ColumnDataProperty(DataPeropertyBase):
 
     @property
     def padding_len(self):
-        if self.typecode != Typecode.FLOAT:
-            return self.__str_len
+        """
+        mark as delete.
+        """
 
-        max_len = self.__str_len
-        col_format_str = "{:" + self.format_str + "}"
+        return self.ascii_char_width
+
+    @property
+    def ascii_char_width(self):
+        if self.typecode != Typecode.FLOAT:
+            return self.__ascii_char_width
+
+        max_len = self.__ascii_char_width
+        col_format_str = u"{:" + self.format_str + u"}"
 
         for data_prop in self.__data_prop_list:
             if data_prop.typecode in [Typecode.INFINITY, Typecode.NAN]:
@@ -336,7 +397,7 @@ class ColumnDataProperty(DataPeropertyBase):
             except (TypeError, ValueError):
                 continue
 
-            max_len = max(max_len, len(formatted_value))
+            max_len = max(max_len, get_ascii_char_width(formatted_value))
 
         return max_len
 
@@ -364,6 +425,8 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__typecode_bitmap = Typecode.NONE
         self.__str_len = min_padding_len
+        self.__ascii_char_width = min_padding_len
+
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = MinMaxContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -373,7 +436,7 @@ class ColumnDataProperty(DataPeropertyBase):
         return ", ".join([
             "typename=" + self.typename,
             "align=" + str(self.align),
-            "padding_len=" + str(self.padding_len),
+            "ascii_char_width=" + str(self.padding_len),
             "integer_digits=({:s})".format(str(self.minmax_integer_digits)),
             "decimal_places=({:s})".format(str(self.minmax_decimal_places)),
             "additional_format_len=({:s})".format(
@@ -382,10 +445,14 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def update_header(self, dataprop):
         self.__str_len = max(self.__str_len, dataprop.str_len)
+        self.__ascii_char_width = max(
+            self.__ascii_char_width, dataprop.ascii_char_width)
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
         self.__str_len = max(self.__str_len, dataprop.str_len)
+        self.__ascii_char_width = max(
+            self.__ascii_char_width, dataprop.ascii_char_width)
 
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
             self.__minmax_integer_digits.update(dataprop.integer_digits)

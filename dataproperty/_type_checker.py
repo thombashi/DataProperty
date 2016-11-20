@@ -16,10 +16,10 @@ from ._converter import (
     IntegerConverter,
     FloatConverter,
     BoolConverter,
-    DateTimeConverter
+    DateTimeConverter,
+    DictionaryConverter
 )
 from ._error import TypeConversionError
-from ._function import is_nan
 from ._typecode import Typecode
 
 
@@ -153,6 +153,11 @@ class StringTypeChecker(TypeChecker):
 
 
 class IntegerTypeChecker(TypeChecker):
+    """
+    is_type() behave differently from float.is_integer()
+
+    examples:
+    """
 
     @property
     def typecode(self):
@@ -256,7 +261,25 @@ class NanChecker(TypeChecker):
         return FloatConverter
 
     def _is_instance(self):
-        return is_nan(self._value)
+        return self.__is_nan(self._value)
 
     def _is_valid_after_convert(self):
-        return is_nan(self._converted_value)
+        return self.__is_nan(self._converted_value)
+
+    @staticmethod
+    def __is_nan(value):
+        return value != value
+
+
+class DictionaryTypeChecker(TypeChecker):
+
+    @property
+    def typecode(self):
+        return Typecode.DICTIONARY
+
+    @property
+    def _converter_class(self):
+        return DictionaryConverter
+
+    def _is_instance(self):
+        return isinstance(self._value, dict)
