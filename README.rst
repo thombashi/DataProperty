@@ -46,11 +46,11 @@ e.g. Extract `float` value property
 .. code:: python
 
     from dataproperty import DataProperty
-    DataProperty(-1.0)
+    print(DataProperty(-1.1))
 
 ::
 
-    data=-1.0, typename=FLOAT, align=right, str_len=4, ascii_char_width=4, integer_digits=1, decimal_places=1, additional_format_len=1
+    data=-1.1, typename=FLOAT, align=right, str_len=4, ascii_char_width=4, integer_digits=1, decimal_places=1, additional_format_len=1
 
 
 e.g. Extract `int` value property
@@ -59,7 +59,7 @@ e.g. Extract `int` value property
 .. code:: python
 
     from dataproperty import DataProperty
-    DataProperty(123456789)
+    print(DataProperty(123456789))
 
 ::
 
@@ -71,7 +71,7 @@ e.g. Extract `str` (ascii) value property
 .. code:: python
 
     from dataproperty import DataProperty
-    DataProperty("sample string")
+    print(DataProperty("sample string"))
 
 ::
 
@@ -83,7 +83,7 @@ e.g. Extract `str` (multi-byte) value property
 .. code:: python
 
     from dataproperty import DataProperty
-    DataProperty(u"吾輩は猫である")
+    print(DataProperty(u"吾輩は猫である"))
     
     data=吾輩は猫である, typename=STRING, align=left, str_len=7, ascii_char_width=14, integer_digits=nan, decimal_places=nan, additional_format_len=0
 
@@ -96,7 +96,7 @@ e.g. Extract time (`datetime`) value property
 
     import datetime
     from dataproperty import DataProperty
-    DataProperty(datetime.datetime(2017, 1, 1, 0, 0, 0))
+    print(DataProperty(datetime.datetime(2017, 1, 1, 0, 0, 0)))
 
 ::
 
@@ -107,7 +107,7 @@ e.g. Extract `bool` value property
 
 .. code:: python
 
-    DataProperty(True)
+    print(DataProperty(True))
 
 ::
 
@@ -156,27 +156,27 @@ Extract for each data property from a matrix
     ['INTEGER', 'FLOAT', 'STRING', 'INTEGER', 'INTEGER', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
     ['INTEGER', 'FLOAT', 'STRING', 'FLOAT', 'FLOAT', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
     ['INTEGER', 'FLOAT', 'STRING', 'INTEGER', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
-
+    
     ---------- data ----------
-    [1, 1.1, 'aa', 1, 1, True, inf, nan, datetime.datetime(2017, 1, 1, 0, 0)]
-    [2, 2.2, 'bbb', 2.2, 2.2, False, inf, nan, datetime.datetime(2017, 1, 1, 0, 0)]
-    [3, 3.33, 'cccc', -3, 'ccc', True, inf, nan, '2017-01-01T01:23:45+0900']
-
+    [1, Decimal('1.1'), 'aa', 1, 1, True, Decimal('Infinity'), Decimal('NaN'), datetime.datetime(2017, 1, 1, 0, 0)]
+    [2, Decimal('2.2'), 'bbb', Decimal('2.2'), Decimal('2.2'), False, Decimal('Infinity'), Decimal('NaN'), datetime.datetime(2017, 1, 1, 0, 0)]
+    [3, Decimal('3.33'), 'cccc', -3, 'ccc', True, Decimal('Infinity'), Decimal('NaN'), '2017-01-01T01:23:45+0900']
+    
     ---------- align ----------
     [right, right, left, right, right, left, left, left, left]
     [right, right, left, right, right, left, left, left, left]
     [right, right, left, right, left, left, left, left, left]
-
+    
     ---------- str_len ----------
-    [1, 3, 2, 1, 1, 4, 3, 3, 19]
-    [1, 3, 3, 3, 3, 5, 3, 3, 19]
-    [1, 4, 4, 2, 3, 4, 3, 3, 24]
-
+    [1, 3, 2, 1, 1, 4, 8, 3, 19]
+    [1, 3, 3, 3, 3, 5, 8, 3, 19]
+    [1, 4, 4, 2, 3, 4, 8, 3, 24]
+    
     ---------- integer_digits ----------
     [1, 1, nan, 1, 1, nan, nan, nan, nan]
     [1, 1, nan, 1, 1, nan, nan, nan, nan]
     [1, 1, nan, 1, nan, nan, nan, nan, nan]
-
+    
     ---------- decimal_places ----------
     [0, 1, nan, 0, 0, nan, nan, nan, nan]
     [0, 1, nan, 1, 1, nan, nan, nan, nan]
@@ -222,13 +222,13 @@ Extract for each column property from a matrix
 
     ---------- typename ----------
     ['INTEGER', 'FLOAT', 'STRING', 'FLOAT', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
-
+    
     ---------- align ----------
     [right, right, left, right, left, left, left, left, left]
-
+    
     ---------- padding_len ----------
-    [3, 5, 4, 4, 3, 5, 3, 3, 24]
-
+    [3, 5, 4, 4, 3, 5, 8, 3, 24]
+    
     ---------- decimal_places ----------
     [0, 2, nan, 1, 1, nan, nan, nan, nan]
 
