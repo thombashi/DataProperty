@@ -76,9 +76,6 @@ class FloatConverter(ValueConverter):
     def convert(self):
         import decimal
 
-        if isinstance(self._value, float):
-            return self._value
-
         try:
             return decimal.Decimal(self._value)
         except (TypeError, ValueError, decimal.InvalidOperation):

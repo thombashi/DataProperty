@@ -368,6 +368,8 @@ class Test_InfinityChecker_is_type:
         )) + [
             ["inf", True, True],
             ["inf", False, False],
+            ["-infinity", True, True],
+            ["-infinity", False, False],
             ["INF", True, True],
             ["INF", False, False],
         ]
@@ -395,6 +397,8 @@ class Test_NanChecker_is_type:
         )) + [
             ["nan", True, True],
             ["nan", False, False],
+            ["-Nan", True, True],
+            ["-Nan", False, False],
             ["NAN", True, True],
             ["NAN", False, False],
         ]

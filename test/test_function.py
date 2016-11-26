@@ -178,24 +178,23 @@ class Test_get_integer_digit:
         assert get_integer_digit(value) == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [99999999999999999999.99, 21],
-        [-99999999999999999999.99, 21],
-        ["99999999999999999999.99", 21],
-        ["-99999999999999999999.99", 21],
+        [999999999999999999999999999999.9999999999, 31],
+        [-999999999999999999999999999999.9999999999, 31],
+        ["999999999999999999999999999999.9999999999", 30],
+        ["-999999999999999999999999999999.9999999999", 30],
     ])
     def test_abnormal(self, value, expected):
-        # expected result == 20
         assert get_integer_digit(value) == expected
 
     @pytest.mark.parametrize(["value", 'exception'], [
         [True, TypeError],
         [False, TypeError],
         [None, TypeError],
-        ["test", ValueError],
-        ["a", ValueError],
-        ["0xff", ValueError],
+        ["test", TypeError],
+        ["a", TypeError],
+        ["0xff", TypeError],
         [nan, ValueError],
-        [inf, OverflowError],
+        [inf, ValueError],
     ])
     def test_exception(self, value, exception):
         with pytest.raises(exception):

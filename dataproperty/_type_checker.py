@@ -248,7 +248,7 @@ class InfinityChecker(TypeChecker):
         return self._value in (float("inf"), Decimal("inf"))
 
     def _is_valid_after_convert(self):
-        return self._converted_value in (float("inf"), Decimal("inf"))
+        return self._converted_value.is_infinite()
 
 
 class NanChecker(TypeChecker):
@@ -265,7 +265,7 @@ class NanChecker(TypeChecker):
         return self.__is_nan(self._value)
 
     def _is_valid_after_convert(self):
-        return self.__is_nan(self._converted_value)
+        return self._converted_value.is_nan()
 
     @staticmethod
     def __is_nan(value):

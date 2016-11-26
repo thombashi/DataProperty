@@ -225,7 +225,7 @@ class DataProperty(DataPeropertyBase):
             "ascii_char_width={:d}".format(self.ascii_char_width),
             "integer_digits={}".format(self.integer_digits),
             "decimal_places={}".format(self.decimal_places),
-            "additional_format_len={:d}".format(self.additional_format_len),
+            "additional_format_len={}".format(self.additional_format_len),
         ])
 
         return ", ".join(element_list)

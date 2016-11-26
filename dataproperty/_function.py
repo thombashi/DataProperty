@@ -5,6 +5,8 @@
 """
 
 from __future__ import absolute_import
+from decimal import Decimal
+import decimal
 import math
 
 
@@ -134,16 +136,28 @@ def is_datetime(value):
 def get_integer_digit(value):
     from ._type import FloatType
 
-    abs_value = abs(float(value))
+    decimal.setcontext(
+        decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
 
-    if not FloatType(value).is_type():
+    float_type = FloatType(value)
+
+    if not float_type.is_convertible_type():
         # bool type value reaches this line
-        raise TypeError("invalid type '{:s}".format(type(value)))
+        raise TypeError("invalid type '{}'".format(type(value)))
 
-    if abs_value == 0:
+    abs_value = abs(float_type.convert())
+
+    if any([abs_value.is_nan(), abs_value.is_infinite()]):
+        raise ValueError("invalid value '{}'".format(value))
+
+    if abs_value.is_zero():
         return 1
 
-    return max(1, int(math.log10(abs_value) + 1.0))
+    try:
+        return len(str(abs_value.quantize(
+            Decimal("1."), rounding=decimal.ROUND_DOWN)))
+    except decimal.InvalidOperation as e:
+        raise ValueError(e)
 
 
 def _get_decimal_places(value, integer_digits):
@@ -151,9 +165,11 @@ def _get_decimal_places(value, integer_digits):
     from six.moves import range
     from ._type import IntegerType
 
+    int_type = IntegerType(value)
+
     float_digit_len = 0
-    if IntegerType(value).is_type():
-        abs_value = abs(int(value))
+    if int_type.is_type():
+        abs_value = abs(int_type.convert())
     else:
         abs_value = abs(float(value))
         text_value = str(abs_value)
