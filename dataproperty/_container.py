@@ -4,6 +4,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import unicode_literals
+
 
 class MinMaxContainer(object):
     __slots__ = ("__min_value", "__max_value")

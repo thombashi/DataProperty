@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import unicode_literals
 import abc
 import re
 
@@ -66,7 +67,7 @@ class IntegerConverter(ValueConverter):
             try:
                 raise TypeConversionError(
                     "failed to convert: {}".format(self._value))
-            except UnicodeEncodeError:
+            except (UnicodeEncodeError, UnicodeDecodeError):
                 raise TypeConversionError("failed to convert to integer")
 
 
@@ -84,7 +85,7 @@ class FloatConverter(ValueConverter):
             try:
                 raise TypeConversionError(
                     "failed to convert: {}".format(self._value))
-            except UnicodeEncodeError:
+            except (UnicodeEncodeError, UnicodeDecodeError):
                 raise TypeConversionError("failed to convert to float")
 
 
@@ -97,7 +98,7 @@ class BoolConverter(ValueConverter):
             try:
                 raise TypeConversionError(
                     "failed to convert: {}".format(self._value))
-            except UnicodeEncodeError:
+            except (UnicodeEncodeError, UnicodeDecodeError):
                 raise TypeConversionError("failed to convert to bool")
 
     @staticmethod
@@ -160,7 +161,7 @@ class DateTimeConverter(ValueConverter):
             try:
                 raise TypeConversionError(
                     "failed to parse as a datetime: {}".format(self._value))
-            except UnicodeEncodeError:
+            except (UnicodeEncodeError, UnicodeDecodeError):
                 raise TypeConversionError("failed to parse as a datetime")
 
         try:
@@ -206,7 +207,7 @@ class DateTimeConverter(ValueConverter):
             try:
                 raise TypeConversionError(
                     "invalid datetime string: {}".format(self._value))
-            except UnicodeEncodeError:
+            except (UnicodeEncodeError, UnicodeDecodeError):
                 raise TypeConversionError(
                     "invalid datetime string")
 
@@ -220,5 +221,5 @@ class DictionaryConverter(ValueConverter):
             try:
                 raise TypeConversionError(
                     "failed to convert: {}".format(self._value))
-            except UnicodeEncodeError:
+            except (UnicodeEncodeError, UnicodeDecodeError):
                 raise TypeConversionError("failed to convert to bool")
