@@ -281,7 +281,7 @@ class Test_DataPeroperty_align:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [1, Align.RIGHT],
-        [1.0, Align.RIGHT],
+        [1.1, Align.RIGHT],
         ["a", Align.LEFT],
         [True, Align.LEFT],
         [DATATIME_DATA, Align.LEFT],
@@ -299,8 +299,10 @@ class Test_DataPeroperty_str_len:
     @pytest.mark.parametrize(["value", "expected"], [
         [1, 1],
         [-1, 2],
-        [1.0, 3],
-        [-1.0, 4],
+        [1.0, 1],
+        [-1.0, 2],
+        [1.1, 3],
+        [-1.1, 4],
         [12.34, 5],
 
         ["000", 1],
@@ -373,7 +375,8 @@ class Test_DataPeroperty_decimal_places:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [1, 0],
-        [1.0, 1],
+        [1.0, 0],
+        [1.1, 1],
         [12.34, 2],
     ])
     def test_normal(self, value, expected):
@@ -452,7 +455,14 @@ class Test_DataPeroperty_repr:
         [
             -1.0,
             DEFAULT_IS_STRICT_TYPE_MAPPING,
-            "data=-1.0, typename=FLOAT, align=right, str_len=4, "
+            "data=-1, typename=INTEGER, align=right, str_len=2, "
+            "ascii_char_width=2, "
+            "integer_digits=1, decimal_places=0, additional_format_len=1",
+        ],
+        [
+            -1.1,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
+            "data=-1.1, typename=FLOAT, align=right, str_len=4, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=1, additional_format_len=1",
         ],

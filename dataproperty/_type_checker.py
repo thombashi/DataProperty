@@ -172,6 +172,11 @@ class IntegerTypeChecker(TypeChecker):
         if isinstance(self._value, six.integer_types):
             return not isinstance(self._value, bool)
 
+        try:
+            return self._value.is_integer()
+        except AttributeError:
+            pass
+
         return False
 
     def _is_exclude_instance(self):

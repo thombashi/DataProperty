@@ -59,7 +59,7 @@ class Test_ColumnDataPeroperty:
 
         # None mixed values
         [[None, six.MAXSIZE, str(-six.MAXSIZE)], Typecode.INTEGER],
-        [[1.0, None], Typecode.FLOAT],
+        [[1.1, None], Typecode.FLOAT],
         [[None, "test"], Typecode.STRING],
         [[None, True, "False"], Typecode.BOOL],
         [[None, DATATIME_DATA, None], Typecode.DATETIME],
@@ -170,11 +170,11 @@ class Test_ColumnDataPeroperty:
         col_prop = ColumnDataProperty()
         col_prop.update_header(DataProperty("abc"))
 
-        for value in [1.0, 2.2, None]:
+        for value in [0.01, 2.2, None]:
             col_prop.update_body(DataProperty(value))
 
         assert col_prop.align == Align.RIGHT
-        assert col_prop.decimal_places == 1
+        assert col_prop.decimal_places == 2
         assert col_prop.typecode == Typecode.FLOAT
         assert col_prop.ascii_char_width == 4
 
@@ -182,14 +182,14 @@ class Test_ColumnDataPeroperty:
         assert col_prop.minmax_integer_digits.max_value == 1
 
         assert col_prop.minmax_decimal_places.min_value == 1
-        assert col_prop.minmax_decimal_places.max_value == 1
+        assert col_prop.minmax_decimal_places.max_value == 2
 
         assert col_prop.minmax_additional_format_len.min_value == 0
         assert col_prop.minmax_additional_format_len.max_value == 0
 
         assert str(col_prop) == (
             "typename=FLOAT, align=right, ascii_char_width=4, "
-            "integer_digits=(min=1, max=1), decimal_places=(min=1, max=1), "
+            "integer_digits=(min=1, max=1), decimal_places=(min=1, max=2), "
             "additional_format_len=(min=0, max=0)")
 
     def test_normal_mix_0(self):
