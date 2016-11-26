@@ -310,6 +310,7 @@ class Test_DataPeroperty_str_len:
         ["a", 1],
         ["a" * 1000, 1000],
         [u"あ", 1],
+        [u"ø", 1],
 
         [True, 4],
         [None, 4],
@@ -337,6 +338,7 @@ class Test_DataPeroperty_get_padding_len:
         ["a" * 1000, 8, 8],
         [u"あ", 8, 7],
         [u"いろは", 8, 5],
+        [u"ø", 2, 1],
     ])
     def test_normal(self, value, ascii_char_width, expected):
         dp = DataProperty(value)
