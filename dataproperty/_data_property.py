@@ -5,6 +5,7 @@
 """
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 import math
 import itertools
 
@@ -209,25 +210,25 @@ class DataProperty(DataPeropertyBase):
 
         if self.typecode == Typecode.DATETIME:
             element_list.append(
-                u"data={:s}".format(str(self.data)))
+                "data={:s}".format(str(self.data)))
         else:
             try:
                 element_list.append(
-                    (u"data={:" + self.format_str + u"}").format(self.data))
+                    ("data={:" + self.format_str + "}").format(self.data))
             except UnicodeEncodeError:
                 element_list.append(
-                    (u"data={}").format(to_unicode(self.data)))
+                    ("data={}").format(to_unicode(self.data)))
         element_list.extend([
-            u"typename={:s}".format(self.typename),
-            u"align={}".format(self.align),
-            u"str_len={:d}".format(self.str_len),
-            u"ascii_char_width={:d}".format(self.ascii_char_width),
-            u"integer_digits={}".format(self.integer_digits),
-            u"decimal_places={}".format(self.decimal_places),
-            u"additional_format_len={:d}".format(self.additional_format_len),
+            "typename={:s}".format(self.typename),
+            "align={}".format(self.align),
+            "str_len={:d}".format(self.str_len),
+            "ascii_char_width={:d}".format(self.ascii_char_width),
+            "integer_digits={}".format(self.integer_digits),
+            "decimal_places={}".format(self.decimal_places),
+            "additional_format_len={:d}".format(self.additional_format_len),
         ])
 
-        return u", ".join(element_list)
+        return ", ".join(element_list)
 
     def get_padding_len(self, ascii_char_width):
         return ascii_char_width - (self.ascii_char_width - self.str_len)
@@ -386,7 +387,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return self.__ascii_char_width
 
         max_len = self.__ascii_char_width
-        col_format_str = u"{:" + self.format_str + u"}"
+        col_format_str = "{:" + self.format_str + "}"
 
         for data_prop in self.__data_prop_list:
             if data_prop.typecode in [Typecode.INFINITY, Typecode.NAN]:
