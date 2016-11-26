@@ -6,11 +6,13 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+from decimal import Decimal
 import math
 import itertools
 
 from ._align_getter import align_getter
 from ._container import MinMaxContainer
+from ._container import ListContainer
 from ._error import TypeConversionError
 from ._interface import DataPeropertyInterface
 from ._factory import (
@@ -33,6 +35,9 @@ from ._typecode import Typecode
 from ._type_checker import NanChecker
 from ._type import FloatType
 
+
+DEFAULT_INF_VALUE = Decimal("inf")
+DEFAULT_NAN_VALUE = Decimal("nan")
 
 DEFAULT_IS_STRICT_TYPE_MAPPING = {
     Typecode.NONE: False,
@@ -181,7 +186,8 @@ class DataProperty(DataPeropertyBase):
 
     def __init__(
             self, data,
-            none_value=None, inf_value=float("inf"), nan_value=float("nan"),
+            none_value=None,
+            inf_value=DEFAULT_INF_VALUE, nan_value=DEFAULT_NAN_VALUE,
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
@@ -198,8 +204,8 @@ class DataProperty(DataPeropertyBase):
         try:
             integer_digits, decimal_places = get_number_of_digit(data)
         except OverflowError:
-            integer_digits = float("nan")
-            decimal_places = float("nan")
+            integer_digits = self.DEFAULT_NAN_VALUE
+            decimal_places = self.DEFAULT_NAN_VALUE
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
@@ -367,7 +373,8 @@ class ColumnDataProperty(DataPeropertyBase):
         if NanChecker(avg).is_type():
             return float("nan")
 
-        return int(math.ceil(avg))
+        return int(min(
+            math.ceil(avg + 1.0), self.minmax_decimal_places.max_value))
 
     @property
     def typecode(self):
@@ -429,7 +436,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__ascii_char_width = min_padding_len
 
         self.__minmax_integer_digits = MinMaxContainer()
-        self.__minmax_decimal_places = MinMaxContainer()
+        self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
         self.__data_prop_list = []
 

@@ -101,8 +101,8 @@ class Test_FloatConverter_convert:
 
     @pytest.mark.parametrize(["value", "expected"], [
         [0.0, 0.0],
-        [0.1, 0.1],
-        [-0.1, -0.1],
+        [0.1, Decimal('0.1')],
+        [-0.1, Decimal('-0.1')],
         [1, Decimal("1")], [-1, Decimal("-1")],
         ["0.0", Decimal("0.0")], ["0.1", Decimal("0.1")],
         ["-0.1", Decimal("-0.1")],

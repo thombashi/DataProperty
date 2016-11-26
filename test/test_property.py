@@ -47,6 +47,10 @@ class Test_DataPeroperty_data_typecode:
             [-six.MAXSIZE, False, -six.MAXSIZE, Typecode.INTEGER],
             [str(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INTEGER],
             [str(six.MAXSIZE), False, str(six.MAXSIZE), Typecode.STRING],
+
+            [1.1, True, Decimal("1.1"), Typecode.FLOAT],
+            [-1.1, False, Decimal("-1.1"), Typecode.FLOAT],
+
             ["1.1", True, Decimal("1.1"), Typecode.FLOAT],
             ["-1.1", False, "-1.1", Typecode.STRING],
             ["a", True, "a", Typecode.STRING],
@@ -88,8 +92,8 @@ class Test_DataPeroperty_data_typecode:
             ["None", False, "None", Typecode.STRING],
 
             [inf, True, inf, Typecode.INFINITY],
-            [inf, False, inf, Typecode.INFINITY],
-            ["inf", True, inf, Typecode.INFINITY],
+            [inf, False, Decimal(inf), Typecode.INFINITY],
+            ["inf", True, Decimal(inf), Typecode.INFINITY],
             ["inf", False, "inf", Typecode.STRING],
 
             ["nan", False, "nan", Typecode.STRING],
@@ -316,7 +320,7 @@ class Test_DataPeroperty_str_len:
 
         [True, 4],
         [None, 4],
-        [inf, 3],
+        [inf, 8],
         [nan, 3],
     ])
     def test_normal(self, value, expected):
@@ -474,6 +478,13 @@ class Test_DataPeroperty_repr:
             "integer_digits=2, decimal_places=2, additional_format_len=1",
         ],
         [
+            0.01,
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
+            "data=0.01, typename=FLOAT, align=right, str_len=4, "
+            "ascii_char_width=4, "
+            "integer_digits=1, decimal_places=2, additional_format_len=0",
+        ],
+        [
             "abcdefg",
             DEFAULT_IS_STRICT_TYPE_MAPPING,
             "data=abcdefg, typename=STRING, align=left, str_len=7, "
@@ -518,14 +529,14 @@ class Test_DataPeroperty_repr:
         [
             inf,
             DEFAULT_IS_STRICT_TYPE_MAPPING,
-            "data=inf, typename=INFINITY, align=left, str_len=3, "
-            "ascii_char_width=3, "
+            "data=Infinity, typename=INFINITY, align=left, str_len=8, "
+            "ascii_char_width=8, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             nan,
             DEFAULT_IS_STRICT_TYPE_MAPPING,
-            "data=nan, typename=NAN, align=left, str_len=3, "
+            "data=NaN, typename=NAN, align=left, str_len=3, "
             "ascii_char_width=3, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],

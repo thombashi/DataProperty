@@ -255,7 +255,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.typecode == Typecode.INFINITY
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.ascii_char_width == 3
+        assert prop.ascii_char_width == 8
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
@@ -313,61 +313,29 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.decimal_places == 2
         assert prop.format_str == ".2f"
 
-        prop = col_prop_list[2]
-        assert prop.typecode == Typecode.STRING
-        assert prop.align.align_code == Align.LEFT.align_code
-        assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.ascii_char_width == 4
-        assert NanType(prop.decimal_places).is_type()
-        assert prop.format_str == "s"
+    def test_normal_nan_inf(self, prop_extractor):
+        prop_extractor.header_list = ["n", "i"]
+        prop_extractor.data_matrix = [
+            [nan, inf],
+            ["nan", "inf"],
+        ]
+        col_prop_list = prop_extractor.extract_column_property_list()
 
-        prop = col_prop_list[3]
-        assert prop.typecode == Typecode.FLOAT
-        assert prop.align.align_code == Align.RIGHT.align_code
-        assert prop.align.align_string == Align.RIGHT.align_string
-        assert prop.ascii_char_width == 4
-        assert prop.decimal_places == 1
-        assert prop.format_str == ".1f"
+        assert len(col_prop_list) == 2
 
-        prop = col_prop_list[4]
-        assert prop.typecode == Typecode.STRING
-        assert prop.align.align_code == Align.LEFT.align_code
-        assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.ascii_char_width == 3
-        assert prop.decimal_places == 1
-        assert prop.format_str == "s"
-
-        prop = col_prop_list[5]
-        assert prop.typecode == Typecode.BOOL
-        assert prop.align.align_code == Align.LEFT.align_code
-        assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.ascii_char_width == 5
-        assert NanType(prop.decimal_places).is_type()
-        assert prop.format_str == ""
-
-        prop = col_prop_list[6]
-        assert prop.typecode == Typecode.INFINITY
-        assert prop.align.align_code == Align.LEFT.align_code
-        assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.ascii_char_width == 3
-        assert NanType(prop.decimal_places).is_type()
-        assert prop.format_str == "f"
-
-        prop = col_prop_list[7]
+        prop = col_prop_list[0]
         assert prop.typecode == Typecode.NAN
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.ascii_char_width == 3
         assert NanType(prop.decimal_places).is_type()
-        assert prop.format_str == "f"
 
-        prop = col_prop_list[8]
-        assert prop.typecode == Typecode.DATETIME
+        prop = col_prop_list[1]
+        assert prop.typecode == Typecode.INFINITY
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
-        assert prop.ascii_char_width == 24
+        assert prop.ascii_char_width == 8
         assert NanType(prop.decimal_places).is_type()
-        assert prop.format_str == "%Y-%m-%dT%H:%M:%S%z"
 
     def test_normal_empty_value(self, prop_extractor):
         prop_extractor.header_list = ["a", "22", "cccc"]

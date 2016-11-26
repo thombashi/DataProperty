@@ -12,6 +12,8 @@ from six.moves import zip
 from ._data_property import (
     DataProperty,
     ColumnDataProperty,
+    DEFAULT_INF_VALUE,
+    DEFAULT_NAN_VALUE,
     DEFAULT_IS_STRICT_TYPE_MAPPING
 )
 from ._function import is_empty_sequence
@@ -33,8 +35,8 @@ class PropertyExtractor(object):
         self.data_matrix = []
         self.min_padding_len = 0
         self.none_value = None
-        self.inf_value = float("inf")
-        self.nan_value = float("nan")
+        self.inf_value = DEFAULT_INF_VALUE
+        self.nan_value = DEFAULT_NAN_VALUE
         self.bool_converter = default_bool_converter
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"

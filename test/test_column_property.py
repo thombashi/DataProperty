@@ -96,7 +96,7 @@ class Test_ColumnDataPeroperty:
             col_prop.update_body(DataProperty(value))
 
         assert col_prop.align == Align.RIGHT
-        assert col_prop.decimal_places == 2
+        assert col_prop.decimal_places == 3
         assert col_prop.typecode == Typecode.FLOAT
         assert col_prop.ascii_char_width == 6
 
@@ -124,7 +124,7 @@ class Test_ColumnDataPeroperty:
         assert col_prop.align == Align.RIGHT
         assert col_prop.decimal_places == 0
         assert col_prop.typecode == Typecode.FLOAT
-        assert col_prop.ascii_char_width == 3
+        assert col_prop.ascii_char_width == 8
 
         assert col_prop.minmax_integer_digits.min_value == 1
         assert col_prop.minmax_integer_digits.max_value == 1
@@ -136,7 +136,7 @@ class Test_ColumnDataPeroperty:
         assert col_prop.minmax_additional_format_len.max_value == 0
 
         assert str(col_prop) == (
-            "typename=FLOAT, align=right, ascii_char_width=3, "
+            "typename=FLOAT, align=right, ascii_char_width=8, "
             "integer_digits=(min=1, max=1), decimal_places=(min=0, max=0), "
             "additional_format_len=(min=0, max=0)")
 
@@ -192,6 +192,57 @@ class Test_ColumnDataPeroperty:
             "integer_digits=(min=1, max=1), decimal_places=(min=1, max=2), "
             "additional_format_len=(min=0, max=0)")
 
+    def test_normal_number_4(self):
+        col_prop = ColumnDataProperty()
+        col_prop.update_header(DataProperty("abc"))
+
+        for value in [0.01, 1.0, 1.2]:
+            col_prop.update_body(DataProperty(value))
+
+        assert col_prop.align == Align.RIGHT
+        assert col_prop.decimal_places == 2
+        assert col_prop.typecode == Typecode.FLOAT
+        assert col_prop.ascii_char_width == 4
+
+        assert col_prop.minmax_integer_digits.min_value == 1
+        assert col_prop.minmax_integer_digits.max_value == 1
+
+        assert col_prop.minmax_decimal_places.min_value == 0
+        assert col_prop.minmax_decimal_places.max_value == 2
+        assert col_prop.minmax_additional_format_len.min_value == 0
+        assert col_prop.minmax_additional_format_len.max_value == 0
+
+        assert str(col_prop) == (
+            "typename=FLOAT, align=right, ascii_char_width=4, "
+            "integer_digits=(min=1, max=1), decimal_places=(min=0, max=2), "
+            "additional_format_len=(min=0, max=0)")
+
+    def test_normal_inf(self):
+        col_prop = ColumnDataProperty()
+        col_prop.update_header(DataProperty("inf"))
+
+        for value in [inf, None, inf, "inf"]:
+            col_prop.update_body(DataProperty(value))
+
+        assert col_prop.align == Align.LEFT
+        assert NanType(col_prop.decimal_places).is_type()
+        assert col_prop.typecode == Typecode.INFINITY
+        assert col_prop.ascii_char_width == 8
+
+        assert col_prop.minmax_integer_digits.min_value is None
+        assert col_prop.minmax_integer_digits.max_value is None
+
+        assert col_prop.minmax_decimal_places.min_value is None
+        assert col_prop.minmax_decimal_places.max_value is None
+
+        assert col_prop.minmax_additional_format_len.min_value == 0
+        assert col_prop.minmax_additional_format_len.max_value == 0
+
+        assert str(col_prop) == (
+            "typename=INFINITY, align=left, ascii_char_width=8, "
+            "integer_digits=(min=None, max=None), decimal_places=(min=None, max=None), "
+            "additional_format_len=(min=0, max=0)")
+
     def test_normal_mix_0(self):
         col_prop = ColumnDataProperty()
         col_prop.update_header(DataProperty("abc"))
@@ -200,7 +251,7 @@ class Test_ColumnDataPeroperty:
             col_prop.update_body(DataProperty(value))
 
         assert col_prop.align == Align.LEFT
-        assert col_prop.decimal_places == 2
+        assert col_prop.decimal_places == 3
         assert col_prop.typecode == Typecode.STRING
         assert col_prop.ascii_char_width == 7
 
@@ -256,7 +307,7 @@ class Test_ColumnDataPeroperty:
             col_prop.update_body(DataProperty(value))
 
         assert col_prop.align == Align.RIGHT
-        assert col_prop.decimal_places == 2
+        assert col_prop.decimal_places == 3
         assert col_prop.typecode == Typecode.FLOAT
         assert col_prop.ascii_char_width == min_padding_len
 

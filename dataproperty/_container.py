@@ -4,10 +4,76 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import division
 from __future__ import unicode_literals
+import abc
+
+from ._type import FloatType
 
 
-class MinMaxContainer(object):
+class AbstractContainer(object):
+
+    @abc.abstractproperty
+    def min_value(self):  # pragma: no cover
+        pass
+
+    @abc.abstractproperty
+    def max_value(self):  # pragma: no cover
+        pass
+
+    @abc.abstractmethod
+    def mean(self):  # pragma: no cover
+        pass
+
+    @abc.abstractmethod
+    def update(self, value):  # pragma: no cover
+        pass
+
+    def __repr__(self):
+        return ", ".join([
+            "min={}".format(self.min_value),
+            "max={}".format(self.max_value),
+        ])
+
+
+class ListContainer(AbstractContainer):
+    __slots__ = ("__value_list")
+
+    @property
+    def min_value(self):
+        try:
+            return min(self.__value_list)
+        except ValueError:
+            return None
+
+    @property
+    def max_value(self):
+        try:
+            return max(self.__value_list)
+        except ValueError:
+            return None
+
+    def __init__(self, value_list=None):
+        if value_list is None:
+            self.__value_list = []
+        else:
+            self.__value_list = value_list
+
+    def mean(self):
+        try:
+            return sum(self.__value_list) / len(self.__value_list)
+        except ZeroDivisionError:
+            return float("nan")
+
+    def update(self, value):
+        float_type = FloatType(value)
+        if not float_type.is_convertible_type():
+            return
+
+        self.__value_list.append(value)
+
+
+class MinMaxContainer(AbstractContainer):
     __slots__ = ("__min_value", "__max_value")
 
     @property
@@ -18,18 +84,15 @@ class MinMaxContainer(object):
     def max_value(self):
         return self.__max_value
 
-    def __init__(self, value_list=[]):
+    def __init__(self, value_list=None):
         self.__min_value = None
         self.__max_value = None
 
+        if value_list is None:
+            return
+
         for value in value_list:
             self.update(value)
-
-    def __repr__(self):
-        return ", ".join([
-            "min=" + str(self.min_value),
-            "max=" + str(self.max_value),
-        ])
 
     def __eq__(self, other):
         return all([
