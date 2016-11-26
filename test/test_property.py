@@ -58,8 +58,6 @@ class Test_DataPeroperty_data_typecode:
             [True, True, True, Typecode.BOOL],
             [False, False, False, Typecode.BOOL],
 
-            ["100-0002", True,
-                datetime.datetime(100, 2, 20, 0, 0), Typecode.DATETIME],
             ["100-0002", False, "100-0002", Typecode.STRING],
 
             [{}, True, {}, Typecode.DICTIONARY],
@@ -102,6 +100,18 @@ class Test_DataPeroperty_data_typecode:
             value,
             is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
         assert dp.data == expected_data
+        assert dp.typecode == expected_typecode
+
+    @pytest.mark.parametrize(
+        ["value", "is_convert",  "expected_typecode"],
+        [
+            ["100-0002", True, Typecode.DATETIME],
+        ]
+    )
+    def test_normal_datetime(self, value, is_convert, expected_typecode):
+        dp = DataProperty(
+            value, is_strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
+        assert isinstance(dp.data, datetime.datetime)
         assert dp.typecode == expected_typecode
 
     @pytest.mark.parametrize(
