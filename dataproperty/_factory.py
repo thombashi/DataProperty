@@ -46,7 +46,7 @@ class TypeFactoryInterface(object):
         pass
 
 
-class BaseTypeFactory(TypeFactoryInterface):
+class AbstractTypeFactory(TypeFactoryInterface):
     __slots__ = ("_data", "_is_strict")
 
     def __init__(self, data, is_strict):
@@ -54,7 +54,7 @@ class BaseTypeFactory(TypeFactoryInterface):
         self._is_strict = is_strict
 
 
-class NoneTypeFactory(BaseTypeFactory):
+class NoneTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return NoneTypeChecker(self._data, self._is_strict)
@@ -63,7 +63,7 @@ class NoneTypeFactory(BaseTypeFactory):
         return NopConverter(self._data)
 
 
-class StringTypeFactory(BaseTypeFactory):
+class StringTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return StringTypeChecker(self._data, self._is_strict)
@@ -72,7 +72,7 @@ class StringTypeFactory(BaseTypeFactory):
         return StringConverter(self._data)
 
 
-class IntegerTypeFactory(BaseTypeFactory):
+class IntegerTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return IntegerTypeChecker(self._data, self._is_strict)
@@ -81,7 +81,7 @@ class IntegerTypeFactory(BaseTypeFactory):
         return IntegerConverter(self._data)
 
 
-class FloatTypeFactory(BaseTypeFactory):
+class FloatTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return FloatTypeChecker(self._data, self._is_strict)
@@ -90,7 +90,7 @@ class FloatTypeFactory(BaseTypeFactory):
         return FloatConverter(self._data)
 
 
-class DateTimeTypeFactory(BaseTypeFactory):
+class DateTimeTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return DateTimeTypeChecker(self._data, self._is_strict)
@@ -99,7 +99,7 @@ class DateTimeTypeFactory(BaseTypeFactory):
         return DateTimeConverter(self._data)
 
 
-class BoolTypeFactory(BaseTypeFactory):
+class BoolTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return BoolTypeChecker(self._data, self._is_strict)
@@ -108,7 +108,7 @@ class BoolTypeFactory(BaseTypeFactory):
         return BoolConverter(self._data)
 
 
-class InfinityTypeFactory(BaseTypeFactory):
+class InfinityTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return InfinityChecker(self._data, self._is_strict)
@@ -117,7 +117,7 @@ class InfinityTypeFactory(BaseTypeFactory):
         return FloatConverter(self._data)
 
 
-class NanTypeFactory(BaseTypeFactory):
+class NanTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return NanChecker(self._data, self._is_strict)
@@ -126,7 +126,7 @@ class NanTypeFactory(BaseTypeFactory):
         return FloatConverter(self._data)
 
 
-class DictionaryTypeFactory(BaseTypeFactory):
+class DictionaryTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return DictionaryTypeChecker(self._data, self._is_strict)

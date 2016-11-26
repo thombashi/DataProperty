@@ -22,7 +22,7 @@ from ._factory import (
 from ._type_checker import TypeCheckerInterface
 
 
-class BaseType(TypeCheckerInterface, ValueConverterInterface):
+class AbstractType(TypeCheckerInterface, ValueConverterInterface):
     __slots__ = ("__checker", "__converter")
 
     @abc.abstractproperty
@@ -67,63 +67,63 @@ class BaseType(TypeCheckerInterface, ValueConverterInterface):
         return self.__converter.try_convert()
 
 
-class NoneType(BaseType):
+class NoneType(AbstractType):
 
     @property
     def _factory_class(self):
         return NoneTypeFactory
 
 
-class StringType(BaseType):
+class StringType(AbstractType):
 
     @property
     def _factory_class(self):
         return StringTypeFactory
 
 
-class IntegerType(BaseType):
+class IntegerType(AbstractType):
 
     @property
     def _factory_class(self):
         return IntegerTypeFactory
 
 
-class FloatType(BaseType):
+class FloatType(AbstractType):
 
     @property
     def _factory_class(self):
         return FloatTypeFactory
 
 
-class DateTimeType(BaseType):
+class DateTimeType(AbstractType):
 
     @property
     def _factory_class(self):
         return DateTimeTypeFactory
 
 
-class BoolType(BaseType):
+class BoolType(AbstractType):
 
     @property
     def _factory_class(self):
         return BoolTypeFactory
 
 
-class InfinityType(BaseType):
+class InfinityType(AbstractType):
 
     @property
     def _factory_class(self):
         return InfinityTypeFactory
 
 
-class NanType(BaseType):
+class NanType(AbstractType):
 
     @property
     def _factory_class(self):
         return NanTypeFactory
 
 
-class DictionaryType(BaseType):
+class DictionaryType(AbstractType):
 
     @property
     def _factory_class(self):
