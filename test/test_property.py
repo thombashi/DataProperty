@@ -15,8 +15,9 @@ import six
 from dataproperty import *
 
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
+if six.PY2:
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 
 
 DATATIME_DATA = datetime.datetime(2017, 1, 2, 3, 4, 5)
