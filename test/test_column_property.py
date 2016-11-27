@@ -4,6 +4,7 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import unicode_literals
 import datetime
 
 import pytest
@@ -296,6 +297,34 @@ class Test_ColumnDataPeroperty:
             "decimal_places=(min=None, max=None), "
             "additional_format_len=(min=0, max=0)"
         )
+
+    @pytest.mark.parametrize(["ambiguous_width", "ascii_char_width"], [
+        [2, 6],
+        [1, 3],
+    ])
+    def test_normal_east_asian_ambiguous_width(
+            self, ambiguous_width, ascii_char_width):
+        col_prop = ColumnDataProperty(
+            east_asian_ambiguous_width=ambiguous_width)
+        col_prop.update_header(DataProperty("abc"))
+
+        for value in ["ØØØ", "α", "ββ"]:
+            col_prop.update_body(DataProperty(
+                value, east_asian_ambiguous_width=ambiguous_width))
+
+        assert col_prop.align == Align.LEFT
+        assert NanType(col_prop.decimal_places).is_type()
+        assert col_prop.typecode == Typecode.STRING
+        assert col_prop.ascii_char_width == ascii_char_width
+
+        assert col_prop.minmax_integer_digits.min_value is None
+        assert col_prop.minmax_integer_digits.max_value is None
+
+        assert col_prop.minmax_decimal_places.min_value is None
+        assert col_prop.minmax_decimal_places.max_value is None
+
+        assert col_prop.minmax_additional_format_len.min_value == 0
+        assert col_prop.minmax_additional_format_len.max_value == 0
 
     def test_min_padding_len(self):
         min_padding_len = 100

@@ -41,6 +41,7 @@ class PropertyExtractor(object):
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
         self.is_strict_type_mapping = dict(DEFAULT_IS_STRICT_TYPE_MAPPING)
+        self.east_asian_ambiguous_width = 1
 
         self.mismatch_processing = MissmatchProcessing.TRIM
 
@@ -74,10 +75,11 @@ class PropertyExtractor(object):
                         is_empty_sequence(self.header_list),
                     ])
                 ]):
-                    column_prop_list.append(
-                        ColumnDataProperty(
-                            min_padding_len=self.min_padding_len,
-                            datetime_format_str=self.datetime_format_str))
+                    column_prop_list.append(ColumnDataProperty(
+                        min_padding_len=self.min_padding_len,
+                        datetime_format_str=self.datetime_format_str,
+                        east_asian_ambiguous_width=self.east_asian_ambiguous_width
+                    ))
                 elif self.mismatch_processing == MissmatchProcessing.TRIM:
                     # ignore columns that longer than header column
                     continue
@@ -94,7 +96,9 @@ class PropertyExtractor(object):
         for header_prop in header_prop_list:
             column_prop = ColumnDataProperty(
                 min_padding_len=self.min_padding_len,
-                datetime_format_str=self.datetime_format_str)
+                datetime_format_str=self.datetime_format_str,
+                east_asian_ambiguous_width=self.east_asian_ambiguous_width
+            )
             column_prop.update_header(header_prop)
             column_prop_list.append(column_prop)
 
@@ -113,6 +117,8 @@ class PropertyExtractor(object):
                 bool_converter=self.bool_converter,
                 datetime_converter=self.datetime_converter,
                 datetime_format_str=self.datetime_format_str,
-                is_strict_type_mapping=self.is_strict_type_mapping)
+                is_strict_type_mapping=self.is_strict_type_mapping,
+                east_asian_ambiguous_width=self.east_asian_ambiguous_width
+            )
             for data in data_list
         ]

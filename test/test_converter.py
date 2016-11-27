@@ -14,6 +14,7 @@ from dataproperty import TypeConversionError
 import dataproperty._converter as dpcc
 from dataproperty import *
 
+
 nan = float("nan")
 inf = float("inf")
 

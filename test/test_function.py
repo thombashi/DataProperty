@@ -7,6 +7,7 @@
 
 import datetime
 from decimal import Decimal
+import itertools
 
 from dataproperty import *
 import pytest
@@ -293,6 +294,16 @@ class Test_get_ascii_char_width:
     ])
     def test_normal(self, value, expected):
         assert get_ascii_char_width(value) == expected
+
+    @pytest.mark.parametrize(
+        ["value", "ambiguous_width"],
+        itertools.product(
+            [u"Ø", u"α", u"β", u"γ", u"θ", u"κ", u"λ", u"π", u"ǎ"],
+            [1, 2])
+    )
+    def test_normal_east_asian_ambiguous(
+            self, value, ambiguous_width):
+        assert get_ascii_char_width(value, ambiguous_width) == ambiguous_width
 
     @pytest.mark.parametrize(["value", "expected"], [
         [six.b("abcdef"), TypeError],

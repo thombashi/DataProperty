@@ -5,6 +5,7 @@
 """
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 from decimal import Decimal
 import decimal
 import math
@@ -258,7 +259,7 @@ def to_unicode(value):
         except UnicodeEncodeError:
             return value
         except AttributeError:
-            return u"{}".format(value)
+            return "{}".format(value)
 
     raise ValueError("unknown codec: {}".format(value))
 
@@ -279,14 +280,16 @@ def is_multibyte_str(text):
     return False
 
 
-def get_ascii_char_width(unicode_str):
+def get_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
     import unicodedata
 
     width = 0
     for c in unicode_str:
         char_width = unicodedata.east_asian_width(c)
-        if char_width in u"WFA":
+        if char_width in "WF":
             width += 2
+        elif char_width == "A":
+            width += east_asian_ambiguous_width
         else:
             width += 1
 

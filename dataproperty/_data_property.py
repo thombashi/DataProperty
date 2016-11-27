@@ -105,6 +105,7 @@ class DataProperty(DataPeropertyBase):
         "__additional_format_len",
         "__str_len",
         "__ascii_char_width",
+        "__east_asian_ambiguous_width",
     )
 
     __type_factory_class_list = [
@@ -192,9 +193,11 @@ class DataProperty(DataPeropertyBase):
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
             is_strict_type_mapping=DEFAULT_IS_STRICT_TYPE_MAPPING,
-            replace_tabs_with_spaces=True, tab_length=2):
+            replace_tabs_with_spaces=True, tab_length=2,
+            east_asian_ambiguous_width=1):
         super(DataProperty, self).__init__(datetime_format_str)
 
+        self.__east_asian_ambiguous_width = east_asian_ambiguous_width
         self.__set_data(
             data, none_value, inf_value, nan_value, is_strict_type_mapping)
         self.__convert_data(bool_converter, datetime_converter)
@@ -289,10 +292,12 @@ class DataProperty(DataPeropertyBase):
 
         unicode_str = to_unicode(self.data)
         self.__str_len = len(unicode_str)
-        self.__ascii_char_width = get_ascii_char_width(unicode_str)
+        self.__ascii_char_width = get_ascii_char_width(
+            unicode_str, self.__east_asian_ambiguous_width)
 
     def __set_data(
-            self, data, none_value, inf_value, nan_value, is_strict_type_mapping):
+            self, data, none_value, inf_value, nan_value,
+            is_strict_type_mapping):
         special_value_table = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
@@ -346,6 +351,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
         "__data_prop_list",
+        "__east_asian_ambiguous_width",
     )
 
     __FACTORY_TABLE = {
@@ -405,7 +411,8 @@ class ColumnDataProperty(DataPeropertyBase):
             except (TypeError, ValueError):
                 continue
 
-            max_len = max(max_len, get_ascii_char_width(formatted_value))
+            max_len = max(max_len, get_ascii_char_width(
+                formatted_value, self.__east_asian_ambiguous_width))
 
         return max_len
 
@@ -428,12 +435,14 @@ class ColumnDataProperty(DataPeropertyBase):
     def __init__(
             self,
             min_padding_len=0,
-            datetime_format_str="%Y-%m-%dT%H:%M:%S%z"):
+            datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
+            east_asian_ambiguous_width=1):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
 
         self.__typecode_bitmap = Typecode.NONE
         self.__str_len = min_padding_len
         self.__ascii_char_width = min_padding_len
+        self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()

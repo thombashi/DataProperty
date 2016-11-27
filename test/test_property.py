@@ -4,13 +4,19 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import unicode_literals
 import datetime
 from decimal import Decimal
+import sys
 
 import pytest
 import six
 
 from dataproperty import *
+
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 DATATIME_DATA = datetime.datetime(2017, 1, 2, 3, 4, 5)
@@ -97,6 +103,11 @@ class Test_DataPeroperty_data_typecode:
             ["inf", False, "inf", Typecode.STRING],
 
             ["nan", False, "nan", Typecode.STRING],
+
+            ["Høgskolen i Østfold er et eksempel...", True,
+                u"Høgskolen i Østfold er et eksempel...", Typecode.STRING],
+            ["Høgskolen i Østfold er et eksempel...", False,
+                u"Høgskolen i Østfold er et eksempel...", Typecode.STRING],
         ]
     )
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
@@ -344,10 +355,21 @@ class Test_DataPeroperty_get_padding_len:
         ["a" * 1000, 8, 8],
         [u"あ", 8, 7],
         [u"いろは", 8, 5],
-        [u"ø", 2, 1],
     ])
     def test_normal(self, value, ascii_char_width, expected):
         dp = DataProperty(value)
+        assert dp.get_padding_len(ascii_char_width) == expected
+
+    @pytest.mark.parametrize(
+        ["value", "ascii_char_width", "ambiguous_width", "expected"],
+        [
+            [u"aøb", 4, 1, 4],
+            [u"aøb", 4, 2, 3],
+        ]
+    )
+    def test_normal_east_asian_ambiguous_width(
+            self, value, ascii_char_width, ambiguous_width, expected):
+        dp = DataProperty(value, east_asian_ambiguous_width=ambiguous_width)
         assert dp.get_padding_len(ascii_char_width) == expected
 
 

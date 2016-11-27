@@ -4,6 +4,7 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import unicode_literals
 import datetime
 from decimal import Decimal
 
@@ -335,6 +336,36 @@ class Test_PropertyExtractor_extract_column_property_list:
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.ascii_char_width == 8
+        assert NanType(prop.decimal_places).is_type()
+
+    @pytest.mark.parametrize(["ambiguous_width"], [
+        [2],
+        [1],
+    ])
+    def test_normal_east_asian_ambiguous_width(
+            self, prop_extractor, ambiguous_width):
+        prop_extractor.header_list = ["ascii", "eaa"]
+        prop_extractor.data_matrix = [
+            ["abcdefg", "Øαββ"],
+            ["abcdefghij", "ØØ"],
+        ]
+        prop_extractor.east_asian_ambiguous_width = ambiguous_width
+        col_prop_list = prop_extractor.extract_column_property_list()
+
+        assert len(col_prop_list) == 2
+
+        prop = col_prop_list[0]
+        assert prop.typecode == Typecode.STRING
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.ascii_char_width == 10
+        assert NanType(prop.decimal_places).is_type()
+
+        prop = col_prop_list[1]
+        assert prop.typecode == Typecode.STRING
+        assert prop.align.align_code == Align.LEFT.align_code
+        assert prop.align.align_string == Align.LEFT.align_string
+        assert prop.ascii_char_width == 4 * ambiguous_width
         assert NanType(prop.decimal_places).is_type()
 
     def test_normal_empty_value(self, prop_extractor):
