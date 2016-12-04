@@ -57,6 +57,7 @@ class Test_DataPeroperty_data_typecode:
 
             [1.1, True, Decimal("1.1"), Typecode.FLOAT],
             [-1.1, False, Decimal("-1.1"), Typecode.FLOAT],
+            [Decimal("1.1"), False, Decimal("1.1"), Typecode.FLOAT],
 
             ["1.1", True, Decimal("1.1"), Typecode.FLOAT],
             ["-1.1", False, "-1.1", Typecode.STRING],
