@@ -66,11 +66,11 @@ class ListContainer(AbstractContainer):
             return float("nan")
 
     def update(self, value):
-        float_type = FloatType(value)
-        if not float_type.is_convertible_type():
+        store_value = FloatType(value).try_convert()
+        if store_value is None:
             return
 
-        self.__value_list.append(value)
+        self.__value_list.append(store_value)
 
 
 class MinMaxContainer(AbstractContainer):

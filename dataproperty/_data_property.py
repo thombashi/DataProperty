@@ -381,7 +381,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return float("nan")
 
         return int(min(
-            math.ceil(avg + 1.0), self.minmax_decimal_places.max_value))
+            math.ceil(avg + Decimal("1.0")), self.minmax_decimal_places.max_value))
 
     @property
     def typecode(self):
