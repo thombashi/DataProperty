@@ -10,8 +10,9 @@ from __future__ import unicode_literals
 import abc
 import re
 
+from mbstrdecoder import MultiByteStrDecoder
+
 from ._error import TypeConversionError
-from ._function import to_unicode
 
 
 class ValueConverterInterface(object):
@@ -55,7 +56,7 @@ class NopConverter(ValueConverter):
 class StringConverter(ValueConverter):
 
     def convert(self):
-        return to_unicode(self._value)
+        return MultiByteStrDecoder(self._value).unicode_str
 
 
 class IntegerConverter(ValueConverter):

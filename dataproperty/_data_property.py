@@ -10,6 +10,8 @@ from decimal import Decimal
 import math
 import itertools
 
+from mbstrdecoder import MultiByteStrDecoder
+
 from ._align_getter import align_getter
 from ._container import MinMaxContainer
 from ._container import ListContainer
@@ -28,8 +30,7 @@ from ._factory import (
 )
 from ._function import (
     get_number_of_digit,
-    get_ascii_char_width,
-    to_unicode
+    get_ascii_char_width
 )
 from ._typecode import Typecode
 from ._type_checker import NanChecker
@@ -226,7 +227,7 @@ class DataProperty(DataPeropertyBase):
                     ("data={:" + self.format_str + "}").format(self.data))
             except UnicodeEncodeError:
                 element_list.append(
-                    ("data={}").format(to_unicode(self.data)))
+                    ("data={}").format(MultiByteStrDecoder(self.data).unicode_str))
         element_list.extend([
             "typename={:s}".format(self.typename),
             "align={}".format(self.align),
@@ -290,7 +291,7 @@ class DataProperty(DataPeropertyBase):
             self.__ascii_char_width = self.__str_len
             return
 
-        unicode_str = to_unicode(self.data)
+        unicode_str = MultiByteStrDecoder(self.data).unicode_str
         self.__str_len = len(unicode_str)
         self.__ascii_char_width = get_ascii_char_width(
             unicode_str, self.__east_asian_ambiguous_width)

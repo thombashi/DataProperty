@@ -238,6 +238,7 @@ Dependencies
 
 Python 2.7+ or 3.3+
 
+- `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
 - `python-dateutil <https://dateutil.readthedocs.io/en/stable/>`__
 - `pytz <https://pypi.python.org/pypi/pytz/>`__
 - `six <https://pypi.python.org/pypi/six/>`__

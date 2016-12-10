@@ -32,8 +32,7 @@ from ._function import (
     is_multibyte_str,
     get_integer_digit,
     get_number_of_digit,
-    get_ascii_char_width,
-    to_unicode
+    get_ascii_char_width
 )
 from ._property_extractor import (
     PropertyExtractor,

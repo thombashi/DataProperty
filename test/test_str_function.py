@@ -4,6 +4,7 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import unicode_literals
 import itertools
 
 from dataproperty import *
@@ -54,30 +55,9 @@ class Test_is_empty_string:
         assert is_empty_string(value) == expected
 
 
-class Test_to_unicode:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [u"吾輩は猫である", u"吾輩は猫である"],
-        ["吾輩は猫である", u"吾輩は猫である"],
-        ["マルチバイト文字", u"マルチバイト文字"],
-        ["abcdef", u"abcdef"],
-        [None, u"None"],
-        ["", u""],
-        [True, u"True"],
-        [[], u"[]"],
-        [1, u"1"],
-    ])
-    def test_normal(self, value, expected):
-        unicode_str = to_unicode(value)
-
-        assert unicode_str == expected
-        assert to_unicode(unicode_str) == unicode_str
-
-
 class Test_is_multibyte_str:
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [u"吾輩は猫である", True],
         ["吾輩は猫である", True],
         ["abcdef", False],
         [None, False],
@@ -93,10 +73,10 @@ class Test_is_multibyte_str:
 class Test_get_ascii_char_width:
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [u"吾輩は猫である", 14],
-        [u"いaろbはc", 9],
-        [u"abcdef", 6],
-        [u"", 0],
+        ["吾輩は猫である", 14],
+        ["いaろbはc", 9],
+        ["abcdef", 6],
+        ["", 0],
     ])
     def test_normal(self, value, expected):
         assert get_ascii_char_width(value) == expected
@@ -104,7 +84,7 @@ class Test_get_ascii_char_width:
     @pytest.mark.parametrize(
         ["value", "ambiguous_width"],
         itertools.product(
-            [u"Ø", u"α", u"β", u"γ", u"θ", u"κ", u"λ", u"π", u"ǎ"],
+            ["Ø", "α", "β", "γ", "θ", "κ", "λ", "π", "ǎ"],
             [1, 2])
     )
     def test_normal_east_asian_ambiguous(
@@ -112,7 +92,7 @@ class Test_get_ascii_char_width:
         assert get_ascii_char_width(value, ambiguous_width) == ambiguous_width
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [six.b("abcdef"), TypeError],
+        ["abcdef".encode("ascii"), TypeError],
         [None, TypeError],
         [True, TypeError],
         [1, TypeError],
