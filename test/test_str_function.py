@@ -9,7 +9,6 @@ import itertools
 
 from dataproperty import *
 import pytest
-import six
 
 
 nan = float("nan")
@@ -60,6 +59,10 @@ class Test_is_multibyte_str:
     @pytest.mark.parametrize(["value", "expected"], [
         ["吾輩は猫である", True],
         ["abcdef", False],
+        [
+            "RKBTqn1G9HIZ9onY9mCklj3+8ye7WBmu0xKMqp3ORT3pMgR5m73VXAR/5YrTZTGernMYLCPYdwIMewFY+6xOZmWwCrXjfw3sO2dYLubh9EIMrc/XEvAhMFd969G2yQkyFTNf9M8Ag94QCuBk51yQLSbxgmxJTqEw6bdC4gNTI44=",
+            False
+        ],
         [None, False],
         ["", False],
         [True, False],
