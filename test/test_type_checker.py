@@ -146,7 +146,6 @@ class Test_IntegerTypeChecker_is_type:
         ["0", True],
         [" 1 ", True],
         [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
-        [Decimal("1.1"), True],
     ] + list(
         itertools.product(
             [0, six.MAXSIZE, -six.MAXSIZE, Decimal("1")],
@@ -165,11 +164,11 @@ class Test_IntegerTypeChecker_is_type:
         ["0xff", True], ["0xff", False],
         [" 1 ", False],
         [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
-        [Decimal("1.1"), False],
     ] + list(
         itertools.product(
             [
-                None, True, nan, inf, 0.5, "0.5", .999, ".999",
+                None, True,
+                nan, inf, 0.5, "0.5", .999, ".999", Decimal("1.1"),
                 "", "test", "1a1", "11a", "a11",
                 1e-05, -1e-05, "1e-05", "-1e-05",
             ],
@@ -188,7 +187,6 @@ class Test_IntegerTypeChecker_validate:
         ["0", True],
         [" 1 ", True],
         [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
-        [Decimal("1"), True],
     ] + list(
         itertools.product(
             [0, six.MAXSIZE, -six.MAXSIZE],
@@ -206,11 +204,11 @@ class Test_IntegerTypeChecker_validate:
         ["0xff", True], ["0xff", False],
         [" 1 ", False],
         [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
-        [Decimal("1.1"), False],
     ] + list(
         itertools.product(
             [
-                None, True, nan, inf, 0.5, "0.5", .999, ".999",
+                None, True,
+                nan, inf, 0.5, "0.5", .999, ".999", Decimal("1.1"),
                 "", "test", "1a1", "11a", "a11",
                 1e-05, -1e-05, "1e-05", "-1e-05",
             ],

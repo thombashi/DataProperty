@@ -187,6 +187,7 @@ class IntegerTypeChecker(TypeChecker):
         return any([
             isinstance(self._value, bool),
             isinstance(self._value, float),
+            isinstance(self._value, Decimal),
         ])
 
 
