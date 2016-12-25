@@ -389,7 +389,7 @@ class Test_NanChecker_is_type:
             [True, False],
             [False]
         )) + list(itertools.product(
-            [nan],
+            [nan, Decimal("NaN")],
             [True, False],
             [True]
         )) + [

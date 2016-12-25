@@ -8,6 +8,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 import abc
 from decimal import Decimal
+import math
 
 import six
 
@@ -271,14 +272,13 @@ class NanChecker(TypeChecker):
         return FloatConverter
 
     def _is_instance(self):
-        return self.__is_nan(self._value)
+        try:
+            return math.isnan(self._value)
+        except TypeError:
+            return False
 
     def _is_valid_after_convert(self):
-        return self._converted_value.is_nan()
-
-    @staticmethod
-    def __is_nan(value):
-        return value != value
+        return math.isnan(self._converted_value)
 
 
 class DictionaryTypeChecker(TypeChecker):
