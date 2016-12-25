@@ -20,7 +20,6 @@ from ._converter import (
     DateTimeConverter,
     DictionaryConverter
 )
-from ._error import TypeConversionError
 from ._typecode import Typecode
 
 
