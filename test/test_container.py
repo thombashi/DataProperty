@@ -4,9 +4,12 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-from dataproperty import *
+from __future__ import unicode_literals
+
 import pytest
 import six
+
+from dataproperty import *
 
 
 @pytest.fixture

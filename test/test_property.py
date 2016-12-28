@@ -107,9 +107,9 @@ class Test_DataPeroperty_data_typecode:
             ["nan", False, "nan", Typecode.STRING],
 
             ["Høgskolen i Østfold er et eksempel...", True,
-                u"Høgskolen i Østfold er et eksempel...", Typecode.STRING],
+                "Høgskolen i Østfold er et eksempel...", Typecode.STRING],
             ["Høgskolen i Østfold er et eksempel...", False,
-                u"Høgskolen i Østfold er et eksempel...", Typecode.STRING],
+                "Høgskolen i Østfold er et eksempel...", Typecode.STRING],
         ]
     )
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
@@ -328,8 +328,8 @@ class Test_DataPeroperty_str_len:
 
         ["a", 1],
         ["a" * 1000, 1000],
-        [u"あ", 1],
-        [u"ø", 1],
+        ["あ", 1],
+        ["ø", 1],
 
         [True, 4],
         [None, 4],
@@ -355,8 +355,8 @@ class Test_DataPeroperty_get_padding_len:
         ["000", 8, 8],
 
         ["a" * 1000, 8, 8],
-        [u"あ", 8, 7],
-        [u"いろは", 8, 5],
+        ["あ", 8, 7],
+        ["いろは", 8, 5],
     ])
     def test_normal(self, value, ascii_char_width, expected):
         dp = DataProperty(value)
@@ -365,8 +365,8 @@ class Test_DataPeroperty_get_padding_len:
     @pytest.mark.parametrize(
         ["value", "ascii_char_width", "ambiguous_width", "expected"],
         [
-            [u"aøb", 4, 1, 4],
-            [u"aøb", 4, 2, 3],
+            ["aøb", 4, 1, 4],
+            ["aøb", 4, 2, 3],
         ]
     )
     def test_normal_east_asian_ambiguous_width(
@@ -462,12 +462,7 @@ class Test_DataPeroperty_repr:
             100
         ],
         [
-            "マルチバイト文字",
-            DEFAULT_IS_STRICT_TYPE_MAPPING,
-            100
-        ],
-        [
-            "新しいテキスト ドキュメント.txt".encode("utf_8"),
+            "新しいテキスト ドキュメント.txt",
             DEFAULT_IS_STRICT_TYPE_MAPPING,
             100
         ],

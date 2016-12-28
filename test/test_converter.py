@@ -4,6 +4,7 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import unicode_literals
 import datetime
 from decimal import Decimal
 from dateutil.tz import tzoffset
@@ -48,7 +49,11 @@ class Test_StringConverter_convert:
         [nan, "nan"],
         [True, "True"],
         [datetime.datetime(2017, 1, 2, 3, 4, 5), "2017-01-02 03:04:05"],
-        [u"吾輩は猫である", u"吾輩は猫である"],
+        ["吾輩は猫である", "吾輩は猫である"],
+        [
+            "新しいテキスト ドキュメント.txt".encode("utf_8"),
+            "新しいテキスト ドキュメント.txt",
+        ]
     ])
     def test_normal(self, value, expected):
         converter = dpcc.StringConverter(value)
@@ -87,7 +92,8 @@ class Test_IntegerConverter_convert:
         ["-0.1", TypeConversionError],
         ["1e-05", TypeConversionError],
         [inf, TypeConversionError],
-        [u"あ", TypeConversionError],
+        ["あ", TypeConversionError],
+        ["漢字".encode("utf_8"), TypeConversionError],
     ])
     def test_exception(self, value, expected):
         converter = dpcc.IntegerConverter(value)
@@ -127,7 +133,8 @@ class Test_FloatConverter_convert:
         ["", TypeConversionError],
         [None, TypeConversionError],
         ["test", TypeConversionError],
-        [u"あ", TypeConversionError],
+        ["あ", TypeConversionError],
+        ["漢字".encode("utf_8"), TypeConversionError],
     ])
     def test_exception(self, value, expected):
         converter = dpcc.FloatConverter(value)
@@ -174,7 +181,8 @@ class Test_BoolConverter_convert:
         [None, TypeConversionError],
         [inf, TypeConversionError],
         [nan, TypeConversionError],
-        [u"あ", TypeConversionError],
+        ["あ", TypeConversionError],
+        ["漢字".encode("utf_8"), TypeConversionError],
     ])
     def test_exception(self, value, expected):
         converter = dpcc.BoolConverter(value)
@@ -243,7 +251,8 @@ class Test_DateTimeConverter_convert:
         ["invalid time string", TypeConversionError],
         [None, TypeConversionError],
         [11111, TypeConversionError],
-        [u"あ", TypeConversionError],
+        ["あ", TypeConversionError],
+        ["漢字".encode("utf_8"), TypeConversionError],
     ])
     def test_exception(self, value, expected):
         converter = dpcc.DateTimeConverter(value)

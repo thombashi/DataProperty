@@ -5,13 +5,13 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-import datetime
-from decimal import Decimal
+from __future__ import unicode_literals
 
-from dataproperty import *
 import pytest
 import six
 from six.moves import range
+
+from dataproperty import *
 
 
 nan = float("nan")
@@ -199,7 +199,7 @@ class Test_get_number_of_digit:
         [True],
         [inf],
         [nan],
-        ["0xff"], ["test"],
+        ["0xff"], ["test"], ["いろは".encode("utf_8")]
     ])
     def test_nan(self, value):
         integer_digits, decimal_places = get_number_of_digit(value)

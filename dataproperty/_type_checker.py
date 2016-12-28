@@ -103,8 +103,8 @@ class TypeChecker(TypeCheckerInterface):
             return
 
         raise TypeError(
-            "invalid value type: expected-type={:s}, value={}".format(
-                Typecode.get_typename(self.typecode), self._value))
+            "invalid value type: expected-type={:s}".format(
+                Typecode.get_typename(self.typecode)))
 
     @abc.abstractmethod
     def _is_instance(self):

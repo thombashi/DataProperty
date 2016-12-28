@@ -5,6 +5,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
+from __future__ import unicode_literals
+
 import datetime
 import itertools
 
@@ -28,7 +30,10 @@ class Test_NoneTypeChecker_is_type:
         [None, False, True],
     ] + list(
         itertools.product(
-            ["None", True, False, 0, six.MAXSIZE, inf, nan],
+            [
+                "None",
+                True, False, 0, six.MAXSIZE, inf, nan,
+            ],
             [True, False],
             [False]
         ))
@@ -61,7 +66,10 @@ class Test_NoneTypeChecker_validate:
     @pytest.mark.parametrize(
         ["value", "is_convert", "expected"],
         list(itertools.product(
-            ["None", True, False, 0, six.MAXSIZE, inf, nan],
+            [
+                "None",
+                True, False, 0, six.MAXSIZE, inf, nan,
+            ],
             [True, False],
             [TypeError]
         ))
@@ -85,7 +93,7 @@ class Test_StringTypeChecker_is_type:
         [inf, False, False],
     ] + list(
         itertools.product(
-            ["None"],
+            ["None", ],
             [True, False],
             [True]
         ))
@@ -107,7 +115,7 @@ class Test_StringTypeChecker_validate:
         ["", False],
     ] + list(
         itertools.product(
-            ["None"],
+            ["None", ],
             [True, False],
         ))
     )
@@ -162,6 +170,7 @@ class Test_IntegerTypeChecker_is_type:
                 nan, inf, 0.5, "0.5", .999, ".999", Decimal("1.1"),
                 "", "test", "1a1", "11a", "a11",
                 1e-05, -1e-05, "1e-05", "-1e-05",
+
             ],
             [True, False],
         ))
@@ -251,7 +260,9 @@ class Test_FloatTypeChecker_is_type:
         ["inf", False], ["nan", False],
     ] + list(
         itertools.product(
-            ["", None, "test", True],
+            [
+                "", None, "test", True,
+            ],
             [True, False],
         ))
     )
@@ -347,7 +358,10 @@ class Test_InfinityChecker_is_type:
     @pytest.mark.parametrize(
         ["value", "is_convert", "expected"],
         list(itertools.product(
-            [0.0, six.MAXSIZE, "0", nan],
+            [
+                0.0, six.MAXSIZE, "0", nan,
+
+            ],
             [True, False],
             [False]
         )) + list(itertools.product(
@@ -376,7 +390,10 @@ class Test_NanChecker_is_type:
     @pytest.mark.parametrize(
         ["value", "is_convert", "expected"],
         list(itertools.product(
-            [0.0, six.MAXSIZE, "0", inf],
+            [
+                0.0, six.MAXSIZE, "0", inf,
+
+            ],
             [True, False],
             [False]
         )) + list(itertools.product(
@@ -421,7 +438,7 @@ class Test_DictionaryTypeChecker_is_type:
         [(("a", 1), ), True]
     ] + list(
         itertools.product(
-            [1, "a", nan, True],
+            [1, "a", nan, True, ],
             [True, False],
         ))
     )
