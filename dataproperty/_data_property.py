@@ -211,8 +211,8 @@ class DataProperty(DataPeropertyBase):
         try:
             integer_digits, decimal_places = get_number_of_digit(data)
         except OverflowError:
-            integer_digits = self.DEFAULT_NAN_VALUE
-            decimal_places = self.DEFAULT_NAN_VALUE
+            integer_digits = DEFAULT_NAN_VALUE
+            decimal_places = DEFAULT_NAN_VALUE
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
