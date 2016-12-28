@@ -193,10 +193,13 @@ class DataProperty(DataPeropertyBase):
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
-            is_strict_type_mapping=DEFAULT_IS_STRICT_TYPE_MAPPING,
+            is_strict_type_mapping=None,
             replace_tabs_with_spaces=True, tab_length=2,
             east_asian_ambiguous_width=1):
         super(DataProperty, self).__init__(datetime_format_str)
+
+        if is_strict_type_mapping is None:
+            is_strict_type_mapping = DEFAULT_IS_STRICT_TYPE_MAPPING
 
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
         self.__set_data(
