@@ -163,7 +163,7 @@ def get_integer_digit(value):
         raise ValueError(e)
 
 
-def _get_decimal_places(value, integer_digits):
+def _get_decimal_places(value):
     from collections import namedtuple
     from six.moves import range
     from ._type import IntegerType
@@ -212,7 +212,7 @@ def get_number_of_digit(value):
         return (nan, nan)
 
     try:
-        decimal_places = _get_decimal_places(value, integer_digits)
+        decimal_places = _get_decimal_places(value)
     except (ValueError, TypeError):
         decimal_places = nan
 
