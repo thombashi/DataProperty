@@ -466,7 +466,11 @@ class Test_DataPeroperty_repr:
             DEFAULT_IS_STRICT_TYPE_MAPPING,
             100
         ],
-
+        [
+            "新しいテキスト ドキュメント.txt".encode("utf_8"),
+            DEFAULT_IS_STRICT_TYPE_MAPPING,
+            100
+        ],
     ])
     def test_smoke(self, value, is_strict_type_mapping, expected):
         dp = DataProperty(value, is_strict_type_mapping=is_strict_type_mapping)
