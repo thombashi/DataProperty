@@ -59,25 +59,19 @@ class Test_NoneTypeChecker_validate:
         type_checker.validate()
 
     @pytest.mark.parametrize(
-        ["value", "is_convert", "exception_type", "expected"],
+        ["value", "is_convert", "expected"],
         list(itertools.product(
             ["None", True, False, 0, six.MAXSIZE, inf, nan],
             [True, False],
-            [ValueError],
-            [ValueError]
-        )) + list(itertools.product(
-            ["None", True, False, 0, six.MAXSIZE, inf, nan],
-            [True, False],
-            [TypeError],
             [TypeError]
         ))
     )
-    def test_exception(self, value, is_convert, exception_type, expected):
+    def test_exception(self, value, is_convert, expected):
         is_strict = not is_convert
 
         type_checker = NoneTypeChecker(value, is_strict)
         with pytest.raises(expected):
-            type_checker.validate(exception_type=exception_type)
+            type_checker.validate()
 
 
 class Test_StringTypeChecker_is_type:
@@ -123,21 +117,18 @@ class Test_StringTypeChecker_validate:
         type_checker = StringTypeChecker(value, is_strict)
         type_checker.validate()
 
-    @pytest.mark.parametrize(
-        ["value", "is_convert", "exception_type", "expected"],
-        [
-            [None, False, ValueError, ValueError],
-            [six.MAXSIZE, False, TypeError, TypeError],
-            [inf, False, ValueError, ValueError],
-            [nan, False, TypeError, TypeError],
-        ]
-    )
-    def test_exception(self, value, is_convert, exception_type, expected):
+    @pytest.mark.parametrize(["value", "is_convert", "expected"], [
+        [None, False, TypeError],
+        [six.MAXSIZE, False, TypeError],
+        [inf, False, TypeError],
+        [nan, False, TypeError],
+    ])
+    def test_exception(self, value, is_convert, expected):
         is_strict = not is_convert
 
         type_checker = StringTypeChecker(value, is_strict)
         with pytest.raises(expected):
-            type_checker.validate(exception_type=exception_type)
+            type_checker.validate()
 
 
 class Test_IntegerTypeChecker_is_type:
