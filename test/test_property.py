@@ -294,6 +294,21 @@ class Test_DataPeroperty_set_data:
         assert dp.data == expected
 
 
+class Test_DataPeroperty_float_type:
+
+    @pytest.mark.parametrize(
+        ["value",  "float_type", "expected"],
+        [
+            [1.1, float, 1.1],
+            [1.1, Decimal, Decimal("1.1")],
+        ])
+    def test_normal_tab(self, value, float_type, expected):
+        dp = DataProperty(value, float_type=float_type)
+
+        assert isinstance(dp.data, float_type)
+        assert dp.data == expected
+
+
 class Test_DataPeroperty_align:
 
     @pytest.mark.parametrize(["value", "expected"], [

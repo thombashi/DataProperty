@@ -170,7 +170,7 @@ class IntegerTypeChecker(TypeChecker):
         if isinstance(self._value, six.integer_types):
             return not isinstance(self._value, bool)
 
-        if isinstance(self._value, Decimal):
+        if isinstance(self._value, float) or isinstance(self._value, Decimal):
             if float(self._value).is_integer():
                 return True
 

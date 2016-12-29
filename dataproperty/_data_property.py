@@ -13,6 +13,7 @@ import itertools
 from mbstrdecoder import MultiByteStrDecoder
 
 from ._align_getter import align_getter
+from ._common import DEFAULT_FLOAT_TYPE
 from ._container import MinMaxContainer
 from ._container import ListContainer
 from ._error import TypeConversionError
@@ -189,7 +190,9 @@ class DataProperty(DataPeropertyBase):
     def __init__(
             self, data,
             none_value=None,
-            inf_value=DEFAULT_INF_VALUE, nan_value=DEFAULT_NAN_VALUE,
+            inf_value=DEFAULT_INF_VALUE,
+            nan_value=DEFAULT_NAN_VALUE,
+            float_type=None,
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
@@ -198,12 +201,16 @@ class DataProperty(DataPeropertyBase):
             east_asian_ambiguous_width=1):
         super(DataProperty, self).__init__(datetime_format_str)
 
+        if float_type is None:
+            float_type = DEFAULT_FLOAT_TYPE
+
         if is_strict_type_mapping is None:
             is_strict_type_mapping = DEFAULT_IS_STRICT_TYPE_MAPPING
 
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
         self.__set_data(
-            data, none_value, inf_value, nan_value, is_strict_type_mapping)
+            data, none_value, inf_value, nan_value, float_type,
+            is_strict_type_mapping)
         self.__convert_data(bool_converter, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
@@ -300,7 +307,7 @@ class DataProperty(DataPeropertyBase):
             unicode_str, self.__east_asian_ambiguous_width)
 
     def __set_data(
-            self, data, none_value, inf_value, nan_value,
+            self, data, none_value, inf_value, nan_value, float_type,
             is_strict_type_mapping):
         special_value_table = {
             Typecode.NONE: none_value,
@@ -310,8 +317,9 @@ class DataProperty(DataPeropertyBase):
 
         for type_factory_class in self.__type_factory_class_list:
             is_strict = is_strict_type_mapping.get(type_factory_class(
-                None, None).create_type_checker().typecode, False)
-            type_factory = type_factory_class(data, is_strict)
+                None, None, None).create_type_checker().typecode, False)
+            type_factory = type_factory_class(
+                data, is_strict, {"float_type": float_type})
             checker = type_factory.create_type_checker()
 
             if not checker.is_type():
@@ -384,7 +392,8 @@ class ColumnDataProperty(DataPeropertyBase):
             return float("nan")
 
         return int(min(
-            math.ceil(avg + Decimal("1.0")), self.minmax_decimal_places.max_value))
+            math.ceil(avg + Decimal("1.0")),
+            self.minmax_decimal_places.max_value))
 
     @property
     def typecode(self):

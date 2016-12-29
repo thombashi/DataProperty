@@ -30,8 +30,11 @@ class AbstractType(TypeCheckerInterface, ValueConverterInterface):
     def _factory_class(self):  # pragma: no cover
         pass
 
-    def __init__(self, data, is_strict=False):
-        factory = self._factory_class(data, is_strict)
+    def __init__(self, data, is_strict=False, params=None):
+        if params is None:
+            params = {}
+
+        factory = self._factory_class(data, is_strict, params)
         self.__checker = factory.create_type_checker()
         self.__converter = factory.create_type_converter()
 

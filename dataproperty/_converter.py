@@ -8,10 +8,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 import abc
+import decimal
 import re
 
 from mbstrdecoder import MultiByteStrDecoder
 
+from ._common import DEFAULT_FLOAT_TYPE
 from ._error import TypeConversionError
 
 
@@ -74,14 +76,17 @@ class IntegerConverter(ValueConverter):
 
 class FloatConverter(ValueConverter):
 
-    def convert(self):
-        import decimal
+    def __init__(self, value):
+        super(FloatConverter, self).__init__(value)
 
+        self.float_class = DEFAULT_FLOAT_TYPE
+
+    def convert(self):
         if isinstance(self._value, float):
-            return decimal.Decimal(str(self._value))
+            return self.float_class(str(self._value))
 
         try:
-            return decimal.Decimal(self._value)
+            return self.float_class(self._value)
         except (TypeError, ValueError, decimal.InvalidOperation):
             try:
                 raise TypeConversionError(

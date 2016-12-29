@@ -9,6 +9,7 @@ import abc
 
 import six
 
+from ._common import DEFAULT_FLOAT_TYPE
 from ._converter import (
     NopConverter,
     StringConverter,
@@ -47,11 +48,12 @@ class TypeFactoryInterface(object):
 
 
 class AbstractTypeFactory(TypeFactoryInterface):
-    __slots__ = ("_data", "_is_strict")
+    __slots__ = ("_data", "_is_strict", "params")
 
-    def __init__(self, data, is_strict):
+    def __init__(self, data, is_strict, params):
         self._data = data
         self._is_strict = is_strict
+        self._params = params
 
 
 class NoneTypeFactory(AbstractTypeFactory):
@@ -87,7 +89,11 @@ class FloatTypeFactory(AbstractTypeFactory):
         return FloatTypeChecker(self._data, self._is_strict)
 
     def create_type_converter(self):
-        return FloatConverter(self._data)
+        converter = FloatConverter(self._data)
+        converter.float_class = self._params.get(
+            "float_type", DEFAULT_FLOAT_TYPE)
+
+        return converter
 
 
 class DateTimeTypeFactory(AbstractTypeFactory):
