@@ -24,17 +24,6 @@ from ._container import MinMaxContainer
 from ._container import ListContainer
 from ._error import TypeConversionError
 from ._interface import DataPeropertyInterface
-from ._factory import (
-    NoneTypeFactory,
-    StringTypeFactory,
-    IntegerTypeFactory,
-    FloatTypeFactory,
-    BoolTypeFactory,
-    DateTimeTypeFactory,
-    InfinityTypeFactory,
-    NanTypeFactory,
-    DictionaryTypeFactory
-)
 from ._function import (
     get_number_of_digit,
     get_ascii_char_width
@@ -52,7 +41,6 @@ from ._type import (
 )
 from ._typecode import Typecode
 from ._type_checker import NanChecker
-from ._type import FloatType
 
 
 class DataPeropertyBase(DataPeropertyInterface):
