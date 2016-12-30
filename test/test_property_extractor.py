@@ -167,6 +167,20 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         assert prop_extractor.extract_data_property_matrix() == []
 
 
+class Test_PropertyExtractor_extract_data_property_list:
+
+    @pytest.mark.parametrize(["value", "float_type"], [
+        [[0.1, Decimal("1.1")], float],
+        [[0.1, Decimal("1.1")], Decimal],
+    ])
+    def test_normal_float(self, prop_extractor, value, float_type):
+        prop_extractor.float_type = float_type
+        prop_list = prop_extractor.extract_data_property_list(value)
+
+        for prop in prop_list:
+            assert isinstance(prop.data, float_type)
+
+
 class Test_PropertyExtractor_extract_column_property_list:
     TEST_DATA_MATRIX = [
         [

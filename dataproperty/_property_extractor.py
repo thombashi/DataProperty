@@ -38,6 +38,7 @@ class PropertyExtractor(object):
         self.none_value = None
         self.inf_value = DEFAULT_INF_VALUE
         self.nan_value = DEFAULT_NAN_VALUE
+        self.float_type = None
         self.bool_converter = default_bool_converter
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
@@ -115,6 +116,7 @@ class PropertyExtractor(object):
                 none_value=self.none_value,
                 inf_value=self.inf_value,
                 nan_value=self.nan_value,
+                float_type=self.float_type,
                 bool_converter=self.bool_converter,
                 datetime_converter=self.datetime_converter,
                 datetime_format_str=self.datetime_format_str,
