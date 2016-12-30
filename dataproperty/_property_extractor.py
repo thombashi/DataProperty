@@ -11,12 +11,12 @@ from six.moves import zip
 
 from ._common import (
     DEFAULT_INF_VALUE,
-    DEFAULT_NAN_VALUE
+    DEFAULT_NAN_VALUE,
+    DEFAULT_IS_STRICT_TYPE_MAPPING
 )
 from ._data_property import (
     DataProperty,
-    ColumnDataProperty,
-    DEFAULT_IS_STRICT_TYPE_MAPPING
+    ColumnDataProperty
 )
 from ._function import is_empty_sequence
 

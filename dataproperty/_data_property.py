@@ -16,9 +16,11 @@ from ._align_getter import align_getter
 from ._common import (
     DEFAULT_FLOAT_TYPE,
     DEFAULT_INF_VALUE,
-    DEFAULT_NAN_VALUE
+    DEFAULT_NAN_VALUE,
+    DEFAULT_IS_STRICT_TYPE_MAPPING,
+    STRICT_TYPE_MAPPING,
+    NOT_STRICT_TYPE_MAPPING
 )
-
 from ._container import MinMaxContainer
 from ._container import ListContainer
 from ._error import TypeConversionError
@@ -41,22 +43,6 @@ from ._function import (
 from ._typecode import Typecode
 from ._type_checker import NanChecker
 from ._type import FloatType
-
-
-DEFAULT_IS_STRICT_TYPE_MAPPING = {
-    Typecode.NONE: False,
-    Typecode.INTEGER: False,
-    Typecode.FLOAT: False,
-    Typecode.STRING: False,
-    Typecode.DATETIME: True,
-    Typecode.INFINITY: False,
-    Typecode.NAN: False,
-    Typecode.BOOL: False,
-    Typecode.DICTIONARY: True,
-}
-
-STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
-NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
 
 
 def default_bool_converter(value):

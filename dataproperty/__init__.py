@@ -8,13 +8,15 @@ from __future__ import absolute_import
 
 from ._align import Align
 from ._align_getter import align_getter
-from ._container import MinMaxContainer
-from ._data_property import (
-    ColumnDataProperty,
-    DataProperty,
+from ._common import (
     DEFAULT_IS_STRICT_TYPE_MAPPING,
     NOT_STRICT_TYPE_MAPPING,
     STRICT_TYPE_MAPPING
+)
+from ._container import MinMaxContainer
+from ._data_property import (
+    ColumnDataProperty,
+    DataProperty
 )
 from ._error import TypeConversionError
 from ._function import (
