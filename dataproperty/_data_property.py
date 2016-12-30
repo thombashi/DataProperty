@@ -39,6 +39,17 @@ from ._function import (
     get_number_of_digit,
     get_ascii_char_width
 )
+from ._type import (
+    NoneType,
+    StringType,
+    IntegerType,
+    FloatType,
+    DateTimeType,
+    BoolType,
+    InfinityType,
+    NanType,
+    DictionaryType
+)
 from ._typecode import Typecode
 from ._type_checker import NanChecker
 from ._type import FloatType
@@ -89,16 +100,16 @@ class DataProperty(DataPeropertyBase):
         "__east_asian_ambiguous_width",
     )
 
-    __type_factory_class_list = [
-        NoneTypeFactory,
-        IntegerTypeFactory,
-        InfinityTypeFactory,
-        NanTypeFactory,
-        FloatTypeFactory,
-        BoolTypeFactory,
-        DictionaryTypeFactory,
-        DateTimeTypeFactory,
-        StringTypeFactory,
+    __type_class_list = [
+        NoneType,
+        IntegerType,
+        InfinityType,
+        NanType,
+        FloatType,
+        BoolType,
+        DictionaryType,
+        DateTimeType,
+        StringType,
     ]
 
     @property
@@ -294,24 +305,23 @@ class DataProperty(DataPeropertyBase):
             Typecode.NAN: nan_value,
         }
 
-        for type_factory_class in self.__type_factory_class_list:
-            is_strict = strict_type_mapping.get(type_factory_class(
-                None, None, None).create_type_checker().typecode, False)
-            type_factory = type_factory_class(
+        for type_class in self.__type_class_list:
+            is_strict = strict_type_mapping.get(
+                type_class(None).typecode, False)
+            type_obj = type_class(
                 data, is_strict, {"float_type": float_type})
-            checker = type_factory.create_type_checker()
 
-            if not checker.is_type():
+            if not type_obj.is_type():
                 continue
 
-            self.__typecode = checker.typecode
+            self.__typecode = type_obj.typecode
 
             special_value = special_value_table.get(self.__typecode)
             if special_value is not None:
                 self.__data = special_value
                 return
 
-            self.__data = type_factory.create_type_converter().convert()
+            self.__data = type_obj.convert()
 
             return
 
