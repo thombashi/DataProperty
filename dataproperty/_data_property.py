@@ -355,15 +355,15 @@ class ColumnDataProperty(DataPeropertyBase):
         "__east_asian_ambiguous_width",
     )
 
-    __FACTORY_TABLE = {
-        Typecode.NONE: NoneTypeFactory,
-        Typecode.STRING: StringTypeFactory,
-        Typecode.INTEGER: IntegerTypeFactory,
-        Typecode.INFINITY: InfinityTypeFactory,
-        Typecode.NAN: NanTypeFactory,
-        Typecode.FLOAT: FloatTypeFactory,
-        Typecode.BOOL: BoolTypeFactory,
-        Typecode.DATETIME: DateTimeTypeFactory,
+    __TYPE_CLASS_TABLE = {
+        Typecode.NONE: NoneType,
+        Typecode.STRING: StringType,
+        Typecode.INTEGER: IntegerType,
+        Typecode.INFINITY: InfinityType,
+        Typecode.NAN: NanType,
+        Typecode.FLOAT: FloatType,
+        Typecode.BOOL: BoolType,
+        Typecode.DATETIME: DateTimeType,
     }
 
     @property
@@ -431,8 +431,8 @@ class ColumnDataProperty(DataPeropertyBase):
         return self.__minmax_additional_format_len
 
     @property
-    def type_factory(self):
-        return self.__FACTORY_TABLE.get(self.typecode)
+    def type_class(self):
+        return self.__TYPE_CLASS_TABLE.get(self.typecode)
 
     def __init__(
             self,
