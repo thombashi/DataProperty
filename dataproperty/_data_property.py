@@ -8,7 +8,6 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from decimal import Decimal
 import math
-import itertools
 
 from mbstrdecoder import MultiByteStrDecoder
 
@@ -18,8 +17,6 @@ from ._common import (
     DEFAULT_INF_VALUE,
     DEFAULT_NAN_VALUE,
     DEFAULT_IS_STRICT_TYPE_MAPPING,
-    STRICT_TYPE_MAPPING,
-    NOT_STRICT_TYPE_MAPPING
 )
 from ._container import MinMaxContainer
 from ._container import ListContainer
