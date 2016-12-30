@@ -50,10 +50,14 @@ class TypeFactoryInterface(object):
 class AbstractTypeFactory(TypeFactoryInterface):
     __slots__ = ("_data", "_is_strict", "params")
 
-    def __init__(self, data, is_strict, params):
+    def __init__(self, data, is_strict, params=None):
         self._data = data
         self._is_strict = is_strict
-        self._params = params
+
+        if params is None:
+            self._params = {}
+        else:
+            self._params = params
 
 
 class NoneTypeFactory(AbstractTypeFactory):
