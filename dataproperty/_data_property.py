@@ -16,7 +16,7 @@ from ._common import (
     DEFAULT_FLOAT_TYPE,
     DEFAULT_INF_VALUE,
     DEFAULT_NAN_VALUE,
-    DEFAULT_IS_STRICT_TYPE_MAPPING,
+    DEFAULT_STRICT_TYPE_MAPPING,
     default_bool_converter,
     default_datetime_converter,
 )
@@ -184,7 +184,7 @@ class DataProperty(DataPeropertyBase):
             float_type = DEFAULT_FLOAT_TYPE
 
         if is_strict_type_mapping is None:
-            is_strict_type_mapping = DEFAULT_IS_STRICT_TYPE_MAPPING
+            is_strict_type_mapping = DEFAULT_STRICT_TYPE_MAPPING
 
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
         self.__set_data(

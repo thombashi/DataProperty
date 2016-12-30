@@ -12,7 +12,7 @@ from six.moves import zip
 from ._common import (
     DEFAULT_INF_VALUE,
     DEFAULT_NAN_VALUE,
-    DEFAULT_IS_STRICT_TYPE_MAPPING,
+    DEFAULT_STRICT_TYPE_MAPPING,
     default_bool_converter,
     default_datetime_converter,
 )
@@ -41,7 +41,7 @@ class PropertyExtractor(object):
         self.bool_converter = default_bool_converter
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
-        self.is_strict_type_mapping = dict(DEFAULT_IS_STRICT_TYPE_MAPPING)
+        self.is_strict_type_mapping = dict(DEFAULT_STRICT_TYPE_MAPPING)
         self.east_asian_ambiguous_width = 1
 
         self.mismatch_processing = MissmatchProcessing.TRIM
