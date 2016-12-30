@@ -13,7 +13,12 @@ import itertools
 from mbstrdecoder import MultiByteStrDecoder
 
 from ._align_getter import align_getter
-from ._common import DEFAULT_FLOAT_TYPE
+from ._common import (
+    DEFAULT_FLOAT_TYPE,
+    DEFAULT_INF_VALUE,
+    DEFAULT_NAN_VALUE
+)
+
 from ._container import MinMaxContainer
 from ._container import ListContainer
 from ._error import TypeConversionError
@@ -37,9 +42,6 @@ from ._typecode import Typecode
 from ._type_checker import NanChecker
 from ._type import FloatType
 
-
-DEFAULT_INF_VALUE = Decimal("inf")
-DEFAULT_NAN_VALUE = Decimal("nan")
 
 DEFAULT_IS_STRICT_TYPE_MAPPING = {
     Typecode.NONE: False,

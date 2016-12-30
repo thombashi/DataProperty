@@ -10,3 +10,5 @@ from decimal import Decimal
 
 
 DEFAULT_FLOAT_TYPE = Decimal
+DEFAULT_INF_VALUE = DEFAULT_FLOAT_TYPE("inf")
+DEFAULT_NAN_VALUE = DEFAULT_FLOAT_TYPE("nan")
