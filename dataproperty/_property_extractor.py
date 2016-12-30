@@ -54,6 +54,12 @@ class PropertyExtractor(object):
         ]
 
     def extract_column_property_list(self):
+        # alias to extract_col_property_list method.
+        # this method will be deleted in the future.
+
+        return self.extract_col_property_list()
+
+    def extract_col_property_list(self):
         column_prop_list = self.__extract_header_data_prop_list()
 
         try:

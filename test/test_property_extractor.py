@@ -214,7 +214,7 @@ class Test_PropertyExtractor_extract_column_property_list:
     def test_normal_default(self, prop_extractor, header_list, value):
         prop_extractor.header_list = header_list
         prop_extractor.data_matrix = value
-        col_prop_list = prop_extractor.extract_column_property_list()
+        col_prop_list = prop_extractor.extract_col_property_list()
 
         assert len(col_prop_list) == 9
 
@@ -308,7 +308,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         prop_extractor.header_list = header_list
         prop_extractor.data_matrix = value
         prop_extractor.is_strict_type_mapping = NOT_STRICT_TYPE_MAPPING
-        col_prop_list = prop_extractor.extract_column_property_list()
+        col_prop_list = prop_extractor.extract_col_property_list()
 
         assert len(col_prop_list) == 9
 
@@ -334,7 +334,7 @@ class Test_PropertyExtractor_extract_column_property_list:
             [nan, inf],
             ["nan", "inf"],
         ]
-        col_prop_list = prop_extractor.extract_column_property_list()
+        col_prop_list = prop_extractor.extract_col_property_list()
 
         assert len(col_prop_list) == 2
 
@@ -364,7 +364,7 @@ class Test_PropertyExtractor_extract_column_property_list:
             ["abcdefghij", "ØØ"],
         ]
         prop_extractor.east_asian_ambiguous_width = ambiguous_width
-        col_prop_list = prop_extractor.extract_column_property_list()
+        col_prop_list = prop_extractor.extract_col_property_list()
 
         assert len(col_prop_list) == 2
 
@@ -385,7 +385,7 @@ class Test_PropertyExtractor_extract_column_property_list:
     def test_normal_empty_value(self, prop_extractor):
         prop_extractor.header_list = ["a", "22", "cccc"]
         prop_extractor.data_matrix = None
-        col_prop_list = prop_extractor.extract_column_property_list()
+        col_prop_list = prop_extractor.extract_col_property_list()
 
         prop = col_prop_list[0]
         assert prop.typecode == Typecode.NONE
@@ -433,7 +433,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         prop_extractor.header_list = header_list
         prop_extractor.data_matrix = value
         prop_extractor.mismatch_processing = mismatch_processing
-        col_prop_list = prop_extractor.extract_column_property_list()
+        col_prop_list = prop_extractor.extract_col_property_list()
 
         assert len(col_prop_list) == expected
 
@@ -455,4 +455,4 @@ class Test_PropertyExtractor_extract_column_property_list:
         prop_extractor.mismatch_processing = mismatch_processing
 
         with pytest.raises(expected):
-            prop_extractor.extract_column_property_list()
+            prop_extractor.extract_col_property_list()
