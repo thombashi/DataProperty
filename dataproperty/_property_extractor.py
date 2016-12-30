@@ -48,7 +48,7 @@ class PropertyExtractor(object):
 
     def extract_data_property_matrix(self):
         return [
-            self.__extract_data_property_list(data_list)
+            self.extract_data_property_list(data_list)
             for data_list in self.data_matrix
         ]
 
@@ -91,7 +91,7 @@ class PropertyExtractor(object):
         return column_prop_list
 
     def __extract_header_data_prop_list(self):
-        header_prop_list = self.__extract_data_property_list(self.header_list)
+        header_prop_list = self.extract_data_property_list(self.header_list)
         column_prop_list = []
 
         for header_prop in header_prop_list:
@@ -105,7 +105,7 @@ class PropertyExtractor(object):
 
         return column_prop_list
 
-    def __extract_data_property_list(self, data_list):
+    def extract_data_property_list(self, data_list):
         if is_empty_sequence(data_list):
             return []
 
