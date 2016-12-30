@@ -83,7 +83,7 @@ e.g. Extract `str` (multi-byte) value property
 .. code:: python
 
     from dataproperty import DataProperty
-    print(DataProperty(u"吾輩は猫である"))
+    print(six.text_type(DataProperty(u"吾輩は猫である")))
     
     data=吾輩は猫である, typename=STRING, align=left, str_len=7, ascii_char_width=14, integer_digits=nan, decimal_places=nan, additional_format_len=0
 
@@ -209,7 +209,7 @@ Extract for each column property from a matrix
     prop_extractor.header_list = [
         "int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
     prop_extractor.data_matrix = data_matrix
-    col_prop_list = prop_extractor.extract_column_property_list()
+    col_prop_list = prop_extractor.extract_col_property_list()
     
     print("---------- typename ----------")
     print([Typecode.get_typename(prop.typecode) for prop in col_prop_list])
