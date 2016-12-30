@@ -115,7 +115,7 @@ class Test_DataPeroperty_data_typecode:
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(
             value,
-            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
         assert dp.data == expected_data
         assert dp.typecode == expected_typecode
 
@@ -127,7 +127,7 @@ class Test_DataPeroperty_data_typecode:
     )
     def test_normal_datetime(self, value, is_convert, expected_typecode):
         dp = DataProperty(
-            value, is_strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
+            value, strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
         assert isinstance(dp.data, datetime.datetime)
         assert dp.typecode == expected_typecode
 
@@ -143,7 +143,7 @@ class Test_DataPeroperty_data_typecode:
             self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(
             value,
-            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
         assert NanType(dp.data).is_type()
         assert dp.typecode == expected_typecode
 
@@ -179,7 +179,7 @@ class Test_DataPeroperty_set_data:
             replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
             value,
-            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING,
+            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING,
             replace_tabs_with_spaces=replace_tabs_with_spaces,
             tab_length=tab_length)
 
@@ -197,7 +197,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             none_value=none_value,
-            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -214,7 +214,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             bool_converter=bool_converter,
-            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -253,7 +253,7 @@ class Test_DataPeroperty_set_data:
             value,
             datetime_converter=datetime_converter,
             datetime_format_str=datetime_format_str,
-            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -271,7 +271,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             inf_value=inf_value,
-            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -289,7 +289,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             nan_value=nan_value,
-            is_strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
 
         assert dp.data == expected
 
@@ -465,7 +465,7 @@ class Test_DataPeroperty_additional_format_len:
 
 class Test_DataPeroperty_repr:
 
-    @pytest.mark.parametrize(["value", "is_strict_type_mapping", "expected"], [
+    @pytest.mark.parametrize(["value", "strict_type_mapping", "expected"], [
         [
             "100-0004",
             NOT_STRICT_TYPE_MAPPING,
@@ -482,11 +482,11 @@ class Test_DataPeroperty_repr:
             100
         ],
     ])
-    def test_smoke(self, value, is_strict_type_mapping, expected):
-        dp = DataProperty(value, is_strict_type_mapping=is_strict_type_mapping)
+    def test_smoke(self, value, strict_type_mapping, expected):
+        dp = DataProperty(value, strict_type_mapping=strict_type_mapping)
         assert len(dp.__repr__()) > expected
 
-    @pytest.mark.parametrize(["value", "is_strict_type_mapping", "expected"], [
+    @pytest.mark.parametrize(["value", "strict_type_mapping", "expected"], [
         [
             0,
             DEFAULT_STRICT_TYPE_MAPPING,
@@ -579,7 +579,7 @@ class Test_DataPeroperty_repr:
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
     ])
-    def test_normal(self, value, is_strict_type_mapping, expected):
-        dp = DataProperty(value, is_strict_type_mapping=is_strict_type_mapping)
+    def test_normal(self, value, strict_type_mapping, expected):
+        dp = DataProperty(value, strict_type_mapping=strict_type_mapping)
         print(dp)
         assert str(dp) == expected

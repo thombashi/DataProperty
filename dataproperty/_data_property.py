@@ -175,7 +175,7 @@ class DataProperty(DataPeropertyBase):
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
-            is_strict_type_mapping=None,
+            strict_type_mapping=None,
             replace_tabs_with_spaces=True, tab_length=2,
             east_asian_ambiguous_width=1):
         super(DataProperty, self).__init__(datetime_format_str)
@@ -183,13 +183,13 @@ class DataProperty(DataPeropertyBase):
         if float_type is None:
             float_type = DEFAULT_FLOAT_TYPE
 
-        if is_strict_type_mapping is None:
-            is_strict_type_mapping = DEFAULT_STRICT_TYPE_MAPPING
+        if strict_type_mapping is None:
+            strict_type_mapping = DEFAULT_STRICT_TYPE_MAPPING
 
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
         self.__set_data(
             data, none_value, inf_value, nan_value, float_type,
-            is_strict_type_mapping)
+            strict_type_mapping)
         self.__convert_data(bool_converter, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
@@ -287,7 +287,7 @@ class DataProperty(DataPeropertyBase):
 
     def __set_data(
             self, data, none_value, inf_value, nan_value, float_type,
-            is_strict_type_mapping):
+            strict_type_mapping):
         special_value_table = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
@@ -295,7 +295,7 @@ class DataProperty(DataPeropertyBase):
         }
 
         for type_factory_class in self.__type_factory_class_list:
-            is_strict = is_strict_type_mapping.get(type_factory_class(
+            is_strict = strict_type_mapping.get(type_factory_class(
                 None, None, None).create_type_checker().typecode, False)
             type_factory = type_factory_class(
                 data, is_strict, {"float_type": float_type})
