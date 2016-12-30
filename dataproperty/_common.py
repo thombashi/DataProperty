@@ -29,3 +29,11 @@ DEFAULT_IS_STRICT_TYPE_MAPPING = {
 }
 STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
 NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
+
+
+def default_bool_converter(value):
+    return value
+
+
+def default_datetime_converter(value):
+    return value

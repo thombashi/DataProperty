@@ -17,6 +17,8 @@ from ._common import (
     DEFAULT_INF_VALUE,
     DEFAULT_NAN_VALUE,
     DEFAULT_IS_STRICT_TYPE_MAPPING,
+    default_bool_converter,
+    default_datetime_converter,
 )
 from ._container import MinMaxContainer
 from ._container import ListContainer
@@ -40,14 +42,6 @@ from ._function import (
 from ._typecode import Typecode
 from ._type_checker import NanChecker
 from ._type import FloatType
-
-
-def default_bool_converter(value):
-    return value
-
-
-def default_datetime_converter(value):
-    return value
 
 
 class DataPeropertyBase(DataPeropertyInterface):

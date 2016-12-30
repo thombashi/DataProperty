@@ -12,7 +12,9 @@ from six.moves import zip
 from ._common import (
     DEFAULT_INF_VALUE,
     DEFAULT_NAN_VALUE,
-    DEFAULT_IS_STRICT_TYPE_MAPPING
+    DEFAULT_IS_STRICT_TYPE_MAPPING,
+    default_bool_converter,
+    default_datetime_converter,
 )
 from ._data_property import (
     DataProperty,
@@ -30,9 +32,6 @@ class MissmatchProcessing(object):
 class PropertyExtractor(object):
 
     def __init__(self):
-        from ._data_property import default_bool_converter
-        from ._data_property import default_datetime_converter
-
         self.header_list = []
         self.data_matrix = []
         self.min_padding_len = 0
