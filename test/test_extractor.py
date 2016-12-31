@@ -175,9 +175,9 @@ class Test_DataPropertyExtractor_to_dataproperty_list:
     ])
     def test_normal_float(self, dp_extractor, value, float_type):
         dp_extractor.float_type = float_type
-        prop_list = dp_extractor.to_dataproperty_list(value)
+        dp_list = dp_extractor.to_dataproperty_list(value)
 
-        for prop in prop_list:
+        for prop in dp_list:
             assert isinstance(prop.data, float_type)
 
     @pytest.mark.parametrize(["value", "strip_str", "expected"], [

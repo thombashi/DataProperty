@@ -55,21 +55,21 @@ class DataPropertyExtractor(object):
         ]
 
     def to_col_dataproperty_list(self):
-        column_prop_list = self.__to_header_dataproperty_list()
+        col_dp_list = self.__to_header_dataproperty_list()
 
         try:
             dp_matrix = self.to_dataproperty_matrix()
         except TypeError:
-            return column_prop_list
+            return col_dp_list
 
         for col_idx, col_prop_list in enumerate(zip(*dp_matrix)):
             try:
-                column_prop_list[col_idx]
+                col_dp_list[col_idx]
             except IndexError:
                 if self.mismatch_processing == MissmatchProcessing.EXCEPTION:
                     raise ValueError(
                         "column not found: col-size={}, col-index={}".format(
-                            len(column_prop_list), col_idx))
+                            len(col_dp_list), col_idx))
 
                 if any([
                     self.mismatch_processing == MissmatchProcessing.EXTEND,
@@ -78,7 +78,7 @@ class DataPropertyExtractor(object):
                         is_empty_sequence(self.header_list),
                     ])
                 ]):
-                    column_prop_list.append(ColumnDataProperty(
+                    col_dp_list.append(ColumnDataProperty(
                         min_padding_len=self.min_padding_len,
                         datetime_format_str=self.datetime_format_str,
                         east_asian_ambiguous_width=self.east_asian_ambiguous_width
@@ -88,13 +88,13 @@ class DataPropertyExtractor(object):
                     continue
 
             for prop in col_prop_list:
-                column_prop_list[col_idx].update_body(prop)
+                col_dp_list[col_idx].update_body(prop)
 
-        return column_prop_list
+        return col_dp_list
 
     def __to_header_dataproperty_list(self):
         header_prop_list = self.to_dataproperty_list(self.header_list)
-        column_prop_list = []
+        col_dp_list = []
 
         for header_prop in header_prop_list:
             column_prop = ColumnDataProperty(
@@ -103,9 +103,9 @@ class DataPropertyExtractor(object):
                 east_asian_ambiguous_width=self.east_asian_ambiguous_width
             )
             column_prop.update_header(header_prop)
-            column_prop_list.append(column_prop)
+            col_dp_list.append(column_prop)
 
-        return column_prop_list
+        return col_dp_list
 
     def to_dataproperty_list(self, data_list):
         if is_empty_sequence(data_list):
