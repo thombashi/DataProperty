@@ -116,6 +116,30 @@ class Test_DataPeroperty_data_typecode:
         dp = DataProperty(
             value,
             strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+
+        assert dp.data == expected_data
+        assert dp.typecode == expected_typecode
+
+    @pytest.mark.parametrize(
+        [
+            "value", "strip_str", "is_strict",
+            "expected_data", "expected_typecode"
+        ],
+        [
+            ['"1"', '"', False, 1, Typecode.INTEGER],
+            ['"1"', '', False, '"1"', Typecode.STRING],
+            ['"1"', '"', True, "1", Typecode.STRING],
+            ['"1"', '', False, '"1"', Typecode.STRING],
+        ]
+    )
+    def test_normal_strip_str(
+            self, value, strip_str, is_strict,
+            expected_data, expected_typecode):
+        dp = DataProperty(
+            value,
+            strip_str=strip_str,
+            strict_type_mapping=STRICT_TYPE_MAPPING if is_strict else NOT_STRICT_TYPE_MAPPING)
+
         assert dp.data == expected_data
         assert dp.typecode == expected_typecode
 
@@ -128,6 +152,7 @@ class Test_DataPeroperty_data_typecode:
     def test_normal_datetime(self, value, is_convert, expected_typecode):
         dp = DataProperty(
             value, strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
+
         assert isinstance(dp.data, datetime.datetime)
         assert dp.typecode == expected_typecode
 
@@ -144,6 +169,7 @@ class Test_DataPeroperty_data_typecode:
         dp = DataProperty(
             value,
             strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+
         assert NanType(dp.data).is_type()
         assert dp.typecode == expected_typecode
 
@@ -154,7 +180,7 @@ class Test_DataPeroperty_data_typecode:
         [None, 0, 0],
     ])
     def test_none(self, value, none_value, expected):
-        dp = DataProperty(value, none_value)
+        dp = DataProperty(value, none_value=none_value)
         assert dp.data == expected
         assert dp.typecode == Typecode.NONE
 

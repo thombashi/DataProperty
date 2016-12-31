@@ -180,6 +180,21 @@ class Test_PropertyExtractor_to_dataproperty_list:
         for prop in prop_list:
             assert isinstance(prop.data, float_type)
 
+    @pytest.mark.parametrize(["value", "strip_str", "expected"], [
+        [
+            ['"1"', '"-1.1"', '"abc"'],
+            '"',
+            [1, Decimal("-1.1"), "abc"],
+        ],
+    ])
+    def test_normal_strip_str(
+            self, prop_extractor, value, strip_str, expected):
+        prop_extractor.strip_str = strip_str
+        dp_list = prop_extractor.to_dataproperty_list(value)
+
+        for dp, value in zip(dp_list, expected):
+            assert dp.data == value
+
 
 class Test_PropertyExtractor_to_col_dataproperty_list:
     TEST_DATA_MATRIX = [

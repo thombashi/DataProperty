@@ -86,6 +86,7 @@ class DataProperty(DataPeropertyBase):
         "__decimal_places",
         "__additional_format_len",
         "__str_len",
+        "__strip_str",
         "__ascii_char_width",
         "__east_asian_ambiguous_width",
     )
@@ -169,6 +170,7 @@ class DataProperty(DataPeropertyBase):
 
     def __init__(
             self, data,
+            strip_str=None,
             none_value=None,
             inf_value=DEFAULT_INF_VALUE,
             nan_value=DEFAULT_NAN_VALUE,
@@ -187,7 +189,10 @@ class DataProperty(DataPeropertyBase):
         if strict_type_mapping is None:
             strict_type_mapping = DEFAULT_STRICT_TYPE_MAPPING
 
+        self.__strip_str = strip_str
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
+
+        data = self.__preprocess_data(data)
         self.__set_data(
             data, none_value, inf_value, nan_value, float_type,
             strict_type_mapping)
@@ -285,6 +290,15 @@ class DataProperty(DataPeropertyBase):
         self.__str_len = len(unicode_str)
         self.__ascii_char_width = get_ascii_char_width(
             unicode_str, self.__east_asian_ambiguous_width)
+
+    def __preprocess_data(self, data):
+        if self.__strip_str is None:
+            return data
+
+        try:
+            return data.strip(self.__strip_str)
+        except AttributeError:
+            return data
 
     def __set_data(
             self, data, none_value, inf_value, nan_value, float_type,
