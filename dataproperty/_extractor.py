@@ -128,6 +128,16 @@ class DataPropertyExtractor(object):
             east_asian_ambiguous_width=self.east_asian_ambiguous_width
         )
 
+    def to_header_dataproperty_list(self):
+        old_strict_type_mapping = self.strict_type_mapping
+        self.strict_type_mapping = STRICT_TYPE_MAPPING
+
+        header_dp_list = self.to_dataproperty_list(self.header_list)
+
+        self.strict_type_mapping = old_strict_type_mapping
+
+        return header_dp_list
+
     def extract_data_property_matrix(self):
         # alias to to_dataproperty_matrix method.
         # this method will be deleted in the future.
