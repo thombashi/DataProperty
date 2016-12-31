@@ -37,7 +37,7 @@ from ._function import (
     get_ascii_char_width,
 )
 from ._property_extractor import (
-    PropertyExtractor,
+    DataPropertyExtractor,
     MissmatchProcessing,
 )
 from ._type import (

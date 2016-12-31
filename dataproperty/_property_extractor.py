@@ -29,7 +29,7 @@ class MissmatchProcessing(object):
     EXTEND = 1 << 3
 
 
-class PropertyExtractor(object):
+class DataPropertyExtractor(object):
 
     def __init__(self):
         self.header_list = []

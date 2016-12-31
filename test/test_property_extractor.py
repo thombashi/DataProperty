@@ -19,7 +19,7 @@ inf = float("inf")
 
 @pytest.fixture
 def prop_extractor():
-    return PropertyExtractor()
+    return DataPropertyExtractor()
 
 
 def bool_converter_test(value):
@@ -30,7 +30,7 @@ def datetime_converter_test(value):
     return value.strftime("%Y%m%d %H%M%S")
 
 
-class Test_PropertyExtractor_to_dataproperty_matrix:
+class Test_DataPropertyExtractor_to_dataproperty_matrix:
 
     @pytest.mark.parametrize(["value"], [
         [
@@ -167,7 +167,7 @@ class Test_PropertyExtractor_to_dataproperty_matrix:
         assert prop_extractor.to_dataproperty_matrix() == []
 
 
-class Test_PropertyExtractor_to_dataproperty_list:
+class Test_DataPropertyExtractor_to_dataproperty_list:
 
     @pytest.mark.parametrize(["value", "float_type"], [
         [[0.1, Decimal("1.1")], float],
@@ -196,7 +196,7 @@ class Test_PropertyExtractor_to_dataproperty_list:
             assert dp.data == value
 
 
-class Test_PropertyExtractor_to_col_dataproperty_list:
+class Test_DataPropertyExtractor_to_col_dataproperty_list:
     TEST_DATA_MATRIX = [
         [
             1, 1.1,  "aa",   1,   1,     True,   inf,
