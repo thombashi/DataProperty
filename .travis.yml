@@ -15,6 +15,7 @@ os:
   - linux
 
 install:
+  - pip install pytest==2.9.2
   - pip install tox
   - pip install coveralls
 
