@@ -18,7 +18,7 @@ inf = float("inf")
 
 
 @pytest.fixture
-def prop_extractor():
+def dp_extractor():
     return DataPropertyExtractor()
 
 
@@ -42,10 +42,10 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
             ],
         ],
     ])
-    def test_smoke(self, prop_extractor, value):
-        prop_extractor.data_matrix = value
+    def test_smoke(self, dp_extractor, value):
+        dp_extractor.data_matrix = value
 
-        assert len(prop_extractor.to_dataproperty_matrix()) > 0
+        assert len(dp_extractor.to_dataproperty_matrix()) > 0
 
     @pytest.mark.parametrize(
         [
@@ -69,16 +69,16 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         ]
     )
     def test_normal(
-            self, prop_extractor, value, none_value, inf_value, nan_value,
+            self, dp_extractor, value, none_value, inf_value, nan_value,
             bool_converter, datetime_converter):
-        prop_extractor.data_matrix = value
-        prop_extractor.none_value = none_value
-        prop_extractor.inf_value = inf_value
-        prop_extractor.nan_value = nan_value
-        prop_extractor.bool_converter = bool_converter_test
-        prop_extractor.datetime_converter = datetime_converter
-        prop_extractor.datetime_format_str = "s"
-        prop_matrix = prop_extractor.to_dataproperty_matrix()
+        dp_extractor.data_matrix = value
+        dp_extractor.none_value = none_value
+        dp_extractor.inf_value = inf_value
+        dp_extractor.nan_value = nan_value
+        dp_extractor.bool_converter = bool_converter_test
+        dp_extractor.datetime_converter = datetime_converter
+        dp_extractor.datetime_format_str = "s"
+        prop_matrix = dp_extractor.to_dataproperty_matrix()
 
         assert len(prop_matrix) == 4
 
@@ -157,14 +157,14 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
     @pytest.mark.parametrize(["value", "expected"], [
         [None, TypeError],
     ])
-    def test_exception(self, prop_extractor, value, expected):
+    def test_exception(self, dp_extractor, value, expected):
         with pytest.raises(expected):
-            prop_extractor.data_matrix = value
-            prop_extractor.to_dataproperty_matrix()
+            dp_extractor.data_matrix = value
+            dp_extractor.to_dataproperty_matrix()
 
-    def test_empty(self, prop_extractor):
-        prop_extractor.data_matrix = []
-        assert prop_extractor.to_dataproperty_matrix() == []
+    def test_empty(self, dp_extractor):
+        dp_extractor.data_matrix = []
+        assert dp_extractor.to_dataproperty_matrix() == []
 
 
 class Test_DataPropertyExtractor_to_dataproperty_list:
@@ -173,9 +173,9 @@ class Test_DataPropertyExtractor_to_dataproperty_list:
         [[0.1, Decimal("1.1")], float],
         [[0.1, Decimal("1.1")], Decimal],
     ])
-    def test_normal_float(self, prop_extractor, value, float_type):
-        prop_extractor.float_type = float_type
-        prop_list = prop_extractor.to_dataproperty_list(value)
+    def test_normal_float(self, dp_extractor, value, float_type):
+        dp_extractor.float_type = float_type
+        prop_list = dp_extractor.to_dataproperty_list(value)
 
         for prop in prop_list:
             assert isinstance(prop.data, float_type)
@@ -188,9 +188,9 @@ class Test_DataPropertyExtractor_to_dataproperty_list:
         ],
     ])
     def test_normal_strip_str(
-            self, prop_extractor, value, strip_str, expected):
-        prop_extractor.strip_str = strip_str
-        dp_list = prop_extractor.to_dataproperty_list(value)
+            self, dp_extractor, value, strip_str, expected):
+        dp_extractor.strip_str = strip_str
+        dp_list = dp_extractor.to_dataproperty_list(value)
 
         for dp, value in zip(dp_list, expected):
             assert dp.data == value
@@ -226,10 +226,10 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
             TEST_DATA_MATRIX,
         ],
     ])
-    def test_normal_default(self, prop_extractor, header_list, value):
-        prop_extractor.header_list = header_list
-        prop_extractor.data_matrix = value
-        col_prop_list = prop_extractor.to_col_dataproperty_list()
+    def test_normal_default(self, dp_extractor, header_list, value):
+        dp_extractor.header_list = header_list
+        dp_extractor.data_matrix = value
+        col_prop_list = dp_extractor.to_col_dataproperty_list()
 
         assert len(col_prop_list) == 9
 
@@ -319,11 +319,11 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
             TEST_DATA_MATRIX,
         ],
     ])
-    def test_normal_not_strict(self, prop_extractor, header_list, value):
-        prop_extractor.header_list = header_list
-        prop_extractor.data_matrix = value
-        prop_extractor.strict_type_mapping = NOT_STRICT_TYPE_MAPPING
-        col_prop_list = prop_extractor.to_col_dataproperty_list()
+    def test_normal_not_strict(self, dp_extractor, header_list, value):
+        dp_extractor.header_list = header_list
+        dp_extractor.data_matrix = value
+        dp_extractor.strict_type_mapping = NOT_STRICT_TYPE_MAPPING
+        col_prop_list = dp_extractor.to_col_dataproperty_list()
 
         assert len(col_prop_list) == 9
 
@@ -343,13 +343,13 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert prop.decimal_places == 2
         assert prop.format_str == ".2f"
 
-    def test_normal_nan_inf(self, prop_extractor):
-        prop_extractor.header_list = ["n", "i"]
-        prop_extractor.data_matrix = [
+    def test_normal_nan_inf(self, dp_extractor):
+        dp_extractor.header_list = ["n", "i"]
+        dp_extractor.data_matrix = [
             [nan, inf],
             ["nan", "inf"],
         ]
-        col_prop_list = prop_extractor.to_col_dataproperty_list()
+        col_prop_list = dp_extractor.to_col_dataproperty_list()
 
         assert len(col_prop_list) == 2
 
@@ -372,14 +372,14 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         [1],
     ])
     def test_normal_east_asian_ambiguous_width(
-            self, prop_extractor, ambiguous_width):
-        prop_extractor.header_list = ["ascii", "eaa"]
-        prop_extractor.data_matrix = [
+            self, dp_extractor, ambiguous_width):
+        dp_extractor.header_list = ["ascii", "eaa"]
+        dp_extractor.data_matrix = [
             ["abcdefg", "Øαββ"],
             ["abcdefghij", "ØØ"],
         ]
-        prop_extractor.east_asian_ambiguous_width = ambiguous_width
-        col_prop_list = prop_extractor.to_col_dataproperty_list()
+        dp_extractor.east_asian_ambiguous_width = ambiguous_width
+        col_prop_list = dp_extractor.to_col_dataproperty_list()
 
         assert len(col_prop_list) == 2
 
@@ -397,10 +397,10 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert prop.ascii_char_width == 4 * ambiguous_width
         assert NanType(prop.decimal_places).is_type()
 
-    def test_normal_empty_value(self, prop_extractor):
-        prop_extractor.header_list = ["a", "22", "cccc"]
-        prop_extractor.data_matrix = None
-        col_prop_list = prop_extractor.to_col_dataproperty_list()
+    def test_normal_empty_value(self, dp_extractor):
+        dp_extractor.header_list = ["a", "22", "cccc"]
+        dp_extractor.data_matrix = None
+        col_prop_list = dp_extractor.to_col_dataproperty_list()
 
         prop = col_prop_list[0]
         assert prop.typecode == Typecode.NONE
@@ -443,12 +443,12 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
             ],
         ])
     def test_normal_mismatch_processing(
-            self, prop_extractor, header_list, value, mismatch_processing,
+            self, dp_extractor, header_list, value, mismatch_processing,
             expected):
-        prop_extractor.header_list = header_list
-        prop_extractor.data_matrix = value
-        prop_extractor.mismatch_processing = mismatch_processing
-        col_prop_list = prop_extractor.to_col_dataproperty_list()
+        dp_extractor.header_list = header_list
+        dp_extractor.data_matrix = value
+        dp_extractor.mismatch_processing = mismatch_processing
+        col_prop_list = dp_extractor.to_col_dataproperty_list()
 
         assert len(col_prop_list) == expected
 
@@ -463,11 +463,11 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
             ],
         ])
     def test_exception_mismatch_processing(
-            self, prop_extractor, header_list, value, mismatch_processing,
+            self, dp_extractor, header_list, value, mismatch_processing,
             expected):
-        prop_extractor.header_list = header_list
-        prop_extractor.data_matrix = value
-        prop_extractor.mismatch_processing = mismatch_processing
+        dp_extractor.header_list = header_list
+        dp_extractor.data_matrix = value
+        dp_extractor.mismatch_processing = mismatch_processing
 
         with pytest.raises(expected):
-            prop_extractor.to_col_dataproperty_list()
+            dp_extractor.to_col_dataproperty_list()
