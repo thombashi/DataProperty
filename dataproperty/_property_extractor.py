@@ -48,22 +48,34 @@ class PropertyExtractor(object):
         self.mismatch_processing = MissmatchProcessing.TRIM
 
     def extract_data_property_matrix(self):
+        # alias to to_data_property_matrix method.
+        # this method will be deleted in the future.
+
+        return self.to_data_property_matrix()
+
+    def to_data_property_matrix(self):
         return [
-            self.extract_data_property_list(data_list)
+            self.to_data_property_list(data_list)
             for data_list in self.data_matrix
         ]
 
     def extract_column_property_list(self):
-        # alias to extract_col_property_list method.
+        # alias to to_col_property_list method.
         # this method will be deleted in the future.
 
-        return self.extract_col_property_list()
+        return self.to_col_property_list()
 
     def extract_col_property_list(self):
-        column_prop_list = self.__extract_header_data_prop_list()
+        # alias to to_col_property_list method.
+        # this method will be deleted in the future.
+
+        return self.to_col_property_list()
+
+    def to_col_property_list(self):
+        column_prop_list = self.__to_header_data_prop_list()
 
         try:
-            data_prop_matrix = self.extract_data_property_matrix()
+            data_prop_matrix = self.to_data_property_matrix()
         except TypeError:
             return column_prop_list
 
@@ -97,8 +109,8 @@ class PropertyExtractor(object):
 
         return column_prop_list
 
-    def __extract_header_data_prop_list(self):
-        header_prop_list = self.extract_data_property_list(self.header_list)
+    def __to_header_data_prop_list(self):
+        header_prop_list = self.to_data_property_list(self.header_list)
         column_prop_list = []
 
         for header_prop in header_prop_list:
@@ -113,6 +125,12 @@ class PropertyExtractor(object):
         return column_prop_list
 
     def extract_data_property_list(self, data_list):
+        # alias to to_data_property_list method.
+        # this method will be deleted in the future.
+
+        return self.to_data_property_list(data_list)
+
+    def to_data_property_list(self, data_list):
         if is_empty_sequence(data_list):
             return []
 

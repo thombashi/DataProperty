@@ -30,7 +30,7 @@ def datetime_converter_test(value):
     return value.strftime("%Y%m%d %H%M%S")
 
 
-class Test_PropertyExtractor_extract_data_property_matrix:
+class Test_PropertyExtractor_to_data_property_matrix:
 
     @pytest.mark.parametrize(["value"], [
         [
@@ -45,7 +45,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
     def test_smoke(self, prop_extractor, value):
         prop_extractor.data_matrix = value
 
-        assert len(prop_extractor.extract_data_property_matrix()) > 0
+        assert len(prop_extractor.to_data_property_matrix()) > 0
 
     @pytest.mark.parametrize(
         [
@@ -78,7 +78,7 @@ class Test_PropertyExtractor_extract_data_property_matrix:
         prop_extractor.bool_converter = bool_converter_test
         prop_extractor.datetime_converter = datetime_converter
         prop_extractor.datetime_format_str = "s"
-        prop_matrix = prop_extractor.extract_data_property_matrix()
+        prop_matrix = prop_extractor.to_data_property_matrix()
 
         assert len(prop_matrix) == 4
 
@@ -160,14 +160,14 @@ class Test_PropertyExtractor_extract_data_property_matrix:
     def test_exception(self, prop_extractor, value, expected):
         with pytest.raises(expected):
             prop_extractor.data_matrix = value
-            prop_extractor.extract_data_property_matrix()
+            prop_extractor.to_data_property_matrix()
 
     def test_empty(self, prop_extractor):
         prop_extractor.data_matrix = []
-        assert prop_extractor.extract_data_property_matrix() == []
+        assert prop_extractor.to_data_property_matrix() == []
 
 
-class Test_PropertyExtractor_extract_data_property_list:
+class Test_PropertyExtractor_to_data_property_list:
 
     @pytest.mark.parametrize(["value", "float_type"], [
         [[0.1, Decimal("1.1")], float],
@@ -175,13 +175,13 @@ class Test_PropertyExtractor_extract_data_property_list:
     ])
     def test_normal_float(self, prop_extractor, value, float_type):
         prop_extractor.float_type = float_type
-        prop_list = prop_extractor.extract_data_property_list(value)
+        prop_list = prop_extractor.to_data_property_list(value)
 
         for prop in prop_list:
             assert isinstance(prop.data, float_type)
 
 
-class Test_PropertyExtractor_extract_column_property_list:
+class Test_PropertyExtractor_to_col_property_list:
     TEST_DATA_MATRIX = [
         [
             1, 1.1,  "aa",   1,   1,     True,   inf,
@@ -214,7 +214,7 @@ class Test_PropertyExtractor_extract_column_property_list:
     def test_normal_default(self, prop_extractor, header_list, value):
         prop_extractor.header_list = header_list
         prop_extractor.data_matrix = value
-        col_prop_list = prop_extractor.extract_col_property_list()
+        col_prop_list = prop_extractor.to_col_property_list()
 
         assert len(col_prop_list) == 9
 
@@ -308,7 +308,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         prop_extractor.header_list = header_list
         prop_extractor.data_matrix = value
         prop_extractor.strict_type_mapping = NOT_STRICT_TYPE_MAPPING
-        col_prop_list = prop_extractor.extract_col_property_list()
+        col_prop_list = prop_extractor.to_col_property_list()
 
         assert len(col_prop_list) == 9
 
@@ -334,7 +334,7 @@ class Test_PropertyExtractor_extract_column_property_list:
             [nan, inf],
             ["nan", "inf"],
         ]
-        col_prop_list = prop_extractor.extract_col_property_list()
+        col_prop_list = prop_extractor.to_col_property_list()
 
         assert len(col_prop_list) == 2
 
@@ -364,7 +364,7 @@ class Test_PropertyExtractor_extract_column_property_list:
             ["abcdefghij", "ØØ"],
         ]
         prop_extractor.east_asian_ambiguous_width = ambiguous_width
-        col_prop_list = prop_extractor.extract_col_property_list()
+        col_prop_list = prop_extractor.to_col_property_list()
 
         assert len(col_prop_list) == 2
 
@@ -385,7 +385,7 @@ class Test_PropertyExtractor_extract_column_property_list:
     def test_normal_empty_value(self, prop_extractor):
         prop_extractor.header_list = ["a", "22", "cccc"]
         prop_extractor.data_matrix = None
-        col_prop_list = prop_extractor.extract_col_property_list()
+        col_prop_list = prop_extractor.to_col_property_list()
 
         prop = col_prop_list[0]
         assert prop.typecode == Typecode.NONE
@@ -433,7 +433,7 @@ class Test_PropertyExtractor_extract_column_property_list:
         prop_extractor.header_list = header_list
         prop_extractor.data_matrix = value
         prop_extractor.mismatch_processing = mismatch_processing
-        col_prop_list = prop_extractor.extract_col_property_list()
+        col_prop_list = prop_extractor.to_col_property_list()
 
         assert len(col_prop_list) == expected
 
@@ -455,4 +455,4 @@ class Test_PropertyExtractor_extract_column_property_list:
         prop_extractor.mismatch_processing = mismatch_processing
 
         with pytest.raises(expected):
-            prop_extractor.extract_col_property_list()
+            prop_extractor.to_col_property_list()
