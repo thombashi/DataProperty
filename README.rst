@@ -40,7 +40,7 @@ Usage
 Extract property of data
 ------------------------
 
-e.g. Extract `float` value property
+e.g. Extract a ``float`` value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
@@ -53,7 +53,7 @@ e.g. Extract `float` value property
     data=-1.1, typename=FLOAT, align=right, str_len=4, ascii_char_width=4, integer_digits=1, decimal_places=1, additional_format_len=1
 
 
-e.g. Extract `int` value property
+e.g. Extract a ``int`` value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
@@ -65,7 +65,7 @@ e.g. Extract `int` value property
 
     data=123456789, typename=INTEGER, align=right, str_len=9, ascii_char_width=9, integer_digits=9, decimal_places=0, additional_format_len=0
 
-e.g. Extract `str` (ascii) value property
+e.g. Extract a ``str`` (ascii) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
@@ -77,7 +77,7 @@ e.g. Extract `str` (ascii) value property
 
     data=sample string, typename=STRING, align=left, str_len=13, ascii_char_width=13, integer_digits=nan, decimal_places=nan, additional_format_len=0
 
-e.g. Extract `str` (multi-byte) value property
+e.g. Extract a ``str`` (multi-byte) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
@@ -89,7 +89,7 @@ e.g. Extract `str` (multi-byte) value property
 
 ::
 
-e.g. Extract time (`datetime`) value property
+e.g. Extract a time (``datetime``) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
@@ -102,7 +102,7 @@ e.g. Extract time (`datetime`) value property
 
     data=2017-01-01 00:00:00, typename=DATETIME, align=left, str_len=19, ascii_char_width=19, integer_digits=nan, decimal_places=nan, additional_format_len=0
 
-e.g. Extract `bool` value property
+e.g. Extract a ``bool`` value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
@@ -114,20 +114,23 @@ e.g. Extract `bool` value property
     data=True, typename=BOOL, align=left, str_len=4, ascii_char_width=4, integer_digits=nan, decimal_places=nan, additional_format_len=0
 
 
-Extract for each data property from a matrix
+Extract data property for each element from a matrix
 ----------------------------------------------------
 
 .. code:: python
 
     import datetime
-    from dataproperty import PropertyExtractor, Typecode
+    from dataproperty import DataPropertyExtractor, Typecode
 
-    def display_dataprop(prop_matrix, name):
+    def display_dp_matrix_attr(dp_matrix, attr_name):
+        """show a value assocciated with an attribute for each DataProperty instance in the dp_matrix"""
+
         print()
-        print("---------- {:s} ----------".format(name))
-        for prop_list in prop_matrix:
-            print([getattr(prop, name) for prop in prop_list])
+        print("---------- {:s} ----------".format(attr_name))
+        for dp_list in dp_matrix:
+            print([getattr(dp, attr_name) for dp in dp_list])
 
+    # sample data definitions
     dt = datetime.datetime(2017, 1, 1, 0, 0, 0)
     inf = float("inf")
     nan = float("nan")
@@ -136,66 +139,71 @@ Extract for each data property from a matrix
         [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf", "nan", dt],
         [3, 3.33, "cccc", -3,  "ccc", "true", inf,   "NAN", "2017-01-01T01:23:45+0900"],
     ]
-    prop_extractor = PropertyExtractor()
-    prop_extractor.data_matrix = data_matrix
-    prop_matrix = prop_extractor.extract_data_property_matrix()
+
+    # extract data property for each element from a matrix
+    dp_extractor = DataPropertyExtractor()
+    dp_extractor.data_matrix = data_matrix
+    dp_matrix = dp_extractor.to_dataproperty_matrix()
 
     print("---------- typename ----------")
-    for prop_list in prop_matrix:
-        print([Typecode.get_typename(prop.typecode) for prop in prop_list])
+    for dp_list in dp_matrix:
+        print([Typecode.get_typename(dp.typecode) for dp in dp_list])
 
-    display_dataprop(prop_matrix, "data")
-    display_dataprop(prop_matrix, "align")
-    display_dataprop(prop_matrix, "str_len")
-    display_dataprop(prop_matrix, "integer_digits")
-    display_dataprop(prop_matrix, "decimal_places")
+    display_dp_matrix_attr(dp_matrix, "data")
+    display_dp_matrix_attr(dp_matrix, "align")
+    display_dp_matrix_attr(dp_matrix, "str_len")
+    display_dp_matrix_attr(dp_matrix, "integer_digits")
+    display_dp_matrix_attr(dp_matrix, "decimal_places")
 
 ::
 
     ---------- typename ----------
-    ['INTEGER', 'FLOAT', 'STRING', 'INTEGER', 'INTEGER', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
-    ['INTEGER', 'FLOAT', 'STRING', 'FLOAT', 'FLOAT', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
-    ['INTEGER', 'FLOAT', 'STRING', 'INTEGER', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
-    
+    [u'INTEGER', u'FLOAT', u'STRING', u'INTEGER', u'INTEGER', u'BOOL', u'INFINITY', u'NAN', u'DATETIME']
+    [u'INTEGER', u'FLOAT', u'STRING', u'FLOAT', u'FLOAT', u'BOOL', u'INFINITY', u'NAN', u'DATETIME']
+    [u'INTEGER', u'FLOAT', u'STRING', u'INTEGER', u'STRING', u'BOOL', u'INFINITY', u'NAN', u'STRING']
+
     ---------- data ----------
-    [1, Decimal('1.1'), 'aa', 1, 1, True, Decimal('Infinity'), Decimal('NaN'), datetime.datetime(2017, 1, 1, 0, 0)]
-    [2, Decimal('2.2'), 'bbb', Decimal('2.2'), Decimal('2.2'), False, Decimal('Infinity'), Decimal('NaN'), datetime.datetime(2017, 1, 1, 0, 0)]
-    [3, Decimal('3.33'), 'cccc', -3, 'ccc', True, Decimal('Infinity'), Decimal('NaN'), '2017-01-01T01:23:45+0900']
-    
+    [1, Decimal('1.1'), u'aa', 1, 1, True, Decimal('Infinity'), Decimal('NaN'), datetime.datetime(2017, 1, 1, 0, 0)]
+    [2, Decimal('2.2'), u'bbb', Decimal('2.2'), Decimal('2.2'), False, Decimal('Infinity'), Decimal('NaN'), datetime.datetime(2017, 1, 1, 0, 0)]
+    [3, Decimal('3.33'), u'cccc', -3, u'ccc', True, Decimal('Infinity'), Decimal('NaN'), u'2017-01-01T01:23:45+0900']
+
     ---------- align ----------
     [right, right, left, right, right, left, left, left, left]
     [right, right, left, right, right, left, left, left, left]
     [right, right, left, right, left, left, left, left, left]
-    
+
     ---------- str_len ----------
     [1, 3, 2, 1, 1, 4, 8, 3, 19]
     [1, 3, 3, 3, 3, 5, 8, 3, 19]
     [1, 4, 4, 2, 3, 4, 8, 3, 24]
-    
+
     ---------- integer_digits ----------
     [1, 1, nan, 1, 1, nan, nan, nan, nan]
     [1, 1, nan, 1, 1, nan, nan, nan, nan]
     [1, 1, nan, 1, nan, nan, nan, nan, nan]
-    
+
     ---------- decimal_places ----------
     [0, 1, nan, 0, 0, nan, nan, nan, nan]
     [0, 1, nan, 1, 1, nan, nan, nan, nan]
     [0, 2, nan, 0, nan, nan, nan, nan, nan]
 
 
-Extract for each column property from a matrix
+Extract property for each column from a matrix
 ------------------------------------------------------
 
 .. code:: python
 
     import datetime
-    from dataproperty import PropertyExtractor, Typecode
+    from dataproperty import DataPropertyExtractor, Typecode
 
-    def display_colprop(prop_list, name):
+    def display_col_dp(dp_list, attr_name):
+        """show a value assocciated with an attribute for each DataProperty instance in the dp_list"""
+
         print()
-        print("---------- {:s} ----------".format(name))
-        print([getattr(prop, name) for prop in prop_list])
+        print("---------- {:s} ----------".format(attr_name))
+        print([getattr(dp, attr_name) for dp in dp_list])
 
+    # sample data definitions
     dt = datetime.datetime(2017, 1, 1, 0, 0, 0)
     inf = float("inf")
     nan = float("nan")
@@ -204,31 +212,32 @@ Extract for each column property from a matrix
         [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf", "nan", dt],
         [3, 3.33, "cccc", -3,  "ccc", "true", inf,   "NAN", "2017-01-01T01:23:45+0900"],
     ]
-    
-    prop_extractor = PropertyExtractor()
-    prop_extractor.header_list = [
-        "int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
-    prop_extractor.data_matrix = data_matrix
-    col_prop_list = prop_extractor.extract_col_property_list()
-    
-    print("---------- typename ----------")
-    print([Typecode.get_typename(prop.typecode) for prop in col_prop_list])
 
-    display_colprop(col_prop_list, "align")
-    display_colprop(col_prop_list, "padding_len")
-    display_colprop(col_prop_list, "decimal_places")
+    # extract property for each column from a matrix
+    dp_extractor = DataPropertyExtractor()
+    dp_extractor.header_list = [
+        "int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
+    dp_extractor.data_matrix = data_matrix
+    col_dp_list = dp_extractor.to_col_dataproperty_list()
+
+    print("---------- typename ----------")
+    print([Typecode.get_typename(dp.typecode) for dp in col_dp_list])
+
+    display_col_dp(col_dp_list, "align")
+    display_col_dp(col_dp_list, "padding_len")
+    display_col_dp(col_dp_list, "decimal_places")
 
 ::
 
     ---------- typename ----------
-    ['INTEGER', 'FLOAT', 'STRING', 'FLOAT', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
-    
+    [u'INTEGER', u'FLOAT', u'STRING', u'FLOAT', u'STRING', u'BOOL', u'INFINITY', u'NAN', u'STRING']
+
     ---------- align ----------
     [right, right, left, right, left, left, left, left, left]
-    
+
     ---------- padding_len ----------
     [3, 5, 4, 4, 3, 5, 8, 3, 24]
-    
+
     ---------- decimal_places ----------
     [0, 2, nan, 1, 1, nan, nan, nan, nan]
 
