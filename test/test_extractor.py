@@ -229,11 +229,11 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
     def test_normal_default(self, dp_extractor, header_list, value):
         dp_extractor.header_list = header_list
         dp_extractor.data_matrix = value
-        col_prop_list = dp_extractor.to_col_dataproperty_list()
+        col_dp_list = dp_extractor.to_col_dataproperty_list()
 
-        assert len(col_prop_list) == 9
+        assert len(col_dp_list) == 9
 
-        prop = col_prop_list[0]
+        prop = col_dp_list[0]
         assert prop.typecode == Typecode.INTEGER
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
@@ -241,7 +241,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert prop.decimal_places == 0
         assert prop.format_str == "d"
 
-        prop = col_prop_list[1]
+        prop = col_dp_list[1]
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
@@ -249,7 +249,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert prop.decimal_places == 2
         assert prop.format_str == ".2f"
 
-        prop = col_prop_list[2]
+        prop = col_dp_list[2]
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -257,7 +257,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "s"
 
-        prop = col_prop_list[3]
+        prop = col_dp_list[3]
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
@@ -265,7 +265,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert prop.decimal_places == 1
         assert prop.format_str == ".1f"
 
-        prop = col_prop_list[4]
+        prop = col_dp_list[4]
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -273,7 +273,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert prop.decimal_places == 1
         assert prop.format_str == "s"
 
-        prop = col_prop_list[5]
+        prop = col_dp_list[5]
         assert prop.typecode == Typecode.BOOL
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -281,7 +281,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
-        prop = col_prop_list[6]
+        prop = col_dp_list[6]
         assert prop.typecode == Typecode.INFINITY
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -289,7 +289,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
-        prop = col_prop_list[7]
+        prop = col_dp_list[7]
         assert prop.typecode == Typecode.NAN
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -297,7 +297,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == "f"
 
-        prop = col_prop_list[8]
+        prop = col_dp_list[8]
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -323,11 +323,11 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         dp_extractor.header_list = header_list
         dp_extractor.data_matrix = value
         dp_extractor.strict_type_mapping = NOT_STRICT_TYPE_MAPPING
-        col_prop_list = dp_extractor.to_col_dataproperty_list()
+        col_dp_list = dp_extractor.to_col_dataproperty_list()
 
-        assert len(col_prop_list) == 9
+        assert len(col_dp_list) == 9
 
-        prop = col_prop_list[0]
+        prop = col_dp_list[0]
         assert prop.typecode == Typecode.INTEGER
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
@@ -335,7 +335,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert prop.decimal_places == 0
         assert prop.format_str == "d"
 
-        prop = col_prop_list[1]
+        prop = col_dp_list[1]
         assert prop.typecode == Typecode.FLOAT
         assert prop.align.align_code == Align.RIGHT.align_code
         assert prop.align.align_string == Align.RIGHT.align_string
@@ -349,18 +349,18 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
             [nan, inf],
             ["nan", "inf"],
         ]
-        col_prop_list = dp_extractor.to_col_dataproperty_list()
+        col_dp_list = dp_extractor.to_col_dataproperty_list()
 
-        assert len(col_prop_list) == 2
+        assert len(col_dp_list) == 2
 
-        prop = col_prop_list[0]
+        prop = col_dp_list[0]
         assert prop.typecode == Typecode.NAN
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.ascii_char_width == 3
         assert NanType(prop.decimal_places).is_type()
 
-        prop = col_prop_list[1]
+        prop = col_dp_list[1]
         assert prop.typecode == Typecode.INFINITY
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -379,18 +379,18 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
             ["abcdefghij", "ØØ"],
         ]
         dp_extractor.east_asian_ambiguous_width = ambiguous_width
-        col_prop_list = dp_extractor.to_col_dataproperty_list()
+        col_dp_list = dp_extractor.to_col_dataproperty_list()
 
-        assert len(col_prop_list) == 2
+        assert len(col_dp_list) == 2
 
-        prop = col_prop_list[0]
+        prop = col_dp_list[0]
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
         assert prop.ascii_char_width == 10
         assert NanType(prop.decimal_places).is_type()
 
-        prop = col_prop_list[1]
+        prop = col_dp_list[1]
         assert prop.typecode == Typecode.STRING
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -400,9 +400,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
     def test_normal_empty_value(self, dp_extractor):
         dp_extractor.header_list = ["a", "22", "cccc"]
         dp_extractor.data_matrix = None
-        col_prop_list = dp_extractor.to_col_dataproperty_list()
+        col_dp_list = dp_extractor.to_col_dataproperty_list()
 
-        prop = col_prop_list[0]
+        prop = col_dp_list[0]
         assert prop.typecode == Typecode.NONE
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -410,7 +410,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
-        prop = col_prop_list[1]
+        prop = col_dp_list[1]
         assert prop.typecode == Typecode.NONE
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -418,7 +418,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert NanType(prop.decimal_places).is_type()
         assert prop.format_str == ""
 
-        prop = col_prop_list[2]
+        prop = col_dp_list[2]
         assert prop.typecode == Typecode.NONE
         assert prop.align.align_code == Align.LEFT.align_code
         assert prop.align.align_string == Align.LEFT.align_string
@@ -448,9 +448,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         dp_extractor.header_list = header_list
         dp_extractor.data_matrix = value
         dp_extractor.mismatch_processing = mismatch_processing
-        col_prop_list = dp_extractor.to_col_dataproperty_list()
+        col_dp_list = dp_extractor.to_col_dataproperty_list()
 
-        assert len(col_prop_list) == expected
+        assert len(col_dp_list) == expected
 
     @pytest.mark.parametrize(
         ["header_list", "value", "mismatch_processing", "expected"],
