@@ -13,6 +13,7 @@ from ._common import (
     DEFAULT_INF_VALUE,
     DEFAULT_NAN_VALUE,
     DEFAULT_STRICT_TYPE_MAPPING,
+    STRICT_TYPE_MAPPING,
     default_bool_converter,
     default_datetime_converter,
 )
@@ -55,7 +56,7 @@ class DataPropertyExtractor(object):
         ]
 
     def to_col_dataproperty_list(self):
-        col_dp_list = self.__to_header_dataproperty_list()
+        col_dp_list = self.__get_col_dp_list_base()
 
         try:
             dp_matrix = self.to_dataproperty_matrix()
@@ -92,21 +93,6 @@ class DataPropertyExtractor(object):
 
         return col_dp_list
 
-    def __to_header_dataproperty_list(self):
-        header_dp_list = self.to_dataproperty_list(self.header_list)
-        col_dp_list = []
-
-        for header_dp in header_dp_list:
-            col_dp = ColumnDataProperty(
-                min_padding_len=self.min_padding_len,
-                datetime_format_str=self.datetime_format_str,
-                east_asian_ambiguous_width=self.east_asian_ambiguous_width
-            )
-            col_dp.update_header(header_dp)
-            col_dp_list.append(col_dp)
-
-        return col_dp_list
-
     def to_dataproperty_list(self, data_list):
         if is_empty_sequence(data_list):
             return []
@@ -137,6 +123,21 @@ class DataPropertyExtractor(object):
         self.strict_type_mapping = old_strict_type_mapping
 
         return header_dp_list
+
+    def __get_col_dp_list_base(self):
+        header_dp_list = self.to_header_dataproperty_list()
+        col_dp_list = []
+
+        for header_dp in header_dp_list:
+            col_dp = ColumnDataProperty(
+                min_padding_len=self.min_padding_len,
+                datetime_format_str=self.datetime_format_str,
+                east_asian_ambiguous_width=self.east_asian_ambiguous_width
+            )
+            col_dp.update_header(header_dp)
+            col_dp_list.append(col_dp)
+
+        return col_dp_list
 
     def extract_data_property_matrix(self):
         # alias to to_dataproperty_matrix method.
