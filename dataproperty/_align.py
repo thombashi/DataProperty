@@ -7,7 +7,7 @@
 from __future__ import unicode_literals
 
 
-class Align:
+class Align(object):
 
     class __AlignData(object):
 
