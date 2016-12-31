@@ -16,7 +16,7 @@ from ._common import (
     default_bool_converter,
     default_datetime_converter,
 )
-from ._data_property import (
+from ._dataproperty import (
     DataProperty,
     ColumnDataProperty,
 )

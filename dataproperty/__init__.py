@@ -14,7 +14,7 @@ from ._common import (
     STRICT_TYPE_MAPPING,
 )
 from ._container import MinMaxContainer
-from ._data_property import (
+from ._dataproperty import (
     ColumnDataProperty,
     DataProperty,
 )
