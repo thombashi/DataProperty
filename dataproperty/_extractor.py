@@ -62,7 +62,7 @@ class DataPropertyExtractor(object):
         except TypeError:
             return col_dp_list
 
-        for col_idx, col_prop_list in enumerate(zip(*dp_matrix)):
+        for col_idx, value_dp_list in enumerate(zip(*dp_matrix)):
             try:
                 col_dp_list[col_idx]
             except IndexError:
@@ -87,8 +87,8 @@ class DataPropertyExtractor(object):
                     # ignore columns that longer than header column
                     continue
 
-            for prop in col_prop_list:
-                col_dp_list[col_idx].update_body(prop)
+            for value_dp in value_dp_list:
+                col_dp_list[col_idx].update_body(value_dp)
 
         return col_dp_list
 
