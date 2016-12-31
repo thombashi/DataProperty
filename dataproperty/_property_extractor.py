@@ -110,21 +110,21 @@ class PropertyExtractor(object):
         if is_empty_sequence(data_list):
             return []
 
-        return [
-            DataProperty(
-                data,
-                none_value=self.none_value,
-                inf_value=self.inf_value,
-                nan_value=self.nan_value,
-                float_type=self.float_type,
-                bool_converter=self.bool_converter,
-                datetime_converter=self.datetime_converter,
-                datetime_format_str=self.datetime_format_str,
-                strict_type_mapping=self.strict_type_mapping,
-                east_asian_ambiguous_width=self.east_asian_ambiguous_width
-            )
-            for data in data_list
-        ]
+        return [self.to_dataproperty(data) for data in data_list]
+
+    def to_dataproperty(self, data):
+        return DataProperty(
+            data,
+            none_value=self.none_value,
+            inf_value=self.inf_value,
+            nan_value=self.nan_value,
+            float_type=self.float_type,
+            bool_converter=self.bool_converter,
+            datetime_converter=self.datetime_converter,
+            datetime_format_str=self.datetime_format_str,
+            strict_type_mapping=self.strict_type_mapping,
+            east_asian_ambiguous_width=self.east_asian_ambiguous_width
+        )
 
     def extract_data_property_matrix(self):
         # alias to to_dataproperty_matrix method.
