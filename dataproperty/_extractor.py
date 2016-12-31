@@ -58,11 +58,11 @@ class DataPropertyExtractor(object):
         column_prop_list = self.__to_header_dataproperty_list()
 
         try:
-            data_prop_matrix = self.to_dataproperty_matrix()
+            dp_matrix = self.to_dataproperty_matrix()
         except TypeError:
             return column_prop_list
 
-        for col_idx, col_prop_list in enumerate(zip(*data_prop_matrix)):
+        for col_idx, col_prop_list in enumerate(zip(*dp_matrix)):
             try:
                 column_prop_list[col_idx]
             except IndexError:

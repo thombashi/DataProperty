@@ -355,7 +355,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
-        "__data_prop_list",
+        "__dataproperty_list",
         "__east_asian_ambiguous_width",
     )
 
@@ -408,7 +408,7 @@ class ColumnDataProperty(DataPeropertyBase):
         max_len = self.__ascii_char_width
         col_format_str = "{:" + self.format_str + "}"
 
-        for data_prop in self.__data_prop_list:
+        for data_prop in self.__dataproperty_list:
             if data_prop.typecode in [Typecode.INFINITY, Typecode.NAN]:
                 continue
 
@@ -453,7 +453,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
-        self.__data_prop_list = []
+        self.__dataproperty_list = []
 
     def __repr__(self):
         return ", ".join([
@@ -484,7 +484,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_additional_format_len.update(
             dataprop.additional_format_len)
 
-        self.__data_prop_list.append(dataprop)
+        self.__dataproperty_list.append(dataprop)
 
     def __is_not_single_typecode(self, typecode):
         return all([
