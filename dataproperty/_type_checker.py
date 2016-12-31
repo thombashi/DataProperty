@@ -19,7 +19,7 @@ from ._converter import (
     FloatConverter,
     BoolConverter,
     DateTimeConverter,
-    DictionaryConverter
+    DictionaryConverter,
 )
 from ._typecode import Typecode
 

@@ -18,7 +18,7 @@ from ._factory import (
     BoolTypeFactory,
     InfinityTypeFactory,
     NanTypeFactory,
-    DictionaryTypeFactory
+    DictionaryTypeFactory,
 )
 from ._type_checker import TypeCheckerInterface
 

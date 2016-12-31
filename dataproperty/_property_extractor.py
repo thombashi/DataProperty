@@ -18,7 +18,7 @@ from ._common import (
 )
 from ._data_property import (
     DataProperty,
-    ColumnDataProperty
+    ColumnDataProperty,
 )
 from ._function import is_empty_sequence
 

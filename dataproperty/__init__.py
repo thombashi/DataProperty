@@ -11,12 +11,12 @@ from ._align_getter import align_getter
 from ._common import (
     DEFAULT_STRICT_TYPE_MAPPING,
     NOT_STRICT_TYPE_MAPPING,
-    STRICT_TYPE_MAPPING
+    STRICT_TYPE_MAPPING,
 )
 from ._container import MinMaxContainer
 from ._data_property import (
     ColumnDataProperty,
-    DataProperty
+    DataProperty,
 )
 from ._error import TypeConversionError
 from ._function import (
@@ -34,11 +34,11 @@ from ._function import (
     is_multibyte_str,
     get_integer_digit,
     get_number_of_digit,
-    get_ascii_char_width
+    get_ascii_char_width,
 )
 from ._property_extractor import (
     PropertyExtractor,
-    MissmatchProcessing
+    MissmatchProcessing,
 )
 from ._type import (
     NoneType,
@@ -49,6 +49,6 @@ from ._type import (
     BoolType,
     InfinityType,
     NanType,
-    DictionaryType
+    DictionaryType,
 )
 from ._typecode import Typecode

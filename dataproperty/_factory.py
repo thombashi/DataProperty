@@ -17,7 +17,7 @@ from ._converter import (
     FloatConverter,
     BoolConverter,
     DateTimeConverter,
-    DictionaryConverter
+    DictionaryConverter,
 )
 from ._type_checker import (
     NoneTypeChecker,
@@ -28,7 +28,7 @@ from ._type_checker import (
     DateTimeTypeChecker,
     InfinityChecker,
     NanChecker,
-    DictionaryTypeChecker
+    DictionaryTypeChecker,
 )
 
 

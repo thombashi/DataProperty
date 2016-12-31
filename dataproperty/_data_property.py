@@ -20,13 +20,15 @@ from ._common import (
     default_bool_converter,
     default_datetime_converter,
 )
-from ._container import MinMaxContainer
-from ._container import ListContainer
+from ._container import (
+    MinMaxContainer,
+    ListContainer,
+)
 from ._error import TypeConversionError
 from ._interface import DataPeropertyInterface
 from ._function import (
     get_number_of_digit,
-    get_ascii_char_width
+    get_ascii_char_width,
 )
 from ._type import (
     NoneType,
@@ -37,7 +39,7 @@ from ._type import (
     BoolType,
     InfinityType,
     NanType,
-    DictionaryType
+    DictionaryType,
 )
 from ._typecode import Typecode
 from ._type_checker import NanChecker
