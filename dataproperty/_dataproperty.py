@@ -408,12 +408,12 @@ class ColumnDataProperty(DataPeropertyBase):
         max_len = self.__ascii_char_width
         col_format_str = "{:" + self.format_str + "}"
 
-        for data_prop in self.__dataproperty_list:
-            if data_prop.typecode in [Typecode.INFINITY, Typecode.NAN]:
+        for dp in self.__dataproperty_list:
+            if dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
                 continue
 
             try:
-                formatted_value = col_format_str.format(data_prop.data)
+                formatted_value = col_format_str.format(dp.data)
             except (TypeError, ValueError):
                 continue
 
