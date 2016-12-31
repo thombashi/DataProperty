@@ -96,14 +96,14 @@ class DataPropertyExtractor(object):
         header_dp_list = self.to_dataproperty_list(self.header_list)
         col_dp_list = []
 
-        for header_prop in header_dp_list:
-            column_prop = ColumnDataProperty(
+        for header_dp in header_dp_list:
+            col_dp = ColumnDataProperty(
                 min_padding_len=self.min_padding_len,
                 datetime_format_str=self.datetime_format_str,
                 east_asian_ambiguous_width=self.east_asian_ambiguous_width
             )
-            column_prop.update_header(header_prop)
-            col_dp_list.append(column_prop)
+            col_dp.update_header(header_dp)
+            col_dp_list.append(col_dp)
 
         return col_dp_list
 
