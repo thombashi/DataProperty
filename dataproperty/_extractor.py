@@ -93,10 +93,10 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def __to_header_dataproperty_list(self):
-        header_prop_list = self.to_dataproperty_list(self.header_list)
+        header_dp_list = self.to_dataproperty_list(self.header_list)
         col_dp_list = []
 
-        for header_prop in header_prop_list:
+        for header_prop in header_dp_list:
             column_prop = ColumnDataProperty(
                 min_padding_len=self.min_padding_len,
                 datetime_format_str=self.datetime_format_str,
