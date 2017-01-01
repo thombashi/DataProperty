@@ -459,7 +459,7 @@ class ColumnDataProperty(DataPeropertyBase):
         return ", ".join([
             "typename=" + self.typename,
             "align=" + str(self.align),
-            "ascii_char_width=" + str(self.padding_len),
+            "ascii_char_width=" + str(self.ascii_char_width),
             "integer_digits=({:s})".format(str(self.minmax_integer_digits)),
             "decimal_places=({:s})".format(str(self.minmax_decimal_places)),
             "additional_format_len=({:s})".format(
