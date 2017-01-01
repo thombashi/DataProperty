@@ -224,7 +224,7 @@ Extract property for each column from a matrix
     print([Typecode.get_typename(dp.typecode) for dp in col_dp_list])
 
     display_col_dp(col_dp_list, "align")
-    display_col_dp(col_dp_list, "padding_len")
+    display_col_dp(col_dp_list, "ascii_char_width")
     display_col_dp(col_dp_list, "decimal_places")
 
 ::
@@ -235,7 +235,7 @@ Extract property for each column from a matrix
     ---------- align ----------
     [right, right, left, right, left, left, left, left, left]
 
-    ---------- padding_len ----------
+    ---------- ascii_char_width ----------
     [3, 5, 4, 4, 3, 5, 8, 3, 24]
 
     ---------- decimal_places ----------
