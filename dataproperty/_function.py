@@ -225,7 +225,10 @@ def is_multibyte_str(text):
     if not StringTypeChecker(text).is_type():
         return False
 
-    unicode_text = MultiByteStrDecoder(text).unicode_str
+    try:
+        unicode_text = MultiByteStrDecoder(text).unicode_str
+    except ValueError:
+        return False
 
     try:
         unicode_text.encode("ascii")

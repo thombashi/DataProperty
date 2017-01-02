@@ -284,7 +284,11 @@ class DataProperty(DataPeropertyBase):
             self.__ascii_char_width = self.__str_len
             return
 
-        unicode_str = MultiByteStrDecoder(self.data).unicode_str
+        try:
+            unicode_str = MultiByteStrDecoder(self.data).unicode_str
+        except ValueError:
+            unicode_str = self.format_str.format(self.data)
+
         self.__str_len = len(unicode_str)
         self.__ascii_char_width = get_ascii_char_width(
             unicode_str, self.__east_asian_ambiguous_width)
@@ -297,6 +301,8 @@ class DataProperty(DataPeropertyBase):
             return data.strip(self.__strip_str)
         except AttributeError:
             return data
+        except UnicodeDecodeError:
+            return MultiByteStrDecoder(data).unicode_str.strip(self.__strip_str)
 
     def __set_data(
             self, data, none_value, inf_value, nan_value, float_type,

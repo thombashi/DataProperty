@@ -12,6 +12,7 @@ import decimal
 import re
 
 from mbstrdecoder import MultiByteStrDecoder
+import six
 
 from ._common import DEFAULT_FLOAT_TYPE
 from ._error import TypeConversionError
@@ -58,7 +59,10 @@ class NopConverter(ValueConverter):
 class StringConverter(ValueConverter):
 
     def convert(self):
-        return MultiByteStrDecoder(self._value).unicode_str
+        try:
+            return MultiByteStrDecoder(self._value).unicode_str
+        except ValueError:
+            return six.text_type(self._value)
 
 
 class IntegerConverter(ValueConverter):

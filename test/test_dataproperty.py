@@ -5,6 +5,7 @@
 """
 
 from __future__ import unicode_literals
+from __future__ import print_function
 import datetime
 from decimal import Decimal
 import sys
@@ -110,6 +111,8 @@ class Test_DataPeroperty_data_typecode:
                 "Høgskolen i Østfold er et eksempel...", Typecode.STRING],
             ["Høgskolen i Østfold er et eksempel...", False,
                 "Høgskolen i Østfold er et eksempel...", Typecode.STRING],
+            ["新しいテキスト ドキュメント.txt".encode("utf_8"), True,
+                "新しいテキスト ドキュメント.txt", Typecode.STRING]
         ]
     )
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
@@ -607,5 +610,8 @@ class Test_DataPeroperty_repr:
     ])
     def test_normal(self, value, strict_type_mapping, expected):
         dp = DataProperty(value, strict_type_mapping=strict_type_mapping)
-        print(dp)
+
+        print("[expected] {}".format(expected))
+        print("[actual]   {}".format(dp))
+
         assert str(dp) == expected
