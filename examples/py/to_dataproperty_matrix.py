@@ -50,6 +50,8 @@ def main():
     display_dp_matrix_attr(dp_matrix, "integer_digits")
     display_dp_matrix_attr(dp_matrix, "decimal_places")
 
+    return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -49,6 +49,8 @@ def main():
     display_col_dp(col_dp_list, "ascii_char_width")
     display_col_dp(col_dp_list, "decimal_places")
 
+    return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())
