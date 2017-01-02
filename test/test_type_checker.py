@@ -93,7 +93,7 @@ class Test_StringTypeChecker_is_type:
         [inf, False, False],
     ] + list(
         itertools.product(
-            ["None", ],
+            ["None", "いろは", "いろは".encode("utf_8")],
             [True, False],
             [True]
         ))

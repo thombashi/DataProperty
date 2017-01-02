@@ -145,10 +145,17 @@ class StringTypeChecker(TypeChecker):
         return StringConverter
 
     def _is_instance(self):
-        return isinstance(self._value, six.string_types)
+        return self.__is_string(self._value)
 
     def _is_valid_after_convert(self):
-        return isinstance(self._converted_value, six.string_types)
+        return self.__is_string(self._converted_value)
+
+    @staticmethod
+    def __is_string(value):
+        return any([
+            isinstance(value, six.string_types),
+            isinstance(value, six.binary_type),
+        ])
 
 
 class IntegerTypeChecker(TypeChecker):
