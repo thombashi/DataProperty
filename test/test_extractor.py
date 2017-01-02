@@ -89,7 +89,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 4
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == ""
+        assert dp.format_str == "{}"
 
         dp = dp_matrix[0][1]
         assert dp.data == 1
@@ -98,7 +98,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.str_len == 1
         assert dp.decimal_places == 0
-        assert dp.format_str == "d"
+        assert dp.format_str == "{:d}"
 
         dp = dp_matrix[1][0]
         assert dp.data == Decimal("1.1")
@@ -107,7 +107,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.str_len == 3
         assert dp.decimal_places == 1
-        assert dp.format_str == ".1f"
+        assert dp.format_str == "{:.1f}"
 
         dp = dp_matrix[1][1]
         assert dp.data == "a"
@@ -116,7 +116,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 1
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "s"
+        assert dp.format_str == "{:s}"
 
         dp = dp_matrix[2][0]
         assert dp.data == "NaN"
@@ -125,7 +125,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 3
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "f"
+        assert dp.format_str == "{:f}"
 
         dp = dp_matrix[2][1]
         assert dp.data == "Infinity"
@@ -134,7 +134,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 8
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "f"
+        assert dp.format_str == "{:f}"
 
         dp = dp_matrix[3][0]
         assert dp.data == "false"
@@ -143,7 +143,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 5
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == ""
+        assert dp.format_str == "{}"
 
         dp = dp_matrix[3][1]
         assert dp.data == "20170101 000000"
@@ -152,7 +152,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 15
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "s"
+        assert dp.format_str == "{:s}"
 
     @pytest.mark.parametrize(["value", "expected"], [
         [None, TypeError],
@@ -239,7 +239,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.ascii_char_width == 1
         assert dp.decimal_places == 0
-        assert dp.format_str == "d"
+        assert dp.format_str == "{:d}"
 
         dp = col_dp_list[1]
         assert dp.typecode == Typecode.FLOAT
@@ -247,7 +247,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.ascii_char_width == 4
         assert dp.decimal_places == 2
-        assert dp.format_str == ".2f"
+        assert dp.format_str == "{:.2f}"
 
         dp = col_dp_list[2]
         assert dp.typecode == Typecode.STRING
@@ -255,7 +255,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 4
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "s"
+        assert dp.format_str == "{:s}"
 
         dp = col_dp_list[3]
         assert dp.typecode == Typecode.FLOAT
@@ -263,7 +263,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.ascii_char_width == 4
         assert dp.decimal_places == 1
-        assert dp.format_str == ".1f"
+        assert dp.format_str == "{:.1f}"
 
         dp = col_dp_list[4]
         assert dp.typecode == Typecode.STRING
@@ -271,7 +271,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 3
         assert dp.decimal_places == 1
-        assert dp.format_str == "s"
+        assert dp.format_str == "{:s}"
 
         dp = col_dp_list[5]
         assert dp.typecode == Typecode.BOOL
@@ -279,7 +279,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 5
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == ""
+        assert dp.format_str == "{}"
 
         dp = col_dp_list[6]
         assert dp.typecode == Typecode.INFINITY
@@ -287,7 +287,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 8
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "f"
+        assert dp.format_str == "{:f}"
 
         dp = col_dp_list[7]
         assert dp.typecode == Typecode.NAN
@@ -295,7 +295,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 3
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "f"
+        assert dp.format_str == "{:f}"
 
         dp = col_dp_list[8]
         assert dp.typecode == Typecode.STRING
@@ -303,7 +303,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 24
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "s"
+        assert dp.format_str == "{:s}"
 
     @pytest.mark.parametrize(["header_list", "value"], [
         [
@@ -333,7 +333,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.ascii_char_width == 1
         assert dp.decimal_places == 0
-        assert dp.format_str == "d"
+        assert dp.format_str == "{:d}"
 
         dp = col_dp_list[1]
         assert dp.typecode == Typecode.FLOAT
@@ -341,7 +341,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.ascii_char_width == 4
         assert dp.decimal_places == 2
-        assert dp.format_str == ".2f"
+        assert dp.format_str == "{:.2f}"
 
     def test_normal_nan_inf(self, dp_extractor):
         dp_extractor.header_list = ["n", "i"]
@@ -408,7 +408,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 1
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == ""
+        assert dp.format_str == "{}"
 
         dp = col_dp_list[1]
         assert dp.typecode == Typecode.NONE
@@ -416,7 +416,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 2
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == ""
+        assert dp.format_str == "{}"
 
         dp = col_dp_list[2]
         assert dp.typecode == Typecode.NONE
@@ -424,7 +424,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 4
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == ""
+        assert dp.format_str == "{}"
 
     @pytest.mark.parametrize(
         ["header_list", "value", "mismatch_processing", "expected"],

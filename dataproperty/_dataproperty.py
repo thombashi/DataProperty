@@ -55,11 +55,11 @@ class DataPeropertyBase(DataPeropertyInterface):
     @property
     def format_str(self):
         format_str = {
-            Typecode.NONE: "",
-            Typecode.INTEGER: "d",
-            Typecode.BOOL: "",
-            Typecode.DATETIME: self.__datetime_format_str,
-            Typecode.DICTIONARY: "",
+            Typecode.NONE: "{}",
+            Typecode.INTEGER: "{:d}",
+            Typecode.BOOL: "{}",
+            Typecode.DATETIME: "{:" + self.__datetime_format_str + "}",
+            Typecode.DICTIONARY: "{}",
         }.get(self.typecode)
 
         if format_str is not None:
@@ -67,11 +67,11 @@ class DataPeropertyBase(DataPeropertyInterface):
 
         if self.typecode in (Typecode.FLOAT, Typecode.INFINITY, Typecode.NAN):
             if NanChecker(self.decimal_places).is_type():
-                return "f"
+                return "{:f}"
 
-            return ".{:d}f".format(self.decimal_places)
+            return "{:" + ".{:d}f".format(self.decimal_places) + "}"
 
-        return "s"
+        return "{:s}"
 
     def __init__(self, datetime_format_str):
         self.__datetime_format_str = datetime_format_str
@@ -219,7 +219,7 @@ class DataProperty(DataPeropertyBase):
         else:
             try:
                 element_list.append(
-                    ("data={:" + self.format_str + "}").format(self.data))
+                    ("data=" + self.format_str).format(self.data))
             except UnicodeEncodeError:
                 element_list.append(
                     ("data={}").format(MultiByteStrDecoder(self.data).unicode_str))
@@ -274,10 +274,8 @@ class DataProperty(DataPeropertyBase):
             return
 
         if self.typecode == Typecode.DATETIME:
-            full_format_str = "{:" + self.format_str + "}"
-
             try:
-                self.__str_len = len(full_format_str.format(self.data))
+                self.__str_len = len(self.format_str.format(self.data))
             except ValueError:
                 # reach to this line if the year <1900.
                 # the datetime strftime() methods require year >= 1900.
@@ -406,7 +404,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return self.__ascii_char_width
 
         max_len = self.__ascii_char_width
-        col_format_str = "{:" + self.format_str + "}"
+        col_format_str = self.format_str
 
         for dp in self.__dataproperty_list:
             if dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
