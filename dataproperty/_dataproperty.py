@@ -252,7 +252,8 @@ class DataProperty(DataPeropertyBase):
 
     def __get_base_float_len(self):
         if any([self.integer_digits < 0, self.decimal_places < 0]):
-            raise ValueError()
+            raise ValueError(
+                "integer digits and decimal places must be greater or equals to zero")
 
         float_len = self.integer_digits + self.decimal_places
         if self.decimal_places > 0:
