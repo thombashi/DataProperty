@@ -37,7 +37,7 @@ class ValueConverter(ValueConverterInterface):
 
     def __repr__(self):
         try:
-            string = str(self.convert())
+            string = six.text_type(self.convert())
         except TypeConversionError:
             string = "[ValueConverter ERROR] failed to convert"
 

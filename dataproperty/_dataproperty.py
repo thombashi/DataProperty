@@ -10,6 +10,7 @@ from decimal import Decimal
 import math
 
 from mbstrdecoder import MultiByteStrDecoder
+import six
 
 from ._align_getter import align_getter
 from ._common import (
@@ -215,7 +216,7 @@ class DataProperty(DataPeropertyBase):
 
         if self.typecode == Typecode.DATETIME:
             element_list.append(
-                "data={:s}".format(str(self.data)))
+                "data={:s}".format(six.text_type(self.data)))
         else:
             try:
                 element_list.append(
@@ -280,7 +281,7 @@ class DataProperty(DataPeropertyBase):
             except ValueError:
                 # reach to this line if the year <1900.
                 # the datetime strftime() methods require year >= 1900.
-                self.__str_len = len(str(self.data))
+                self.__str_len = len(six.text_type(self.data))
 
             self.__ascii_char_width = self.__str_len
             return
@@ -463,12 +464,14 @@ class ColumnDataProperty(DataPeropertyBase):
     def __repr__(self):
         return ", ".join([
             "typename=" + self.typename,
-            "align=" + str(self.align),
-            "ascii_char_width=" + str(self.ascii_char_width),
-            "integer_digits=({:s})".format(str(self.minmax_integer_digits)),
-            "decimal_places=({:s})".format(str(self.minmax_decimal_places)),
+            "align=" + six.text_type(self.align),
+            "ascii_char_width=" + six.text_type(self.ascii_char_width),
+            "integer_digits=({:s})".format(
+                six.text_type(self.minmax_integer_digits)),
+            "decimal_places=({:s})".format(
+                six.text_type(self.minmax_decimal_places)),
             "additional_format_len=({:s})".format(
-                str(self.minmax_additional_format_len)),
+                six.text_type(self.minmax_additional_format_len)),
         ])
 
     def update_header(self, dataprop):
