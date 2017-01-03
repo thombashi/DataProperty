@@ -108,35 +108,31 @@ class Test_StringTypeChecker_is_type:
 
 class Test_StringTypeChecker_validate:
 
-    @pytest.mark.parametrize(["value", "is_convert"],  [
-        [None, True],
-        [six.MAXSIZE, True],
-        [inf, True],
-        ["", False],
+    @pytest.mark.parametrize(["value", "is_strict"],  [
+        [None, False],
+        [six.MAXSIZE, False],
+        [inf, False],
+        ["", True],
     ] + list(
         itertools.product(
             ["None", ],
             [True, False],
         ))
     )
-    def test_normal(self, value, is_convert):
-        is_strict = not is_convert
-
+    def test_normal(self, value, is_strict):
         type_checker = StringTypeChecker(value, is_strict)
         type_checker.validate()
 
-    @pytest.mark.parametrize(["value", "is_convert", "expected"], [
-        [None, False, TypeError],
-        [six.MAXSIZE, False, TypeError],
-        [inf, False, TypeError],
-        [nan, False, TypeError],
+    @pytest.mark.parametrize(["value", "is_strict", "expected"], [
+        [None, True, TypeError],
+        [six.MAXSIZE, True, TypeError],
+        [True, True, TypeError],
+        [inf, True, TypeError],
+        [nan, True, TypeError],
     ])
-    def test_exception(self, value, is_convert, expected):
-        is_strict = not is_convert
-
-        type_checker = StringTypeChecker(value, is_strict)
+    def test_exception(self, value, is_strict, expected):
         with pytest.raises(expected):
-            type_checker.validate()
+            StringTypeChecker(value, is_strict).validate()
 
 
 class Test_IntegerTypeChecker_is_type:
