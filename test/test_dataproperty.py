@@ -151,16 +151,23 @@ class Test_DataPeroperty_data_typecode:
         assert dp.typecode == expected_typecode
 
     @pytest.mark.parametrize(
-        ["value", "is_convert",  "expected_typecode"],
+        ["value", "type_hint", "is_strict", "expected_typecode"],
         [
-            ["100-0002", True, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", None, False, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", None, True, Typecode.STRING],
+            ["2017-01-02 03:04:05", DateTimeType, False, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", DateTimeType, True, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", IntegerType, False, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", IntegerType, True, Typecode.STRING],
+            ["100-0002", None, False, Typecode.DATETIME],
         ]
     )
-    def test_normal_datetime(self, value, is_convert, expected_typecode):
+    def test_normal_datetime(
+            self, value, type_hint, is_strict, expected_typecode):
         dp = DataProperty(
-            value, strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
+            value, type_hint=type_hint,
+            strict_type_mapping=get_strict_type_mapping(is_strict))
 
-        assert isinstance(dp.data, datetime.datetime)
         assert dp.typecode == expected_typecode
 
     @pytest.mark.parametrize(

@@ -171,6 +171,7 @@ class DataProperty(DataPeropertyBase):
 
     def __init__(
             self, data,
+            type_hint=None,
             strip_str=None,
             none_value=None,
             inf_value=DEFAULT_INF_VALUE,
@@ -195,7 +196,7 @@ class DataProperty(DataPeropertyBase):
 
         data = self.__preprocess_data(data)
         self.__set_data(
-            data, none_value, inf_value, nan_value, float_type,
+            data, type_hint, none_value, inf_value, nan_value, float_type,
             strict_type_mapping)
         self.__convert_data(bool_converter, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
@@ -307,13 +308,18 @@ class DataProperty(DataPeropertyBase):
             return MultiByteStrDecoder(data).unicode_str.strip(self.__strip_str)
 
     def __set_data(
-            self, data, none_value, inf_value, nan_value, float_type,
-            strict_type_mapping):
+            self, data, type_hint, none_value, inf_value, nan_value,
+            float_type, strict_type_mapping):
         type_value_mapping = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
             Typecode.NAN: nan_value,
         }
+
+        if type_hint is not None and self.__try_convert_type(
+                data, type_hint, type_value_mapping,
+                is_strict=False, float_type=float_type):
+            return
 
         for type_class in self.__type_class_list:
             is_strict = strict_type_mapping.get(
