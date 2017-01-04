@@ -35,6 +35,7 @@ class DataPropertyExtractor(object):
     def __init__(self):
         self.header_list = []
         self.data_matrix = []
+        self.type_hint = None
         self.strip_str = None
         self.min_padding_len = 0
         self.none_value = None
@@ -102,6 +103,7 @@ class DataPropertyExtractor(object):
     def to_dataproperty(self, data):
         return DataProperty(
             data,
+            type_hint=self.type_hint,
             strip_str=self.strip_str,
             none_value=self.none_value,
             inf_value=self.inf_value,

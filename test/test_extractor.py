@@ -180,6 +180,32 @@ class Test_DataPropertyExtractor_to_dataproperty_list:
         for dp in dp_list:
             assert isinstance(dp.data, float_type)
 
+    @pytest.mark.parametrize(["value", "type_hint", "expected_list"], [
+        [
+            [
+                "2017-01-02 03:04:05",
+                datetime.datetime(2017, 1, 2, 3, 4, 5)
+            ],
+            None,
+            [Typecode.STRING, Typecode.DATETIME]
+        ],
+        [
+            [
+                "2017-01-02 03:04:05",
+                datetime.datetime(2017, 1, 2, 3, 4, 5)
+            ],
+            DateTimeType,
+            [Typecode.DATETIME, Typecode.DATETIME]
+        ],
+    ])
+    def test_normal_type_hint(
+            self, dp_extractor, value, type_hint, expected_list):
+        dp_extractor.type_hint = type_hint
+        dp_list = dp_extractor.to_dataproperty_list(value)
+
+        for dp, expected in zip(dp_list, expected_list):
+            assert dp.typecode == expected
+
     @pytest.mark.parametrize(["value", "strip_str", "expected"], [
         [
             ['"1"', '"-1.1"', '"abc"'],
