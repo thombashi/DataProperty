@@ -205,6 +205,11 @@ class Test_DataPeroperty_data_typecode:
 
 
 class Test_DataPeroperty_set_data:
+    VALUE_MAPPING = {
+        True: "true value",
+        False: "false value",
+        "const": "const value",
+    }
 
     @pytest.mark.parametrize(
         [
@@ -247,18 +252,19 @@ class Test_DataPeroperty_set_data:
         assert dp.data == expected
 
     @pytest.mark.parametrize(
-        ["value", "bool_converter", "is_convert", "expected"],
+        ["value", "const_value_mapping", "is_convert", "expected"],
         [
-            ["True", bool_converter_test, True, "true value"],
-            ["False", bool_converter_test, True, "false value"],
-            ["True", bool_converter_test, False, "True"],
+            ["True", VALUE_MAPPING, True, "true value"],
+            ["False", VALUE_MAPPING, True, "false value"],
+            ["True", VALUE_MAPPING, False, "True"],
+            ["const", VALUE_MAPPING, False, "const value"]
         ]
     )
     def test_special_bool(
-            self, value, bool_converter,  is_convert, expected):
+            self, value, const_value_mapping,  is_convert, expected):
         dp = DataProperty(
             value,
-            bool_converter=bool_converter,
+            const_value_mapping=const_value_mapping,
             strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected

@@ -20,6 +20,10 @@ DEFAULT_TYPE_VALUE_MAPPING = {
     Typecode.INFINITY: DEFAULT_INF_VALUE,
     Typecode.NAN: DEFAULT_NAN_VALUE,
 }
+DEFAULT_CONST_VALUE_MAPPING = {
+    True: True,
+    False: False,
+}
 
 DEFAULT_STRICT_TYPE_MAPPING = {
     Typecode.NONE: False,
@@ -34,10 +38,6 @@ DEFAULT_STRICT_TYPE_MAPPING = {
 }
 STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
 NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
-
-
-def default_bool_converter(value):
-    return value
 
 
 def default_datetime_converter(value):

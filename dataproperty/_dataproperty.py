@@ -15,11 +15,10 @@ import six
 from ._align_getter import align_getter
 from ._common import (
     DEFAULT_FLOAT_TYPE,
-    DEFAULT_INF_VALUE,
     DEFAULT_NAN_VALUE,
     DEFAULT_TYPE_VALUE_MAPPING,
+    DEFAULT_CONST_VALUE_MAPPING,
     DEFAULT_STRICT_TYPE_MAPPING,
-    default_bool_converter,
     default_datetime_converter,
 )
 from ._container import (
@@ -173,8 +172,8 @@ class DataProperty(DataPeropertyBase):
             type_hint=None,
             strip_str=None,
             type_value_mapping=None,
+            const_value_mapping=None,
             float_type=None,
-            bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
             strict_type_mapping=None,
@@ -186,7 +185,7 @@ class DataProperty(DataPeropertyBase):
         self.__set_data(
             data, type_hint, type_value_mapping, float_type,
             strict_type_mapping)
-        self.__convert_data(bool_converter, datetime_converter)
+        self.__convert_data(const_value_mapping, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
@@ -342,11 +341,23 @@ class DataProperty(DataPeropertyBase):
 
         return True
 
-    def __convert_data(self, bool_converter, datetime_converter):
-        if self.typecode == Typecode.BOOL:
-            self.__data = bool_converter(self.__data)
-        elif self.typecode == Typecode.DATETIME:
+    def __convert_data(self, const_value_mapping, datetime_converter):
+        if const_value_mapping is None:
+            const_value_mapping = DEFAULT_CONST_VALUE_MAPPING
+
+        if self.typecode == Typecode.DATETIME:
             self.__data = datetime_converter(self.__data)
+            return
+
+        if self.typecode in (Typecode.BOOL, Typecode.STRING):
+            try:
+                if self.__data in const_value_mapping:
+                    self.__data = const_value_mapping.get(self.__data)
+            except TypeError:
+                # unhashable type will be reached this line
+                pass
+
+            return
 
     def __replace_tabs(self, replace_tabs_with_spaces, tab_length):
         if not replace_tabs_with_spaces:

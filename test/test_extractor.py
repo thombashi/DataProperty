@@ -22,10 +22,6 @@ def dp_extractor():
     return DataPropertyExtractor()
 
 
-def bool_converter_test(value):
-    return str(value).lower()
-
-
 def datetime_converter_test(value):
     return value.strftime("%Y%m%d %H%M%S")
 
@@ -50,7 +46,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
     @pytest.mark.parametrize(
         [
             "value", "none_value", "inf_value", "nan_value",
-            "bool_converter", "datetime_converter",
+            "const_value_mapping", "datetime_converter",
         ],
         [
             [
@@ -63,21 +59,21 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
                 "null",
                 "Infinity",
                 "NaN",
-                bool_converter_test,
+                {True: "true", False: "false"},
                 datetime_converter_test,
             ],
         ]
     )
     def test_normal(
             self, dp_extractor, value, none_value, inf_value, nan_value,
-            bool_converter, datetime_converter):
+            const_value_mapping, datetime_converter):
         dp_extractor.data_matrix = value
         dp_extractor.type_value_mapping = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
             Typecode.NAN: nan_value,
         }
-        dp_extractor.bool_converter = bool_converter_test
+        dp_extractor.const_value_mapping = const_value_mapping
         dp_extractor.datetime_converter = datetime_converter
         dp_extractor.datetime_format_str = "s"
         dp_matrix = list(dp_extractor.to_dataproperty_matrix())

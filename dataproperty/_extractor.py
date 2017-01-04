@@ -13,8 +13,8 @@ from six.moves import zip
 from ._common import (
     DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_STRICT_TYPE_MAPPING,
-    STRICT_TYPE_MAPPING,
-    default_bool_converter,
+    DEFAULT_CONST_VALUE_MAPPING,
+    NOT_STRICT_TYPE_MAPPING,
     default_datetime_converter,
 )
 from ._dataproperty import (
@@ -42,7 +42,7 @@ class DataPropertyExtractor(object):
         self.min_padding_len = 0
         self.type_value_mapping = copy.deepcopy(DEFAULT_TYPE_VALUE_MAPPING)
         self.float_type = None
-        self.bool_converter = default_bool_converter
+        self.const_value_mapping = copy.deepcopy(DEFAULT_CONST_VALUE_MAPPING)
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
         self.strict_type_mapping = dict(DEFAULT_STRICT_TYPE_MAPPING)
@@ -107,7 +107,7 @@ class DataPropertyExtractor(object):
     def to_header_dataproperty_list(self):
         return self.__to_dataproperty_list(
             self.header_list, type_hint=StringType,
-            strict_type_mapping=STRICT_TYPE_MAPPING)
+            strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
 
     def __get_col_type_hint(self, col_idx):
         try:
@@ -124,7 +124,7 @@ class DataPropertyExtractor(object):
             strip_str=self.strip_str,
             type_value_mapping=self.type_value_mapping,
             float_type=self.float_type,
-            bool_converter=self.bool_converter,
+            const_value_mapping=self.const_value_mapping,
             datetime_converter=self.datetime_converter,
             datetime_format_str=self.datetime_format_str,
             strict_type_mapping=(
