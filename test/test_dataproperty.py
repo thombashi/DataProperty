@@ -159,6 +159,10 @@ class Test_DataPeroperty_data_typecode:
             ["2017-01-02 03:04:05", DateTimeType, True, Typecode.DATETIME],
             ["2017-01-02 03:04:05", IntegerType, False, Typecode.DATETIME],
             ["2017-01-02 03:04:05", IntegerType, True, Typecode.STRING],
+            [DATATIME_DATA, None, False, Typecode.DATETIME],
+            [DATATIME_DATA, None, True, Typecode.DATETIME],
+            [DATATIME_DATA, StringType, False, Typecode.STRING],
+            [DATATIME_DATA, StringType, True, Typecode.STRING],
             ["100-0002", None, False, Typecode.DATETIME],
         ]
     )
