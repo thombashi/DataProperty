@@ -22,6 +22,7 @@ from ._dataproperty import (
     ColumnDataProperty,
 )
 from ._function import is_empty_sequence
+from ._type import StringType
 
 
 class MissmatchProcessing(object):
@@ -35,7 +36,8 @@ class DataPropertyExtractor(object):
     def __init__(self):
         self.header_list = []
         self.data_matrix = []
-        self.type_hint = None
+        self.default_type_hint = None
+        self.col_type_hint_list = None
         self.strip_str = None
         self.min_padding_len = 0
         self.type_value_mapping = copy.deepcopy(DEFAULT_TYPE_VALUE_MAPPING)
@@ -48,11 +50,14 @@ class DataPropertyExtractor(object):
 
         self.mismatch_processing = MissmatchProcessing.TRIM
 
-    def to_dataproperty_matrix(self):
-        return [
-            self.to_dataproperty_list(data_list)
-            for data_list in self.data_matrix
-        ]
+    def to_dataproperty(self, data):
+        return self.__to_dataproperty(data)
+
+    def to_dataproperty_list(self, data_list):
+        if is_empty_sequence(data_list):
+            return []
+
+        return [self.__to_dataproperty(data) for data in data_list]
 
     def to_col_dataproperty_list(self):
         col_dp_list = self.__get_col_dp_list_base()
@@ -92,35 +97,51 @@ class DataPropertyExtractor(object):
 
         return col_dp_list
 
-    def to_dataproperty_list(self, data_list):
-        if is_empty_sequence(data_list):
-            return []
+    def to_dataproperty_matrix(self):
+        return zip(*[
+            self.__to_dataproperty_list(
+                data_list, type_hint=self.__get_col_type_hint(col_idx))
+            for col_idx, data_list in enumerate(zip(*self.data_matrix))
+        ])
 
-        return [self.to_dataproperty(data) for data in data_list]
+    def to_header_dataproperty_list(self):
+        return self.__to_dataproperty_list(
+            self.header_list, type_hint=StringType,
+            strict_type_mapping=STRICT_TYPE_MAPPING)
 
-    def to_dataproperty(self, data):
+    def __get_col_type_hint(self, col_idx):
+        try:
+            return self.col_type_hint_list[col_idx]
+        except (TypeError, IndexError):
+            return self.default_type_hint
+
+    def __to_dataproperty(
+            self, data, type_hint=None, strict_type_mapping=None):
         return DataProperty(
             data,
-            type_hint=self.type_hint,
+            type_hint=(
+                type_hint if type_hint is not None else self.default_type_hint),
             strip_str=self.strip_str,
             type_value_mapping=self.type_value_mapping,
             float_type=self.float_type,
             bool_converter=self.bool_converter,
             datetime_converter=self.datetime_converter,
             datetime_format_str=self.datetime_format_str,
-            strict_type_mapping=self.strict_type_mapping,
+            strict_type_mapping=(
+                strict_type_mapping
+                if type_hint is not None else self.strict_type_mapping),
             east_asian_ambiguous_width=self.east_asian_ambiguous_width
         )
 
-    def to_header_dataproperty_list(self):
-        old_strict_type_mapping = self.strict_type_mapping
-        self.strict_type_mapping = STRICT_TYPE_MAPPING
+    def __to_dataproperty_list(
+            self, data_list, type_hint=None, strict_type_mapping=None):
+        if is_empty_sequence(data_list):
+            return []
 
-        header_dp_list = self.to_dataproperty_list(self.header_list)
-
-        self.strict_type_mapping = old_strict_type_mapping
-
-        return header_dp_list
+        return [
+            self.__to_dataproperty(data, type_hint, strict_type_mapping)
+            for data in data_list
+        ]
 
     def __get_col_dp_list_base(self):
         header_dp_list = self.to_header_dataproperty_list()

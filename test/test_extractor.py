@@ -45,7 +45,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
     def test_smoke(self, dp_extractor, value):
         dp_extractor.data_matrix = value
 
-        assert len(dp_extractor.to_dataproperty_matrix()) > 0
+        assert len(list(dp_extractor.to_dataproperty_matrix())) > 0
 
     @pytest.mark.parametrize(
         [
@@ -80,7 +80,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         dp_extractor.bool_converter = bool_converter_test
         dp_extractor.datetime_converter = datetime_converter
         dp_extractor.datetime_format_str = "s"
-        dp_matrix = dp_extractor.to_dataproperty_matrix()
+        dp_matrix = list(dp_extractor.to_dataproperty_matrix())
 
         assert len(dp_matrix) == 4
 
@@ -166,7 +166,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
 
     def test_empty(self, dp_extractor):
         dp_extractor.data_matrix = []
-        assert dp_extractor.to_dataproperty_matrix() == []
+        assert list(dp_extractor.to_dataproperty_matrix()) == []
 
 
 class Test_DataPropertyExtractor_to_dataproperty_list:
@@ -202,7 +202,7 @@ class Test_DataPropertyExtractor_to_dataproperty_list:
     ])
     def test_normal_type_hint(
             self, dp_extractor, value, type_hint, expected_list):
-        dp_extractor.type_hint = type_hint
+        dp_extractor.default_type_hint = type_hint
         dp_list = dp_extractor.to_dataproperty_list(value)
 
         for dp, expected in zip(dp_list, expected_list):
@@ -370,6 +370,27 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.ascii_char_width == 4
         assert dp.decimal_places == 2
         assert dp.format_str == "{:.2f}"
+
+    def test_normal_col_type_hint_list(self, dp_extractor):
+        dp_extractor.header_list = [1, "str", "datetime"]
+        dp_extractor.data_matrix = [
+            [1, 1, "2017-01-02 03:04:05"],
+            [2, 2, "2017-01-02 03:04:05"],
+        ]
+        dp_extractor.col_type_hint_list = [None, FloatType, DateTimeType]
+        dp_extractor.strict_type_mapping = NOT_STRICT_TYPE_MAPPING
+        col_dp_list = dp_extractor.to_col_dataproperty_list()
+
+        assert len(col_dp_list) == 3
+
+        col_dp = col_dp_list[0]
+        assert col_dp.typecode == Typecode.INTEGER
+
+        col_dp = col_dp_list[1]
+        assert col_dp.typecode == Typecode.FLOAT
+
+        col_dp = col_dp_list[2]
+        assert col_dp.typecode == Typecode.DATETIME
 
     def test_normal_nan_inf(self, dp_extractor):
         dp_extractor.header_list = ["n", "i"]
