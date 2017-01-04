@@ -309,7 +309,7 @@ class DataProperty(DataPeropertyBase):
     def __set_data(
             self, data, none_value, inf_value, nan_value, float_type,
             strict_type_mapping):
-        special_value_table = {
+        type_value_mapping = {
             Typecode.NONE: none_value,
             Typecode.INFINITY: inf_value,
             Typecode.NAN: nan_value,
@@ -326,7 +326,7 @@ class DataProperty(DataPeropertyBase):
 
             self.__typecode = type_obj.typecode
 
-            special_value = special_value_table.get(self.__typecode)
+            special_value = type_value_mapping.get(self.__typecode)
             if special_value is not None:
                 self.__data = special_value
                 return
