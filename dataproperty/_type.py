@@ -26,6 +26,10 @@ from ._type_checker import TypeCheckerInterface
 class AbstractType(TypeCheckerInterface, ValueConverterInterface):
     __slots__ = ("__checker", "__converter")
 
+    @property
+    def typecode(self):
+        return self.__checker.typecode
+
     @abc.abstractproperty
     def _factory_class(self):  # pragma: no cover
         pass
@@ -37,10 +41,6 @@ class AbstractType(TypeCheckerInterface, ValueConverterInterface):
         factory = self._factory_class(data, is_strict, params)
         self.__checker = factory.create_type_checker()
         self.__converter = factory.create_type_converter()
-
-    @property
-    def typecode(self):
-        return self.__checker.typecode
 
     def __repr__(self):
         element_list = [
