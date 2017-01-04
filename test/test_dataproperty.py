@@ -46,6 +46,10 @@ def datetime_converter_test_raw(value):
     return value
 
 
+def get_strict_type_mapping(is_strict):
+    return STRICT_TYPE_MAPPING if is_strict else NOT_STRICT_TYPE_MAPPING
+
+
 class Test_DataPeroperty_data_typecode:
 
     @pytest.mark.parametrize(
@@ -118,7 +122,7 @@ class Test_DataPeroperty_data_typecode:
     def test_normal(self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(
             value,
-            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected_data
         assert dp.typecode == expected_typecode
@@ -141,7 +145,7 @@ class Test_DataPeroperty_data_typecode:
         dp = DataProperty(
             value,
             strip_str=strip_str,
-            strict_type_mapping=STRICT_TYPE_MAPPING if is_strict else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=get_strict_type_mapping(is_strict))
 
         assert dp.data == expected_data
         assert dp.typecode == expected_typecode
@@ -171,7 +175,7 @@ class Test_DataPeroperty_data_typecode:
             self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(
             value,
-            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert NanType(dp.data).is_type()
         assert dp.typecode == expected_typecode
@@ -208,7 +212,7 @@ class Test_DataPeroperty_set_data:
             replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
             value,
-            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING,
+            strict_type_mapping=get_strict_type_mapping(not is_convert),
             replace_tabs_with_spaces=replace_tabs_with_spaces,
             tab_length=tab_length)
 
@@ -226,7 +230,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             none_value=none_value,
-            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected
 
@@ -243,7 +247,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             bool_converter=bool_converter,
-            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected
 
@@ -282,7 +286,7 @@ class Test_DataPeroperty_set_data:
             value,
             datetime_converter=datetime_converter,
             datetime_format_str=datetime_format_str,
-            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected
 
@@ -300,7 +304,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             inf_value=inf_value,
-            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected
 
@@ -318,7 +322,7 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             nan_value=nan_value,
-            strict_type_mapping=STRICT_TYPE_MAPPING if not is_convert else NOT_STRICT_TYPE_MAPPING)
+            strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected
 
