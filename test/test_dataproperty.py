@@ -198,7 +198,8 @@ class Test_DataPeroperty_data_typecode:
         [None, 0, 0],
     ])
     def test_none(self, value, none_value, expected):
-        dp = DataProperty(value, none_value=none_value)
+        dp = DataProperty(
+            value, type_value_mapping={Typecode.NONE: none_value})
         assert dp.data == expected
         assert dp.typecode == Typecode.NONE
 
@@ -240,7 +241,7 @@ class Test_DataPeroperty_set_data:
             self, value, none_value, is_convert, expected):
         dp = DataProperty(
             value,
-            none_value=none_value,
+            type_value_mapping={Typecode.NONE: none_value},
             strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected
@@ -314,7 +315,7 @@ class Test_DataPeroperty_set_data:
             self, value, inf_value, is_convert, expected):
         dp = DataProperty(
             value,
-            inf_value=inf_value,
+            type_value_mapping={Typecode.INFINITY: inf_value},
             strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected
@@ -332,7 +333,7 @@ class Test_DataPeroperty_set_data:
             self, value, nan_value, is_convert, expected):
         dp = DataProperty(
             value,
-            nan_value=nan_value,
+            type_value_mapping={Typecode.NAN: nan_value},
             strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected

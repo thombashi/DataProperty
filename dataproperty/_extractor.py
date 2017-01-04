@@ -6,12 +6,12 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+import copy
 
 from six.moves import zip
 
 from ._common import (
-    DEFAULT_INF_VALUE,
-    DEFAULT_NAN_VALUE,
+    DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_STRICT_TYPE_MAPPING,
     STRICT_TYPE_MAPPING,
     default_bool_converter,
@@ -38,9 +38,7 @@ class DataPropertyExtractor(object):
         self.type_hint = None
         self.strip_str = None
         self.min_padding_len = 0
-        self.none_value = None
-        self.inf_value = DEFAULT_INF_VALUE
-        self.nan_value = DEFAULT_NAN_VALUE
+        self.type_value_mapping = copy.deepcopy(DEFAULT_TYPE_VALUE_MAPPING)
         self.float_type = None
         self.bool_converter = default_bool_converter
         self.datetime_converter = default_datetime_converter
@@ -105,9 +103,7 @@ class DataPropertyExtractor(object):
             data,
             type_hint=self.type_hint,
             strip_str=self.strip_str,
-            none_value=self.none_value,
-            inf_value=self.inf_value,
-            nan_value=self.nan_value,
+            type_value_mapping=self.type_value_mapping,
             float_type=self.float_type,
             bool_converter=self.bool_converter,
             datetime_converter=self.datetime_converter,

@@ -15,6 +15,11 @@ from ._typecode import Typecode
 DEFAULT_FLOAT_TYPE = Decimal
 DEFAULT_INF_VALUE = DEFAULT_FLOAT_TYPE("inf")
 DEFAULT_NAN_VALUE = DEFAULT_FLOAT_TYPE("nan")
+DEFAULT_TYPE_VALUE_MAPPING = {
+    Typecode.NONE: None,
+    Typecode.INFINITY: DEFAULT_INF_VALUE,
+    Typecode.NAN: DEFAULT_NAN_VALUE,
+}
 
 DEFAULT_STRICT_TYPE_MAPPING = {
     Typecode.NONE: False,

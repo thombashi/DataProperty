@@ -17,6 +17,7 @@ from ._common import (
     DEFAULT_FLOAT_TYPE,
     DEFAULT_INF_VALUE,
     DEFAULT_NAN_VALUE,
+    DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_STRICT_TYPE_MAPPING,
     default_bool_converter,
     default_datetime_converter,
@@ -173,9 +174,7 @@ class DataProperty(DataPeropertyBase):
             self, data,
             type_hint=None,
             strip_str=None,
-            none_value=None,
-            inf_value=DEFAULT_INF_VALUE,
-            nan_value=DEFAULT_NAN_VALUE,
+            type_value_mapping=None,
             float_type=None,
             bool_converter=default_bool_converter,
             datetime_converter=default_datetime_converter,
@@ -185,18 +184,12 @@ class DataProperty(DataPeropertyBase):
             east_asian_ambiguous_width=1):
         super(DataProperty, self).__init__(datetime_format_str)
 
-        if float_type is None:
-            float_type = DEFAULT_FLOAT_TYPE
-
-        if strict_type_mapping is None:
-            strict_type_mapping = DEFAULT_STRICT_TYPE_MAPPING
-
         self.__strip_str = strip_str
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
         data = self.__preprocess_data(data)
         self.__set_data(
-            data, type_hint, none_value, inf_value, nan_value, float_type,
+            data, type_hint, type_value_mapping, float_type,
             strict_type_mapping)
         self.__convert_data(bool_converter, datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
@@ -308,13 +301,17 @@ class DataProperty(DataPeropertyBase):
             return MultiByteStrDecoder(data).unicode_str.strip(self.__strip_str)
 
     def __set_data(
-            self, data, type_hint, none_value, inf_value, nan_value,
-            float_type, strict_type_mapping):
-        type_value_mapping = {
-            Typecode.NONE: none_value,
-            Typecode.INFINITY: inf_value,
-            Typecode.NAN: nan_value,
-        }
+            self, data, type_hint,
+            type_value_mapping, float_type, strict_type_mapping):
+
+        if type_value_mapping is None:
+            type_value_mapping = DEFAULT_TYPE_VALUE_MAPPING
+
+        if float_type is None:
+            float_type = DEFAULT_FLOAT_TYPE
+
+        if strict_type_mapping is None:
+            strict_type_mapping = DEFAULT_STRICT_TYPE_MAPPING
 
         if type_hint is not None and self.__try_convert_type(
                 data, type_hint, type_value_mapping,
@@ -340,7 +337,8 @@ class DataProperty(DataPeropertyBase):
             return False
 
         self.__typecode = type_obj.typecode
-        self.__data = type_value_mapping.get(self.__typecode)
+        self.__data = type_value_mapping.get(
+            self.__typecode, DEFAULT_TYPE_VALUE_MAPPING.get(self.__typecode))
 
         if self.__data is not None:
             return True
