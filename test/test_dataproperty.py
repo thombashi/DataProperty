@@ -27,13 +27,6 @@ nan = float("nan")
 inf = float("inf")
 
 
-def bool_converter_test(value):
-    if value:
-        return "true value"
-
-    return "false value"
-
-
 def datetime_converter_tostr_0(value):
     return value.strftime("%Y-%m-%d %H:%M:%S%z")
 
