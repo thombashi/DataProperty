@@ -326,9 +326,8 @@ class DataProperty(DataPeropertyBase):
 
             self.__typecode = type_obj.typecode
 
-            special_value = type_value_mapping.get(self.__typecode)
-            if special_value is not None:
-                self.__data = special_value
+            self.__data = type_value_mapping.get(self.__typecode)
+            if self.__data is not None:
                 return
 
             self.__data = type_obj.convert()
