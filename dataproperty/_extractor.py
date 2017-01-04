@@ -98,11 +98,11 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def to_dataproperty_matrix(self):
-        return zip(*[
+        return list(zip(*[
             self.__to_dataproperty_list(
                 data_list, type_hint=self.__get_col_type_hint(col_idx))
             for col_idx, data_list in enumerate(zip(*self.data_matrix))
-        ])
+        ]))
 
     def to_header_dataproperty_list(self):
         return self.__to_dataproperty_list(
