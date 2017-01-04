@@ -15,6 +15,8 @@ import six
 
 from dataproperty import *
 
+from .common import get_strict_type_mapping
+
 
 if six.PY2:
     reload(sys)
@@ -37,10 +39,6 @@ def datetime_converter_tostr_1(value):
 
 def datetime_converter_test_raw(value):
     return value
-
-
-def get_strict_type_mapping(is_strict):
-    return STRICT_TYPE_MAPPING if is_strict else NOT_STRICT_TYPE_MAPPING
 
 
 class Test_DataPeroperty_data_typecode:
@@ -184,25 +182,8 @@ class Test_DataPeroperty_data_typecode:
         assert NanType(dp.data).is_type()
         assert dp.typecode == expected_typecode
 
-    @pytest.mark.parametrize(["value", "none_value", "expected"], [
-        [None, None, None],
-        [None, "null", "null"],
-        [None, "", ""],
-        [None, 0, 0],
-    ])
-    def test_none(self, value, none_value, expected):
-        dp = DataProperty(
-            value, type_value_mapping={Typecode.NONE: none_value})
-        assert dp.data == expected
-        assert dp.typecode == Typecode.NONE
-
 
 class Test_DataPeroperty_set_data:
-    VALUE_MAPPING = {
-        True: "true value",
-        False: "false value",
-        "const": "const value",
-    }
 
     @pytest.mark.parametrize(
         [
@@ -225,40 +206,6 @@ class Test_DataPeroperty_set_data:
             strict_type_mapping=get_strict_type_mapping(not is_convert),
             replace_tabs_with_spaces=replace_tabs_with_spaces,
             tab_length=tab_length)
-
-        assert dp.data == expected
-
-    @pytest.mark.parametrize(
-        ["value", "none_value", "is_convert", "expected"],
-        [
-            [None, "NONE", True, "NONE"],
-            [None, "NONE", False, "NONE"],
-        ]
-    )
-    def test_special_none(
-            self, value, none_value, is_convert, expected):
-        dp = DataProperty(
-            value,
-            type_value_mapping={Typecode.NONE: none_value},
-            strict_type_mapping=get_strict_type_mapping(not is_convert))
-
-        assert dp.data == expected
-
-    @pytest.mark.parametrize(
-        ["value", "const_value_mapping", "is_convert", "expected"],
-        [
-            ["True", VALUE_MAPPING, True, "true value"],
-            ["False", VALUE_MAPPING, True, "false value"],
-            ["True", VALUE_MAPPING, False, "True"],
-            ["const", VALUE_MAPPING, False, "const value"]
-        ]
-    )
-    def test_special_bool(
-            self, value, const_value_mapping,  is_convert, expected):
-        dp = DataProperty(
-            value,
-            const_value_mapping=const_value_mapping,
-            strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected
 
@@ -297,42 +244,6 @@ class Test_DataPeroperty_set_data:
             value,
             datetime_converter=datetime_converter,
             datetime_format_str=datetime_format_str,
-            strict_type_mapping=get_strict_type_mapping(not is_convert))
-
-        assert dp.data == expected
-
-    @pytest.mark.parametrize(
-        ["value", "inf_value", "is_convert", "expected"],
-        [
-            [inf, "Infinity", True, "Infinity"],
-            [inf, "Infinity", False, "Infinity"],
-            ["inf", "Infinity", True, "Infinity"],
-            ["inf", "Infinity", False, "inf"],
-        ]
-    )
-    def test_special_inf(
-            self, value, inf_value, is_convert, expected):
-        dp = DataProperty(
-            value,
-            type_value_mapping={Typecode.INFINITY: inf_value},
-            strict_type_mapping=get_strict_type_mapping(not is_convert))
-
-        assert dp.data == expected
-
-    @pytest.mark.parametrize(
-        ["value", "nan_value", "is_convert", "expected"],
-        [
-            [nan, "not a number", True, "not a number"],
-            [nan, "not a number", False, "not a number"],
-            ["nan", "not a number", True, "not a number"],
-            ["nan", "not a number", False, "nan"],
-        ]
-    )
-    def test_special_nan(
-            self, value, nan_value, is_convert, expected):
-        dp = DataProperty(
-            value,
-            type_value_mapping={Typecode.NAN: nan_value},
             strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected

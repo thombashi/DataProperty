@@ -11,6 +11,7 @@ from decimal import Decimal
 import pytest
 
 from dataproperty import *
+from .common import get_strict_type_mapping
 
 
 nan = float("nan")
@@ -24,6 +25,74 @@ def dp_extractor():
 
 def datetime_converter_test(value):
     return value.strftime("%Y%m%d %H%M%S")
+
+
+class Test_DataPropertyExtractor_to_dataproperty:
+    VALUE_MAPPING = {
+        True: "true value",
+        False: "false value",
+        "const": "const value",
+    }
+
+    @pytest.mark.parametrize(
+        [
+            "value", "type_value_mapping", "is_strict",
+            "expected_value", "expected_typecode",
+        ],
+        [
+            [None, {Typecode.NONE: None}, True, None, Typecode.NONE],
+            [None, {Typecode.NONE: "null"}, False, "null", Typecode.NONE],
+            [None, {Typecode.NONE: ""}, True, "", Typecode.NONE],
+            [None, {Typecode.NONE: 0}, False, 0, Typecode.NONE],
+
+            [inf, {Typecode.INFINITY: "Infinity"},
+                False, "Infinity", Typecode.INFINITY],
+            [inf, {Typecode.INFINITY: "Infinity"},
+                True, "Infinity", Typecode.INFINITY],
+            [inf, {Typecode.INFINITY: None}, True, None, Typecode.NONE],
+            ["inf", {Typecode.INFINITY: "Infinity"},
+                False, "Infinity", Typecode.INFINITY],
+            ["inf", {Typecode.INFINITY: "Infinity"},
+                True, "inf", Typecode.INFINITY],
+
+            [nan, {Typecode.NAN: "not a number"}, False,
+                "not a number", Typecode.INFINITY],
+            [nan, {Typecode.NAN: "not a number"}, True,
+                "not a number", Typecode.INFINITY],
+            [nan, {Typecode.NAN: None}, True, None, Typecode.NONE],
+            ["nan", {Typecode.NAN: "not a number"},
+                False, "not a number", Typecode.INFINITY],
+            ["nan", {Typecode.NAN: "not a number"},
+                True, "nan", Typecode.INFINITY],
+        ]
+    )
+    def test_normal_type_value_mapping(
+            self, dp_extractor, value, type_value_mapping, is_strict,
+            expected_value, expected_typecode):
+        dp_extractor.type_value_mapping = type_value_mapping
+        dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
+        dp = dp_extractor.to_dataproperty(value)
+
+        assert dp.data == expected_value
+
+    @pytest.mark.parametrize(
+        ["value", "const_value_mapping", "is_strict", "expected"],
+        [
+            ["True", VALUE_MAPPING, False, "true value"],
+            ["False", VALUE_MAPPING, False, "false value"],
+            ["True", VALUE_MAPPING, True, "True"],
+            [True, VALUE_MAPPING, True, "true value"],
+            ["const", VALUE_MAPPING, True, "const value"]
+        ]
+    )
+    def test_normal_const_value_mapping(
+            self, dp_extractor, value, const_value_mapping, is_strict,
+            expected):
+        dp_extractor.const_value_mapping = const_value_mapping
+        dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
+        dp = dp_extractor.to_dataproperty(value)
+
+        assert dp.data == expected
 
 
 class Test_DataPropertyExtractor_to_dataproperty_matrix:
@@ -45,7 +114,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
 
     @pytest.mark.parametrize(
         [
-            "value", "none_value", "inf_value", "nan_value",
+            "value", "type_value_mapping",
             "const_value_mapping", "datetime_converter",
         ],
         [
@@ -56,23 +125,21 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
                     [nan, inf],
                     ["false", datetime.datetime(2017, 1, 1, 0, 0, 0)]
                 ],
-                "null",
-                "Infinity",
-                "NaN",
+                {
+                    Typecode.NONE: "null",
+                    Typecode.INFINITY: "INFINITY",
+                    Typecode.NAN: "NAN",
+                },
                 {True: "true", False: "false"},
                 datetime_converter_test,
             ],
         ]
     )
     def test_normal(
-            self, dp_extractor, value, none_value, inf_value, nan_value,
+            self, dp_extractor, value, type_value_mapping,
             const_value_mapping, datetime_converter):
         dp_extractor.data_matrix = value
-        dp_extractor.type_value_mapping = {
-            Typecode.NONE: none_value,
-            Typecode.INFINITY: inf_value,
-            Typecode.NAN: nan_value,
-        }
+        dp_extractor.type_value_mapping = type_value_mapping
         dp_extractor.const_value_mapping = const_value_mapping
         dp_extractor.datetime_converter = datetime_converter
         dp_extractor.datetime_format_str = "s"
@@ -82,12 +149,12 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
 
         dp = dp_matrix[0][0]
         assert dp.data == "null"
-        assert dp.typecode == Typecode.NONE
+        assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 4
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "{}"
+        assert dp.format_str == "{:s}"
 
         dp = dp_matrix[0][1]
         assert dp.data == 1
@@ -117,31 +184,31 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.format_str == "{:s}"
 
         dp = dp_matrix[2][0]
-        assert dp.data == "NaN"
-        assert dp.typecode == Typecode.NAN
+        assert dp.data == "NAN"
+        assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 3
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "{:f}"
+        assert dp.format_str == "{:s}"
 
         dp = dp_matrix[2][1]
-        assert dp.data == "Infinity"
-        assert dp.typecode == Typecode.INFINITY
+        assert dp.data == "INFINITY"
+        assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 8
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "{:f}"
+        assert dp.format_str == "{:s}"
 
         dp = dp_matrix[3][0]
         assert dp.data == "false"
-        assert dp.typecode == Typecode.BOOL
+        assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 5
         assert NanType(dp.decimal_places).is_type()
-        assert dp.format_str == "{}"
+        assert dp.format_str == "{:s}"
 
         dp = dp_matrix[3][1]
         assert dp.data == "20170101 000000"

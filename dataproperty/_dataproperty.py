@@ -171,8 +171,6 @@ class DataProperty(DataPeropertyBase):
             self, data,
             type_hint=None,
             strip_str=None,
-            type_value_mapping=None,
-            const_value_mapping=None,
             float_type=None,
             datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
@@ -183,9 +181,9 @@ class DataProperty(DataPeropertyBase):
 
         data = self.__preprocess_data(data, strip_str)
         self.__set_data(
-            data, type_hint, type_value_mapping, float_type,
+            data, type_hint, float_type,
             strict_type_mapping)
-        self.__convert_data(const_value_mapping, datetime_converter)
+        self.__convert_data(datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
@@ -296,10 +294,7 @@ class DataProperty(DataPeropertyBase):
 
     def __set_data(
             self, data, type_hint,
-            type_value_mapping, float_type, strict_type_mapping):
-
-        if type_value_mapping is None:
-            type_value_mapping = DEFAULT_TYPE_VALUE_MAPPING
+            float_type, strict_type_mapping):
 
         if float_type is None:
             float_type = DEFAULT_FLOAT_TYPE
@@ -308,7 +303,7 @@ class DataProperty(DataPeropertyBase):
             strict_type_mapping = DEFAULT_STRICT_TYPE_MAPPING
 
         if type_hint is not None and self.__try_convert_type(
-                data, type_hint, type_value_mapping,
+                data, type_hint,
                 is_strict=False, float_type=float_type):
             return
 
@@ -317,13 +312,13 @@ class DataProperty(DataPeropertyBase):
                 type_class(None).typecode, False)
 
             if self.__try_convert_type(
-                    data, type_class, type_value_mapping, is_strict, float_type):
+                    data, type_class, is_strict, float_type):
                 return
 
         raise TypeConversionError("failed to convert: " + self.typename)
 
     def __try_convert_type(
-            self, data, type_class, type_value_mapping, is_strict, float_type):
+            self, data, type_class, is_strict, float_type):
         type_obj = type_class(
             data, is_strict, {"float_type": float_type})
 
@@ -331,32 +326,13 @@ class DataProperty(DataPeropertyBase):
             return False
 
         self.__typecode = type_obj.typecode
-        self.__data = type_value_mapping.get(
-            self.__typecode, DEFAULT_TYPE_VALUE_MAPPING.get(self.__typecode))
-
-        if self.__data is not None:
-            return True
-
         self.__data = type_obj.convert()
 
         return True
 
-    def __convert_data(self, const_value_mapping, datetime_converter):
-        if const_value_mapping is None:
-            const_value_mapping = DEFAULT_CONST_VALUE_MAPPING
-
+    def __convert_data(self, datetime_converter):
         if self.typecode == Typecode.DATETIME:
             self.__data = datetime_converter(self.__data)
-            return
-
-        if self.typecode in (Typecode.BOOL, Typecode.STRING):
-            try:
-                if self.__data in const_value_mapping:
-                    self.__data = const_value_mapping.get(self.__data)
-            except TypeError:
-                # unhashable type will be reached this line
-                pass
-
             return
 
     def __replace_tabs(self, replace_tabs_with_spaces, tab_length):

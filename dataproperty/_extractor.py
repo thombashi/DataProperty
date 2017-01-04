@@ -21,6 +21,7 @@ from ._dataproperty import (
     DataProperty,
     ColumnDataProperty,
 )
+from ._dataproperty_converter import DataPropertyConverter
 from ._function import is_empty_sequence
 from ._type import StringType
 
@@ -38,24 +39,30 @@ class DataPropertyExtractor(object):
         self.data_matrix = []
         self.default_type_hint = None
         self.col_type_hint_list = None
+
         self.strip_str = None
         self.min_padding_len = 0
-        self.type_value_mapping = copy.deepcopy(DEFAULT_TYPE_VALUE_MAPPING)
         self.float_type = None
-        self.const_value_mapping = copy.deepcopy(DEFAULT_CONST_VALUE_MAPPING)
         self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
-        self.strict_type_mapping = dict(DEFAULT_STRICT_TYPE_MAPPING)
+        self.strict_type_mapping = copy.deepcopy(DEFAULT_STRICT_TYPE_MAPPING)
         self.east_asian_ambiguous_width = 1
+
+        self.type_value_mapping = copy.deepcopy(DEFAULT_TYPE_VALUE_MAPPING)
+        self.const_value_mapping = copy.deepcopy(DEFAULT_CONST_VALUE_MAPPING)
 
         self.mismatch_processing = MissmatchProcessing.TRIM
 
     def to_dataproperty(self, data):
+        self.__update_dp_converter()
+
         return self.__to_dataproperty(data)
 
     def to_dataproperty_list(self, data_list):
         if is_empty_sequence(data_list):
             return []
+
+        self.__update_dp_converter()
 
         return [self.__to_dataproperty(data) for data in data_list]
 
@@ -98,6 +105,8 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def to_dataproperty_matrix(self):
+        self.__update_dp_converter()
+
         return list(zip(*[
             self.__to_dataproperty_list(
                 data_list, type_hint=self.__get_col_type_hint(col_idx))
@@ -105,6 +114,8 @@ class DataPropertyExtractor(object):
         ]))
 
     def to_header_dataproperty_list(self):
+        self.__update_dp_converter()
+
         return self.__to_dataproperty_list(
             self.header_list, type_hint=StringType,
             strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
@@ -117,14 +128,12 @@ class DataPropertyExtractor(object):
 
     def __to_dataproperty(
             self, data, type_hint=None, strict_type_mapping=None):
-        return DataProperty(
+        dp = DataProperty(
             data,
             type_hint=(
                 type_hint if type_hint is not None else self.default_type_hint),
             strip_str=self.strip_str,
-            type_value_mapping=self.type_value_mapping,
             float_type=self.float_type,
-            const_value_mapping=self.const_value_mapping,
             datetime_converter=self.datetime_converter,
             datetime_format_str=self.datetime_format_str,
             strict_type_mapping=(
@@ -132,6 +141,8 @@ class DataPropertyExtractor(object):
                 if type_hint is not None else self.strict_type_mapping),
             east_asian_ambiguous_width=self.east_asian_ambiguous_width
         )
+
+        return self.__dp_converter.convert(dp)
 
     def __to_dataproperty_list(
             self, data_list, type_hint=None, strict_type_mapping=None):
@@ -157,6 +168,13 @@ class DataPropertyExtractor(object):
             col_dp_list.append(col_dp)
 
         return col_dp_list
+
+    def __update_dp_converter(self):
+        self.__dp_converter = DataPropertyConverter(
+            type_value_mapping=self.type_value_mapping,
+            const_value_mapping=self.const_value_mapping,
+            float_type=self.float_type,
+            strict_type_mapping=self.strict_type_mapping)
 
     def extract_data_property_matrix(self):
         # alias to to_dataproperty_matrix method.
