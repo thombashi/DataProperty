@@ -204,8 +204,7 @@ class DataProperty(DataPeropertyBase):
                 "data={:s}".format(six.text_type(self.data)))
         else:
             try:
-                element_list.append(
-                    ("data=" + self.format_str).format(self.data))
+                element_list.append("data=" + self.to_str())
             except UnicodeEncodeError:
                 element_list.append("data={}".format(
                     MultiByteStrDecoder(self.data).unicode_str))
@@ -223,6 +222,9 @@ class DataProperty(DataPeropertyBase):
 
     def get_padding_len(self, ascii_char_width):
         return ascii_char_width - (self.ascii_char_width - self.str_len)
+
+    def to_str(self):
+        return self.format_str.format(self.data)
 
     def __get_additional_format_len(self):
         if not FloatType(self.data).is_type():
@@ -262,7 +264,7 @@ class DataProperty(DataPeropertyBase):
 
         if self.typecode == Typecode.DATETIME:
             try:
-                self.__str_len = len(self.format_str.format(self.data))
+                self.__str_len = len(self.to_str())
             except ValueError:
                 # reach to this line if the year <1900.
                 # the datetime strftime() methods require year >= 1900.
@@ -274,7 +276,7 @@ class DataProperty(DataPeropertyBase):
         try:
             unicode_str = MultiByteStrDecoder(self.data).unicode_str
         except ValueError:
-            unicode_str = self.format_str.format(self.data)
+            unicode_str = self.to_str()
 
         self.__str_len = len(unicode_str)
         self.__ascii_char_width = get_ascii_char_width(
