@@ -13,6 +13,7 @@ from ._common import DEFAULT_FLOAT_TYPE
 from ._type_checker import (
     NoneTypeChecker,
     StringTypeChecker,
+    NullStringTypeChecker,
     IntegerTypeChecker,
     FloatTypeChecker,
     BoolTypeChecker,
@@ -73,6 +74,15 @@ class StringTypeFactory(AbstractTypeFactory):
 
     def create_type_checker(self):
         return StringTypeChecker(self._data, self._is_strict)
+
+    def create_type_converter(self):
+        return StringConverter(self._data)
+
+
+class NullStringTypeFactory(AbstractTypeFactory):
+
+    def create_type_checker(self):
+        return NullStringTypeChecker(self._data, self._is_strict)
 
     def create_type_converter(self):
         return StringConverter(self._data)

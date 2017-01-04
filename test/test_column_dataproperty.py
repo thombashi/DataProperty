@@ -6,6 +6,7 @@
 
 from __future__ import unicode_literals
 import datetime
+from decimal import Decimal
 
 import pytest
 import six
@@ -35,6 +36,10 @@ class Test_ColumnDataPeroperty:
         ],
         [
             [0, 1.1, "0.01", -six.MAXSIZE],
+            Typecode.FLOAT,
+        ],
+        [
+            [0, 1.1, Decimal("0.1"), None, ""],
             Typecode.FLOAT,
         ],
         [

@@ -84,13 +84,13 @@ class Test_NoneTypeChecker_validate:
 
 class Test_StringTypeChecker_is_type:
 
-    @pytest.mark.parametrize(["value", "is_convert", "expected"], [
-        [None, True, True],
-        [None, False, False],
-        [six.MAXSIZE, True, True],
-        [six.MAXSIZE, False, False],
-        [inf, True, True],
-        [inf, False, False],
+    @pytest.mark.parametrize(["value", "is_strict", "expected"], [
+        [None, False, True],
+        [None, True, False],
+        [six.MAXSIZE, False, True],
+        [six.MAXSIZE, True, False],
+        [inf, False, True],
+        [inf, True, False],
     ] + list(
         itertools.product(
             ["None", "いろは", "いろは".encode("utf_8")],
@@ -98,12 +98,30 @@ class Test_StringTypeChecker_is_type:
             [True]
         ))
     )
-    def test_normal_true(self, value, is_convert, expected):
-        is_strict = not is_convert
-
+    def test_normal(self, value, is_strict, expected):
         type_checker = StringTypeChecker(value, is_strict)
+
         assert type_checker.is_type() == expected
         assert type_checker.typecode == Typecode.STRING
+
+
+class Test_NullStringTypeChecker_is_type:
+
+    @pytest.mark.parametrize(["value", "is_strict", "expected"], [
+        ["", False, True],
+        ["", True, True],
+    ] + list(
+        itertools.product(
+            [None, six.MAXSIZE, "None", inf, "いろは", "いろは".encode("utf_8")],
+            [True, False],
+            [False]
+        ))
+    )
+    def test_normal(self, value, is_strict, expected):
+        type_checker = NullStringTypeChecker(value, is_strict)
+
+        assert type_checker.is_type() == expected
+        assert type_checker.typecode == Typecode.NULL_STRING
 
 
 class Test_StringTypeChecker_validate:

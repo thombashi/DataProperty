@@ -50,7 +50,6 @@ class DataPropertyExtractor(object):
         self.type_value_mapping = copy.deepcopy(DEFAULT_TYPE_VALUE_MAPPING)
         self.const_value_mapping = copy.deepcopy(DEFAULT_CONST_VALUE_MAPPING)
         self.datetime_formatter = None
-        #self.datetime_formatter = default_datetime_formatter
 
         self.mismatch_processing = MissmatchProcessing.TRIM
 

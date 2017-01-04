@@ -33,6 +33,7 @@ from ._function import (
 from ._type import (
     NoneType,
     StringType,
+    NullStringType,
     IntegerType,
     FloatType,
     DateTimeType,
@@ -98,6 +99,7 @@ class DataProperty(DataPeropertyBase):
         BoolType,
         DictionaryType,
         DateTimeType,
+        NullStringType,
         StringType,
     ]
 
@@ -351,6 +353,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     __TYPE_CLASS_TABLE = {
         Typecode.NONE: NoneType,
+        Typecode.NULL_STRING: NullStringType,
         Typecode.STRING: StringType,
         Typecode.INTEGER: IntegerType,
         Typecode.INFINITY: InfinityType,
@@ -485,13 +488,16 @@ class ColumnDataProperty(DataPeropertyBase):
         ])
 
     def __is_float_typecode(self):
-        number_typecode = (
-            Typecode.INTEGER | Typecode.FLOAT | Typecode.INFINITY | Typecode.NAN)
+        NUMBER_TYPECODE_BMP = (
+            Typecode.INTEGER | Typecode.FLOAT | Typecode.INFINITY |
+            Typecode.NAN
+        )
 
-        if self.__is_not_single_typecode(number_typecode):
+        if self.__is_not_single_typecode(
+                NUMBER_TYPECODE_BMP | Typecode.NULL_STRING):
             return False
 
-        if bin(self.__typecode_bitmap & number_typecode).count("1") >= 2:
+        if bin(self.__typecode_bitmap & NUMBER_TYPECODE_BMP).count("1") >= 2:
             return True
 
         return False
@@ -507,6 +513,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return Typecode.STRING
 
         typecode_list = [
+            Typecode.NULL_STRING,
             Typecode.STRING,
             Typecode.FLOAT,
             Typecode.INTEGER,

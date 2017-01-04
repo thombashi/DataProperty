@@ -11,6 +11,7 @@ import abc
 from ._factory import (
     NoneTypeFactory,
     StringTypeFactory,
+    NullStringTypeFactory,
     IntegerTypeFactory,
     FloatTypeFactory,
     DateTimeTypeFactory,
@@ -83,6 +84,13 @@ class StringType(AbstractType):
     @property
     def _factory_class(self):
         return StringTypeFactory
+
+
+class NullStringType(AbstractType):
+
+    @property
+    def _factory_class(self):
+        return NullStringTypeFactory
 
 
 class IntegerType(AbstractType):
