@@ -10,15 +10,6 @@ import abc
 import six
 
 from ._common import DEFAULT_FLOAT_TYPE
-from ._converter import (
-    NopConverter,
-    StringConverter,
-    IntegerConverter,
-    FloatConverter,
-    BoolConverter,
-    DateTimeConverter,
-    DictionaryConverter,
-)
 from ._type_checker import (
     NoneTypeChecker,
     StringTypeChecker,
@@ -29,6 +20,15 @@ from ._type_checker import (
     InfinityChecker,
     NanChecker,
     DictionaryTypeChecker,
+)
+from ._type_converter import (
+    NopConverter,
+    StringConverter,
+    IntegerConverter,
+    FloatConverter,
+    BoolConverter,
+    DateTimeConverter,
+    DictionaryConverter,
 )
 
 

@@ -8,7 +8,6 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 import abc
 
-from ._converter import ValueConverterInterface
 from ._factory import (
     NoneTypeFactory,
     StringTypeFactory,
@@ -21,18 +20,19 @@ from ._factory import (
     DictionaryTypeFactory,
 )
 from ._type_checker import TypeCheckerInterface
+from ._type_converter import ValueConverterInterface
 
 
 class AbstractType(TypeCheckerInterface, ValueConverterInterface):
     __slots__ = ("__checker", "__converter")
 
-    @property
-    def typecode(self):
-        return self.__checker.typecode
-
     @abc.abstractproperty
     def _factory_class(self):  # pragma: no cover
         pass
+
+    @property
+    def typecode(self):
+        return self.__checker.typecode
 
     def __init__(self, data, is_strict=False, params=None):
         if params is None:

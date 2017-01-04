@@ -12,7 +12,7 @@ import math
 
 import six
 
-from ._converter import (
+from ._type_converter import (
     NopConverter,
     StringConverter,
     IntegerConverter,
