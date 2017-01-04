@@ -80,7 +80,6 @@ class DataPeropertyBase(DataPeropertyInterface):
 
 
 class DataProperty(DataPeropertyBase):
-    """
     __slots__ = (
         "__data",
         "__typecode",
@@ -89,11 +88,8 @@ class DataProperty(DataPeropertyBase):
         "__decimal_places",
         "__additional_format_len",
         "__str_len",
-        "__strip_str",
         "__ascii_char_width",
-        "__east_asian_ambiguous_width",
     )
-    """
 
     __type_class_list = [
         NoneType,
@@ -186,10 +182,7 @@ class DataProperty(DataPeropertyBase):
             east_asian_ambiguous_width=1):
         super(DataProperty, self).__init__(datetime_format_str)
 
-        self.__strip_str = strip_str
-        self.__east_asian_ambiguous_width = east_asian_ambiguous_width
-
-        data = self.__preprocess_data(data)
+        data = self.__preprocess_data(data, strip_str)
         self.__set_data(
             data, type_hint, type_value_mapping, float_type,
             strict_type_mapping)
@@ -205,7 +198,7 @@ class DataProperty(DataPeropertyBase):
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
-        self.__calc_length()
+        self.__calc_length(east_asian_ambiguous_width)
 
     def __repr__(self):
         element_list = []
@@ -259,7 +252,7 @@ class DataProperty(DataPeropertyBase):
 
         return float_len
 
-    def __calc_length(self):
+    def __calc_length(self, east_asian_ambiguous_width):
         if self.typecode == Typecode.INTEGER:
             self.__str_len = self.integer_digits + self.additional_format_len
             self.__ascii_char_width = self.__str_len
@@ -289,18 +282,18 @@ class DataProperty(DataPeropertyBase):
 
         self.__str_len = len(unicode_str)
         self.__ascii_char_width = get_ascii_char_width(
-            unicode_str, self.__east_asian_ambiguous_width)
+            unicode_str, east_asian_ambiguous_width)
 
-    def __preprocess_data(self, data):
-        if self.__strip_str is None:
+    def __preprocess_data(self, data, strip_str):
+        if strip_str is None:
             return data
 
         try:
-            return data.strip(self.__strip_str)
+            return data.strip(strip_str)
         except AttributeError:
             return data
         except UnicodeDecodeError:
-            return MultiByteStrDecoder(data).unicode_str.strip(self.__strip_str)
+            return MultiByteStrDecoder(data).unicode_str.strip(strip_str)
 
     def __set_data(
             self, data, type_hint,
