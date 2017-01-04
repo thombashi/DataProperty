@@ -318,23 +318,30 @@ class DataProperty(DataPeropertyBase):
         for type_class in self.__type_class_list:
             is_strict = strict_type_mapping.get(
                 type_class(None).typecode, False)
-            type_obj = type_class(
-                data, is_strict, {"float_type": float_type})
 
-            if not type_obj.is_type():
-                continue
-
-            self.__typecode = type_obj.typecode
-
-            self.__data = type_value_mapping.get(self.__typecode)
-            if self.__data is not None:
+            if self.__try_convert_type(
+                    data, type_class, type_value_mapping, is_strict, float_type):
                 return
 
-            self.__data = type_obj.convert()
-
-            return
-
         raise TypeConversionError("failed to convert: " + self.typename)
+
+    def __try_convert_type(
+            self, data, type_class, type_value_mapping, is_strict, float_type):
+        type_obj = type_class(
+            data, is_strict, {"float_type": float_type})
+
+        if not type_obj.is_type():
+            return False
+
+        self.__typecode = type_obj.typecode
+        self.__data = type_value_mapping.get(self.__typecode)
+
+        if self.__data is not None:
+            return True
+
+        self.__data = type_obj.convert()
+
+        return True
 
     def __convert_data(self, bool_converter, datetime_converter):
         if self.typecode == Typecode.BOOL:
