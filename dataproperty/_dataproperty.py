@@ -80,6 +80,7 @@ class DataPeropertyBase(DataPeropertyInterface):
 
 
 class DataProperty(DataPeropertyBase):
+    """
     __slots__ = (
         "__data",
         "__typecode",
@@ -92,6 +93,7 @@ class DataProperty(DataPeropertyBase):
         "__ascii_char_width",
         "__east_asian_ambiguous_width",
     )
+    """
 
     __type_class_list = [
         NoneType,
@@ -216,8 +218,8 @@ class DataProperty(DataPeropertyBase):
                 element_list.append(
                     ("data=" + self.format_str).format(self.data))
             except UnicodeEncodeError:
-                element_list.append(
-                    ("data={}").format(MultiByteStrDecoder(self.data).unicode_str))
+                element_list.append("data={}".format(
+                    MultiByteStrDecoder(self.data).unicode_str))
         element_list.extend([
             "typename={:s}".format(self.typename),
             "align={}".format(self.align),
