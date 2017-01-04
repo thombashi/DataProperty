@@ -15,7 +15,7 @@ from ._common import (
     DEFAULT_STRICT_TYPE_MAPPING,
     DEFAULT_CONST_VALUE_MAPPING,
     NOT_STRICT_TYPE_MAPPING,
-    default_datetime_converter,
+    default_datetime_formatter,
 )
 from ._dataproperty import (
     DataProperty,
@@ -43,13 +43,14 @@ class DataPropertyExtractor(object):
         self.strip_str = None
         self.min_padding_len = 0
         self.float_type = None
-        self.datetime_converter = default_datetime_converter
         self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
         self.strict_type_mapping = copy.deepcopy(DEFAULT_STRICT_TYPE_MAPPING)
         self.east_asian_ambiguous_width = 1
 
         self.type_value_mapping = copy.deepcopy(DEFAULT_TYPE_VALUE_MAPPING)
         self.const_value_mapping = copy.deepcopy(DEFAULT_CONST_VALUE_MAPPING)
+        self.datetime_formatter = None
+        #self.datetime_formatter = default_datetime_formatter
 
         self.mismatch_processing = MissmatchProcessing.TRIM
 
@@ -134,7 +135,6 @@ class DataPropertyExtractor(object):
                 type_hint if type_hint is not None else self.default_type_hint),
             strip_str=self.strip_str,
             float_type=self.float_type,
-            datetime_converter=self.datetime_converter,
             datetime_format_str=self.datetime_format_str,
             strict_type_mapping=(
                 strict_type_mapping
@@ -173,6 +173,7 @@ class DataPropertyExtractor(object):
         self.__dp_converter = DataPropertyConverter(
             type_value_mapping=self.type_value_mapping,
             const_value_mapping=self.const_value_mapping,
+            datetime_formatter=self.datetime_formatter,
             float_type=self.float_type,
             strict_type_mapping=self.strict_type_mapping)
 

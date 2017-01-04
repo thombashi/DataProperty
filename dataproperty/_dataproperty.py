@@ -19,7 +19,6 @@ from ._common import (
     DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_CONST_VALUE_MAPPING,
     DEFAULT_STRICT_TYPE_MAPPING,
-    default_datetime_converter,
 )
 from ._container import (
     MinMaxContainer,
@@ -172,7 +171,6 @@ class DataProperty(DataPeropertyBase):
             type_hint=None,
             strip_str=None,
             float_type=None,
-            datetime_converter=default_datetime_converter,
             datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
             strict_type_mapping=None,
             replace_tabs_with_spaces=True, tab_length=2,
@@ -183,7 +181,6 @@ class DataProperty(DataPeropertyBase):
         self.__set_data(
             data, type_hint, float_type,
             strict_type_mapping)
-        self.__convert_data(datetime_converter)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
@@ -329,11 +326,6 @@ class DataProperty(DataPeropertyBase):
         self.__data = type_obj.convert()
 
         return True
-
-    def __convert_data(self, datetime_converter):
-        if self.typecode == Typecode.DATETIME:
-            self.__data = datetime_converter(self.__data)
-            return
 
     def __replace_tabs(self, replace_tabs_with_spaces, tab_length):
         if not replace_tabs_with_spaces:

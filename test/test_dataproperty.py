@@ -29,18 +29,6 @@ nan = float("nan")
 inf = float("inf")
 
 
-def datetime_converter_tostr_0(value):
-    return value.strftime("%Y-%m-%d %H:%M:%S%z")
-
-
-def datetime_converter_tostr_1(value):
-    return value.strftime("%Y/%m/%d %H:%M:%S")
-
-
-def datetime_converter_test_raw(value):
-    return value
-
-
 class Test_DataPeroperty_data_typecode:
 
     @pytest.mark.parametrize(
@@ -157,7 +145,7 @@ class Test_DataPeroperty_data_typecode:
             ["100-0002", None, False, Typecode.DATETIME],
         ]
     )
-    def test_normal_datetime(
+    def test_normal_datetime_type_hint(
             self, value, type_hint, is_strict, expected_typecode):
         dp = DataProperty(
             value, type_hint=type_hint,
@@ -206,45 +194,6 @@ class Test_DataPeroperty_set_data:
             strict_type_mapping=get_strict_type_mapping(not is_convert),
             replace_tabs_with_spaces=replace_tabs_with_spaces,
             tab_length=tab_length)
-
-        assert dp.data == expected
-
-    @pytest.mark.parametrize(
-        [
-            "value", "datetime_converter", "datetime_format_str",
-            "is_convert", "expected",
-        ],
-        [
-            [
-                DATATIME_DATA, datetime_converter_tostr_0,
-                "s",
-                True, "2017-01-02 03:04:05",
-            ],
-            [
-                "2017-01-01 00:00:00", datetime_converter_tostr_1,
-                "s",
-                True, "2017/01/01 00:00:00",
-            ],
-            [
-                "2017-01-01 00:00:00", datetime_converter_test_raw,
-                "%Y-%m-%dT%H:%M:%S",
-                True, datetime.datetime(2017, 1, 1, 0, 0, 0),
-            ],
-            [
-                "2017-01-01 00:00:00", datetime_converter_test_raw,
-                "s",
-                False, "2017-01-01 00:00:00",
-            ],
-        ]
-    )
-    def test_special_datetime(
-            self, value, datetime_converter, datetime_format_str,
-            is_convert, expected):
-        dp = DataProperty(
-            value,
-            datetime_converter=datetime_converter,
-            datetime_format_str=datetime_format_str,
-            strict_type_mapping=get_strict_type_mapping(not is_convert))
 
         assert dp.data == expected
 

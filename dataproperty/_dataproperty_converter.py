@@ -11,6 +11,7 @@ from ._common import (
     DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_CONST_VALUE_MAPPING,
     STRICT_TYPE_MAPPING,
+    default_datetime_formatter,
 )
 from ._dataproperty import DataProperty
 from ._error import TypeConversionError
@@ -21,6 +22,7 @@ class DataPropertyConverter(object):
 
     def __init__(
             self, type_value_mapping=None, const_value_mapping=None,
+            datetime_formatter=default_datetime_formatter,
             float_type=None, strict_type_mapping=None):
         self.__type_value_mapping = (
             type_value_mapping
@@ -28,6 +30,7 @@ class DataPropertyConverter(object):
         self.__const_value_mapping = (
             const_value_mapping
             if const_value_mapping else DEFAULT_CONST_VALUE_MAPPING)
+        self.__datetime_formatter = datetime_formatter
         self.__float_type = float_type
         self.__strict_type_mapping = strict_type_mapping
 
@@ -53,5 +56,11 @@ class DataPropertyConverter(object):
             return self.__type_value_mapping.get(
                 dp_value.typecode,
                 DEFAULT_TYPE_VALUE_MAPPING.get(dp_value.typecode))
+
+        if dp_value.typecode == Typecode.DATETIME:
+            try:
+                return self.__datetime_formatter(dp_value.data)
+            except TypeError:
+                raise TypeConversionError
 
         raise TypeConversionError("no need to convert")

@@ -14,6 +14,8 @@ from dataproperty import *
 from .common import get_strict_type_mapping
 
 
+DATATIME_DATA = datetime.datetime(2017, 1, 2, 3, 4, 5)
+
 nan = float("nan")
 inf = float("inf")
 
@@ -23,8 +25,16 @@ def dp_extractor():
     return DataPropertyExtractor()
 
 
-def datetime_converter_test(value):
+def datetime_formatter_test(value):
     return value.strftime("%Y%m%d %H%M%S")
+
+
+def datetime_formatter_tostr_0(value):
+    return value.strftime("%Y-%m-%d %H:%M:%S%z")
+
+
+def datetime_formatter_tostr_1(value):
+    return value.strftime("%Y/%m/%d %H:%M:%S")
 
 
 class Test_DataPropertyExtractor_to_dataproperty:
@@ -94,6 +104,44 @@ class Test_DataPropertyExtractor_to_dataproperty:
 
         assert dp.data == expected
 
+    @pytest.mark.parametrize(
+        [
+            "value", "datetime_formatter", "datetime_format_str",
+            "is_strict", "expected",
+        ],
+        [
+            [
+                DATATIME_DATA, datetime_formatter_tostr_0,
+                "s",
+                False, "2017-01-02 03:04:05",
+            ],
+            [
+                "2017-01-01 00:00:00", datetime_formatter_tostr_1,
+                "s",
+                False, "2017/01/01 00:00:00",
+            ],
+            [
+                "2017-01-01 00:00:00", None,
+                "%Y-%m-%dT%H:%M:%S",
+                False, datetime.datetime(2017, 1, 1, 0, 0, 0),
+            ],
+            [
+                "2017-01-01 00:00:00", None,
+                "s",
+                True, "2017-01-01 00:00:00",
+            ],
+        ]
+    )
+    def test_nourmal_datetime(
+            self, dp_extractor, value, datetime_formatter, datetime_format_str,
+            is_strict, expected):
+        dp_extractor.datetime_formatter = datetime_formatter
+        dp_extractor.datetime_format_str = datetime_format_str
+        dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
+        dp = dp_extractor.to_dataproperty(value)
+
+        assert dp.data == expected
+
 
 class Test_DataPropertyExtractor_to_dataproperty_matrix:
 
@@ -115,7 +163,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
     @pytest.mark.parametrize(
         [
             "value", "type_value_mapping",
-            "const_value_mapping", "datetime_converter",
+            "const_value_mapping", "datetime_formatter",
         ],
         [
             [
@@ -123,7 +171,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
                     [None, "1"],
                     ["1.1", "a"],
                     [nan, inf],
-                    ["false", datetime.datetime(2017, 1, 1, 0, 0, 0)]
+                    ["false", DATATIME_DATA]
                 ],
                 {
                     Typecode.NONE: "null",
@@ -131,18 +179,17 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
                     Typecode.NAN: "NAN",
                 },
                 {True: "true", False: "false"},
-                datetime_converter_test,
+                datetime_formatter_test,
             ],
         ]
     )
     def test_normal(
             self, dp_extractor, value, type_value_mapping,
-            const_value_mapping, datetime_converter):
+            const_value_mapping, datetime_formatter):
         dp_extractor.data_matrix = value
         dp_extractor.type_value_mapping = type_value_mapping
         dp_extractor.const_value_mapping = const_value_mapping
-        dp_extractor.datetime_converter = datetime_converter
-        dp_extractor.datetime_format_str = "s"
+        dp_extractor.datetime_formatter = datetime_formatter
         dp_matrix = list(dp_extractor.to_dataproperty_matrix())
 
         assert len(dp_matrix) == 4
@@ -211,8 +258,8 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.format_str == "{:s}"
 
         dp = dp_matrix[3][1]
-        assert dp.data == "20170101 000000"
-        assert dp.typecode == Typecode.DATETIME
+        assert dp.data == "20170102 030405"
+        assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 15

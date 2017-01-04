@@ -9,6 +9,8 @@ from __future__ import unicode_literals
 from decimal import Decimal
 import itertools
 
+import six
+
 from ._typecode import Typecode
 
 
@@ -40,5 +42,5 @@ STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
 NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
 
 
-def default_datetime_converter(value):
-    return value
+def default_datetime_formatter(value):
+    return six.text_type(value)
