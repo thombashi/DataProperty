@@ -319,3 +319,9 @@ class DictionaryTypeChecker(TypeChecker):
 
     def _is_instance(self):
         return isinstance(self._value, dict)
+
+    def _is_valid_after_convert(self):
+        return (
+            isinstance(self._converted_value, dict) and
+            self._converted_value
+        )
