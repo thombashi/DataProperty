@@ -25,6 +25,7 @@ from ._type_checker import (
 from ._type_converter import (
     NopConverter,
     StringConverter,
+    NullStringConverter,
     IntegerConverter,
     FloatConverter,
     BoolConverter,
@@ -85,7 +86,7 @@ class NullStringTypeFactory(AbstractTypeFactory):
         return NullStringTypeChecker(self._data, self._is_strict)
 
     def create_type_converter(self):
-        return StringConverter(self._data)
+        return NullStringConverter(self._data)
 
 
 class IntegerTypeFactory(AbstractTypeFactory):

@@ -171,6 +171,11 @@ class NullStringTypeChecker(StringTypeChecker):
         return self._is_null_string(self._converted_value)
 
     def _is_null_string(self, value):
+        try:
+            value = value.strip()
+        except AttributeError:
+            return False
+
         return self._is_string(value) and len(value) == 0
 
 

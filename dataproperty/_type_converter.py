@@ -65,6 +65,12 @@ class StringConverter(ValueConverter):
             return six.text_type(self._value)
 
 
+class NullStringConverter(StringConverter):
+
+    def convert(self):
+        return super(NullStringConverter, self).convert().strip()
+
+
 class IntegerConverter(ValueConverter):
 
     def convert(self):
