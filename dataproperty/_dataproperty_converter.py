@@ -6,10 +6,12 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+import re
 
 from ._common import (
     DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_CONST_VALUE_MAPPING,
+    DEFAULT_QUOTE_FLAG_MAPPING,
     STRICT_TYPE_MAPPING,
     default_datetime_formatter,
 )
@@ -19,10 +21,13 @@ from ._typecode import Typecode
 
 
 class DataPropertyConverter(object):
+    __RE_QUOTE = re.compile("^[\s]*[\"].*[\"][\s]*$")
 
     def __init__(
             self, type_value_mapping=None, const_value_mapping=None,
+            quote_flag_mapping=None,
             datetime_formatter=default_datetime_formatter,
+            datetime_format_str=None,
             float_type=None, strict_type_mapping=None):
         self.__type_value_mapping = (
             type_value_mapping
@@ -30,36 +35,64 @@ class DataPropertyConverter(object):
         self.__const_value_mapping = (
             const_value_mapping
             if const_value_mapping else DEFAULT_CONST_VALUE_MAPPING)
+        self.__quote_flag_mapping = (
+            quote_flag_mapping
+            if quote_flag_mapping else DEFAULT_QUOTE_FLAG_MAPPING)
         self.__datetime_formatter = datetime_formatter
+        self.__datetime_format_str = datetime_format_str
         self.__float_type = float_type
         self.__strict_type_mapping = strict_type_mapping
 
     def convert(self, dp_value):
         try:
-            return DataProperty(
-                self.__convert_value(dp_value),
-                float_type=self.__float_type,
-                strict_type_mapping=STRICT_TYPE_MAPPING)
+            return self.__create_dataproperty(self.__convert_value(dp_value))
         except TypeConversionError:
-            return dp_value
+            if not self.__quote_flag_mapping.get(dp_value.typecode):
+                return dp_value
+
+            return self.__create_dataproperty(
+                self.__apply_quote(dp_value.typecode, dp_value.to_str()))
+
+    def __create_dataproperty(self, value):
+        return DataProperty(
+            value,
+            float_type=self.__float_type,
+            datetime_format_str=self.__datetime_format_str,
+            strict_type_mapping=STRICT_TYPE_MAPPING)
+
+    def __apply_quote(self, typecode, data):
+        if not self.__quote_flag_mapping.get(typecode):
+            return data
+
+        if self.__RE_QUOTE.search(data):
+            return data
+
+        return '"{}"'.format(data)
 
     def __convert_value(self, dp_value):
         if dp_value.typecode in (Typecode.BOOL, Typecode.STRING):
             try:
                 if dp_value.data in self.__const_value_mapping:
-                    return self.__const_value_mapping.get(dp_value.data)
+                    return self.__apply_quote(
+                        dp_value.typecode,
+                        self.__const_value_mapping.get(dp_value.data))
             except TypeError:
                 # unhashable type will be reached this line
                 raise TypeConversionError
 
         if dp_value.typecode in self.__type_value_mapping:
-            return self.__type_value_mapping.get(
+            return self.__apply_quote(
                 dp_value.typecode,
-                DEFAULT_TYPE_VALUE_MAPPING.get(dp_value.typecode))
+                self.__type_value_mapping.get(
+                    dp_value.typecode,
+                    DEFAULT_TYPE_VALUE_MAPPING.get(dp_value.typecode))
+            )
 
         if dp_value.typecode == Typecode.DATETIME:
             try:
-                return self.__datetime_formatter(dp_value.data)
+                return self.__apply_quote(
+                    dp_value.typecode,
+                    self.__datetime_formatter(dp_value.data))
             except TypeError:
                 raise TypeConversionError
 

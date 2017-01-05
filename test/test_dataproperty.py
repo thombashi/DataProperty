@@ -145,9 +145,12 @@ class Test_DataPeroperty_data_typecode:
             [DATATIME_DATA, StringType, False, Typecode.STRING],
             [DATATIME_DATA, StringType, True, Typecode.STRING],
             ["100-0002", None, False, Typecode.DATETIME],
+
+            [1, StringType, True, Typecode.STRING],
+            [1, StringType, False, Typecode.STRING],
         ]
     )
-    def test_normal_datetime_type_hint(
+    def test_normal_type_hint(
             self, value, type_hint, is_strict, expected_typecode):
         dp = DataProperty(
             value, type_hint=type_hint,

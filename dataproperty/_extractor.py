@@ -14,6 +14,7 @@ from ._common import (
     DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_STRICT_TYPE_MAPPING,
     DEFAULT_CONST_VALUE_MAPPING,
+    DEFAULT_QUOTE_FLAG_MAPPING,
     NOT_STRICT_TYPE_MAPPING,
     default_datetime_formatter,
 )
@@ -49,6 +50,7 @@ class DataPropertyExtractor(object):
 
         self.type_value_mapping = copy.deepcopy(DEFAULT_TYPE_VALUE_MAPPING)
         self.const_value_mapping = copy.deepcopy(DEFAULT_CONST_VALUE_MAPPING)
+        self.quote_flag_mapping = copy.deepcopy(DEFAULT_QUOTE_FLAG_MAPPING)
         self.datetime_formatter = None
 
         self.mismatch_processing = MissmatchProcessing.TRIM
@@ -172,7 +174,9 @@ class DataPropertyExtractor(object):
         self.__dp_converter = DataPropertyConverter(
             type_value_mapping=self.type_value_mapping,
             const_value_mapping=self.const_value_mapping,
+            quote_flag_mapping=self.quote_flag_mapping,
             datetime_formatter=self.datetime_formatter,
+            datetime_format_str=self.datetime_format_str,
             float_type=self.float_type,
             strict_type_mapping=self.strict_type_mapping)
 

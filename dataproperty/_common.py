@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+import copy
 from decimal import Decimal
 import itertools
 
@@ -27,11 +28,25 @@ DEFAULT_CONST_VALUE_MAPPING = {
     False: False,
 }
 
+NULL_QUOTE_FLAG_MAPPING = {
+    Typecode.NONE: False,
+    Typecode.INTEGER: False,
+    Typecode.FLOAT: False,
+    Typecode.STRING: False,
+    Typecode.NULL_STRING: False,
+    Typecode.DATETIME: False,
+    Typecode.FLOAT: False,
+    Typecode.NAN: False,
+    Typecode.BOOL: False,
+}
+DEFAULT_QUOTE_FLAG_MAPPING = copy.deepcopy(NULL_QUOTE_FLAG_MAPPING)
+
 DEFAULT_STRICT_TYPE_MAPPING = {
     Typecode.NONE: False,
     Typecode.INTEGER: False,
     Typecode.FLOAT: False,
     Typecode.STRING: False,
+    Typecode.NULL_STRING: False,
     Typecode.DATETIME: True,
     Typecode.INFINITY: False,
     Typecode.NAN: False,

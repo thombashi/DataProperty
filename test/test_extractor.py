@@ -44,6 +44,18 @@ class Test_DataPropertyExtractor_to_dataproperty:
         "const": "const value",
     }
 
+    DEFAULT_QUOTE_FLAG_MAPPING = {
+        Typecode.NONE: True,
+        Typecode.INTEGER: True,
+        Typecode.FLOAT: True,
+        Typecode.STRING: True,
+        Typecode.NULL_STRING: True,
+        Typecode.DATETIME: True,
+        Typecode.FLOAT: True,
+        Typecode.NAN: True,
+        Typecode.BOOL: True,
+    }
+
     @pytest.mark.parametrize(
         [
             "value", "type_value_mapping", "is_strict",
@@ -132,11 +144,30 @@ class Test_DataPropertyExtractor_to_dataproperty:
             ],
         ]
     )
-    def test_nourmal_datetime(
+    def test_normal_datetime(
             self, dp_extractor, value, datetime_formatter, datetime_format_str,
             is_strict, expected):
         dp_extractor.datetime_formatter = datetime_formatter
         dp_extractor.datetime_format_str = datetime_format_str
+        dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
+        dp = dp_extractor.to_dataproperty(value)
+
+        assert dp.data == expected
+
+    @pytest.mark.parametrize(
+        ["value", "quote_flag_mapping", "is_strict", "expected"],
+        [
+            ["string", DEFAULT_QUOTE_FLAG_MAPPING, False, '"string"'],
+            ['"string"', DEFAULT_QUOTE_FLAG_MAPPING, False, '"string"'],
+            [' "123"', DEFAULT_QUOTE_FLAG_MAPPING, False, ' "123"'],
+            ['"string" ', DEFAULT_QUOTE_FLAG_MAPPING, False, '"string" '],
+            [' "12 345" ', DEFAULT_QUOTE_FLAG_MAPPING, False, ' "12 345" '],
+        ]
+    )
+    def test_normal_quote(
+            self, dp_extractor, value, quote_flag_mapping, is_strict,
+            expected):
+        dp_extractor.quote_flag_mapping = quote_flag_mapping
         dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
         dp = dp_extractor.to_dataproperty(value)
 
