@@ -30,6 +30,29 @@ class MissmatchProcessing(object):
 
 
 class DataPropertyExtractor(object):
+    """
+    .. py:attribute:: quote_flag_mapping
+
+        Configurations to add double quote to for each items in a matrix,
+        where |Typecode| of table-value is |True| in the ``quote_flag_table``
+        mapping table. ``quote_flag_table`` should be a dictionary.
+        And is ``{ Typecode : bool }``. Defaults to:
+
+        .. code-block:: json
+            :caption: The default values
+
+            {
+                Typecode.NONE: False,
+                Typecode.INTEGER: False,
+                Typecode.FLOAT: False,
+                Typecode.STRING: False,
+                Typecode.NULL_STRING: False,
+                Typecode.DATETIME: False,
+                Typecode.FLOAT: False,
+                Typecode.NAN: False,
+                Typecode.BOOL: False,
+            }
+    """
 
     def __init__(self):
         self.header_list = []
