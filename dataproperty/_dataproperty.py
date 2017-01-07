@@ -174,9 +174,7 @@ class DataProperty(DataPeropertyBase):
         super(DataProperty, self).__init__(datetime_format_str)
 
         data = self.__preprocess_data(data, strip_str)
-        self.__set_data(
-            data, type_hint, float_type,
-            strict_type_mapping)
+        self.__set_data(data, type_hint, float_type, strict_type_mapping)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
@@ -287,10 +285,7 @@ class DataProperty(DataPeropertyBase):
         except UnicodeDecodeError:
             return MultiByteStrDecoder(data).unicode_str.strip(strip_str)
 
-    def __set_data(
-            self, data, type_hint,
-            float_type, strict_type_mapping):
-
+    def __set_data(self, data, type_hint, float_type, strict_type_mapping):
         if float_type is None:
             float_type = DefaultValue.FLOAT_TYPE
 
@@ -298,8 +293,7 @@ class DataProperty(DataPeropertyBase):
             strict_type_mapping = DefaultValue.STRICT_TYPE_MAPPING
 
         if type_hint is not None and self.__try_convert_type(
-                data, type_hint,
-                is_strict=False, float_type=float_type):
+                data, type_hint, is_strict=False, float_type=float_type):
             return
 
         for type_class in self.__type_class_list:
@@ -312,10 +306,8 @@ class DataProperty(DataPeropertyBase):
 
         raise TypeConversionError("failed to convert: " + self.typename)
 
-    def __try_convert_type(
-            self, data, type_class, is_strict, float_type):
-        type_obj = type_class(
-            data, is_strict, {"float_type": float_type})
+    def __try_convert_type(self, data, type_class, is_strict, float_type):
+        type_obj = type_class(data, is_strict, {"float_type": float_type})
 
         if not type_obj.is_type():
             return False
@@ -428,8 +420,7 @@ class ColumnDataProperty(DataPeropertyBase):
         return self.__TYPE_CLASS_TABLE.get(self.typecode)
 
     def __init__(
-            self,
-            min_padding_len=0,
+            self, min_padding_len=0,
             datetime_format_str=DefaultValue.DATETIME_FORMAT,
             east_asian_ambiguous_width=1):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
