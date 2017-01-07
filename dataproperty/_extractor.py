@@ -13,7 +13,6 @@ from six.moves import zip
 from ._common import (
     NOT_STRICT_TYPE_MAPPING,
     DefaultValue,
-    default_datetime_formatter,
 )
 from ._dataproperty import (
     DataProperty,

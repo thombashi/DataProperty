@@ -10,8 +10,6 @@ import copy
 from decimal import Decimal
 import itertools
 
-import six
-
 from ._typecode import Typecode
 
 

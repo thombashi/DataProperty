@@ -11,7 +11,6 @@ import re
 from ._common import (
     STRICT_TYPE_MAPPING,
     DefaultValue,
-    default_datetime_formatter,
 )
 from ._dataproperty import DataProperty
 from ._error import TypeConversionError
@@ -24,7 +23,7 @@ class DataPropertyConverter(object):
     def __init__(
             self, type_value_mapping=None, const_value_mapping=None,
             quote_flag_mapping=None,
-            datetime_formatter=default_datetime_formatter,
+            datetime_formatter=None,
             datetime_format_str=None,
             float_type=None, strict_type_mapping=None):
         self.__type_value_mapping = (
@@ -36,6 +35,7 @@ class DataPropertyConverter(object):
         self.__quote_flag_mapping = (
             quote_flag_mapping
             if quote_flag_mapping else DefaultValue.QUOTE_FLAG_MAPPING)
+
         self.__datetime_formatter = datetime_formatter
         self.__datetime_format_str = datetime_format_str
         self.__float_type = float_type
