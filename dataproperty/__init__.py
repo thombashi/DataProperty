@@ -12,10 +12,7 @@ from ._common import (
     NULL_QUOTE_FLAG_MAPPING,
     NOT_STRICT_TYPE_MAPPING,
     STRICT_TYPE_MAPPING,
-)
-from ._enum import (
-    DEFAULT_QUOTE_FLAG_MAPPING,
-    DEFAULT_STRICT_TYPE_MAPPING,
+    DefaultValue,
 )
 from ._container import MinMaxContainer
 from ._dataproperty import (

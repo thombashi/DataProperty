@@ -8,13 +8,9 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 import re
 
-from ._enum import (
-    DEFAULT_TYPE_VALUE_MAPPING,
-    DEFAULT_CONST_VALUE_MAPPING,
-    DEFAULT_QUOTE_FLAG_MAPPING,
-)
 from ._common import (
     STRICT_TYPE_MAPPING,
+    DefaultValue,
     default_datetime_formatter,
 )
 from ._dataproperty import DataProperty
@@ -33,13 +29,13 @@ class DataPropertyConverter(object):
             float_type=None, strict_type_mapping=None):
         self.__type_value_mapping = (
             type_value_mapping
-            if type_value_mapping else DEFAULT_TYPE_VALUE_MAPPING)
+            if type_value_mapping else DefaultValue.TYPE_VALUE_MAPPING)
         self.__const_value_mapping = (
             const_value_mapping
-            if const_value_mapping else DEFAULT_CONST_VALUE_MAPPING)
+            if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING)
         self.__quote_flag_mapping = (
             quote_flag_mapping
-            if quote_flag_mapping else DEFAULT_QUOTE_FLAG_MAPPING)
+            if quote_flag_mapping else DefaultValue.QUOTE_FLAG_MAPPING)
         self.__datetime_formatter = datetime_formatter
         self.__datetime_format_str = datetime_format_str
         self.__float_type = float_type
@@ -87,7 +83,7 @@ class DataPropertyConverter(object):
                 dp_value.typecode,
                 self.__type_value_mapping.get(
                     dp_value.typecode,
-                    DEFAULT_TYPE_VALUE_MAPPING.get(dp_value.typecode))
+                    DefaultValue.TYPE_VALUE_MAPPING.get(dp_value.typecode))
             )
 
         if dp_value.typecode == Typecode.DATETIME:

@@ -10,15 +10,9 @@ import copy
 
 from six.moves import zip
 
-from ._enum import (
-    DEFAULT_DATETIME_FORMAT,
-    DEFAULT_TYPE_VALUE_MAPPING,
-    DEFAULT_STRICT_TYPE_MAPPING,
-    DEFAULT_CONST_VALUE_MAPPING,
-    DEFAULT_QUOTE_FLAG_MAPPING,
-)
 from ._common import (
     NOT_STRICT_TYPE_MAPPING,
+    DefaultValue,
     default_datetime_formatter,
 )
 from ._dataproperty import (
@@ -47,13 +41,17 @@ class DataPropertyExtractor(object):
         self.strip_str = None
         self.min_padding_len = 0
         self.float_type = None
-        self.datetime_format_str = DEFAULT_DATETIME_FORMAT
-        self.strict_type_mapping = copy.deepcopy(DEFAULT_STRICT_TYPE_MAPPING)
+        self.datetime_format_str = DefaultValue.DATETIME_FORMAT
+        self.strict_type_mapping = copy.deepcopy(
+            DefaultValue.STRICT_TYPE_MAPPING)
         self.east_asian_ambiguous_width = 1
 
-        self.type_value_mapping = copy.deepcopy(DEFAULT_TYPE_VALUE_MAPPING)
-        self.const_value_mapping = copy.deepcopy(DEFAULT_CONST_VALUE_MAPPING)
-        self.quote_flag_mapping = copy.deepcopy(DEFAULT_QUOTE_FLAG_MAPPING)
+        self.type_value_mapping = copy.deepcopy(
+            DefaultValue.TYPE_VALUE_MAPPING)
+        self.const_value_mapping = copy.deepcopy(
+            DefaultValue.CONST_VALUE_MAPPING)
+        self.quote_flag_mapping = copy.deepcopy(
+            DefaultValue.QUOTE_FLAG_MAPPING)
         self.datetime_formatter = None
 
         self.mismatch_processing = MissmatchProcessing.TRIM

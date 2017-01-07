@@ -13,14 +13,7 @@ from mbstrdecoder import MultiByteStrDecoder
 import six
 
 from ._align_getter import align_getter
-from ._enum import (
-    DEFAULT_FLOAT_TYPE,
-    DEFAULT_NAN_VALUE,
-    DEFAULT_DATETIME_FORMAT,
-    DEFAULT_TYPE_VALUE_MAPPING,
-    DEFAULT_CONST_VALUE_MAPPING,
-    DEFAULT_STRICT_TYPE_MAPPING,
-)
+from ._common import DefaultValue
 from ._container import (
     MinMaxContainer,
     ListContainer,
@@ -174,7 +167,7 @@ class DataProperty(DataPeropertyBase):
             type_hint=None,
             strip_str=None,
             float_type=None,
-            datetime_format_str=DEFAULT_DATETIME_FORMAT,
+            datetime_format_str=DefaultValue.DATETIME_FORMAT,
             strict_type_mapping=None,
             replace_tabs_with_spaces=True, tab_length=2,
             east_asian_ambiguous_width=1):
@@ -190,8 +183,8 @@ class DataProperty(DataPeropertyBase):
         try:
             integer_digits, decimal_places = get_number_of_digit(data)
         except OverflowError:
-            integer_digits = DEFAULT_NAN_VALUE
-            decimal_places = DEFAULT_NAN_VALUE
+            integer_digits = DefaultValue.NAN_VALUE
+            decimal_places = DefaultValue.NAN_VALUE
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
@@ -299,10 +292,10 @@ class DataProperty(DataPeropertyBase):
             float_type, strict_type_mapping):
 
         if float_type is None:
-            float_type = DEFAULT_FLOAT_TYPE
+            float_type = DefaultValue.FLOAT_TYPE
 
         if strict_type_mapping is None:
-            strict_type_mapping = DEFAULT_STRICT_TYPE_MAPPING
+            strict_type_mapping = DefaultValue.STRICT_TYPE_MAPPING
 
         if type_hint is not None and self.__try_convert_type(
                 data, type_hint,
@@ -437,7 +430,7 @@ class ColumnDataProperty(DataPeropertyBase):
     def __init__(
             self,
             min_padding_len=0,
-            datetime_format_str=DEFAULT_DATETIME_FORMAT,
+            datetime_format_str=DefaultValue.DATETIME_FORMAT,
             east_asian_ambiguous_width=1):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
 

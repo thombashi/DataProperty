@@ -14,7 +14,7 @@ import re
 from mbstrdecoder import MultiByteStrDecoder
 import six
 
-from ._enum import DEFAULT_FLOAT_TYPE
+from ._common import DefaultValue
 from ._error import TypeConversionError
 
 
@@ -89,7 +89,7 @@ class FloatConverter(ValueConverter):
     def __init__(self, value):
         super(FloatConverter, self).__init__(value)
 
-        self.float_class = DEFAULT_FLOAT_TYPE
+        self.float_class = DefaultValue.FLOAT_TYPE
 
     def convert(self):
         if isinstance(self._value, float):

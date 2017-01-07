@@ -9,7 +9,7 @@ import abc
 
 import six
 
-from ._enum import DEFAULT_FLOAT_TYPE
+from ._common import DefaultValue
 from ._type_checker import (
     NoneTypeChecker,
     StringTypeChecker,
@@ -106,7 +106,7 @@ class FloatTypeFactory(AbstractTypeFactory):
     def create_type_converter(self):
         converter = FloatConverter(self._data)
         converter.float_class = self._params.get(
-            "float_type", DEFAULT_FLOAT_TYPE)
+            "float_type", DefaultValue.FLOAT_TYPE)
 
         return converter
 
