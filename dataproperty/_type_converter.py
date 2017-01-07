@@ -14,7 +14,7 @@ import re
 from mbstrdecoder import MultiByteStrDecoder
 import six
 
-from ._common import DEFAULT_FLOAT_TYPE
+from ._enum import DEFAULT_FLOAT_TYPE
 from ._error import TypeConversionError
 
 

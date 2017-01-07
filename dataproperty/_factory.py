@@ -9,7 +9,7 @@ import abc
 
 import six
 
-from ._common import DEFAULT_FLOAT_TYPE
+from ._enum import DEFAULT_FLOAT_TYPE
 from ._type_checker import (
     NoneTypeChecker,
     StringTypeChecker,

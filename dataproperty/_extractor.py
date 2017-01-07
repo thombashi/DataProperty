@@ -10,12 +10,14 @@ import copy
 
 from six.moves import zip
 
-from ._common import (
+from ._enum import (
     DEFAULT_DATETIME_FORMAT,
     DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_STRICT_TYPE_MAPPING,
     DEFAULT_CONST_VALUE_MAPPING,
     DEFAULT_QUOTE_FLAG_MAPPING,
+)
+from ._common import (
     NOT_STRICT_TYPE_MAPPING,
     default_datetime_formatter,
 )

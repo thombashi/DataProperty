@@ -10,10 +10,12 @@ from ._align import Align
 from ._align_getter import align_getter
 from ._common import (
     NULL_QUOTE_FLAG_MAPPING,
-    DEFAULT_QUOTE_FLAG_MAPPING,
-    DEFAULT_STRICT_TYPE_MAPPING,
     NOT_STRICT_TYPE_MAPPING,
     STRICT_TYPE_MAPPING,
+)
+from ._enum import (
+    DEFAULT_QUOTE_FLAG_MAPPING,
+    DEFAULT_STRICT_TYPE_MAPPING,
 )
 from ._container import MinMaxContainer
 from ._dataproperty import (

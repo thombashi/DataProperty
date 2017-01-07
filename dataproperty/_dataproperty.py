@@ -13,7 +13,7 @@ from mbstrdecoder import MultiByteStrDecoder
 import six
 
 from ._align_getter import align_getter
-from ._common import (
+from ._enum import (
     DEFAULT_FLOAT_TYPE,
     DEFAULT_NAN_VALUE,
     DEFAULT_DATETIME_FORMAT,

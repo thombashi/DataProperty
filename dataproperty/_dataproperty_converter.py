@@ -8,10 +8,12 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 import re
 
-from ._common import (
+from ._enum import (
     DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_CONST_VALUE_MAPPING,
     DEFAULT_QUOTE_FLAG_MAPPING,
+)
+from ._common import (
     STRICT_TYPE_MAPPING,
     default_datetime_formatter,
 )
