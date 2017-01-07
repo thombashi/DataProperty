@@ -44,7 +44,7 @@ class Test_DataPropertyExtractor_to_dataproperty:
         "const": "const value",
     }
 
-    DEFAULT_QUOTE_FLAG_MAPPING = {
+    ALWAYS_QUOTE_FLAG_MAPPING = {
         Typecode.NONE: True,
         Typecode.INTEGER: True,
         Typecode.FLOAT: True,
@@ -157,11 +157,11 @@ class Test_DataPropertyExtractor_to_dataproperty:
     @pytest.mark.parametrize(
         ["value", "quote_flag_mapping", "is_strict", "expected"],
         [
-            ["string", DEFAULT_QUOTE_FLAG_MAPPING, False, '"string"'],
-            ['"string"', DEFAULT_QUOTE_FLAG_MAPPING, False, '"string"'],
-            [' "123"', DEFAULT_QUOTE_FLAG_MAPPING, False, ' "123"'],
-            ['"string" ', DEFAULT_QUOTE_FLAG_MAPPING, False, '"string" '],
-            [' "12 345" ', DEFAULT_QUOTE_FLAG_MAPPING, False, ' "12 345" '],
+            ["string", ALWAYS_QUOTE_FLAG_MAPPING, False, '"string"'],
+            ['"string"', ALWAYS_QUOTE_FLAG_MAPPING, False, '"string"'],
+            [' "123"', ALWAYS_QUOTE_FLAG_MAPPING, False, ' "123"'],
+            ['"string" ', ALWAYS_QUOTE_FLAG_MAPPING, False, '"string" '],
+            [' "12 345" ', ALWAYS_QUOTE_FLAG_MAPPING, False, ' "12 345" '],
         ]
     )
     def test_normal_quote(
