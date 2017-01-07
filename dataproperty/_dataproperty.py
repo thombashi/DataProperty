@@ -490,14 +490,16 @@ class ColumnDataProperty(DataPeropertyBase):
         ])
 
     def __is_float_typecode(self):
-        NUMBER_TYPECODE_BMP = (
-            Typecode.INTEGER | Typecode.FLOAT | Typecode.INFINITY |
-            Typecode.NAN
-        )
+        FLOAT_TYPECODE_BMP = Typecode.FLOAT | Typecode.INFINITY | Typecode.NAN
+        NUMBER_TYPECODE_BMP = FLOAT_TYPECODE_BMP | Typecode.INTEGER
 
         if self.__is_not_single_typecode(
                 NUMBER_TYPECODE_BMP | Typecode.NULL_STRING):
             return False
+
+        if bin(self.__typecode_bitmap & (
+                FLOAT_TYPECODE_BMP | Typecode.NULL_STRING)).count("1") >= 2:
+            return True
 
         if bin(self.__typecode_bitmap & NUMBER_TYPECODE_BMP).count("1") >= 2:
             return True
@@ -515,7 +517,6 @@ class ColumnDataProperty(DataPeropertyBase):
             return Typecode.STRING
 
         typecode_list = [
-            Typecode.NULL_STRING,
             Typecode.STRING,
             Typecode.FLOAT,
             Typecode.INTEGER,
@@ -523,6 +524,7 @@ class ColumnDataProperty(DataPeropertyBase):
             Typecode.BOOL,
             Typecode.INFINITY,
             Typecode.NAN,
+            Typecode.NULL_STRING,
         ]
 
         for typecode in typecode_list:

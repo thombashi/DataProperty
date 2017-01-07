@@ -65,7 +65,9 @@ class Test_ColumnDataPeroperty:
 
         # None mixed values
         [[None, six.MAXSIZE, str(-six.MAXSIZE)], Typecode.INTEGER],
+        [[1, None, ""], Typecode.INTEGER],
         [[1.1, None], Typecode.FLOAT],
+        [[1.1, None, ""], Typecode.FLOAT],
         [[None, "test"], Typecode.STRING],
         [[None, True, "False"], Typecode.BOOL],
         [[None, DATATIME_DATA, None], Typecode.DATETIME],

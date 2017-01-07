@@ -513,16 +513,18 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.format_str == "{:.2f}"
 
     def test_normal_col_type_hint_list(self, dp_extractor):
-        dp_extractor.header_list = [1, "str", "datetime"]
+        dp_extractor.header_list = [
+            "none", "to_float", "to_str", "to_datetime"]
         dp_extractor.data_matrix = [
-            [1, 1, "2017-01-02 03:04:05"],
-            [2, 2, "2017-01-02 03:04:05"],
+            [1, 1, 1, "2017-01-02 03:04:05"],
+            [2, 2, 0.1, "2017-01-02 03:04:05"],
         ]
-        dp_extractor.col_type_hint_list = [None, FloatType, DateTimeType]
+        dp_extractor.col_type_hint_list = [
+            None, FloatType, StringType, DateTimeType]
         dp_extractor.strict_type_mapping = NOT_STRICT_TYPE_MAPPING
         col_dp_list = dp_extractor.to_col_dataproperty_list()
 
-        assert len(col_dp_list) == 3
+        assert len(col_dp_list) == 4
 
         col_dp = col_dp_list[0]
         assert col_dp.typecode == Typecode.INTEGER
@@ -531,6 +533,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert col_dp.typecode == Typecode.FLOAT
 
         col_dp = col_dp_list[2]
+        assert col_dp.typecode == Typecode.STRING
+
+        col_dp = col_dp_list[3]
         assert col_dp.typecode == Typecode.DATETIME
 
     def test_normal_nan_inf(self, dp_extractor):
