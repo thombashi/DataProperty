@@ -11,6 +11,7 @@ import copy
 from six.moves import zip
 
 from ._common import (
+    DEFAULT_DATETIME_FORMAT,
     DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_STRICT_TYPE_MAPPING,
     DEFAULT_CONST_VALUE_MAPPING,
@@ -44,7 +45,7 @@ class DataPropertyExtractor(object):
         self.strip_str = None
         self.min_padding_len = 0
         self.float_type = None
-        self.datetime_format_str = "%Y-%m-%dT%H:%M:%S%z"
+        self.datetime_format_str = DEFAULT_DATETIME_FORMAT
         self.strict_type_mapping = copy.deepcopy(DEFAULT_STRICT_TYPE_MAPPING)
         self.east_asian_ambiguous_width = 1
 

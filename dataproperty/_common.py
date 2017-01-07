@@ -18,6 +18,7 @@ from ._typecode import Typecode
 DEFAULT_FLOAT_TYPE = Decimal
 DEFAULT_INF_VALUE = DEFAULT_FLOAT_TYPE("inf")
 DEFAULT_NAN_VALUE = DEFAULT_FLOAT_TYPE("nan")
+DEFAULT_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
 DEFAULT_TYPE_VALUE_MAPPING = {
     Typecode.NONE: None,
     Typecode.INFINITY: DEFAULT_INF_VALUE,
@@ -58,4 +59,4 @@ NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
 
 
 def default_datetime_formatter(value):
-    return six.text_type(value)
+    return value.strftime(DEFAULT_DATETIME_FORMAT)

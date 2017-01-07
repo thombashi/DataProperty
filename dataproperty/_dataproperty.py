@@ -16,6 +16,7 @@ from ._align_getter import align_getter
 from ._common import (
     DEFAULT_FLOAT_TYPE,
     DEFAULT_NAN_VALUE,
+    DEFAULT_DATETIME_FORMAT,
     DEFAULT_TYPE_VALUE_MAPPING,
     DEFAULT_CONST_VALUE_MAPPING,
     DEFAULT_STRICT_TYPE_MAPPING,
@@ -173,7 +174,7 @@ class DataProperty(DataPeropertyBase):
             type_hint=None,
             strip_str=None,
             float_type=None,
-            datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
+            datetime_format_str=DEFAULT_DATETIME_FORMAT,
             strict_type_mapping=None,
             replace_tabs_with_spaces=True, tab_length=2,
             east_asian_ambiguous_width=1):
@@ -436,7 +437,7 @@ class ColumnDataProperty(DataPeropertyBase):
     def __init__(
             self,
             min_padding_len=0,
-            datetime_format_str="%Y-%m-%dT%H:%M:%S%z",
+            datetime_format_str=DEFAULT_DATETIME_FORMAT,
             east_asian_ambiguous_width=1):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
 
