@@ -25,6 +25,9 @@ NULL_QUOTE_FLAG_MAPPING = {
     Typecode.BOOL: False,
 }
 
+STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
+NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
+
 
 class DefaultValue(object):
     DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
@@ -57,9 +60,6 @@ class DefaultValue(object):
         Typecode.INFINITY: INF_VALUE,
         Typecode.NAN: NAN_VALUE,
     }
-
-STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
-NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
 
 
 def default_datetime_formatter(value):
