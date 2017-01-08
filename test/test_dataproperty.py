@@ -151,6 +151,14 @@ class Test_DataPeroperty_data_typecode:
 
             [1, StringType, True, Typecode.STRING],
             [1, StringType, False, Typecode.STRING],
+            [1, FloatType, True, Typecode.FLOAT],
+            [1, FloatType, False, Typecode.FLOAT],
+
+            [1.1, IntegerType, True, Typecode.INTEGER],
+            [1.1, IntegerType, False, Typecode.INTEGER],
+
+            ["true", BoolType, False, Typecode.BOOL],
+            ["false", BoolType, False, Typecode.BOOL],
         ]
     )
     def test_normal_type_hint(
