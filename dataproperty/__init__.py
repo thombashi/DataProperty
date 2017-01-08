@@ -44,6 +44,7 @@ from ._extractor import (
 from ._type import (
     NoneType,
     StringType,
+    NullStringType,
     IntegerType,
     FloatType,
     DateTimeType,
