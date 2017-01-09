@@ -149,12 +149,12 @@ class Test_get_integer_digit:
         assert get_integer_digit(value) == expected
 
     @pytest.mark.parametrize(["value", 'exception'], [
-        [True, TypeError],
-        [False, TypeError],
-        [None, TypeError],
-        ["test", TypeError],
-        ["a", TypeError],
-        ["0xff", TypeError],
+        [True, ValueError],
+        [False, ValueError],
+        [None, ValueError],
+        ["test", ValueError],
+        ["a", ValueError],
+        ["0xff", ValueError],
         [nan, ValueError],
         [inf, ValueError],
     ])

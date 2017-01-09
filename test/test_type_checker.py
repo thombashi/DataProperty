@@ -248,10 +248,9 @@ class Test_FloatTypeChecker_is_type:
         ["1e-05", True],
         [six.MAXSIZE, True], [-six.MAXSIZE, True],
         [str(six.MAXSIZE), True], [str(-six.MAXSIZE), True],
-        ["inf", True], ["nan", True],
     ] + list(
         itertools.product(
-            [0.0, 0.1, -0.1, .5, 0., nan, inf, Decimal("1.1")],
+            [0.0, 0.1, -0.1, .5, 0., Decimal("1.1")],
             [True, False],
         ))
     )
@@ -271,11 +270,10 @@ class Test_FloatTypeChecker_is_type:
         ["1e-05", False],
         [six.MAXSIZE, False], [-six.MAXSIZE, False],
         [str(six.MAXSIZE), False], [str(-six.MAXSIZE), False],
-        ["inf", False], ["nan", False],
     ] + list(
         itertools.product(
             [
-                "", None, "test", True,
+                None, True, inf, nan, "inf", "nan", "", "test",
             ],
             [True, False],
         ))

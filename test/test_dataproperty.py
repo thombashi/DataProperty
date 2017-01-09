@@ -151,8 +151,11 @@ class Test_DataPeroperty_data_typecode:
 
             [1, StringType, True, Typecode.STRING],
             [1, StringType, False, Typecode.STRING],
+
             [1, FloatType, True, Typecode.FLOAT],
             [1, FloatType, False, Typecode.FLOAT],
+            [float("inf"), FloatType, True, Typecode.INFINITY],
+            [float("inf"), FloatType, False, Typecode.INFINITY],
 
             [1.1, IntegerType, True, Typecode.INTEGER],
             [1.1, IntegerType, False, Typecode.INTEGER],
@@ -185,6 +188,27 @@ class Test_DataPeroperty_data_typecode:
 
         assert NanType(dp.data).is_type()
         assert dp.typecode == expected_typecode
+
+
+class Test_DataPeroperty_to_str:
+
+    @pytest.mark.parametrize(
+        ["value", "type_hint", "is_strict", "expected_data", "expected_str"],
+        [
+            [float("inf"), None, True, Decimal("inf"), "Infinity"],
+            [float("inf"), None, False, Decimal("inf"), "Infinity"],
+            [float("inf"), FloatType, True, Decimal("inf"), "Infinity"],
+            [float("inf"), FloatType, False, Decimal("inf"), "Infinity"],
+            [float("inf"), StringType, False, "inf", "inf"],
+        ])
+    def test_normal(self, value, type_hint, is_strict, expected_data, expected_str):
+        dp = DataProperty(
+            value,
+            type_hint=type_hint,
+            strict_type_mapping=get_strict_type_mapping(is_strict))
+
+        assert dp.data == expected_data
+        assert dp.to_str() == expected_str
 
 
 class Test_DataPeroperty_set_data:

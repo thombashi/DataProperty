@@ -24,6 +24,20 @@ from ._type_converter import (
 from ._typecode import Typecode
 
 
+def _isinf(value):
+    try:
+        return math.isinf(value)
+    except TypeError:
+        return False
+
+
+def _isnan(value):
+    try:
+        return math.isnan(value)
+    except TypeError:
+        return False
+
+
 @six.add_metaclass(abc.ABCMeta)
 class TypeCheckerInterface(object):
 
@@ -75,7 +89,10 @@ class TypeChecker(TypeCheckerInterface):
         return __CHECKER_TABLE[self.__is_strict]()
 
     def is_strict_type(self):
-        return self._is_instance()
+        return all([
+            self._is_instance(),
+            not self._is_exclude_instance()
+        ])
 
     def is_convertible_type(self):
         if self.is_strict_type():
@@ -212,8 +229,9 @@ class IntegerTypeChecker(TypeChecker):
     def _is_exclude_instance(self):
         return any([
             isinstance(self._value, bool),
-            isinstance(self._value, float),
-            isinstance(self._value, Decimal),
+            isinstance(self._value, float) and not self._value.is_integer(),
+            isinstance(self._value, Decimal) and not float(
+                self._value).is_integer(),
         ])
 
 
@@ -234,7 +252,17 @@ class FloatTypeChecker(TypeChecker):
         ])
 
     def _is_exclude_instance(self):
-        return isinstance(self._value, bool)
+        return any([
+            isinstance(self._value, bool),
+            _isinf(self._value),
+            _isnan(self._value)
+        ])
+
+    def _is_valid_after_convert(self):
+        return all([
+            not _isinf(self._converted_value),
+            not _isnan(self._converted_value),
+        ])
 
 
 class BoolTypeChecker(TypeChecker):
@@ -281,7 +309,7 @@ class InfinityChecker(TypeChecker):
         return FloatConverter
 
     def _is_instance(self):
-        return self._value in (float("inf"), Decimal("inf"))
+        return _isinf(self._value)
 
     def _is_valid_after_convert(self):
         return self._converted_value.is_infinite()
@@ -298,10 +326,7 @@ class NanChecker(TypeChecker):
         return FloatConverter
 
     def _is_instance(self):
-        try:
-            return math.isnan(self._value)
-        except TypeError:
-            return False
+        return _isnan(self._value)
 
     def _is_valid_after_convert(self):
         return math.isnan(self._converted_value)

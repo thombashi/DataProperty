@@ -145,8 +145,10 @@ def get_integer_digit(value):
     float_type = FloatType(value)
 
     if not float_type.is_convertible_type():
-        # bool type value reaches this line
-        raise TypeError("invalid type '{}'".format(type(value)))
+        # bool-type/inf/nan value reaches this line
+        raise ValueError(
+            "the value must be a number: value='{}' type='{}'".format(
+                value, type(value)))
 
     abs_value = abs(float_type.convert())
 

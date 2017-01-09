@@ -9,6 +9,7 @@ import datetime
 from decimal import Decimal
 
 import pytest
+import six
 
 from dataproperty import *
 from .common import get_strict_type_mapping
@@ -38,23 +39,6 @@ def datetime_formatter_tostr_1(value):
 
 
 class Test_DataPropertyExtractor_to_dataproperty:
-    VALUE_MAPPING = {
-        True: "true value",
-        False: "false value",
-        "const": "const value",
-    }
-
-    ALWAYS_QUOTE_FLAG_MAPPING = {
-        Typecode.NONE: True,
-        Typecode.INTEGER: True,
-        Typecode.FLOAT: True,
-        Typecode.STRING: True,
-        Typecode.NULL_STRING: True,
-        Typecode.DATETIME: True,
-        Typecode.FLOAT: True,
-        Typecode.NAN: True,
-        Typecode.BOOL: True,
-    }
 
     @pytest.mark.parametrize(
         [
@@ -63,29 +47,31 @@ class Test_DataPropertyExtractor_to_dataproperty:
         ],
         [
             [None, {Typecode.NONE: None}, True, None, Typecode.NONE],
-            [None, {Typecode.NONE: "null"}, False, "null", Typecode.NONE],
-            [None, {Typecode.NONE: ""}, True, "", Typecode.NONE],
-            [None, {Typecode.NONE: 0}, False, 0, Typecode.NONE],
+            [None, {Typecode.NONE: "null"}, False, "null", Typecode.STRING],
+            [None, {Typecode.NONE: ""}, True, "", Typecode.NULL_STRING],
+            [None, {Typecode.NONE: 0}, False, 0, Typecode.INTEGER],
 
-            [inf, {Typecode.INFINITY: "Infinity"},
-                False, "Infinity", Typecode.INFINITY],
-            [inf, {Typecode.INFINITY: "Infinity"},
-                True, "Infinity", Typecode.INFINITY],
+            [inf, {Typecode.INFINITY: "INF_1"},
+                False, "INF_1", Typecode.STRING],
+            [inf, {Typecode.INFINITY: "INF_2"},
+                True, "INF_2", Typecode.STRING],
             [inf, {Typecode.INFINITY: None}, True, None, Typecode.NONE],
-            ["inf", {Typecode.INFINITY: "Infinity"},
-                False, "Infinity", Typecode.INFINITY],
-            ["inf", {Typecode.INFINITY: "Infinity"},
-                True, "inf", Typecode.INFINITY],
+            ["inf", {Typecode.INFINITY: "INF_3"},
+                False, "INF_3", Typecode.STRING],
+            ["inf", {Typecode.INFINITY: "INF_4"},
+                True, "inf", Typecode.STRING],
+            ["inf", {Typecode.INFINITY: inf},
+                False, Decimal('Infinity'), Typecode.INFINITY],
 
-            [nan, {Typecode.NAN: "not a number"}, False,
-                "not a number", Typecode.INFINITY],
-            [nan, {Typecode.NAN: "not a number"}, True,
-                "not a number", Typecode.INFINITY],
+            [nan, {Typecode.NAN: "NAN_1"}, False,
+                "NAN_1", Typecode.STRING],
+            [nan, {Typecode.NAN: "NAN_2"}, True,
+                "NAN_2", Typecode.STRING],
             [nan, {Typecode.NAN: None}, True, None, Typecode.NONE],
-            ["nan", {Typecode.NAN: "not a number"},
-                False, "not a number", Typecode.INFINITY],
-            ["nan", {Typecode.NAN: "not a number"},
-                True, "nan", Typecode.INFINITY],
+            ["nan", {Typecode.NAN: "NAN_4"},
+                False, "NAN_4", Typecode.STRING],
+            ["nan", {Typecode.NAN: "NAN_5"},
+                True, "nan", Typecode.STRING],
         ]
     )
     def test_normal_type_value_mapping(
@@ -96,25 +82,8 @@ class Test_DataPropertyExtractor_to_dataproperty:
         dp = dp_extractor.to_dataproperty(value)
 
         assert dp.data == expected_value
-
-    @pytest.mark.parametrize(
-        ["value", "const_value_mapping", "is_strict", "expected"],
-        [
-            ["True", VALUE_MAPPING, False, "true value"],
-            ["False", VALUE_MAPPING, False, "false value"],
-            ["True", VALUE_MAPPING, True, "True"],
-            [True, VALUE_MAPPING, True, "true value"],
-            ["const", VALUE_MAPPING, True, "const value"]
-        ]
-    )
-    def test_normal_const_value_mapping(
-            self, dp_extractor, value, const_value_mapping, is_strict,
-            expected):
-        dp_extractor.const_value_mapping = const_value_mapping
-        dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
-        dp = dp_extractor.to_dataproperty(value)
-
-        assert dp.data == expected
+        assert dp.typecode == expected_typecode
+        assert isinstance(dp.to_str(), six.text_type)
 
     @pytest.mark.parametrize(
         [
@@ -154,6 +123,20 @@ class Test_DataPropertyExtractor_to_dataproperty:
 
         assert dp.data == expected
 
+
+class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping:
+    ALWAYS_QUOTE_FLAG_MAPPING = {
+        Typecode.NONE: True,
+        Typecode.INTEGER: True,
+        Typecode.FLOAT: True,
+        Typecode.STRING: True,
+        Typecode.NULL_STRING: True,
+        Typecode.DATETIME: True,
+        Typecode.FLOAT: True,
+        Typecode.NAN: True,
+        Typecode.BOOL: True,
+    }
+
     @pytest.mark.parametrize(
         ["value", "quote_flag_mapping", "is_strict", "expected"],
         [
@@ -164,10 +147,37 @@ class Test_DataPropertyExtractor_to_dataproperty:
             [' "12 345" ', ALWAYS_QUOTE_FLAG_MAPPING, False, ' "12 345" '],
         ]
     )
-    def test_normal_quote(
+    def test_normal_always_quote(
             self, dp_extractor, value, quote_flag_mapping, is_strict,
             expected):
         dp_extractor.quote_flag_mapping = quote_flag_mapping
+        dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
+        dp = dp_extractor.to_dataproperty(value)
+
+        assert dp.data == expected
+
+
+class Test_DataPropertyExtractor_to_dataproperty_const_value_mapping:
+    VALUE_MAPPING = {
+        True: "true value",
+        False: "false value",
+        "const": "const value",
+    }
+
+    @pytest.mark.parametrize(
+        ["value", "const_value_mapping", "is_strict", "expected"],
+        [
+            ["True", VALUE_MAPPING, False, "true value"],
+            ["False", VALUE_MAPPING, False, "false value"],
+            ["True", VALUE_MAPPING, True, "True"],
+            [True, VALUE_MAPPING, True, "true value"],
+            ["const", VALUE_MAPPING, True, "const value"]
+        ]
+    )
+    def test_normal(
+            self, dp_extractor, value, const_value_mapping, is_strict,
+            expected):
+        dp_extractor.const_value_mapping = const_value_mapping
         dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
         dp = dp_extractor.to_dataproperty(value)
 

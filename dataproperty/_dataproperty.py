@@ -293,14 +293,13 @@ class DataProperty(DataPeropertyBase):
             strict_type_mapping = DefaultValue.STRICT_TYPE_MAPPING
 
         if type_hint:
-            type_obj = type_hint(
-                data, is_strict=False, params={"float_type": float_type})
+            params = {"float_type": float_type}
+            type_obj = type_hint(data, is_strict=False, params=params)
             self.__typecode = type_obj.typecode
-            try:
-                self.__data = type_obj.convert()
+
+            self.__data = type_obj.try_convert()
+            if type_hint(self.__data, is_strict=True, params=params).is_type():
                 return
-            except TypeConversionError:
-                pass
 
         for type_class in self.__type_class_list:
             is_strict = strict_type_mapping.get(
