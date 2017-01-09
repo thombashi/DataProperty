@@ -81,10 +81,7 @@ class DataPropertyConverter(object):
         if dp_value.typecode in self.__type_value_mapping:
             return self.__apply_quote(
                 dp_value.typecode,
-                self.__type_value_mapping.get(
-                    dp_value.typecode,
-                    DefaultValue.TYPE_VALUE_MAPPING.get(dp_value.typecode))
-            )
+                self.__type_value_mapping.get(dp_value.typecode))
 
         if dp_value.typecode == Typecode.DATETIME:
             try:
