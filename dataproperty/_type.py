@@ -22,6 +22,7 @@ from ._factory import (
 )
 from ._type_checker import TypeCheckerInterface
 from ._type_converter import ValueConverterInterface
+from ._typecode import Typecode
 
 
 class AbstractType(TypeCheckerInterface, ValueConverterInterface):
@@ -34,6 +35,10 @@ class AbstractType(TypeCheckerInterface, ValueConverterInterface):
     @property
     def typecode(self):
         return self.__checker.typecode
+
+    @property
+    def typename(self):
+        return Typecode.get_typename(self.typecode)
 
     def __init__(self, data, is_strict=False, params=None):
         if params is None:
