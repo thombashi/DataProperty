@@ -23,7 +23,7 @@
 
 Summary
 =======
-Python library for extract property from data.
+A python library for extract property from data.
 
 
 Installation
