@@ -182,12 +182,12 @@ class NullStringTypeChecker(StringTypeChecker):
         return Typecode.NULL_STRING
 
     def _is_instance(self):
-        return self._is_null_string(self._value)
+        return self.__is_null_string(self._value)
 
     def _is_valid_after_convert(self):
-        return self._is_null_string(self._converted_value)
+        return self.__is_null_string(self._converted_value)
 
-    def _is_null_string(self, value):
+    def __is_null_string(self, value):
         try:
             value = value.strip()
         except AttributeError:
