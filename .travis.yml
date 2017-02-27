@@ -36,3 +36,13 @@ notifications:
     on_start: never     # options: [always|never|change] default: always
   slack:
     secure: tnsOg+UxjwHhV0coUdMNMeKk91vtW5scYB89qGotGJBp7lMPhPagmS7I4ICFcgyNmLNpbPmlKaz0e93TPYg5RoEzwrmQx4mn7wrg/GT8omtdxhSZlMt9og70uqCwVILv63pT+gpj5/yDpGCm7IOVA1+exWbFYCH1uOqHhRgAVLU1hXN9tET8LjU0gyEuGCkoz5/NkQhjAkf1Z+SDecZ0SFDz5MHbgbfQ+pK4LbQLd1YduC56R6PpvwuFcxGxVydwQvxy0/cR7qYBRdEMY0dZsUHUm+9nlucqhr2lylkcTy77+LwPSkjXJvw4sQzFgaFB8OXWhV/5dNSDdoYmrTpv9VEwDbDTkKOR47Rnwyvo4SCXEET3oClEsQgoq5Xh5rOR51mCW0RiJfDktB0pabLVH490QkjawU6cjtliSueXym+OhDMBNC/y6paXSpChQeUVTKj/Z/zCoc/cHzQr9LX9CY5RS1IrEGWMF3EOIQ73V9GhPrrX9U9B65HLz3KxgDJF18Xbiul0+OM5yEHUOOZQWJYPPY+1u4SZP58AjYZa4l1ZXQHayivaDCcovY0nxHDnM+oTHh+xnv3J/b6VYoMdy1ZF9kQhfiDV02UYIF7G3dHO/RkpQ7xYzEX4Ik73ZTlV5CbZyiJq+UUQZFNV1XhYF4mVQDgory+MVj4GP0sIyoA=
+
+deploy:
+  provider: pypi
+  user: vmmhypervisor
+  password:
+    secure: MHQ/d/1hwff+wNdRvICL4K1C1SM43H0ceH3a42dbeFCqga5b4222VUC6WFAuyOpW0nZqWVITkXGHF8RrCpgmBrB1S4ZDHHJ+LsLRr663bDUj+321SyuetAlktlLpnEZcgC3B6Rip+90c6o/Bc31gIUlc0Xd8Yw5IZ/R24y5RFyEvQHQG8qulo5g3+TGMqZPHFtTRS/uI+e1bew3tYobhr/9SxfMV2SZydSeraDWS1eMJ1a+6gNqBVzKjtn2Dh1WAchAevZCyFxju7fBuKWFENT/f1kZy4GkH7tJBsTwUCT9dYmixqH0VfCYw3rKONJr6/3MST+pz1lzXZFMp4wpyt3tj9skL1isgz9EzERX1ixRtFWJhDrD/UvG9c8vsh9fB011+BW8zs/Q3x/Wlq1WDWhemwQYZVr4lK5TOpzD9JacS6JZCm5imYRbkPrSPbgiQqbBXith4PDbD+JAc9NpbZIQVQgU5OxewtBZCOuBho5pHbiuBLHPnBrVG/YwM+AwxGKu+gnRJgILFqyAngmDCLgBhyGxVGz+CiPPYALYKFGo1AVF++aloRqI9KVBoHwMkRx8ul+tsBGHFPXsEx+VWn0ICkzvmr78xsU2/8YIEsnqLljCMXgVjr068Uw5K9PxwDYa7O5P0rvyW+0/zz4Ee5yyX+P9TNDH6P5cR9kw0GAA=
+  on:
+    tags: true
+    repo: thombashi/DataProperty
+  distributions: "sdist bdist_wheel"
