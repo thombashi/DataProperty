@@ -9,49 +9,11 @@ import itertools
 
 from dataproperty import *
 import pytest
+import typepy
 
 
 nan = float("nan")
 inf = float("inf")
-
-
-class Test_is_not_empty_string:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        ["nan", True],
-        ["テスト", True],
-
-        [None, False],
-        ["", False],
-        ["  ", False],
-        ["\t", False],
-        ["\n", False],
-        [[], False],
-        [1, False],
-        [True, False],
-        [nan, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_not_empty_string(value) == expected
-
-
-class Test_is_empty_string:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        ["nan", False],
-        ["テスト", False],
-
-        [None, True],
-        ["", True],
-        ["  ", True],
-        ["\t", True],
-        ["\n", True],
-        [True, True],
-        [[], True],
-        [1, True],
-    ])
-    def test_normal(self, value, expected):
-        assert is_empty_string(value) == expected
 
 
 class Test_is_multibyte_str:

@@ -20,26 +20,17 @@ from ._dataproperty import (
     DataProperty,
 )
 from ._error import TypeConversionError
+from ._extractor import (
+    DataPropertyExtractor,
+    MissmatchProcessing,
+)
 from ._function import (
-    is_integer,
-    is_hex,
-    is_float,
     is_empty_string,
     is_not_empty_string,
-    is_list_or_tuple,
-    is_empty_sequence,
-    is_not_empty_sequence,
-    is_empty_list_or_tuple,
-    is_not_empty_list_or_tuple,
-    is_datetime,
     is_multibyte_str,
     get_integer_digit,
     get_number_of_digit,
     get_ascii_char_width,
-)
-from ._extractor import (
-    DataPropertyExtractor,
-    MissmatchProcessing,
 )
 from ._type import (
     NoneType,

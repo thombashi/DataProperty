@@ -7,105 +7,15 @@
 
 from __future__ import unicode_literals
 
+from dataproperty import *
 import pytest
 import six
-from six.moves import range
 
-from dataproperty import *
+from six.moves import range
 
 
 nan = float("nan")
 inf = float("inf")
-
-
-class Test_is_hex:
-
-    @pytest.mark.parametrize(["value"], [
-        ["0x00"], ["0xffffffff"], ["a"], ["f"],
-    ])
-    def test_normal(self, value):
-        assert is_hex(value)
-
-    @pytest.mark.parametrize(["value"], [
-        [None], [nan], [inf],
-        [0], [1], [0.5],
-        ["test"], ["g"],
-        [True],
-    ])
-    def test_abnormal(self, value):
-        assert not is_hex(value)
-
-
-class Test_is_list_or_tuple:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [[], True],
-        [[1], True],
-        [["a"] * 200000, True],
-        [(), True],
-        [(1,), True],
-        [("a",) * 200000, True],
-
-        [None, False],
-        [nan, False],
-        [0, False],
-        ["aaa", False],
-        [True, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_list_or_tuple(value) == expected
-
-
-class Test_is_empty_sequence:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [(), True],
-        [[], True],
-        ["", True],
-        [range(0), True],
-
-        [[1], False],
-        [["a"] * 200000, False],
-        [(1,), False],
-        [("a",) * 200000, False],
-        ["aaa", False],
-        [range(0, 10), False],
-
-        [True, False],
-        [False, False],
-        [six.MAXSIZE, False],
-        [0.1, False],
-        [nan, False],
-        [inf, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_empty_sequence(value) == expected
-
-
-class Test_is_not_empty_sequence:
-
-    @pytest.mark.parametrize(["value", "expected"], [
-        [[1], True],
-        [["a"] * 200000, True],
-        [(1,), True],
-        [("a",) * 200000, True],
-        ["a" * 200000, True],
-        [range(0, 10), True],
-
-        [(), False],
-        [[], False],
-        [None, False],
-        [range(0), False],
-
-        [True, False],
-        [False, False],
-        [six.MAXSIZE, False],
-        [0.1, False],
-        [nan, False],
-        [inf, False],
-    ])
-    def test_normal(self, value, expected):
-        assert is_not_empty_sequence(value) == expected
 
 
 class Test_get_integer_digit:
