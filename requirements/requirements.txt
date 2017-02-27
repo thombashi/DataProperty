@@ -1,4 +1,4 @@
-mbstrdecoder>=0.2.1
+mbstrdecoder>=0.2.2
 python-dateutil>=0.2.6
 pytz>=2016.10
 six>=1.10
