@@ -5,10 +5,12 @@
 """
 
 from __future__ import unicode_literals
+
 import io
 import os.path
-import setuptools
 import sys
+
+import setuptools
 
 
 MISC_DIR = "misc"
@@ -35,7 +37,7 @@ project_name = "DataProperty"
 
 setuptools.setup(
     name=project_name,
-    version="0.16.2",
+    version="0.17.0",
     url="https://github.com/thombashi/" + project_name,
     bugtrack_url="https://github.com/thombashi/{:s}/issues".format(
         project_name),
@@ -57,10 +59,9 @@ setuptools.setup(
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
+        "Intended Audience :: Information Technology",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: Microsoft :: Windows",
-        "Operating System :: POSIX",
-        "Operating System :: POSIX :: Linux",
+        "Operating System :: OS Independent",
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
