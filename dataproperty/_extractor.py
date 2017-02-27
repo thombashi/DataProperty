@@ -6,7 +6,10 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
 import copy
+
+from typepy import is_empty_sequence
 
 from six.moves import zip
 
@@ -19,7 +22,6 @@ from ._dataproperty import (
     ColumnDataProperty,
 )
 from ._dataproperty_converter import DataPropertyConverter
-from ._function import is_empty_sequence
 from ._type import StringType
 
 
