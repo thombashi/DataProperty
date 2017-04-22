@@ -42,7 +42,6 @@ class DefaultValue(object):
 
     QUOTE_FLAG_MAPPING = copy.deepcopy(NULL_QUOTE_FLAG_MAPPING)
 
-    STRICT_TYPE_MAPPING = {
         Typecode.NONE: False,
         Typecode.INTEGER: False,
         Typecode.FLOAT: False,
@@ -53,6 +52,7 @@ class DefaultValue(object):
         Typecode.NAN: False,
         Typecode.BOOL: False,
         Typecode.DICTIONARY: True,
+    STRICT_LEVEL_MAPPING = {
     }
 
     TYPE_VALUE_MAPPING = {

@@ -417,12 +417,12 @@ class Test_DataPeroperty_repr:
         ],
         [
             {"a": 1},
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             100
         ],
         [
             "新しいテキスト ドキュメント.txt",
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             100
         ],
     ])
@@ -433,70 +433,70 @@ class Test_DataPeroperty_repr:
     @pytest.mark.parametrize(["value", "strict_type_mapping", "expected"], [
         [
             0,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=0, typename=INTEGER, align=right, str_len=1, "
             "ascii_char_width=1, "
             "integer_digits=1, decimal_places=0, additional_format_len=0",
         ],
         [
             -1.0,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=-1, typename=INTEGER, align=right, str_len=2, "
             "ascii_char_width=2, "
             "integer_digits=1, decimal_places=0, additional_format_len=1",
         ],
         [
             -1.1,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=-1.1, typename=FLOAT, align=right, str_len=4, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=1, additional_format_len=1",
         ],
         [
             -12.234,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=-12.23, typename=FLOAT, align=right, str_len=6, "
             "ascii_char_width=6, "
             "integer_digits=2, decimal_places=2, additional_format_len=1",
         ],
         [
             0.01,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=0.01, typename=FLOAT, align=right, str_len=4, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=2, additional_format_len=0",
         ],
         [
             "abcdefg",
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=abcdefg, typename=STRING, align=left, str_len=7, "
             "ascii_char_width=7, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             None,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=None, typename=NONE, align=left, str_len=4, "
             "ascii_char_width=4, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             True,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=True, typename=BOOL, align=left, str_len=4, "
             "ascii_char_width=4, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             DATATIME_DATA,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=2017-01-02 03:04:05, typename=DATETIME, align=left, str_len=19, "
             "ascii_char_width=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05",
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=2017-01-02 03:04:05, typename=STRING, align=left, str_len=19, "
             "ascii_char_width=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
@@ -510,14 +510,14 @@ class Test_DataPeroperty_repr:
         ],
         [
             inf,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=Infinity, typename=INFINITY, align=left, str_len=8, "
             "ascii_char_width=8, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             nan,
-            DefaultValue.STRICT_TYPE_MAPPING,
+            DefaultValue.STRICT_LEVEL_MAPPING,
             "data=NaN, typename=NAN, align=left, str_len=3, "
             "ascii_char_width=3, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",

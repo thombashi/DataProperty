@@ -290,7 +290,7 @@ class DataProperty(DataPeropertyBase):
             float_type = DefaultValue.FLOAT_TYPE
 
         if strict_type_mapping is None:
-            strict_type_mapping = DefaultValue.STRICT_TYPE_MAPPING
+            strict_type_mapping = DefaultValue.STRICT_LEVEL_MAPPING
 
         if type_hint:
             params = {"float_type": float_type}

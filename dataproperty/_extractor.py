@@ -67,7 +67,7 @@ class DataPropertyExtractor(object):
         self.float_type = None
         self.datetime_format_str = DefaultValue.DATETIME_FORMAT
         self.strict_type_mapping = copy.deepcopy(
-            DefaultValue.STRICT_TYPE_MAPPING)
+            DefaultValue.STRICT_LEVEL_MAPPING)
         self.east_asian_ambiguous_width = 1
 
         self.type_value_mapping = copy.deepcopy(
