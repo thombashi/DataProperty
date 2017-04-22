@@ -6,12 +6,25 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
 from decimal import Decimal
 import math
 
 from mbstrdecoder import MultiByteStrDecoder
 import six
-
+from typepy import Typecode
+from typepy.type import (
+    Bool,
+    DateTime,
+    Dictionary,
+    Infinity,
+    Integer,
+    Nan,
+    NoneType,
+    RealNumber,
+    String,
+    NullString,
+)
 from ._align_getter import align_getter
 from ._common import DefaultValue
 from ._container import (
@@ -19,24 +32,11 @@ from ._container import (
     ListContainer,
 )
 from ._error import TypeConversionError
-from ._interface import DataPeropertyInterface
 from ._function import (
     get_number_of_digit,
     get_ascii_char_width,
 )
-from ._type import (
-    NoneType,
-    StringType,
-    NullStringType,
-    IntegerType,
-    FloatType,
-    DateTimeType,
-    BoolType,
-    InfinityType,
-    NanType,
-    DictionaryType,
-)
-from ._typecode import Typecode
+from ._interface import DataPeropertyInterface
 from ._type_checker import NanChecker
 
 
@@ -86,15 +86,15 @@ class DataProperty(DataPeropertyBase):
 
     __type_class_list = [
         NoneType,
-        IntegerType,
-        InfinityType,
-        NanType,
-        FloatType,
-        BoolType,
-        DictionaryType,
-        DateTimeType,
-        NullStringType,
-        StringType,
+        Integer,
+        Infinity,
+        Nan,
+        RealNumber,
+        Bool,
+        Dictionary,
+        DateTime,
+        NullString,
+        String,
     ]
 
     @property
@@ -219,7 +219,7 @@ class DataProperty(DataPeropertyBase):
         return self.format_str.format(self.data)
 
     def __get_additional_format_len(self):
-        if not FloatType(self.data).is_type():
+        if not RealNumber(self.data).is_type():
             return 0
 
         format_len = 0
@@ -346,14 +346,14 @@ class ColumnDataProperty(DataPeropertyBase):
 
     __TYPE_CLASS_TABLE = {
         Typecode.NONE: NoneType,
-        Typecode.NULL_STRING: NullStringType,
-        Typecode.STRING: StringType,
-        Typecode.INTEGER: IntegerType,
-        Typecode.INFINITY: InfinityType,
-        Typecode.NAN: NanType,
-        Typecode.FLOAT: FloatType,
-        Typecode.BOOL: BoolType,
-        Typecode.DATETIME: DateTimeType,
+        Typecode.NULL_STRING: NullString,
+        Typecode.STRING: String,
+        Typecode.INTEGER: Integer,
+        Typecode.INFINITY: Infinity,
+        Typecode.NAN: Nan,
+        Typecode.FLOAT: RealNumber,
+        Typecode.BOOL: Bool,
+        Typecode.DATETIME: DateTime,
     }
 
     @property
