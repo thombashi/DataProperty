@@ -309,7 +309,9 @@ class DataProperty(DataPeropertyBase):
                     data, type_class, is_strict, float_type):
                 return
 
-        raise TypeConversionError("failed to convert: " + self.typename)
+        raise TypeConversionError(
+            "failed to convert: data={}, strict_level={}".format(
+                data, strict_type_mapping))
 
     def __try_convert_type(self, data, type_class, is_strict, float_type):
         type_obj = type_class(data, is_strict, {"float_type": float_type})
