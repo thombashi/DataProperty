@@ -103,7 +103,7 @@ e.g. Extract a ``bool`` value property
 Extract data property for each element from a matrix
 ----------------------------------------------------
 ``DataPropertyExtractor.to_dataproperty_matrix`` method will return a matrix of ``DataProperty`` instances from a data matrix. 
-An example (`examples/py/to_dataproperty_matrix.py`) data set and the result are as follows:
+An example data set and the result are as follows:
 
 .. code:: python
 
@@ -150,13 +150,13 @@ An example (`examples/py/to_dataproperty_matrix.py`) data set and the result are
     [0, 1, nan, 1, 1, nan, nan, nan, nan]
     [0, 2, nan, 0, nan, nan, nan, nan, nan]
 
-Full example can be found at *examples/py/to_dataproperty_matrix.py*
+Full example source code can be found at *examples/py/to_dataproperty_matrix.py*
 
 
 Extract property for each column from a matrix
 ------------------------------------------------------
 ``DataPropertyExtractor.to_col_dataproperty_list`` method will return a list of ``DataProperty`` instances from a data matrix. The list represents the properties for each column.
-An example (`examples/py/to_col_dataproperty_list.py.py`) data set and the result are as follows:
+An example data set and the result are as follows:
 
 Example data set and result are as follows:
 
@@ -188,8 +188,7 @@ Example data set and result are as follows:
     [0, 2, nan, 1, 1, nan, nan, nan, nan]
 
 
-
-Full example can be found at *examples/py/to_col_dataproperty_list.py*
+Full example source code can be found at *examples/py/to_col_dataproperty_list.py*
 
 
 Dependencies
@@ -197,10 +196,7 @@ Dependencies
 
 Python 2.7+ or 3.3+
 
-- `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
-- `python-dateutil <https://dateutil.readthedocs.io/en/stable/>`__
-- `pytz <https://pypi.python.org/pypi/pytz/>`__
-- `six <https://pypi.python.org/pypi/six/>`__
+- `typepy <https://github.com/thombashi/typepy>`__
 
 Test dependencies
 -----------------
