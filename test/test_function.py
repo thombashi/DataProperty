@@ -7,12 +7,12 @@
 
 from __future__ import unicode_literals
 
-from dataproperty import *
+from dataproperty import (
+    get_integer_digit,
+    get_number_of_digit,
+)
 import pytest
-import six
 from typepy.type import Nan
-
-from six.moves import range
 
 
 nan = float("nan")

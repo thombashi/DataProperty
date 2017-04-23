@@ -9,7 +9,11 @@ from __future__ import unicode_literals
 import datetime
 from decimal import Decimal
 
-from dataproperty import *
+from dataproperty import (
+    Align,
+    DataPropertyExtractor,
+    MissmatchProcessing,
+)
 import pytest
 import six
 from typepy import Typecode

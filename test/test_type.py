@@ -4,7 +4,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-from dataproperty import *
 import pytest
 from typepy import StrictLevel
 from typepy.type import Integer

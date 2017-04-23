@@ -7,9 +7,11 @@
 from __future__ import unicode_literals
 import itertools
 
-from dataproperty import *
+from dataproperty import (
+    get_ascii_char_width,
+    is_multibyte_str,
+)
 import pytest
-import typepy
 
 
 nan = float("nan")

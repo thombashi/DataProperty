@@ -11,7 +11,12 @@ import datetime
 from decimal import Decimal
 import sys
 
-from dataproperty import *
+from dataproperty import (
+    NOT_STRICT_TYPE_MAPPING,
+    Align,
+    DataProperty,
+    DefaultValue,
+)
 import pytest
 import six
 from typepy import Typecode
@@ -213,7 +218,8 @@ class Test_DataPeroperty_to_str:
             [float("inf"), RealNumber, False, Decimal("inf"), "Infinity"],
             [float("inf"), String, False, "inf", "inf"],
         ])
-    def test_normal(self, value, type_hint, is_strict, expected_data, expected_str):
+    def test_normal(
+            self, value, type_hint, is_strict, expected_data, expected_str):
         dp = DataProperty(
             value,
             type_hint=type_hint,
@@ -502,22 +508,22 @@ class Test_DataPeroperty_repr:
         [
             DATATIME_DATA,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=2017-01-02 03:04:05, typename=DATETIME, align=left, str_len=19, "
-            "ascii_char_width=19, "
+            "data=2017-01-02 03:04:05, typename=DATETIME, "
+            "align=left, str_len=19, ascii_char_width=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05",
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=2017-01-02 03:04:05, typename=STRING, align=left, str_len=19, "
-            "ascii_char_width=19, "
+            "data=2017-01-02 03:04:05, typename=STRING, "
+            "align=left, str_len=19, ascii_char_width=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05+0900",
             NOT_STRICT_TYPE_MAPPING,
-            "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, str_len=24, "
-            "ascii_char_width=24, "
+            "data=2017-01-02 03:04:05+09:00, typename=DATETIME, "
+            "align=left, str_len=24, ascii_char_width=24, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [

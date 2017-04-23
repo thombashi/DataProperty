@@ -4,7 +4,7 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-from dataproperty import *
+from dataproperty import Align
 from dataproperty._align_getter import AlignGetter
 import pytest
 from typepy import Typecode

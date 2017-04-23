@@ -158,7 +158,8 @@ class DataPropertyExtractor(object):
         dp = DataProperty(
             data,
             type_hint=(
-                type_hint if type_hint is not None else self.default_type_hint),
+                type_hint if type_hint is not None else self.default_type_hint
+            ),
             strip_str=self.strip_str,
             float_type=self.float_type,
             datetime_format_str=self.datetime_format_str,
