@@ -6,15 +6,19 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
 import re
+
+from typepy import (
+    TypeConversionError,
+    Typecode,
+)
 
 from ._common import (
     STRICT_TYPE_MAPPING,
     DefaultValue,
 )
 from ._dataproperty import DataProperty
-from ._error import TypeConversionError
-from ._typecode import Typecode
 
 
 class DataPropertyConverter(object):

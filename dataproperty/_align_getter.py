@@ -6,8 +6,9 @@
 
 from __future__ import absolute_import
 
+from typepy import Typecode
+
 from ._align import Align
-from ._typecode import Typecode
 
 
 class AlignGetter(object):
@@ -30,5 +31,6 @@ class AlignGetter(object):
             Typecode.FLOAT: Align.RIGHT,
         }
         self.default_align = Align.LEFT
+
 
 align_getter = AlignGetter()

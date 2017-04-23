@@ -6,11 +6,15 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
+
 import copy
 from decimal import Decimal
 import itertools
 
-from ._typecode import Typecode
+from typepy import (
+    Typecode,
+    StrictLevel,
+)
 
 
 NULL_QUOTE_FLAG_MAPPING = {
@@ -25,8 +29,10 @@ NULL_QUOTE_FLAG_MAPPING = {
     Typecode.BOOL: False,
 }
 
-STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [True]))
-NOT_STRICT_TYPE_MAPPING = dict(itertools.product(Typecode.LIST, [False]))
+STRICT_TYPE_MAPPING = dict(
+    itertools.product(Typecode.LIST, [StrictLevel.MAX]))
+NOT_STRICT_TYPE_MAPPING = dict(
+    itertools.product(Typecode.LIST, [StrictLevel.MIN]))
 
 
 class DefaultValue(object):
@@ -42,17 +48,17 @@ class DefaultValue(object):
 
     QUOTE_FLAG_MAPPING = copy.deepcopy(NULL_QUOTE_FLAG_MAPPING)
 
-        Typecode.NONE: False,
-        Typecode.INTEGER: False,
-        Typecode.FLOAT: False,
-        Typecode.STRING: False,
-        Typecode.NULL_STRING: False,
-        Typecode.DATETIME: True,
-        Typecode.INFINITY: False,
-        Typecode.NAN: False,
-        Typecode.BOOL: False,
-        Typecode.DICTIONARY: True,
     STRICT_LEVEL_MAPPING = {
+        Typecode.NONE: StrictLevel.MAX,
+        Typecode.INTEGER: 1,
+        Typecode.FLOAT: 1,
+        Typecode.STRING: StrictLevel.MIN,
+        Typecode.NULL_STRING: StrictLevel.MIN,
+        Typecode.DATETIME: StrictLevel.MAX,
+        Typecode.INFINITY: StrictLevel.MIN,
+        Typecode.NAN: StrictLevel.MIN,
+        Typecode.BOOL: 1,
+        Typecode.DICTIONARY: StrictLevel.MAX,
     }
 
     TYPE_VALUE_MAPPING = {

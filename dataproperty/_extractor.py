@@ -10,6 +10,7 @@ from __future__ import unicode_literals
 import copy
 
 from typepy import is_empty_sequence
+from typepy.type import String
 
 from six.moves import zip
 
@@ -22,7 +23,6 @@ from ._dataproperty import (
     ColumnDataProperty,
 )
 from ._dataproperty_converter import DataPropertyConverter
-from ._type import StringType
 
 
 class MissmatchProcessing(object):
@@ -144,7 +144,7 @@ class DataPropertyExtractor(object):
         self.__update_dp_converter()
 
         return self.__to_dataproperty_list(
-            self.header_list, type_hint=StringType,
+            self.header_list, type_hint=String,
             strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
 
     def __get_col_type_hint(self, col_idx):

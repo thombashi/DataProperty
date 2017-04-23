@@ -5,13 +5,21 @@
 """
 
 from __future__ import unicode_literals
+
 import datetime
 from decimal import Decimal
 
+from dataproperty import *
 import pytest
 import six
+from typepy import Typecode
+from typepy.type import (
+    DateTime,
+    Nan,
+    RealNumber,
+    String,
+)
 
-from dataproperty import *
 from .common import get_strict_type_mapping
 
 
@@ -241,7 +249,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 4
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
         dp = dp_matrix[0][1]
@@ -268,7 +276,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 1
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
         dp = dp_matrix[2][0]
@@ -277,7 +285,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 3
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
         dp = dp_matrix[2][1]
@@ -286,7 +294,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 8
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
         dp = dp_matrix[3][0]
@@ -295,7 +303,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 5
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
         dp = dp_matrix[3][1]
@@ -304,7 +312,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.str_len == 15
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
     @pytest.mark.parametrize(["value", "expected"], [
@@ -347,7 +355,7 @@ class Test_DataPropertyExtractor_to_dataproperty_list:
                 "2017-01-02 03:04:05",
                 datetime.datetime(2017, 1, 2, 3, 4, 5)
             ],
-            DateTimeType,
+            DateTime,
             [Typecode.DATETIME, Typecode.DATETIME]
         ],
     ])
@@ -433,7 +441,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 4
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
         dp = col_dp_list[3]
@@ -457,7 +465,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 5
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{}"
 
         dp = col_dp_list[6]
@@ -465,7 +473,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 8
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:f}"
 
         dp = col_dp_list[7]
@@ -473,7 +481,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 3
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:f}"
 
         dp = col_dp_list[8]
@@ -481,7 +489,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 24
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
     @pytest.mark.parametrize(["header_list", "value"], [
@@ -501,7 +509,6 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
     def test_normal_not_strict(self, dp_extractor, header_list, value):
         dp_extractor.header_list = header_list
         dp_extractor.data_matrix = value
-        dp_extractor.strict_type_mapping = NOT_STRICT_TYPE_MAPPING
         col_dp_list = dp_extractor.to_col_dataproperty_list()
 
         assert len(col_dp_list) == 9
@@ -526,12 +533,11 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         dp_extractor.header_list = [
             "none", "to_float", "to_str", "to_datetime"]
         dp_extractor.data_matrix = [
-            [1, 1, 1, "2017-01-02 03:04:05"],
-            [2, 2, 0.1, "2017-01-02 03:04:05"],
+            [1, "1.1", 1, "2017-01-02 03:04:05"],
+            [2, "2.2", 0.1, "2017-01-02 03:04:05"],
         ]
         dp_extractor.col_type_hint_list = [
-            None, FloatType, StringType, DateTimeType]
-        dp_extractor.strict_type_mapping = NOT_STRICT_TYPE_MAPPING
+            None, RealNumber, String, DateTime]
         col_dp_list = dp_extractor.to_col_dataproperty_list()
 
         assert len(col_dp_list) == 4
@@ -563,14 +569,14 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 3
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
 
         dp = col_dp_list[1]
         assert dp.typecode == Typecode.INFINITY
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 8
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
 
     @pytest.mark.parametrize(["ambiguous_width"], [
         [2],
@@ -593,14 +599,14 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 10
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
 
         dp = col_dp_list[1]
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 4 * ambiguous_width
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
 
     def test_normal_empty_value(self, dp_extractor):
         dp_extractor.header_list = ["a", "22", "cccc"]
@@ -612,7 +618,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 1
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{}"
 
         dp = col_dp_list[1]
@@ -620,7 +626,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 2
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{}"
 
         dp = col_dp_list[2]
@@ -628,7 +634,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
         assert dp.ascii_char_width == 4
-        assert NanType(dp.decimal_places).is_type()
+        assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{}"
 
     @pytest.mark.parametrize(

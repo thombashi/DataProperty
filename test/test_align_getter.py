@@ -4,10 +4,10 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-import pytest
-
 from dataproperty import *
 from dataproperty._align_getter import AlignGetter
+import pytest
+from typepy import Typecode
 
 
 @pytest.fixture

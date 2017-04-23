@@ -12,7 +12,11 @@ import math
 
 from mbstrdecoder import MultiByteStrDecoder
 import six
-from typepy import Typecode
+from typepy import (
+    TypeConversionError,
+    Typecode,
+    StrictLevel,
+)
 from typepy.type import (
     Bool,
     DateTime,
@@ -31,13 +35,11 @@ from ._container import (
     MinMaxContainer,
     ListContainer,
 )
-from ._error import TypeConversionError
 from ._function import (
     get_number_of_digit,
     get_ascii_char_width,
 )
 from ._interface import DataPeropertyInterface
-from ._type_checker import NanChecker
 
 
 class DataPeropertyBase(DataPeropertyInterface):
@@ -61,7 +63,7 @@ class DataPeropertyBase(DataPeropertyInterface):
             return format_str
 
         if self.typecode in (Typecode.FLOAT, Typecode.INFINITY, Typecode.NAN):
-            if NanChecker(self.decimal_places).is_type():
+            if Nan(self.decimal_places).is_type():
                 return "{:f}"
 
             return "{:" + ".{:d}f".format(self.decimal_places) + "}"
@@ -172,6 +174,7 @@ class DataProperty(DataPeropertyBase):
             replace_tabs_with_spaces=True, tab_length=2,
             east_asian_ambiguous_width=1):
         super(DataProperty, self).__init__(datetime_format_str)
+        self.__typecode = None
 
         data = self.__preprocess_data(data, strip_str)
         self.__set_data(data, type_hint, float_type, strict_type_mapping)
@@ -293,28 +296,30 @@ class DataProperty(DataPeropertyBase):
             strict_type_mapping = DefaultValue.STRICT_LEVEL_MAPPING
 
         if type_hint:
-            params = {"float_type": float_type}
-            type_obj = type_hint(data, is_strict=False, params=params)
+            type_obj = type_hint(
+                data, strict_level=StrictLevel.MIN, float_type=float_type)
             self.__typecode = type_obj.typecode
-
             self.__data = type_obj.try_convert()
-            if type_hint(self.__data, is_strict=True, params=params).is_type():
+
+            if type_hint(
+                    self.__data, strict_level=StrictLevel.MAX,
+                    float_type=float_type).is_type():
                 return
 
         for type_class in self.__type_class_list:
-            is_strict = strict_type_mapping.get(
+            strict_level = strict_type_mapping.get(
                 type_class(None).typecode, False)
 
             if self.__try_convert_type(
-                    data, type_class, is_strict, float_type):
+                    data, type_class, strict_level, float_type):
                 return
 
         raise TypeConversionError(
             "failed to convert: data={}, strict_level={}".format(
                 data, strict_type_mapping))
 
-    def __try_convert_type(self, data, type_class, is_strict, float_type):
-        type_obj = type_class(data, is_strict, {"float_type": float_type})
+    def __try_convert_type(self, data, type_class, strict_level, float_type):
+        type_obj = type_class(data, strict_level, float_type=float_type)
 
         if not type_obj.is_type():
             return False
@@ -369,7 +374,7 @@ class ColumnDataProperty(DataPeropertyBase):
         except TypeError:
             return float("nan")
 
-        if NanChecker(avg).is_type():
+        if Nan(avg).is_type():
             return float("nan")
 
         return int(min(

@@ -36,14 +36,14 @@ def is_not_empty_string(value):
 
 
 def get_integer_digit(value):
-    from ._type import FloatType
+    from typepy.type import RealNumber
 
     decimal.setcontext(
         decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
 
-    float_type = FloatType(value)
+    float_type = RealNumber(value)
 
-    if not float_type.is_convertible_type():
+    if not float_type.is_type():
         # bool-type/inf/nan value reaches this line
         raise ValueError(
             "the value must be a number: value='{}' type='{}'".format(
@@ -67,9 +67,9 @@ def get_integer_digit(value):
 def _get_decimal_places(value):
     from collections import namedtuple
     from six.moves import range
-    from ._type import IntegerType
+    from typepy.type import Integer
 
-    int_type = IntegerType(value)
+    int_type = Integer(value)
 
     float_digit_len = 0
     if int_type.is_type():
@@ -121,9 +121,10 @@ def get_number_of_digit(value):
 
 
 def is_multibyte_str(text):
-    from ._type_checker import StringTypeChecker
+    from typepy import StrictLevel
+    from typepy.type import String
 
-    if not StringTypeChecker(text).is_type():
+    if not String(text, strict_level=StrictLevel.MIN).is_type():
         return False
 
     try:

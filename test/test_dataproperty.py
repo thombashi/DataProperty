@@ -4,16 +4,25 @@
 .. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
 """
 
-from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import unicode_literals
+
 import datetime
 from decimal import Decimal
 import sys
 
+from dataproperty import *
 import pytest
 import six
-
-from dataproperty import *
+from typepy import Typecode
+from typepy.type import (
+    Bool,
+    DateTime,
+    Nan,
+    Integer,
+    RealNumber,
+    String,
+)
 
 from .common import get_strict_type_mapping
 
@@ -34,16 +43,18 @@ class Test_DataPeroperty_data_typecode:
     @pytest.mark.parametrize(
         ["value", "is_convert", "expected_data", "expected_typecode"],
         [
+            [1.0, True, 1, Typecode.INTEGER],
+            # [1.0, False, 1, Typecode.INTEGER],
             [six.MAXSIZE, True, six.MAXSIZE, Typecode.INTEGER],
             [-six.MAXSIZE, False, -six.MAXSIZE, Typecode.INTEGER],
             [str(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INTEGER],
             [str(six.MAXSIZE), False, str(six.MAXSIZE), Typecode.STRING],
 
-            [1.1, True, Decimal("1.1"), Typecode.FLOAT],
+            [1.1, True, 1, Typecode.INTEGER],
             [-1.1, False, Decimal("-1.1"), Typecode.FLOAT],
             [Decimal("1.1"), False, Decimal("1.1"), Typecode.FLOAT],
 
-            ["1.1", True, Decimal("1.1"), Typecode.FLOAT],
+            ["1.1", True, 1, Typecode.INTEGER],
             ["-1.1", False, "-1.1", Typecode.STRING],
             ["a", True, "a", Typecode.STRING],
             ["a", False, "a", Typecode.STRING],
@@ -56,7 +67,7 @@ class Test_DataPeroperty_data_typecode:
             ["3.3.5", True, "3.3.5", Typecode.STRING],
             ["51.0.2704.106", True, "51.0.2704.106", Typecode.STRING],
 
-            [True, True, True, Typecode.BOOL],
+            [True, True, 1, Typecode.INTEGER],
             [False, False, False, Typecode.BOOL],
 
             ["100-0002", False, "100-0002", Typecode.STRING],
@@ -139,33 +150,34 @@ class Test_DataPeroperty_data_typecode:
         [
             ["2017-01-02 03:04:05", None, False, Typecode.DATETIME],
             ["2017-01-02 03:04:05", None, True, Typecode.STRING],
-            ["2017-01-02 03:04:05", DateTimeType, False, Typecode.DATETIME],
-            ["2017-01-02 03:04:05", DateTimeType, True, Typecode.DATETIME],
-            ["2017-01-02 03:04:05", IntegerType, False, Typecode.DATETIME],
-            ["2017-01-02 03:04:05", IntegerType, True, Typecode.STRING],
+            ["2017-01-02 03:04:05", DateTime, False, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", DateTime, True, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", Integer, False, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", Integer, True, Typecode.STRING],
             [DATATIME_DATA, None, False, Typecode.DATETIME],
             [DATATIME_DATA, None, True, Typecode.DATETIME],
-            [DATATIME_DATA, StringType, False, Typecode.STRING],
-            [DATATIME_DATA, StringType, True, Typecode.STRING],
+            [DATATIME_DATA, String, False, Typecode.STRING],
+            [DATATIME_DATA, String, True, Typecode.STRING],
             ["100-0002", None, False, Typecode.DATETIME],
 
-            [1, StringType, True, Typecode.STRING],
-            [1, StringType, False, Typecode.STRING],
+            [1, String, True, Typecode.STRING],
+            [1, String, False, Typecode.STRING],
 
-            [1, FloatType, True, Typecode.FLOAT],
-            [1, FloatType, False, Typecode.FLOAT],
-            [float("inf"), FloatType, True, Typecode.INFINITY],
-            [float("inf"), FloatType, False, Typecode.INFINITY],
+            [float("inf"), RealNumber, True, Typecode.INFINITY],
+            [float("inf"), RealNumber, False, Typecode.INFINITY],
 
-            [1.1, IntegerType, True, Typecode.INTEGER],
-            [1.1, IntegerType, False, Typecode.INTEGER],
+            [1, RealNumber, True, Typecode.INTEGER],
+            [1, RealNumber, False, Typecode.INTEGER],
+            [1.1, Integer, True, Typecode.INTEGER],
+            [1.1, Integer, False, Typecode.INTEGER],
 
-            ["true", BoolType, False, Typecode.BOOL],
-            ["false", BoolType, False, Typecode.BOOL],
+            ["true", Bool, False, Typecode.BOOL],
+            ["false", Bool, False, Typecode.BOOL],
         ]
     )
     def test_normal_type_hint(
             self, value, type_hint, is_strict, expected_typecode):
+
         dp = DataProperty(
             value, type_hint=type_hint,
             strict_type_mapping=get_strict_type_mapping(is_strict))
@@ -186,7 +198,7 @@ class Test_DataPeroperty_data_typecode:
             value,
             strict_type_mapping=get_strict_type_mapping(not is_convert))
 
-        assert NanType(dp.data).is_type()
+        assert Nan(dp.data).is_type()
         assert dp.typecode == expected_typecode
 
 
@@ -197,9 +209,9 @@ class Test_DataPeroperty_to_str:
         [
             [float("inf"), None, True, Decimal("inf"), "Infinity"],
             [float("inf"), None, False, Decimal("inf"), "Infinity"],
-            [float("inf"), FloatType, True, Decimal("inf"), "Infinity"],
-            [float("inf"), FloatType, False, Decimal("inf"), "Infinity"],
-            [float("inf"), StringType, False, "inf", "inf"],
+            [float("inf"), RealNumber, True, Decimal("inf"), "Infinity"],
+            [float("inf"), RealNumber, False, Decimal("inf"), "Infinity"],
+            [float("inf"), String, False, "inf", "inf"],
         ])
     def test_normal(self, value, type_hint, is_strict, expected_data, expected_str):
         dp = DataProperty(
@@ -304,7 +316,7 @@ class Test_DataPeroperty_str_len:
     ])
     def test_abnormal(self, value, expected):
         dp = DataProperty(value)
-        NanType(dp.str_len).is_type()
+        Nan(dp.str_len).is_type()
 
 
 class Test_DataPeroperty_get_padding_len:
@@ -355,7 +367,7 @@ class Test_DataPeroperty_integer_digits:
     ])
     def test_abnormal(self, value):
         dp = DataProperty(value)
-        NanType(dp.integer_digits).is_type()
+        Nan(dp.integer_digits).is_type()
 
 
 class Test_DataPeroperty_decimal_places:
@@ -380,7 +392,7 @@ class Test_DataPeroperty_decimal_places:
     ])
     def test_abnormal(self, value):
         dp = DataProperty(value)
-        NanType(dp.decimal_places).is_type()
+        Nan(dp.decimal_places).is_type()
 
 
 class Test_DataPeroperty_additional_format_len:

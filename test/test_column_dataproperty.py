@@ -5,19 +5,19 @@
 """
 
 from __future__ import unicode_literals
+
 import datetime
 from decimal import Decimal
-
-import pytest
-import six
 
 from dataproperty import (
     Align,
     ColumnDataProperty,
     DataProperty,
-    NanType,
-    Typecode
 )
+import pytest
+import six
+from typepy import Typecode
+from typepy.type import Nan
 
 
 nan = float("nan")
@@ -233,7 +233,7 @@ class Test_ColumnDataPeroperty:
             col_dp.update_body(DataProperty(value))
 
         assert col_dp.align == Align.LEFT
-        assert NanType(col_dp.decimal_places).is_type()
+        assert Nan(col_dp.decimal_places).is_type()
         assert col_dp.typecode == Typecode.INFINITY
         assert col_dp.ascii_char_width == 8
 
@@ -285,7 +285,7 @@ class Test_ColumnDataPeroperty:
             col_dp.update_body(DataProperty(value))
 
         assert col_dp.align == Align.LEFT
-        assert NanType(col_dp.decimal_places).is_type()
+        assert Nan(col_dp.decimal_places).is_type()
         assert col_dp.typecode == Typecode.STRING
         assert col_dp.ascii_char_width == 6
 
@@ -320,7 +320,7 @@ class Test_ColumnDataPeroperty:
                 value, east_asian_ambiguous_width=ambiguous_width))
 
         assert col_dp.align == Align.LEFT
-        assert NanType(col_dp.decimal_places).is_type()
+        assert Nan(col_dp.decimal_places).is_type()
         assert col_dp.typecode == Typecode.STRING
         assert col_dp.ascii_char_width == ascii_char_width
 
@@ -364,6 +364,6 @@ class Test_ColumnDataPeroperty:
     def test_null(self):
         col_dp = ColumnDataProperty()
         assert col_dp.align == Align.LEFT
-        assert NanType(col_dp.decimal_places).is_type()
+        assert Nan(col_dp.decimal_places).is_type()
         assert col_dp.typecode == Typecode.NONE
         assert col_dp.ascii_char_width == 0

@@ -6,10 +6,10 @@
 
 from __future__ import unicode_literals
 
+from dataproperty import *
 import pytest
 import six
-
-from dataproperty import *
+from typepy.type import Nan
 
 
 @pytest.fixture
@@ -101,7 +101,7 @@ class Test_MinMaxContainer_mean:
         assert container.mean() == 2
 
     def test_null(self, container):
-        assert NanType(container.mean()).is_type()
+        assert Nan(container.mean()).is_type()
 
 
 class Test_MinMaxContainer_diff:
@@ -113,7 +113,7 @@ class Test_MinMaxContainer_diff:
         assert container.diff() == 2
 
     def test_null(self, container):
-        assert NanType(container.diff()).is_type()
+        assert Nan(container.diff()).is_type()
 
 
 class Test_MinMaxContainer_update:

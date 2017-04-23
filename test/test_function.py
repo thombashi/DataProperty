@@ -10,6 +10,7 @@ from __future__ import unicode_literals
 from dataproperty import *
 import pytest
 import six
+from typepy.type import Nan
 
 from six.moves import range
 
@@ -113,5 +114,5 @@ class Test_get_number_of_digit:
     ])
     def test_nan(self, value):
         integer_digits, decimal_places = get_number_of_digit(value)
-        assert NanType(integer_digits).is_type()
-        assert NanType(decimal_places).is_type()
+        assert Nan(integer_digits).is_type()
+        assert Nan(decimal_places).is_type()

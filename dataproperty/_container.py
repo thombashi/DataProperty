@@ -6,9 +6,10 @@
 
 from __future__ import division
 from __future__ import unicode_literals
+
 import abc
 
-from ._type import FloatType
+from typepy.type import RealNumber
 
 
 class AbstractContainer(object):
@@ -66,7 +67,7 @@ class ListContainer(AbstractContainer):
             return float("nan")
 
     def update(self, value):
-        store_value = FloatType(value).try_convert()
+        store_value = RealNumber(value).try_convert()
         if store_value is None:
             return
 
