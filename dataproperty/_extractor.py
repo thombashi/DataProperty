@@ -11,7 +11,6 @@ import copy
 
 from typepy import is_empty_sequence
 from typepy.type import String
-
 from six.moves import zip
 
 from ._common import (
