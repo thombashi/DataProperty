@@ -103,8 +103,7 @@ e.g. Extract a ``bool`` value property
 Extract data property for each element from a matrix
 ----------------------------------------------------
 ``DataPropertyExtractor.to_dataproperty_matrix`` method will return a matrix of ``DataProperty`` instances from a data matrix. 
-
-Example data set and result are as follows:
+An example (`examples/py/to_dataproperty_matrix.py`) data set and the result are as follows:
 
 .. code:: python
 
@@ -120,7 +119,7 @@ Example data set and result are as follows:
 
 ::
 
-     ./to_dataproperty_matrix.py
+    $ ./to_dataproperty_matrix.py
     ---------- typename ----------
     ['INTEGER', 'FLOAT', 'STRING', 'INTEGER', 'INTEGER', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
     ['INTEGER', 'FLOAT', 'STRING', 'FLOAT', 'FLOAT', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
@@ -157,6 +156,7 @@ Full example can be found at *examples/py/to_dataproperty_matrix.py*
 Extract property for each column from a matrix
 ------------------------------------------------------
 ``DataPropertyExtractor.to_col_dataproperty_list`` method will return a list of ``DataProperty`` instances from a data matrix. The list represents the properties for each column.
+An example (`examples/py/to_col_dataproperty_list.py.py`) data set and the result are as follows:
 
 Example data set and result are as follows:
 
@@ -174,6 +174,7 @@ Example data set and result are as follows:
 
 ::
 
+    $ ./to_col_dataproperty_list.py
     ---------- typename ----------
     ['INTEGER', 'FLOAT', 'STRING', 'FLOAT', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
 
@@ -185,6 +186,8 @@ Example data set and result are as follows:
 
     ---------- decimal_places ----------
     [0, 2, nan, 1, 1, nan, nan, nan, nan]
+
+
 
 Full example can be found at *examples/py/to_col_dataproperty_list.py*
 
