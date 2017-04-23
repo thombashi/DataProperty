@@ -6,10 +6,12 @@
 """
 
 from __future__ import print_function
-import sys
 
 import datetime
-from dataproperty import DataPropertyExtractor, Typecode
+import sys
+
+from dataproperty import DataPropertyExtractor
+from typepy import Typecode
 
 
 def display_dp_matrix_attr(dp_matrix, attr_name):
