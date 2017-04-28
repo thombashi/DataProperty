@@ -14,28 +14,6 @@ import math
 from mbstrdecoder import MultiByteStrDecoder
 
 
-def is_empty_string(value):
-    """
-    This function will be deleted in the future.
-    """
-
-    try:
-        return len(value.strip()) == 0
-    except AttributeError:
-        return True
-
-
-def is_not_empty_string(value):
-    """
-    This function will be deleted in the future.
-    """
-
-    try:
-        return len(value.strip()) > 0
-    except AttributeError:
-        return False
-
-
 def get_integer_digit(value):
     from typepy.type import RealNumber
 

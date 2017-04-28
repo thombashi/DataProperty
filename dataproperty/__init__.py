@@ -24,8 +24,6 @@ from ._extractor import (
     MissmatchProcessing,
 )
 from ._function import (
-    is_empty_string,
-    is_not_empty_string,
     is_multibyte_str,
     get_integer_digit,
     get_number_of_digit,

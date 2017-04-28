@@ -204,27 +204,3 @@ class DataPropertyExtractor(object):
             datetime_format_str=self.datetime_format_str,
             float_type=self.float_type,
             strict_type_mapping=self.strict_type_mapping)
-
-    def extract_data_property_matrix(self):
-        # alias to to_dataproperty_matrix method.
-        # this method will be deleted in the future.
-
-        return self.to_dataproperty_matrix()
-
-    def extract_column_property_list(self):
-        # alias to to_col_dataproperty_list method.
-        # this method will be deleted in the future.
-
-        return self.to_col_dataproperty_list()
-
-    def extract_col_property_list(self):
-        # alias to to_col_dataproperty_list method.
-        # this method will be deleted in the future.
-
-        return self.to_col_dataproperty_list()
-
-    def extract_data_property_list(self, data_list):
-        # alias to to_dataproperty_list method.
-        # this method will be deleted in the future.
-
-        return self.to_dataproperty_list(data_list)
