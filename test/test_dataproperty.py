@@ -124,6 +124,8 @@ class Test_DataPeroperty_data_typecode:
             value,
             strict_type_mapping=get_strict_type_mapping(not is_convert))
 
+        assert dp == dp
+        assert dp != DataProperty("test for __ne__")
         assert dp.data == expected_data
         assert dp.typecode == expected_typecode
 

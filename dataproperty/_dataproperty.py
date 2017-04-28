@@ -191,6 +191,18 @@ class DataProperty(DataPeropertyBase):
         self.__additional_format_len = self.__get_additional_format_len()
         self.__calc_length(east_asian_ambiguous_width)
 
+    def __eq__(self, other):
+        return all([
+            self.data == other.data,
+            self.typecode == other.typecode,
+        ])
+
+    def __ne__(self, other):
+        return any([
+            self.data != other.data,
+            self.typecode != other.typecode,
+        ])
+
     def __repr__(self):
         element_list = []
 
