@@ -315,14 +315,14 @@ class Test_DataPeroperty_str_len:
     ])
     def test_normal(self, value, expected):
         dp = DataProperty(value)
-        assert dp.str_len == expected
+        assert dp.length == expected
 
     @pytest.mark.parametrize(["value", "expected"], [
         [nan, nan],
     ])
     def test_abnormal(self, value, expected):
         dp = DataProperty(value)
-        Nan(dp.str_len).is_type()
+        Nan(dp.length).is_type()
 
 
 class Test_DataPeroperty_get_padding_len:
@@ -452,56 +452,56 @@ class Test_DataPeroperty_repr:
         [
             0,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=0, typename=INTEGER, align=right, str_len=1, "
+            "data=0, typename=INTEGER, align=right, length=1, "
             "ascii_char_width=1, "
             "integer_digits=1, decimal_places=0, additional_format_len=0",
         ],
         [
             -1.0,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-1, typename=INTEGER, align=right, str_len=2, "
+            "data=-1, typename=INTEGER, align=right, length=2, "
             "ascii_char_width=2, "
             "integer_digits=1, decimal_places=0, additional_format_len=1",
         ],
         [
             -1.1,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-1.1, typename=FLOAT, align=right, str_len=4, "
+            "data=-1.1, typename=FLOAT, align=right, length=4, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=1, additional_format_len=1",
         ],
         [
             -12.234,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-12.23, typename=FLOAT, align=right, str_len=6, "
+            "data=-12.23, typename=FLOAT, align=right, length=6, "
             "ascii_char_width=6, "
             "integer_digits=2, decimal_places=2, additional_format_len=1",
         ],
         [
             0.01,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=0.01, typename=FLOAT, align=right, str_len=4, "
+            "data=0.01, typename=FLOAT, align=right, length=4, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=2, additional_format_len=0",
         ],
         [
             "abcdefg",
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=abcdefg, typename=STRING, align=left, str_len=7, "
+            "data=abcdefg, typename=STRING, align=left, length=7, "
             "ascii_char_width=7, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             None,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=None, typename=NONE, align=left, str_len=4, "
+            "data=None, typename=NONE, align=left, length=4, "
             "ascii_char_width=4, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             True,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=True, typename=BOOL, align=left, str_len=4, "
+            "data=True, typename=BOOL, align=left, length=4, "
             "ascii_char_width=4, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
@@ -509,34 +509,34 @@ class Test_DataPeroperty_repr:
             DATATIME_DATA,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=2017-01-02 03:04:05, typename=DATETIME, "
-            "align=left, str_len=19, ascii_char_width=19, "
+            "align=left, length=19, ascii_char_width=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05",
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=2017-01-02 03:04:05, typename=STRING, "
-            "align=left, str_len=19, ascii_char_width=19, "
+            "align=left, length=19, ascii_char_width=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05+0900",
             NOT_STRICT_TYPE_MAPPING,
             "data=2017-01-02 03:04:05+09:00, typename=DATETIME, "
-            "align=left, str_len=24, ascii_char_width=24, "
+            "align=left, length=24, ascii_char_width=24, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             inf,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=Infinity, typename=INFINITY, align=left, str_len=8, "
+            "data=Infinity, typename=INFINITY, align=left, length=8, "
             "ascii_char_width=8, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             nan,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=NaN, typename=NAN, align=left, str_len=3, "
+            "data=NaN, typename=NAN, align=left, length=3, "
             "ascii_char_width=3, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],

@@ -82,7 +82,7 @@ class DataProperty(DataPeropertyBase):
         "__integer_digits",
         "__decimal_places",
         "__additional_format_len",
-        "__str_len",
+        "__length",
         "__ascii_char_width",
     )
 
@@ -137,13 +137,13 @@ class DataProperty(DataPeropertyBase):
         return self.__data
 
     @property
-    def str_len(self):
+    def length(self):
         """
-        :return: Length of the ``data`` as a string.
+        :return: Length of the ``data``.
         :rtype: int
         """
 
-        return self.__str_len
+        return self.__length
 
     @property
     def ascii_char_width(self):
@@ -206,7 +206,7 @@ class DataProperty(DataPeropertyBase):
         element_list.extend([
             "typename={:s}".format(self.typename),
             "align={}".format(self.align),
-            "str_len={:d}".format(self.str_len),
+            "length={:d}".format(self.length),
             "ascii_char_width={:d}".format(self.ascii_char_width),
             "integer_digits={}".format(self.integer_digits),
             "decimal_places={}".format(self.decimal_places),
@@ -216,7 +216,7 @@ class DataProperty(DataPeropertyBase):
         return ", ".join(element_list)
 
     def get_padding_len(self, ascii_char_width):
-        return ascii_char_width - (self.ascii_char_width - self.str_len)
+        return ascii_char_width - (self.ascii_char_width - self.length)
 
     def to_str(self):
         return self.format_str.format(self.data)
@@ -247,25 +247,25 @@ class DataProperty(DataPeropertyBase):
 
     def __calc_length(self, east_asian_ambiguous_width):
         if self.typecode == Typecode.INTEGER:
-            self.__str_len = self.integer_digits + self.additional_format_len
-            self.__ascii_char_width = self.__str_len
+            self.__length = self.integer_digits + self.additional_format_len
+            self.__ascii_char_width = self.__length
             return
 
         if self.typecode == Typecode.FLOAT:
-            self.__str_len = (
+            self.__length = (
                 self.__get_base_float_len() + self.additional_format_len)
-            self.__ascii_char_width = self.__str_len
+            self.__ascii_char_width = self.__length
             return
 
         if self.typecode == Typecode.DATETIME:
             try:
-                self.__str_len = len(self.to_str())
+                self.__length = len(self.to_str())
             except ValueError:
                 # reach to this line if the year <1900.
                 # the datetime strftime() methods require year >= 1900.
-                self.__str_len = len(six.text_type(self.data))
+                self.__length = len(six.text_type(self.data))
 
-            self.__ascii_char_width = self.__str_len
+            self.__ascii_char_width = self.__length
             return
 
         try:
@@ -273,7 +273,7 @@ class DataProperty(DataPeropertyBase):
         except ValueError:
             unicode_str = self.to_str()
 
-        self.__str_len = len(unicode_str)
+        self.__length = len(unicode_str)
         self.__ascii_char_width = get_ascii_char_width(
             unicode_str, east_asian_ambiguous_width)
 
@@ -342,7 +342,7 @@ class DataProperty(DataPeropertyBase):
 class ColumnDataProperty(DataPeropertyBase):
     __slots__ = (
         "__typecode_bitmap",
-        "__str_len",
+        "__length",
         "__ascii_char_width",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
@@ -438,7 +438,7 @@ class ColumnDataProperty(DataPeropertyBase):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
 
         self.__typecode_bitmap = Typecode.NONE
-        self.__str_len = min_padding_len
+        self.__length = min_padding_len
         self.__ascii_char_width = min_padding_len
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
@@ -461,13 +461,13 @@ class ColumnDataProperty(DataPeropertyBase):
         ])
 
     def update_header(self, dataprop):
-        self.__str_len = max(self.__str_len, dataprop.str_len)
+        self.__length = max(self.__length, dataprop.length)
         self.__ascii_char_width = max(
             self.__ascii_char_width, dataprop.ascii_char_width)
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
-        self.__str_len = max(self.__str_len, dataprop.str_len)
+        self.__length = max(self.__length, dataprop.length)
         self.__ascii_char_width = max(
             self.__ascii_char_width, dataprop.ascii_char_width)
 

@@ -48,7 +48,7 @@ def main():
 
     display_dp_matrix_attr(dp_matrix, "data")
     display_dp_matrix_attr(dp_matrix, "align")
-    display_dp_matrix_attr(dp_matrix, "str_len")
+    display_dp_matrix_attr(dp_matrix, "length")
     display_dp_matrix_attr(dp_matrix, "integer_digits")
     display_dp_matrix_attr(dp_matrix, "decimal_places")
 
