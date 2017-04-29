@@ -189,7 +189,9 @@ class DataProperty(DataPeropertyBase):
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
-        self.__calc_length(east_asian_ambiguous_width)
+        self.__length = self.__get_length()
+        self.__ascii_char_width = self.__get_ascii_char_width(
+            east_asian_ambiguous_width)
 
     def __eq__(self, other):
         return all([
@@ -218,7 +220,7 @@ class DataProperty(DataPeropertyBase):
         element_list.extend([
             "typename={:s}".format(self.typename),
             "align={}".format(self.align),
-            "length={:d}".format(self.length),
+            "length={}".format(self.length),
             "ascii_char_width={:d}".format(self.ascii_char_width),
             "integer_digits={}".format(self.integer_digits),
             "decimal_places={}".format(self.decimal_places),
@@ -228,7 +230,10 @@ class DataProperty(DataPeropertyBase):
         return ", ".join(element_list)
 
     def get_padding_len(self, ascii_char_width):
-        return ascii_char_width - (self.ascii_char_width - self.length)
+        try:
+            return ascii_char_width - (self.ascii_char_width - self.length)
+        except TypeError:
+            return ascii_char_width
 
     def to_str(self):
         return self.format_str.format(self.data)
@@ -257,37 +262,35 @@ class DataProperty(DataPeropertyBase):
 
         return float_len
 
-    def __calc_length(self, east_asian_ambiguous_width):
+    def __get_length(self):
+        if self.typecode in (
+                Typecode.DICTIONARY, Typecode.LIST, Typecode.STRING):
+            return len(self.data)
+
+        return None
+
+    def __get_ascii_char_width(self, east_asian_ambiguous_width):
         if self.typecode == Typecode.INTEGER:
-            self.__length = self.integer_digits + self.additional_format_len
-            self.__ascii_char_width = self.__length
-            return
+            return self.integer_digits + self.additional_format_len
 
         if self.typecode == Typecode.FLOAT:
-            self.__length = (
+            return (
                 self.__get_base_float_len() + self.additional_format_len)
-            self.__ascii_char_width = self.__length
-            return
 
         if self.typecode == Typecode.DATETIME:
             try:
-                self.__length = len(self.to_str())
+                return len(self.to_str())
             except ValueError:
                 # reach to this line if the year <1900.
                 # the datetime strftime() methods require year >= 1900.
-                self.__length = len(six.text_type(self.data))
-
-            self.__ascii_char_width = self.__length
-            return
+                return len(six.text_type(self.data))
 
         try:
             unicode_str = MultiByteStrDecoder(self.data).unicode_str
         except ValueError:
             unicode_str = self.to_str()
 
-        self.__length = len(unicode_str)
-        self.__ascii_char_width = get_ascii_char_width(
-            unicode_str, east_asian_ambiguous_width)
+        return get_ascii_char_width(unicode_str, east_asian_ambiguous_width)
 
     def __preprocess_data(self, data, strip_str):
         if strip_str is None:
