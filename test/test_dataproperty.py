@@ -326,6 +326,18 @@ class Test_DataPeroperty_str_len:
         dp = DataProperty(value)
         Nan(dp.length).is_type()
 
+    @pytest.mark.parametrize(
+        ["value", "eaaw", "expected"],
+        [
+            ["øø", None, ValueError],
+            ["øø", 0, ValueError],
+            ["øø", 3, ValueError],
+        ]
+    )
+    def test_exception_eaaw(self, value, eaaw, expected):
+        with pytest.raises(expected):
+            DataProperty(value, east_asian_ambiguous_width=eaaw)
+
 
 class Test_DataPeroperty_get_padding_len:
 

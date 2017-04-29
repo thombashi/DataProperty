@@ -119,6 +119,15 @@ def is_multibyte_str(text):
     return False
 
 
+def _validate_eaaw(east_asian_ambiguous_width):
+    if east_asian_ambiguous_width in (1, 2):
+        return
+
+    raise ValueError(
+        "invalid east_asian_ambiguous_width: expected=1 or 2, actual={}".format(
+            east_asian_ambiguous_width))
+
+
 def get_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
     import unicodedata
 
@@ -128,6 +137,7 @@ def get_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
         if char_width in "WF":
             width += 2
         elif char_width == "A":
+            _validate_eaaw(east_asian_ambiguous_width)
             width += east_asian_ambiguous_width
         else:
             width += 1
