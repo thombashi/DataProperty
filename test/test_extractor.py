@@ -163,7 +163,7 @@ class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping:
             self, dp_extractor, value, quote_flag_mapping, is_strict,
             expected):
         dp_extractor.quote_flag_mapping = quote_flag_mapping
-        dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
+        #dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
         dp = dp_extractor.to_dataproperty(value)
 
         assert dp.data == expected
@@ -252,7 +252,6 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
-        assert dp.length == 4
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
@@ -261,7 +260,6 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.typecode == Typecode.INTEGER
         assert dp.align.align_code == Align.RIGHT.align_code
         assert dp.align.align_string == Align.RIGHT.align_string
-        assert dp.length == 1
         assert dp.decimal_places == 0
         assert dp.format_str == "{:d}"
 
@@ -270,7 +268,6 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.typecode == Typecode.FLOAT
         assert dp.align.align_code == Align.RIGHT.align_code
         assert dp.align.align_string == Align.RIGHT.align_string
-        assert dp.length == 3
         assert dp.decimal_places == 1
         assert dp.format_str == "{:.1f}"
 
@@ -279,7 +276,6 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
-        assert dp.length == 1
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
@@ -288,7 +284,6 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
-        assert dp.length == 3
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
@@ -297,7 +292,6 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
-        assert dp.length == 8
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
@@ -306,7 +300,6 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
-        assert dp.length == 5
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
@@ -315,7 +308,6 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
-        assert dp.length == 15
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 

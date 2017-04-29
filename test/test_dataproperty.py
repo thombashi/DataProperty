@@ -77,6 +77,8 @@ class Test_DataPeroperty_data_typecode:
 
             ["100-0002", False, "100-0002", Typecode.STRING],
 
+            [[], True, [], Typecode.LIST],
+            [[], False, [], Typecode.LIST],
             [{}, True, {}, Typecode.DICTIONARY],
             [{}, False, {}, Typecode.DICTIONARY],
 
@@ -290,34 +292,48 @@ class Test_DataPeroperty_align:
         assert dp.align == expected
 
 
-class Test_DataPeroperty_str_len:
+class Test_DataPeroperty_len:
 
-    @pytest.mark.parametrize(["value", "expected"], [
-        [1, 1],
-        [-1, 2],
-        [1.0, 1],
-        [-1.0, 2],
-        [1.1, 3],
-        [-1.1, 4],
-        [12.34, 5],
+    @pytest.mark.parametrize(["value", "expected_acs", "expected_len"], [
+        [1, 1, None],
+        [-1, 2, None],
+        [1.0, 1, None],
+        [-1.0, 2, None],
+        [1.1, 3, None],
+        [-1.1, 4, None],
+        [12.34, 5, None],
 
-        ["000", 1],
-        ["123456789", 9],
-        ["-123456789", 10],
+        ["000", 1, None],
+        ["123456789", 9, None],
+        ["-123456789", 10, None],
 
-        ["a", 1],
-        ["a" * 1000, 1000],
-        ["あ", 1],
-        ["ø", 1],
+        ["a", 1, 1],
+        ["a" * 1000, 1000, 1000],
+        ["あ", 2, 1],
 
-        [True, 4],
-        [None, 4],
-        [inf, 8],
-        [nan, 3],
+        [True, 4, None],
+        [None, 4, None],
+        [inf, 8, None],
+        [nan, 3, None],
     ])
-    def test_normal(self, value, expected):
+    def test_normal(self, value, expected_acs, expected_len):
         dp = DataProperty(value)
-        assert dp.length == expected
+
+        assert dp.ascii_char_width == expected_acs
+        assert dp.length == expected_len
+
+    @pytest.mark.parametrize(
+        ["value", "eaaw", "expected_acs", "expected_len"],
+        [
+            ["øø", 1, 2, 2],
+            ["øø", 2, 4, 2],
+        ]
+    )
+    def test_normal_eaaw(self, value, eaaw, expected_acs, expected_len):
+        dp = DataProperty(value, east_asian_ambiguous_width=eaaw)
+
+        assert dp.ascii_char_width == expected_acs
+        assert dp.length == expected_len
 
     @pytest.mark.parametrize(["value", "expected"], [
         [nan, nan],
@@ -466,35 +482,35 @@ class Test_DataPeroperty_repr:
         [
             0,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=0, typename=INTEGER, align=right, length=1, "
+            "data=0, typename=INTEGER, align=right, length=None, "
             "ascii_char_width=1, "
             "integer_digits=1, decimal_places=0, additional_format_len=0",
         ],
         [
             -1.0,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-1, typename=INTEGER, align=right, length=2, "
+            "data=-1, typename=INTEGER, align=right, length=None, "
             "ascii_char_width=2, "
             "integer_digits=1, decimal_places=0, additional_format_len=1",
         ],
         [
             -1.1,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-1.1, typename=FLOAT, align=right, length=4, "
+            "data=-1.1, typename=FLOAT, align=right, length=None, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=1, additional_format_len=1",
         ],
         [
             -12.234,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-12.23, typename=FLOAT, align=right, length=6, "
+            "data=-12.23, typename=FLOAT, align=right, length=None, "
             "ascii_char_width=6, "
             "integer_digits=2, decimal_places=2, additional_format_len=1",
         ],
         [
             0.01,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=0.01, typename=FLOAT, align=right, length=4, "
+            "data=0.01, typename=FLOAT, align=right, length=None, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=2, additional_format_len=0",
         ],
@@ -508,14 +524,14 @@ class Test_DataPeroperty_repr:
         [
             None,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=None, typename=NONE, align=left, length=4, "
+            "data=None, typename=NONE, align=left, length=None, "
             "ascii_char_width=4, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             True,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=True, typename=BOOL, align=left, length=4, "
+            "data=True, typename=BOOL, align=left, length=None, "
             "ascii_char_width=4, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
@@ -523,7 +539,7 @@ class Test_DataPeroperty_repr:
             DATATIME_DATA,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=2017-01-02 03:04:05, typename=DATETIME, "
-            "align=left, length=19, ascii_char_width=19, "
+            "align=left, length=None, ascii_char_width=19, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
@@ -537,20 +553,20 @@ class Test_DataPeroperty_repr:
             "2017-01-02 03:04:05+0900",
             NOT_STRICT_TYPE_MAPPING,
             "data=2017-01-02 03:04:05+09:00, typename=DATETIME, "
-            "align=left, length=24, ascii_char_width=24, "
+            "align=left, length=None, ascii_char_width=24, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             inf,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=Infinity, typename=INFINITY, align=left, length=8, "
+            "data=Infinity, typename=INFINITY, align=left, length=None, "
             "ascii_char_width=8, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
         [
             nan,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=NaN, typename=NAN, align=left, length=3, "
+            "data=NaN, typename=NAN, align=left, length=None, "
             "ascii_char_width=3, "
             "integer_digits=nan, decimal_places=nan, additional_format_len=0",
         ],
