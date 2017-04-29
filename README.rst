@@ -47,7 +47,7 @@ e.g. Extract a ``float`` value property
 
     >>> from dataproperty import DataProperty
     >>> DataProperty(-1.1)
-    data=-1.1, typename=FLOAT, align=right, length=4, ascii_char_width=4, integer_digits=1, decimal_places=1, additional_format_len=1
+    data=-1.1, typename=FLOAT, align=right, length=None, ascii_char_width=4, integer_digits=1, decimal_places=1, additional_format_len=1
 
 
 e.g. Extract a ``int`` value property
@@ -57,7 +57,7 @@ e.g. Extract a ``int`` value property
 
     >>> from dataproperty import DataProperty
     >>> DataProperty(123456789)
-    data=123456789, typename=INTEGER, align=right, length=9, ascii_char_width=9, integer_digits=9, decimal_places=0, additional_format_len=0
+    data=123456789, typename=INTEGER, align=right, length=None, ascii_char_width=9, integer_digits=9, decimal_places=0, additional_format_len=0
 
 e.g. Extract a ``str`` (ascii) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +88,7 @@ e.g. Extract a time (``datetime``) value property
     >>> import datetime
     >>> from dataproperty import DataProperty
     >>> DataProperty(datetime.datetime(2017, 1, 1, 0, 0, 0))
-    data=2017-01-01 00:00:00, typename=DATETIME, align=left, length=19, ascii_char_width=19, integer_digits=nan, decimal_places=nan, additional_format_len=0
+    data=2017-01-01 00:00:00, typename=DATETIME, align=left, length=None, ascii_char_width=19, integer_digits=nan, decimal_places=nan, additional_format_len=0
 
 e.g. Extract a ``bool`` value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,7 +97,7 @@ e.g. Extract a ``bool`` value property
 
     >>> from dataproperty import DataProperty
     >>> DataProperty(True)
-    data=True, typename=BOOL, align=left, length=4, ascii_char_width=4, integer_digits=nan, decimal_places=nan, additional_format_len=0
+    data=True, typename=BOOL, align=left, length=None, ascii_char_width=4, integer_digits=nan, decimal_places=nan, additional_format_len=0
 
 
 Extract data property for each element from a matrix
