@@ -58,6 +58,7 @@ class DataPeropertyBase(DataPeropertyInterface):
             Typecode.BOOL: "{}",
             Typecode.DATETIME: "{:" + self.__datetime_format_str + "}",
             Typecode.DICTIONARY: "{}",
+            Typecode.LIST: "{}",
         }.get(self.typecode)
 
         if format_str is not None:
@@ -478,15 +479,15 @@ class ColumnDataProperty(DataPeropertyBase):
         ])
 
     def update_header(self, dataprop):
-        self.__length = max(self.__length, dataprop.length)
+        self.__length = self.__get_length(dataprop)
         self.__ascii_char_width = max(
             self.__ascii_char_width, dataprop.ascii_char_width)
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
-        self.__length = max(self.__length, dataprop.length)
         self.__ascii_char_width = max(
             self.__ascii_char_width, dataprop.ascii_char_width)
+        self.__length = self.__get_length(dataprop)
 
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
             self.__minmax_integer_digits.update(dataprop.integer_digits)
@@ -519,6 +520,15 @@ class ColumnDataProperty(DataPeropertyBase):
             return True
 
         return False
+
+    def __get_length(self, dataprop):
+        try:
+            return max(self.__length, dataprop.length)
+        except TypeError:
+            if dataprop.length:
+                return dataprop.length
+
+        return self.__length
 
     def __get_typecode_from_bitmap(self):
         if self.__is_float_typecode():
