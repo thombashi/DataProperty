@@ -18,15 +18,16 @@ from typepy import (
 
 
 NULL_QUOTE_FLAG_MAPPING = {
-    Typecode.NONE: False,
-    Typecode.INTEGER: False,
-    Typecode.FLOAT: False,
-    Typecode.STRING: False,
-    Typecode.NULL_STRING: False,
-    Typecode.DATETIME: False,
-    Typecode.FLOAT: False,
-    Typecode.NAN: False,
     Typecode.BOOL: False,
+    Typecode.DATETIME: False,
+    Typecode.DICTIONARY: False,
+    Typecode.FLOAT: False,
+    Typecode.INTEGER: False,
+    Typecode.LIST: False,
+    Typecode.NAN: False,
+    Typecode.NULL_STRING: False,
+    Typecode.NONE: False,
+    Typecode.STRING: False,
 }
 
 STRICT_TYPE_MAPPING = dict(
@@ -49,16 +50,17 @@ class DefaultValue(object):
     QUOTE_FLAG_MAPPING = copy.deepcopy(NULL_QUOTE_FLAG_MAPPING)
 
     STRICT_LEVEL_MAPPING = {
-        Typecode.NONE: StrictLevel.MAX,
-        Typecode.INTEGER: 1,
-        Typecode.FLOAT: 1,
-        Typecode.STRING: StrictLevel.MIN,
-        Typecode.NULL_STRING: StrictLevel.MIN,
-        Typecode.DATETIME: StrictLevel.MAX,
-        Typecode.INFINITY: StrictLevel.MIN,
-        Typecode.NAN: StrictLevel.MIN,
         Typecode.BOOL: 1,
+        Typecode.DATETIME: StrictLevel.MAX,
         Typecode.DICTIONARY: StrictLevel.MAX,
+        Typecode.FLOAT: 1,
+        Typecode.INFINITY: StrictLevel.MIN,
+        Typecode.INTEGER: 1,
+        Typecode.LIST: StrictLevel.MAX,
+        Typecode.NAN: StrictLevel.MIN,
+        Typecode.NONE: StrictLevel.MAX,
+        Typecode.NULL_STRING: StrictLevel.MIN,
+        Typecode.STRING: StrictLevel.MIN,
     }
 
     TYPE_VALUE_MAPPING = {
