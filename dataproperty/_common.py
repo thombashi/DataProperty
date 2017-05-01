@@ -22,6 +22,7 @@ NULL_QUOTE_FLAG_MAPPING = {
     Typecode.DATETIME: False,
     Typecode.DICTIONARY: False,
     Typecode.FLOAT: False,
+    Typecode.INFINITY: False,
     Typecode.INTEGER: False,
     Typecode.LIST: False,
     Typecode.NAN: False,
