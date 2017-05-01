@@ -404,25 +404,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     @property
     def ascii_char_width(self):
-        if self.typecode != Typecode.FLOAT:
-            return self.__ascii_char_width
-
-        max_len = self.__ascii_char_width
-        col_format_str = self.format_str
-
-        for dp in self.__dataproperty_list:
-            if dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
-                continue
-
-            try:
-                formatted_value = col_format_str.format(dp.data)
-            except (TypeError, ValueError):
-                continue
-
-            max_len = max(max_len, get_ascii_char_width(
-                formatted_value, self.__east_asian_ambiguous_width))
-
-        return max_len
+        return self.__ascii_char_width
 
     @property
     def minmax_integer_digits(self):
@@ -477,8 +459,6 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
-        self.__ascii_char_width = max(
-            self.__ascii_char_width, dataprop.ascii_char_width)
         self.__length = self.__get_length(dataprop)
 
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
@@ -490,6 +470,7 @@ class ColumnDataProperty(DataPeropertyBase):
             dataprop.additional_format_len)
 
         self.__dataproperty_list.append(dataprop)
+        self.__ascii_char_width = self.__calc_ascii_char_width(dataprop)
 
     def __is_not_single_typecode(self, typecode):
         return all([
@@ -552,6 +533,29 @@ class ColumnDataProperty(DataPeropertyBase):
             return Typecode.NONE
 
         return Typecode.STRING
+
+    def __calc_ascii_char_width(self, dataprop):
+        max_len = max(
+            self.__ascii_char_width, dataprop.ascii_char_width)
+
+        if self.typecode != Typecode.FLOAT:
+            return max_len
+
+        col_format_str = self.format_str
+
+        for dp in self.__dataproperty_list:
+            if dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
+                continue
+
+            try:
+                formatted_value = col_format_str.format(dp.data)
+            except (TypeError, ValueError):
+                continue
+
+            max_len = max(max_len, get_ascii_char_width(
+                formatted_value, self.__east_asian_ambiguous_width))
+
+        return max_len
 
     def __calc_decimal_places(self):
         try:
