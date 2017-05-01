@@ -362,6 +362,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__typecode_bitmap",
         "__length",
         "__ascii_char_width",
+        "__decimal_places",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
@@ -387,17 +388,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     @property
     def decimal_places(self):
-        try:
-            avg = self.minmax_decimal_places.mean()
-        except TypeError:
-            return float("nan")
-
-        if Nan(avg).is_type():
-            return float("nan")
-
-        return int(min(
-            math.ceil(avg + Decimal("1.0")),
-            self.minmax_decimal_places.max_value))
+        return self.__decimal_places
 
     @property
     def typecode(self):
@@ -460,6 +451,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__ascii_char_width = min_padding_len
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
+        self.__decimal_places = float("nan")
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -492,6 +484,7 @@ class ColumnDataProperty(DataPeropertyBase):
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
             self.__minmax_integer_digits.update(dataprop.integer_digits)
             self.__minmax_decimal_places.update(dataprop.decimal_places)
+            self.__decimal_places = self.__calc_decimal_places()
 
         self.__minmax_additional_format_len.update(
             dataprop.additional_format_len)
@@ -559,3 +552,16 @@ class ColumnDataProperty(DataPeropertyBase):
             return Typecode.NONE
 
         return Typecode.STRING
+
+    def __calc_decimal_places(self):
+        try:
+            avg = self.minmax_decimal_places.mean()
+        except TypeError:
+            return float("nan")
+
+        if Nan(avg).is_type():
+            return float("nan")
+
+        return int(min(
+            math.ceil(avg + Decimal("1.0")),
+            self.minmax_decimal_places.max_value))
