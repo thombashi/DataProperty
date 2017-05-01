@@ -7,11 +7,14 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from collections import namedtuple
 from decimal import Decimal
 import decimal
 import math
 
 from mbstrdecoder import MultiByteStrDecoder
+
+from six.moves import range
 
 
 def get_integer_digit(value):
@@ -43,44 +46,50 @@ def get_integer_digit(value):
         raise ValueError(e)
 
 
-def _get_decimal_places(value):
-    from collections import namedtuple
-    from six.moves import range
-    from typepy.type import Integer
-
-    int_type = Integer(value)
-
-    float_digit_len = 0
-    if int_type.is_type():
-        abs_value = abs(int_type.convert())
-    else:
-        abs_value = abs(float(value))
-        text_value = str(abs_value)
-        float_text = 0
-        if text_value.find(".") != -1:
-            float_text = text_value.split(".")[1]
-            float_digit_len = len(float_text)
-        elif text_value.find("e-") != -1:
-            float_text = text_value.split("e-")[1]
-            float_digit_len = int(float_text) - 1
-
+class DigitCalculator(object):
     Threshold = namedtuple("Threshold", "pow digit_len")
-    upper_threshold = Threshold(pow=-2, digit_len=6)
-    min_digit_len = 1
 
-    treshold_list = [
-        Threshold(upper_threshold.pow + i, upper_threshold.digit_len - i)
-        for i, _
-        in enumerate(range(upper_threshold.digit_len, min_digit_len - 1, -1))
-    ]
+    def __init__(self):
+        upper_threshold = self.Threshold(pow=-2, digit_len=6)
 
-    abs_digit = min_digit_len
-    for treshold in treshold_list:
-        if abs_value < math.pow(10, treshold.pow):
-            abs_digit = treshold.digit_len
-            break
+        self.__min_digit_len = 1
+        self.__treshold_list = [
+            self.Threshold(
+                upper_threshold.pow + i, upper_threshold.digit_len - i)
+            for i, _
+            in enumerate(
+                range(upper_threshold.digit_len, self.__min_digit_len - 1, -1))
+        ]
 
-    return min(abs_digit, float_digit_len)
+    def get_decimal_places(self, value):
+        from typepy.type import Integer
+
+        int_type = Integer(value)
+
+        float_digit_len = 0
+        if int_type.is_type():
+            abs_value = abs(int_type.convert())
+        else:
+            abs_value = abs(float(value))
+            text_value = str(abs_value)
+            float_text = 0
+            if text_value.find(".") != -1:
+                float_text = text_value.split(".")[1]
+                float_digit_len = len(float_text)
+            elif text_value.find("e-") != -1:
+                float_text = text_value.split("e-")[1]
+                float_digit_len = int(float_text) - 1
+
+        abs_digit = self.__min_digit_len
+        for treshold in self.__treshold_list:
+            if abs_value < math.pow(10, treshold.pow):
+                abs_digit = treshold.digit_len
+                break
+
+        return min(abs_digit, float_digit_len)
+
+
+_digit_calculator = DigitCalculator()
 
 
 def get_number_of_digit(value):
@@ -92,7 +101,7 @@ def get_number_of_digit(value):
         return (nan, nan)
 
     try:
-        decimal_places = _get_decimal_places(value)
+        decimal_places = _digit_calculator.get_decimal_places(value)
     except (ValueError, TypeError):
         decimal_places = nan
 
