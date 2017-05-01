@@ -66,7 +66,10 @@ class DataPropertyConverter(object):
         if not self.__quote_flag_mapping.get(typecode):
             return data
 
-        if self.__RE_QUOTE.search(data):
+        try:
+            if self.__RE_QUOTE.search(data):
+                return data
+        except TypeError:
             return data
 
         return '"{}"'.format(data)

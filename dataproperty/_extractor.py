@@ -57,29 +57,220 @@ class DataPropertyExtractor(object):
             }
     """
 
+    @property
+    def header_list(self):
+        return self.__header_list
+
+    @header_list.setter
+    def header_list(self, x):
+        if self.__header_list == x:
+            return
+
+        self.__header_list = x
+        self.__clear_cache()
+
+    @property
+    def data_matrix(self):
+        return self.__data_matrix
+
+    @data_matrix.setter
+    def data_matrix(self, x):
+        self.__data_matrix = x
+        self.__clear_cache()
+
+    @property
+    def default_type_hint(self):
+        return self.__default_type_hint
+
+    @default_type_hint.setter
+    def default_type_hint(self, x):
+        if self.__default_type_hint == x:
+            return
+
+        self.__default_type_hint = x
+        self.__clear_cache()
+
+    @property
+    def col_type_hint_list(self):
+        return self.__col_type_hint_list
+
+    @col_type_hint_list.setter
+    def col_type_hint_list(self, x):
+        if self.__col_type_hint_list == x:
+            return
+
+        self.__col_type_hint_list = x
+        self.__clear_cache()
+
+    @property
+    def strip_str(self):
+        return self.__strip_str
+
+    @strip_str.setter
+    def strip_str(self, x):
+        if self.__strip_str == x:
+            return
+
+        self.__strip_str = x
+        self.__clear_cache()
+
+    @property
+    def min_padding_len(self):
+        return self.__min_padding_len
+
+    @min_padding_len.setter
+    def min_padding_len(self, x):
+        if self.__min_padding_len == x:
+            return
+
+        self.__min_padding_len = x
+        self.__clear_cache()
+
+    @property
+    def float_type(self):
+        return self.__float_type
+
+    @float_type.setter
+    def float_type(self, x):
+        if self.__float_type == x:
+            return
+
+        self.__float_type = x
+        self.__clear_cache()
+
+    @property
+    def datetime_format_str(self):
+        return self.__datetime_format_str
+
+    @datetime_format_str.setter
+    def datetime_format_str(self, x):
+        if self.__datetime_format_str == x:
+            return
+
+        self.__datetime_format_str = x
+        self.__clear_cache()
+
+    @property
+    def strict_type_mapping(self):
+        return self.__strict_type_mapping
+
+    @strict_type_mapping.setter
+    def strict_type_mapping(self, x):
+        if self.__strict_type_mapping == x:
+            return
+
+        self.__strict_type_mapping = x
+        self.__clear_cache()
+
+    @property
+    def east_asian_ambiguous_width(self):
+        return self.__east_asian_ambiguous_width
+
+    @east_asian_ambiguous_width.setter
+    def east_asian_ambiguous_width(self, x):
+        if self.__east_asian_ambiguous_width == x:
+            return
+
+        self.__east_asian_ambiguous_width = x
+        self.__clear_cache()
+
+    @property
+    def type_value_mapping(self):
+        return self.__type_value_mapping
+
+    @type_value_mapping.setter
+    def type_value_mapping(self, x):
+        if self.__type_value_mapping == x:
+            return
+
+        self.__type_value_mapping = x
+        self.__clear_cache()
+
+    @property
+    def const_value_mapping(self):
+        return self.__const_value_mapping
+
+    @const_value_mapping.setter
+    def const_value_mapping(self, x):
+        if self.__const_value_mapping == x:
+            return
+
+        self.__const_value_mapping = x
+        self.__clear_cache()
+
+    @property
+    def quote_flag_mapping(self):
+        return self.__quote_flag_mapping
+
+    @quote_flag_mapping.setter
+    def quote_flag_mapping(self, x):
+        if self.__quote_flag_mapping == x:
+            return
+
+        self.__quote_flag_mapping = x
+        self.__clear_cache()
+
+    @property
+    def datetime_formatter(self):
+        return self.__datetime_formatter
+
+    @datetime_formatter.setter
+    def datetime_formatter(self, x):
+        if self.__datetime_formatter == x:
+            return
+
+        self.__datetime_formatter = x
+        self.__clear_cache()
+
+    @property
+    def mismatch_processing(self):
+        return self.__mismatch_processing
+
+    @mismatch_processing.setter
+    def mismatch_processing(self, x):
+        if self.__mismatch_processing == x:
+            return
+
+        self.__mismatch_processing = x
+        self.__clear_cache()
+
     def __init__(self):
-        self.header_list = []
-        self.data_matrix = []
-        self.default_type_hint = None
-        self.col_type_hint_list = None
+        self.__header_list = []
+        self.__data_matrix = []
+        self.__default_type_hint = None
+        self.__col_type_hint_list = None
 
-        self.strip_str = None
-        self.min_padding_len = 0
-        self.float_type = None
-        self.datetime_format_str = DefaultValue.DATETIME_FORMAT
-        self.strict_type_mapping = copy.deepcopy(
+        self.__strip_str = None
+        self.__min_padding_len = 0
+        self.__float_type = None
+        self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
+        self.__strict_type_mapping = copy.deepcopy(
             DefaultValue.STRICT_LEVEL_MAPPING)
-        self.east_asian_ambiguous_width = 1
+        self.__east_asian_ambiguous_width = 1
 
-        self.type_value_mapping = copy.deepcopy(
+        self.__type_value_mapping = copy.deepcopy(
             DefaultValue.TYPE_VALUE_MAPPING)
-        self.const_value_mapping = copy.deepcopy(
+        self.__const_value_mapping = copy.deepcopy(
             DefaultValue.CONST_VALUE_MAPPING)
-        self.quote_flag_mapping = copy.deepcopy(
+        self.__quote_flag_mapping = copy.deepcopy(
             DefaultValue.QUOTE_FLAG_MAPPING)
-        self.datetime_formatter = None
+        self.__datetime_formatter = None
 
-        self.mismatch_processing = MissmatchProcessing.TRIM
+        self.__mismatch_processing = MissmatchProcessing.TRIM
+
+        self.__clear_cache()
+
+    def __clear_cache(self):
+        self.__update_dp_converter()
+        self.__dp_matrix_cache = None
+        self.__dp_cache_zero = self.__to_dataproperty_raw(0)
+        self.__dp_cache_one = self.__to_dataproperty_raw(1)
+        self.__dp_cache_true = self.__to_dataproperty_raw(True)
+        self.__dp_cache_false = self.__to_dataproperty_raw(False)
+        self.__dp_cache_mapping = {
+            None: self.__to_dataproperty_raw(None),
+            "": self.__to_dataproperty_raw(""),
+        }
 
     def to_dataproperty(self, data):
         self.__update_dp_converter()
@@ -136,13 +327,17 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def to_dataproperty_matrix(self):
-        self.__update_dp_converter()
+        if self.__dp_matrix_cache:
+            return self.__dp_matrix_cache
 
-        return list(zip(*[
+        self.__update_dp_converter()
+        self.__dp_matrix_cache = list(zip(*[
             self.__to_dataproperty_list(
                 data_list, type_hint=self.__get_col_type_hint(col_idx))
             for col_idx, data_list in enumerate(zip(*self.data_matrix))
         ]))
+
+        return self.__dp_matrix_cache
 
     def to_header_dataproperty_list(self):
         self.__update_dp_converter()
@@ -158,6 +353,24 @@ class DataPropertyExtractor(object):
             return self.default_type_hint
 
     def __to_dataproperty(
+            self, data, type_hint=None, strict_type_mapping=None):
+        if data in self.__dp_cache_mapping:
+            return self.__dp_cache_mapping.get(data)
+
+        if data == 0:
+            if str(data) != "False":
+                return self.__dp_cache_zero
+
+            return self.__dp_cache_false
+        if data == 1:
+            if str(data) != "True":
+                return self.__dp_cache_one
+
+            return self.__dp_cache_true
+
+        return self.__to_dataproperty_raw(data, type_hint, strict_type_mapping)
+
+    def __to_dataproperty_raw(
             self, data, type_hint=None, strict_type_mapping=None):
         dp = DataProperty(
             data,
