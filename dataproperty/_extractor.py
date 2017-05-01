@@ -43,15 +43,17 @@ class DataPropertyExtractor(object):
             :caption: The default values
 
             {
-                Typecode.NONE: False,
-                Typecode.INTEGER: False,
-                Typecode.FLOAT: False,
-                Typecode.STRING: False,
-                Typecode.NULL_STRING: False,
-                Typecode.DATETIME: False,
-                Typecode.FLOAT: False,
-                Typecode.NAN: False,
                 Typecode.BOOL: False,
+                Typecode.DATETIME: False,
+                Typecode.DICTIONARY: False,
+                Typecode.FLOAT: False,
+                Typecode.INFINITY: False,
+                Typecode.INTEGER: False,
+                Typecode.LIST: False,
+                Typecode.NAN: False,
+                Typecode.NULL_STRING: False,
+                Typecode.NONE: False,
+                Typecode.STRING: False,
             }
     """
 
