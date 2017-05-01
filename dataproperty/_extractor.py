@@ -125,8 +125,11 @@ class DataPropertyExtractor(object):
                     # ignore columns that longer than header column
                     continue
 
+            col_dp = col_dp_list[col_idx]
+            col_dp.begin_update()
             for value_dp in value_dp_list:
-                col_dp_list[col_idx].update_body(value_dp)
+                col_dp.update_body(value_dp)
+            col_dp.end_update()
 
         return col_dp_list
 

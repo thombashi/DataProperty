@@ -363,6 +363,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__decimal_places",
         "__dataproperty_list",
         "__east_asian_ambiguous_width",
+        "__is_calculate",
         "__length",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
@@ -432,6 +433,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__ascii_char_width = min_padding_len
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
+        self.__is_calculate = True
         self.__dataproperty_list = []
         self.__decimal_places = float("nan")
         self.__minmax_integer_digits = MinMaxContainer()
@@ -464,13 +466,24 @@ class ColumnDataProperty(DataPeropertyBase):
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
             self.__minmax_integer_digits.update(dataprop.integer_digits)
             self.__minmax_decimal_places.update(dataprop.decimal_places)
-            self.__decimal_places = self.__get_decimal_places()
+            self.__calc_decimal_places()
 
         self.__minmax_additional_format_len.update(
             dataprop.additional_format_len)
 
         self.__dataproperty_list.append(dataprop)
-        self.__ascii_char_width = self.__get_ascii_char_width(dataprop)
+        self.__ascii_char_width = max(
+            self.__ascii_char_width, dataprop.ascii_char_width)
+        self.__calc_ascii_char_width()
+
+    def begin_update(self):
+        self.__is_calculate = False
+
+    def end_update(self):
+        self.__is_calculate = True
+
+        self.__calc_decimal_places()
+        self.__calc_ascii_char_width()
 
     def __is_not_single_typecode(self, typecode):
         return all([
@@ -534,12 +547,9 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return Typecode.STRING
 
-    def __get_ascii_char_width(self, dataprop):
-        max_len = max(
-            self.__ascii_char_width, dataprop.ascii_char_width)
-
+    def __get_ascii_char_width(self):
         if self.typecode != Typecode.FLOAT:
-            return max_len
+            return self.__ascii_char_width
 
         col_format_str = self.format_str
 
@@ -552,8 +562,11 @@ class ColumnDataProperty(DataPeropertyBase):
             except (TypeError, ValueError):
                 continue
 
-            max_len = max(max_len, get_ascii_char_width(
-                formatted_value, self.__east_asian_ambiguous_width))
+            max_len = max(
+                self.__ascii_char_width,
+                get_ascii_char_width(
+                    formatted_value, self.__east_asian_ambiguous_width)
+            )
 
         return max_len
 
@@ -569,3 +582,15 @@ class ColumnDataProperty(DataPeropertyBase):
         return int(min(
             math.ceil(avg + Decimal("1.0")),
             self.minmax_decimal_places.max_value))
+
+    def __calc_ascii_char_width(self):
+        if not self.__is_calculate:
+            return
+
+        self.__ascii_char_width = self.__get_ascii_char_width()
+
+    def __calc_decimal_places(self):
+        if not self.__is_calculate:
+            return
+
+        self.__decimal_places = self.__get_decimal_places()
