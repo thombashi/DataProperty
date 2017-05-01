@@ -464,13 +464,13 @@ class ColumnDataProperty(DataPeropertyBase):
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
             self.__minmax_integer_digits.update(dataprop.integer_digits)
             self.__minmax_decimal_places.update(dataprop.decimal_places)
-            self.__decimal_places = self.__calc_decimal_places()
+            self.__decimal_places = self.__get_decimal_places()
 
         self.__minmax_additional_format_len.update(
             dataprop.additional_format_len)
 
         self.__dataproperty_list.append(dataprop)
-        self.__ascii_char_width = self.__calc_ascii_char_width(dataprop)
+        self.__ascii_char_width = self.__get_ascii_char_width(dataprop)
 
     def __is_not_single_typecode(self, typecode):
         return all([
@@ -534,7 +534,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return Typecode.STRING
 
-    def __calc_ascii_char_width(self, dataprop):
+    def __get_ascii_char_width(self, dataprop):
         max_len = max(
             self.__ascii_char_width, dataprop.ascii_char_width)
 
@@ -557,7 +557,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return max_len
 
-    def __calc_decimal_places(self):
+    def __get_decimal_places(self):
         try:
             avg = self.minmax_decimal_places.mean()
         except TypeError:
