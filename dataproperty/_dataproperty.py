@@ -359,15 +359,15 @@ class DataProperty(DataPeropertyBase):
 
 class ColumnDataProperty(DataPeropertyBase):
     __slots__ = (
-        "__typecode_bitmap",
-        "__length",
         "__ascii_char_width",
         "__decimal_places",
+        "__dataproperty_list",
+        "__east_asian_ambiguous_width",
+        "__length",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
-        "__dataproperty_list",
-        "__east_asian_ambiguous_width",
+        "__typecode_bitmap",
     )
 
     __TYPE_CLASS_TABLE = {
@@ -428,16 +428,16 @@ class ColumnDataProperty(DataPeropertyBase):
             east_asian_ambiguous_width=1):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
 
-        self.__typecode_bitmap = Typecode.NONE
         self.__length = min_padding_len
         self.__ascii_char_width = min_padding_len
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
+        self.__dataproperty_list = []
         self.__decimal_places = float("nan")
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
-        self.__dataproperty_list = []
+        self.__typecode_bitmap = Typecode.NONE
 
     def __repr__(self):
         return ", ".join([
