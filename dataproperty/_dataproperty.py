@@ -552,6 +552,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return self.__ascii_char_width
 
         col_format_str = self.format_str
+        max_width = self.__ascii_char_width
 
         for dp in self.__dataproperty_list:
             if dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
@@ -562,13 +563,13 @@ class ColumnDataProperty(DataPeropertyBase):
             except (TypeError, ValueError):
                 continue
 
-            max_len = max(
-                self.__ascii_char_width,
+            max_width = max(
+                max_width,
                 get_ascii_char_width(
                     formatted_value, self.__east_asian_ambiguous_width)
             )
 
-        return max_len
+        return max_width
 
     def __get_decimal_places(self):
         try:
