@@ -184,11 +184,7 @@ class DataProperty(DataPeropertyBase):
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
         self.__align = align_getter.get_align_from_typecode(self.typecode)
 
-        try:
-            integer_digits, decimal_places = get_number_of_digit(data)
-        except OverflowError:
-            integer_digits = DefaultValue.NAN_VALUE
-            decimal_places = DefaultValue.NAN_VALUE
+        integer_digits, decimal_places = get_number_of_digit(data)
         self.__integer_digits = integer_digits
         self.__decimal_places = decimal_places
         self.__additional_format_len = self.__get_additional_format_len()
