@@ -75,7 +75,7 @@ class DataPeropertyBase(DataPeropertyInterface):
         if format_str is not None:
             return format_str
 
-        if self.typecode in (Typecode.FLOAT, Typecode.INFINITY, Typecode.NAN):
+        if self.typecode in (Typecode.REAL_NUMBER, Typecode.INFINITY, Typecode.NAN):
             if Nan(self.decimal_places).is_type():
                 return "{:f}"
 
@@ -284,7 +284,7 @@ class DataProperty(DataPeropertyBase):
         if self.typecode == Typecode.INTEGER:
             return self.integer_digits + self.additional_format_len
 
-        if self.typecode == Typecode.FLOAT:
+        if self.typecode == Typecode.REAL_NUMBER:
             return (
                 self.__get_base_float_len() + self.additional_format_len)
 
@@ -388,7 +388,7 @@ class ColumnDataProperty(DataPeropertyBase):
         Typecode.INTEGER: Integer,
         Typecode.INFINITY: Infinity,
         Typecode.NAN: Nan,
-        Typecode.FLOAT: RealNumber,
+        Typecode.REAL_NUMBER: RealNumber,
         Typecode.BOOL: Bool,
         Typecode.DATETIME: DateTime,
     }
@@ -481,7 +481,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__length = self.__get_length(dataprop)
 
-        if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
+        if dataprop.typecode in (Typecode.REAL_NUMBER, Typecode.INTEGER):
             self.__minmax_integer_digits.update(dataprop.integer_digits)
             self.__minmax_decimal_places.update(dataprop.decimal_places)
             self.__calc_decimal_places()
@@ -511,7 +511,7 @@ class ColumnDataProperty(DataPeropertyBase):
         )
 
     def __is_float_typecode(self):
-        FLOAT_TYPECODE_BMP = Typecode.FLOAT | Typecode.INFINITY | Typecode.NAN
+        FLOAT_TYPECODE_BMP = Typecode.REAL_NUMBER | Typecode.INFINITY | Typecode.NAN
         NUMBER_TYPECODE_BMP = FLOAT_TYPECODE_BMP | Typecode.INTEGER
 
         if self.__is_not_single_typecode(
@@ -538,7 +538,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __get_typecode_from_bitmap(self):
         if self.__is_float_typecode():
-            return Typecode.FLOAT
+            return Typecode.REAL_NUMBER
 
         if any([
             self.__is_not_single_typecode(Typecode.BOOL),
@@ -548,7 +548,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         typecode_list = [
             Typecode.STRING,
-            Typecode.FLOAT,
+            Typecode.REAL_NUMBER,
             Typecode.INTEGER,
             Typecode.DATETIME,
             Typecode.BOOL,
@@ -567,7 +567,7 @@ class ColumnDataProperty(DataPeropertyBase):
         return Typecode.STRING
 
     def __get_ascii_char_width(self):
-        if self.typecode != Typecode.FLOAT:
+        if self.typecode != Typecode.REAL_NUMBER:
             return self.__ascii_char_width
 
         col_format_str = self.format_str

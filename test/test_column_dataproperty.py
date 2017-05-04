@@ -36,11 +36,11 @@ class Test_ColumnDataPeroperty:
         ],
         [
             [0, 1.1, "0.01", -six.MAXSIZE],
-            Typecode.FLOAT,
+            Typecode.REAL_NUMBER,
         ],
         [
             [0, 1.1, Decimal("0.1"), None, ""],
-            Typecode.FLOAT,
+            Typecode.REAL_NUMBER,
         ],
         [
             [0, 1.1, -six.MAXSIZE, "test"],
@@ -66,8 +66,8 @@ class Test_ColumnDataPeroperty:
         # None mixed values
         [[None, six.MAXSIZE, str(-six.MAXSIZE)], Typecode.INTEGER],
         [[1, None, ""], Typecode.INTEGER],
-        [[1.1, None], Typecode.FLOAT],
-        [[1.1, None, ""], Typecode.FLOAT],
+        [[1.1, None], Typecode.REAL_NUMBER],
+        [[1.1, None, ""], Typecode.REAL_NUMBER],
         [[None, "test"], Typecode.STRING],
         [[None, True, "False"], Typecode.BOOL],
         [[None, DATATIME_DATA, None], Typecode.DATETIME],
@@ -77,11 +77,11 @@ class Test_ColumnDataPeroperty:
         # mixed values
         [[True, 1], Typecode.STRING],
         [[DATATIME_DATA, "test"], Typecode.STRING],
-        [[inf, 0.1], Typecode.FLOAT],
+        [[inf, 0.1], Typecode.REAL_NUMBER],
         [[inf, "test"], Typecode.STRING],
-        [[nan, 0.1], Typecode.FLOAT],
+        [[nan, 0.1], Typecode.REAL_NUMBER],
         [[nan, "test"], Typecode.STRING],
-        [[six.MAXSIZE, inf, nan], Typecode.FLOAT],
+        [[six.MAXSIZE, inf, nan], Typecode.REAL_NUMBER],
         [
             [1, 1.1, DATATIME_DATA, "test", None, True, inf, nan],
             Typecode.STRING,
@@ -105,7 +105,7 @@ class Test_ColumnDataPeroperty:
 
         assert col_dp.align == Align.RIGHT
         assert col_dp.decimal_places == 3
-        assert col_dp.typecode == Typecode.FLOAT
+        assert col_dp.typecode == Typecode.REAL_NUMBER
         assert col_dp.ascii_char_width == 6
 
         assert col_dp.minmax_integer_digits.min_value == 1
@@ -118,7 +118,7 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.max_value == 1
 
         assert str(col_dp) == (
-            "typename=FLOAT, align=right, ascii_char_width=6, "
+            "typename=REAL_NUMBER, align=right, ascii_char_width=6, "
             "integer_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
             "additional_format_len=(min=0, max=1)")
 
@@ -131,7 +131,7 @@ class Test_ColumnDataPeroperty:
 
         assert col_dp.align == Align.RIGHT
         assert col_dp.decimal_places == 0
-        assert col_dp.typecode == Typecode.FLOAT
+        assert col_dp.typecode == Typecode.REAL_NUMBER
         assert col_dp.ascii_char_width == 8
 
         assert col_dp.minmax_integer_digits.min_value == 1
@@ -144,7 +144,7 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert str(col_dp) == (
-            "typename=FLOAT, align=right, ascii_char_width=8, "
+            "typename=REAL_NUMBER, align=right, ascii_char_width=8, "
             "integer_digits=(min=1, max=1), decimal_places=(min=0, max=0), "
             "additional_format_len=(min=0, max=0)")
 
@@ -157,7 +157,7 @@ class Test_ColumnDataPeroperty:
 
         assert col_dp.align == Align.RIGHT
         assert col_dp.decimal_places == 1
-        assert col_dp.typecode == Typecode.FLOAT
+        assert col_dp.typecode == Typecode.REAL_NUMBER
         assert col_dp.ascii_char_width == 4
 
         assert col_dp.minmax_integer_digits.min_value == 1
@@ -170,7 +170,7 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.max_value == 1
 
         assert str(col_dp) == (
-            "typename=FLOAT, align=right, ascii_char_width=4, "
+            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
             "integer_digits=(min=1, max=1), decimal_places=(min=0, max=1), "
             "additional_format_len=(min=0, max=1)")
 
@@ -183,7 +183,7 @@ class Test_ColumnDataPeroperty:
 
         assert col_dp.align == Align.RIGHT
         assert col_dp.decimal_places == 2
-        assert col_dp.typecode == Typecode.FLOAT
+        assert col_dp.typecode == Typecode.REAL_NUMBER
         assert col_dp.ascii_char_width == 4
 
         assert col_dp.minmax_integer_digits.min_value == 1
@@ -196,7 +196,7 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert str(col_dp) == (
-            "typename=FLOAT, align=right, ascii_char_width=4, "
+            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
             "integer_digits=(min=1, max=1), decimal_places=(min=1, max=2), "
             "additional_format_len=(min=0, max=0)")
 
@@ -209,7 +209,7 @@ class Test_ColumnDataPeroperty:
 
         assert col_dp.align == Align.RIGHT
         assert col_dp.decimal_places == 2
-        assert col_dp.typecode == Typecode.FLOAT
+        assert col_dp.typecode == Typecode.REAL_NUMBER
         assert col_dp.ascii_char_width == 4
 
         assert col_dp.minmax_integer_digits.min_value == 1
@@ -221,7 +221,7 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert str(col_dp) == (
-            "typename=FLOAT, align=right, ascii_char_width=4, "
+            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
             "integer_digits=(min=1, max=1), decimal_places=(min=0, max=2), "
             "additional_format_len=(min=0, max=0)")
 
@@ -345,7 +345,7 @@ class Test_ColumnDataPeroperty:
 
         assert col_dp.align == Align.RIGHT
         assert col_dp.decimal_places == 3
-        assert col_dp.typecode == Typecode.FLOAT
+        assert col_dp.typecode == Typecode.REAL_NUMBER
         assert col_dp.ascii_char_width == min_padding_len
 
         assert col_dp.minmax_integer_digits.min_value == 1
@@ -358,7 +358,7 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.max_value == 1
 
         assert str(col_dp) == (
-            "typename=FLOAT, align=right, ascii_char_width=100, "
+            "typename=REAL_NUMBER, align=right, ascii_char_width=100, "
             "integer_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
             "additional_format_len=(min=0, max=1)")
 

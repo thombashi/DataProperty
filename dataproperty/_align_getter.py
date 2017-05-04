@@ -28,7 +28,7 @@ class AlignGetter(object):
         self.typecode_align_table = {
             Typecode.STRING: Align.LEFT,
             Typecode.INTEGER: Align.RIGHT,
-            Typecode.FLOAT: Align.RIGHT,
+            Typecode.REAL_NUMBER: Align.RIGHT,
         }
         self.default_align = Align.LEFT
 

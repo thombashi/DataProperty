@@ -140,11 +140,11 @@ class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping:
     ALWAYS_QUOTE_FLAG_MAPPING = {
         Typecode.NONE: True,
         Typecode.INTEGER: True,
-        Typecode.FLOAT: True,
+        Typecode.REAL_NUMBER: True,
         Typecode.STRING: True,
         Typecode.NULL_STRING: True,
         Typecode.DATETIME: True,
-        Typecode.FLOAT: True,
+        Typecode.REAL_NUMBER: True,
         Typecode.NAN: True,
         Typecode.BOOL: True,
     }
@@ -265,7 +265,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
 
         dp = dp_matrix[1][0]
         assert dp.data == Decimal("1.1")
-        assert dp.typecode == Typecode.FLOAT
+        assert dp.typecode == Typecode.REAL_NUMBER
         assert dp.align.align_code == Align.RIGHT.align_code
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.decimal_places == 1
@@ -425,7 +425,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.format_str == "{:d}"
 
         dp = col_dp_list[1]
-        assert dp.typecode == Typecode.FLOAT
+        assert dp.typecode == Typecode.REAL_NUMBER
         assert dp.align.align_code == Align.RIGHT.align_code
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.ascii_char_width == 4
@@ -441,7 +441,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.format_str == "{:s}"
 
         dp = col_dp_list[3]
-        assert dp.typecode == Typecode.FLOAT
+        assert dp.typecode == Typecode.REAL_NUMBER
         assert dp.align.align_code == Align.RIGHT.align_code
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.ascii_char_width == 4
@@ -518,7 +518,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.format_str == "{:d}"
 
         dp = col_dp_list[1]
-        assert dp.typecode == Typecode.FLOAT
+        assert dp.typecode == Typecode.REAL_NUMBER
         assert dp.align.align_code == Align.RIGHT.align_code
         assert dp.align.align_string == Align.RIGHT.align_string
         assert dp.ascii_char_width == 4
@@ -542,7 +542,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert col_dp.typecode == Typecode.INTEGER
 
         col_dp = col_dp_list[1]
-        assert col_dp.typecode == Typecode.FLOAT
+        assert col_dp.typecode == Typecode.REAL_NUMBER
 
         col_dp = col_dp_list[2]
         assert col_dp.typecode == Typecode.STRING

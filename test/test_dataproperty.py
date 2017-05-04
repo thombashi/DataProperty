@@ -56,8 +56,8 @@ class Test_DataPeroperty_data_typecode:
             [str(six.MAXSIZE), False, str(six.MAXSIZE), Typecode.STRING],
 
             [1.1, True, 1, Typecode.INTEGER],
-            [-1.1, False, Decimal("-1.1"), Typecode.FLOAT],
-            [Decimal("1.1"), False, Decimal("1.1"), Typecode.FLOAT],
+            [-1.1, False, Decimal("-1.1"), Typecode.REAL_NUMBER],
+            [Decimal("1.1"), False, Decimal("1.1"), Typecode.REAL_NUMBER],
 
             ["1.1", True, 1, Typecode.INTEGER],
             ["-1.1", False, "-1.1", Typecode.STRING],
@@ -496,21 +496,21 @@ class Test_DataPeroperty_repr:
         [
             -1.1,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-1.1, typename=FLOAT, align=right, length=None, "
+            "data=-1.1, typename=REAL_NUMBER, align=right, length=None, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=1, additional_format_len=1",
         ],
         [
             -12.234,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-12.23, typename=FLOAT, align=right, length=None, "
+            "data=-12.23, typename=REAL_NUMBER, align=right, length=None, "
             "ascii_char_width=6, "
             "integer_digits=2, decimal_places=2, additional_format_len=1",
         ],
         [
             0.01,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=0.01, typename=FLOAT, align=right, length=None, "
+            "data=0.01, typename=REAL_NUMBER, align=right, length=None, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=2, additional_format_len=0",
         ],

@@ -46,7 +46,7 @@ class DataPropertyExtractor(object):
                 Typecode.BOOL: False,
                 Typecode.DATETIME: False,
                 Typecode.DICTIONARY: False,
-                Typecode.FLOAT: False,
+                Typecode.REAL_NUMBER: False,
                 Typecode.INFINITY: False,
                 Typecode.INTEGER: False,
                 Typecode.LIST: False,
