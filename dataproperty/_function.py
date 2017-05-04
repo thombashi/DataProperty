@@ -17,24 +17,22 @@ from mbstrdecoder import MultiByteStrDecoder
 from six.moves import range
 
 
-def get_integer_digit(value):
-    from typepy.type import RealNumber
+decimal.setcontext(
+    decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
 
-    decimal.setcontext(
-        decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
+
+def get_integer_digit(value):
+    from typepy import TypeConversionError
+    from typepy.type import RealNumber
 
     float_type = RealNumber(value)
 
-    if not float_type.is_type():
-        # bool-type/inf/nan value reaches this line
+    try:
+        abs_value = abs(float_type.convert())
+    except TypeConversionError:
         raise ValueError(
             "the value must be a number: value='{}' type='{}'".format(
                 value, type(value)))
-
-    abs_value = abs(float_type.convert())
-
-    if any([abs_value.is_nan(), abs_value.is_infinite()]):
-        raise ValueError("invalid value '{}'".format(value))
 
     if abs_value.is_zero():
         return 1
