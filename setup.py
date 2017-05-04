@@ -37,9 +37,9 @@ project_name = "DataProperty"
 
 setuptools.setup(
     name=project_name,
-    version="0.20.3",
-    url="https://github.com/thombashi/" + project_name,
-    bugtrack_url="https://github.com/thombashi/{:s}/issues".format(
+    version="0.20.4",
+    url="https://github.com/thombashi/{}".format(project_name),
+    bugtrack_url="https://github.com/thombashi/{}/issues".format(
         project_name),
 
     author=author,
