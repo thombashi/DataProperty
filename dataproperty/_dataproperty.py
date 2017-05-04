@@ -365,6 +365,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
         "__typecode_bitmap",
+        "__typecode_from_bitmap",
     )
 
     __TYPE_CLASS_TABLE = {
@@ -389,7 +390,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     @property
     def typecode(self):
-        return self.__get_typecode_from_bitmap()
+        return self.__typecode_from_bitmap
 
     @property
     def padding_len(self):
@@ -435,7 +436,9 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
+
         self.__typecode_bitmap = Typecode.NONE
+        self.__calc_typecode_from_bitmap()
 
     def __repr__(self):
         return ", ".join([
@@ -457,6 +460,8 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
+        self.__calc_typecode_from_bitmap()
+
         self.__length = self.__get_length(dataprop)
 
         if dataprop.typecode in (Typecode.FLOAT, Typecode.INTEGER):
@@ -478,6 +483,7 @@ class ColumnDataProperty(DataPeropertyBase):
     def end_update(self):
         self.__is_calculate = True
 
+        self.__calc_typecode_from_bitmap()
         self.__calc_decimal_places()
         self.__calc_ascii_char_width()
 
@@ -591,3 +597,9 @@ class ColumnDataProperty(DataPeropertyBase):
             return
 
         self.__decimal_places = self.__get_decimal_places()
+
+    def __calc_typecode_from_bitmap(self):
+        if not self.__is_calculate:
+            return
+
+        self.__typecode_from_bitmap = self.__get_typecode_from_bitmap()
