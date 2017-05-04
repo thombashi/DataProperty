@@ -47,7 +47,7 @@ e.g. Extract a ``float`` value property
 
     >>> from dataproperty import DataProperty
     >>> DataProperty(-1.1)
-    data=-1.1, typename=FLOAT, align=right, length=None, ascii_char_width=4, integer_digits=1, decimal_places=1, additional_format_len=1
+    data=-1.1, typename=REAL_NUMBER, align=right, length=None, ascii_char_width=4, integer_digits=1, decimal_places=1, additional_format_len=1
 
 
 e.g. Extract a ``int`` value property
@@ -121,9 +121,9 @@ An example data set and the result are as follows:
 
     $ ./to_dataproperty_matrix.py
     ---------- typename ----------
-    ['INTEGER', 'FLOAT', 'STRING', 'INTEGER', 'INTEGER', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
-    ['INTEGER', 'FLOAT', 'STRING', 'FLOAT', 'FLOAT', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
-    ['INTEGER', 'FLOAT', 'STRING', 'INTEGER', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
+    ['INTEGER', 'REAL_NUMBER', 'STRING', 'INTEGER', 'INTEGER', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
+    ['INTEGER', 'REAL_NUMBER', 'STRING', 'REAL_NUMBER', 'REAL_NUMBER', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
+    ['INTEGER', 'REAL_NUMBER', 'STRING', 'INTEGER', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
 
     ---------- data ----------
     [1, Decimal('1.1'), 'aa', 1, 1, True, Decimal('Infinity'), Decimal('NaN'), datetime.datetime(2017, 1, 1, 0, 0)]
@@ -176,7 +176,7 @@ Example data set and result are as follows:
 
     $ ./to_col_dataproperty_list.py
     ---------- typename ----------
-    ['INTEGER', 'FLOAT', 'STRING', 'FLOAT', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
+    ['INTEGER', 'REAL_NUMBER', 'STRING', 'REAL_NUMBER', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
 
     ---------- align ----------
     [right, right, left, right, left, left, left, left, left]
