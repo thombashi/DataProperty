@@ -459,14 +459,14 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __repr__(self):
         return ", ".join([
-            "typename=" + self.typename,
-            "align=" + six.text_type(self.align),
-            "ascii_char_width=" + six.text_type(self.ascii_char_width),
-            "integer_digits=({:s})".format(
+            "typename={}".format(self.typename),
+            "align={}".format(six.text_type(self.align)),
+            "ascii_char_width={}".format(six.text_type(self.ascii_char_width)),
+            "integer_digits=({})".format(
                 six.text_type(self.minmax_integer_digits)),
-            "decimal_places=({:s})".format(
+            "decimal_places=({})".format(
                 six.text_type(self.minmax_decimal_places)),
-            "additional_format_len=({:s})".format(
+            "additional_format_len=({})".format(
                 six.text_type(self.minmax_additional_format_len)),
         ])
 
