@@ -44,7 +44,10 @@ from ._interface import DataPeropertyInterface
 
 
 class DataPeropertyBase(DataPeropertyInterface):
-    __slots__ = ("__datetime_format_str")
+    __slots__ = (
+        "__datetime_format_str",
+        "__format_str",
+    )
 
     @property
     def typename(self):
@@ -52,6 +55,14 @@ class DataPeropertyBase(DataPeropertyInterface):
 
     @property
     def format_str(self):
+        if self.__format_str:
+            return self.__format_str
+
+        self.__format_str = self.__get_format_str()
+
+        return self.__format_str
+
+    def __get_format_str(self):
         format_str = {
             Typecode.NONE: "{}",
             Typecode.INTEGER: "{:d}",
@@ -74,6 +85,7 @@ class DataPeropertyBase(DataPeropertyInterface):
 
     def __init__(self, datetime_format_str):
         self.__datetime_format_str = datetime_format_str
+        self.__format_str = None
 
 
 class DataProperty(DataPeropertyBase):
@@ -493,10 +505,10 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_ascii_char_width()
 
     def __is_not_single_typecode(self, typecode):
-        return all([
-            self.__typecode_bitmap & typecode,
-            self.__typecode_bitmap & ~typecode,
-        ])
+        return (
+            self.__typecode_bitmap & typecode and
+            self.__typecode_bitmap & ~typecode
+        )
 
     def __is_float_typecode(self):
         FLOAT_TYPECODE_BMP = Typecode.FLOAT | Typecode.INFINITY | Typecode.NAN
