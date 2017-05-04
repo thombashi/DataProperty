@@ -335,11 +335,12 @@ class DataProperty(DataPeropertyBase):
     def __try_convert_type(self, data, type_class, strict_level, float_type):
         type_obj = type_class(data, strict_level, float_type=float_type)
 
-        if not type_obj.is_type():
+        try:
+            self.__data = type_obj.convert()
+        except TypeConversionError:
             return False
 
         self.__typecode = type_obj.typecode
-        self.__data = type_obj.convert()
 
         return True
 
