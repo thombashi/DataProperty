@@ -163,7 +163,6 @@ class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping:
             self, dp_extractor, value, quote_flag_mapping, is_strict,
             expected):
         dp_extractor.quote_flag_mapping = quote_flag_mapping
-        #dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
         dp = dp_extractor.to_dataproperty(value)
 
         assert dp.data == expected
