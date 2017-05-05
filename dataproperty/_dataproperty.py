@@ -75,7 +75,8 @@ class DataPeropertyBase(DataPeropertyInterface):
         if format_str is not None:
             return format_str
 
-        if self.typecode in (Typecode.REAL_NUMBER, Typecode.INFINITY, Typecode.NAN):
+        if self.typecode in (
+                Typecode.REAL_NUMBER, Typecode.INFINITY, Typecode.NAN):
             if Nan(self.decimal_places).is_type():
                 return "{:f}"
 
@@ -511,7 +512,8 @@ class ColumnDataProperty(DataPeropertyBase):
         )
 
     def __is_float_typecode(self):
-        FLOAT_TYPECODE_BMP = Typecode.REAL_NUMBER | Typecode.INFINITY | Typecode.NAN
+        FLOAT_TYPECODE_BMP = (
+            Typecode.REAL_NUMBER | Typecode.INFINITY | Typecode.NAN)
         NUMBER_TYPECODE_BMP = FLOAT_TYPECODE_BMP | Typecode.INTEGER
 
         if self.__is_not_single_typecode(
