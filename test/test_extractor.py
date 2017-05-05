@@ -362,16 +362,30 @@ class Test_DataPropertyExtractor_to_dataproperty_list:
         for dp, expected in zip(dp_list, expected_list):
             assert dp.typecode == expected
 
-    @pytest.mark.parametrize(["value", "strip_str", "expected"], [
+    @pytest.mark.parametrize(
+        ["value", "strip_str_header", "strip_str_value", "expected"],
         [
-            ['"1"', '"-1.1"', '"abc"'],
-            '"',
-            [1, Decimal("-1.1"), "abc"],
-        ],
-    ])
+            [
+                ['"1"', '"-1.1"', '"abc"'],
+                '', '"',
+                [1, Decimal("-1.1"), "abc"],
+            ],
+            [
+                ['"1"', '"-1.1"', '"abc"'],
+                '"', '',
+                ['"1"', '"-1.1"', '"abc"'],
+            ],
+            [
+                ['"1"', '"-1.1"', '"abc"'],
+                None, None,
+                ['"1"', '"-1.1"', '"abc"'],
+            ],
+        ])
     def test_normal_strip_str(
-            self, dp_extractor, value, strip_str, expected):
-        dp_extractor.strip_str = strip_str
+            self, dp_extractor, value, strip_str_header, strip_str_value,
+            expected):
+        dp_extractor.strip_str_header = strip_str_header
+        dp_extractor.strip_str_value = strip_str_value
         dp_list = dp_extractor.to_dataproperty_list(value)
 
         for dp, value in zip(dp_list, expected):
