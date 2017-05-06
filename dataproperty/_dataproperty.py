@@ -378,8 +378,8 @@ class ColumnDataProperty(DataPeropertyBase):
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
+        "__typecode",
         "__typecode_bitmap",
-        "__typecode_from_bitmap",
     )
 
     __TYPE_CLASS_TABLE = {
@@ -404,7 +404,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     @property
     def typecode(self):
-        return self.__typecode_from_bitmap
+        return self.__typecode
 
     @property
     def padding_len(self):
@@ -621,4 +621,4 @@ class ColumnDataProperty(DataPeropertyBase):
         if not self.__is_calculate:
             return
 
-        self.__typecode_from_bitmap = self.__get_typecode_from_bitmap()
+        self.__typecode = self.__get_typecode_from_bitmap()
