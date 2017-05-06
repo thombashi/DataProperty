@@ -30,6 +30,10 @@ class AbstractContainer(object):
     def update(self, value):  # pragma: no cover
         pass
 
+    @abc.abstractmethod
+    def merge(self, value):  # pragma: no cover
+        pass
+
     def __repr__(self):
         return ", ".join([
             "min={}".format(self.min_value),
@@ -76,6 +80,9 @@ class ListContainer(AbstractContainer):
             return
 
         self.__value_list.append(store_value)
+
+    def merge(self, list_container):
+        self.__value_list.extend(list_container)
 
 
 class MinMaxContainer(AbstractContainer):
@@ -139,3 +146,7 @@ class MinMaxContainer(AbstractContainer):
             self.__max_value = value
         else:
             self.__max_value = max(self.__max_value, value)
+
+    def merge(self, minmax_container):
+        self.update(minmax_container.min_value)
+        self.update(minmax_container.max_value)

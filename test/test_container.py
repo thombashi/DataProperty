@@ -131,3 +131,17 @@ class Test_MinMaxContainer_update:
 
         assert container.min_value == -six.MAXSIZE
         assert container.max_value == six.MAXSIZE
+
+
+class Test_MinMaxContainer_merge:
+
+    def test_normal(self, container):
+        for value in [1, 2, 3]:
+            container.update(value)
+
+        other = MinMaxContainer([0, 10])
+
+        container.merge(other)
+
+        assert container.min_value == 0
+        assert container.max_value == 10
