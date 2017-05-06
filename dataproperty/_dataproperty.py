@@ -30,6 +30,7 @@ from typepy.type import (
     String,
     NullString,
 )
+
 from ._align_getter import align_getter
 from ._common import DefaultValue
 from ._container import (
@@ -489,6 +490,21 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__dataproperty_list.append(dataprop)
         self.__ascii_char_width = max(
             self.__ascii_char_width, dataprop.ascii_char_width)
+        self.__calc_ascii_char_width()
+
+    def merge(self, col_dataprop):
+        self.__typecode_bitmap |= col_dataprop.typecode
+        self.__calc_typecode_from_bitmap()
+
+        self.__minmax_integer_digits.merge(col_dataprop.minmax_integer_digits)
+        self.__minmax_decimal_places.update(col_dataprop.minmax_decimal_places)
+        self.__calc_decimal_places()
+
+        self.__minmax_additional_format_len.merge(
+            col_dataprop.minmax_additional_format_len)
+
+        self.__ascii_char_width = max(
+            self.__ascii_char_width, col_dataprop.ascii_char_width)
         self.__calc_ascii_char_width()
 
     def begin_update(self):
