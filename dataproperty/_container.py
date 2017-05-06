@@ -54,6 +54,10 @@ class ListContainer(AbstractContainer):
         except ValueError:
             return None
 
+    @property
+    def value_list(self):
+        return self.__value_list
+
     def __init__(self, value_list=None):
         if value_list is None:
             self.__value_list = []
