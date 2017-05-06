@@ -444,7 +444,6 @@ class ColumnDataProperty(DataPeropertyBase):
             east_asian_ambiguous_width=1):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
 
-        self.__length = min_padding_len
         self.__ascii_char_width = min_padding_len
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
@@ -472,15 +471,12 @@ class ColumnDataProperty(DataPeropertyBase):
         ])
 
     def update_header(self, dataprop):
-        self.__length = self.__get_length(dataprop)
         self.__ascii_char_width = max(
             self.__ascii_char_width, dataprop.ascii_char_width)
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode
         self.__calc_typecode_from_bitmap()
-
-        self.__length = self.__get_length(dataprop)
 
         if dataprop.typecode in (Typecode.REAL_NUMBER, Typecode.INTEGER):
             self.__minmax_integer_digits.update(dataprop.integer_digits)
@@ -528,15 +524,6 @@ class ColumnDataProperty(DataPeropertyBase):
             return True
 
         return False
-
-    def __get_length(self, dataprop):
-        try:
-            return max(self.__length, dataprop.length)
-        except TypeError:
-            if dataprop.length:
-                return dataprop.length
-
-        return self.__length
 
     def __get_typecode_from_bitmap(self):
         if self.__is_float_typecode():
