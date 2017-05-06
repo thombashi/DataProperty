@@ -29,3 +29,7 @@ from ._function import (
     get_number_of_digit,
     get_ascii_char_width,
 )
+from ._logger import (
+    set_logger,
+    set_log_level,
+)
