@@ -22,6 +22,7 @@ from ._dataproperty import (
     ColumnDataProperty,
 )
 from ._dataproperty_converter import DataPropertyConverter
+from ._logger import logger
 
 
 class MissmatchProcessing(object):
@@ -302,6 +303,9 @@ class DataPropertyExtractor(object):
         ]
 
     def to_col_dataproperty_list(self, column_dp_list=None):
+        logger.debug("to_col_dataproperty_list: columns={}".format(
+            len(column_dp_list) if column_dp_list else None))
+
         col_dp_list = self.__get_col_dp_list_base()
 
         try:
@@ -344,7 +348,10 @@ class DataPropertyExtractor(object):
 
             for value_dp in value_dp_list:
                 col_dp.update_body(value_dp)
+
             col_dp.end_update()
+
+            logger.debug("  column={}, property={}".format(col_idx, col_dp))
 
         return col_dp_list
 
