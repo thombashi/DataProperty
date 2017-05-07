@@ -301,7 +301,7 @@ class DataPropertyExtractor(object):
             for data in data_list
         ]
 
-    def to_col_dataproperty_list(self):
+    def to_col_dataproperty_list(self, column_dp_list=None):
         col_dp_list = self.__get_col_dp_list_base()
 
         try:
@@ -336,6 +336,12 @@ class DataPropertyExtractor(object):
 
             col_dp = col_dp_list[col_idx]
             col_dp.begin_update()
+
+            try:
+                col_dp.merge(column_dp_list[col_idx])
+            except (TypeError, IndexError):
+                pass
+
             for value_dp in value_dp_list:
                 col_dp.update_body(value_dp)
             col_dp.end_update()
