@@ -49,11 +49,6 @@ class Test_DataPeroperty_data_typecode:
         ["value", "expected_data", "expected_typecode"],
         [
             [
-                -0.00284241876820074,
-                Decimal("-0.00284241876820074"),
-                Typecode.REAL_NUMBER
-            ],
-            [
                 "-0.00284241876820074",
                 Decimal("-0.00284241876820074"),
                 Typecode.REAL_NUMBER
