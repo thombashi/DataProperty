@@ -43,6 +43,10 @@ class Test_ColumnDataPeroperty:
             Typecode.REAL_NUMBER,
         ],
         [
+            ["-0.538882625371217", "0.268624155343302", ""],
+            Typecode.REAL_NUMBER,
+        ],
+        [
             [0, 1.1, -six.MAXSIZE, "test"],
             Typecode.STRING,
         ],

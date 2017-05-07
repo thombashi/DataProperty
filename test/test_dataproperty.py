@@ -46,6 +46,28 @@ inf = float("inf")
 class Test_DataPeroperty_data_typecode:
 
     @pytest.mark.parametrize(
+        ["value", "expected_data", "expected_typecode"],
+        [
+            [
+                -0.00284241876820074,
+                Decimal("-0.00284241876820074"),
+                Typecode.REAL_NUMBER
+            ],
+            [
+                "-0.00284241876820074",
+                Decimal("-0.00284241876820074"),
+                Typecode.REAL_NUMBER
+            ],
+        ]
+    )
+    def test_normal(self, value, expected_data, expected_typecode):
+        dp = DataProperty(value)
+
+        assert dp == dp
+        assert dp.data == expected_data
+        assert dp.typecode == expected_typecode
+
+    @pytest.mark.parametrize(
         ["value", "is_convert", "expected_data", "expected_typecode"],
         [
             [1.0, True, 1, Typecode.INTEGER],
@@ -121,7 +143,7 @@ class Test_DataPeroperty_data_typecode:
                 "新しいテキスト ドキュメント.txt", Typecode.STRING]
         ]
     )
-    def test_normal(self, value, is_convert, expected_data, expected_typecode):
+    def test_normal_strict_mapping(self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(
             value,
             strict_type_mapping=get_strict_type_mapping(not is_convert))
