@@ -443,6 +443,12 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.ascii_char_width == 1
         assert dp.decimal_places == 0
         assert dp.format_str == "{:d}"
+        assert str(dp) == (
+            "typename=INTEGER, column=0, align=right, "
+            "ascii_char_width=1, integer_digits=(min=1, max=1), "
+            "decimal_places=(min=0, max=0), "
+            "additional_format_len=(min=0, max=0)"
+        )
 
         col_idx += 1
         dp = col_dp_list[col_idx]

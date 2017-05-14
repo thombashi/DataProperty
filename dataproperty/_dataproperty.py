@@ -465,8 +465,14 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_typecode_from_bitmap()
 
     def __repr__(self):
-        return ", ".join([
+        element_list = [
             "typename={}".format(self.typename),
+        ]
+
+        if self.column_index is not None:
+            element_list.append("column={}".format(self.column_index))
+
+        element_list.extend([
             "align={}".format(six.text_type(self.align)),
             "ascii_char_width={}".format(six.text_type(self.ascii_char_width)),
             "integer_digits=({})".format(
@@ -476,6 +482,8 @@ class ColumnDataProperty(DataPeropertyBase):
             "additional_format_len=({})".format(
                 six.text_type(self.minmax_additional_format_len)),
         ])
+
+        return ", ".join(element_list)
 
     def update_header(self, dataprop):
         self.__ascii_char_width = max(
