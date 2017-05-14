@@ -371,6 +371,7 @@ class DataProperty(DataPeropertyBase):
 class ColumnDataProperty(DataPeropertyBase):
     __slots__ = (
         "__ascii_char_width",
+        "__column_index",
         "__decimal_places",
         "__dataproperty_list",
         "__east_asian_ambiguous_width",
@@ -398,6 +399,10 @@ class ColumnDataProperty(DataPeropertyBase):
     @property
     def align(self):
         return align_getter.get_align_from_typecode(self.typecode)
+
+    @property
+    def column_index(self):
+        return self.__column_index
 
     @property
     def decimal_places(self):
@@ -440,12 +445,13 @@ class ColumnDataProperty(DataPeropertyBase):
         return self.__TYPE_CLASS_TABLE.get(self.typecode)
 
     def __init__(
-            self, min_padding_len=0,
+            self, column_index=None, min_padding_len=0,
             datetime_format_str=DefaultValue.DATETIME_FORMAT,
             east_asian_ambiguous_width=1):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
 
         self.__ascii_char_width = min_padding_len
+        self.__column_index = column_index
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
         self.__is_calculate = True

@@ -433,7 +433,10 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
 
         assert len(col_dp_list) == 9
 
-        dp = col_dp_list[0]
+        col_idx = 0
+
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
         assert dp.typecode == Typecode.INTEGER
         assert dp.align.align_code == Align.RIGHT.align_code
         assert dp.align.align_string == Align.RIGHT.align_string
@@ -441,7 +444,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.decimal_places == 0
         assert dp.format_str == "{:d}"
 
-        dp = col_dp_list[1]
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
         assert dp.typecode == Typecode.REAL_NUMBER
         assert dp.align.align_code == Align.RIGHT.align_code
         assert dp.align.align_string == Align.RIGHT.align_string
@@ -449,7 +454,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.decimal_places == 2
         assert dp.format_str == "{:.2f}"
 
-        dp = col_dp_list[2]
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
@@ -457,7 +464,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:s}"
 
-        dp = col_dp_list[3]
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
         assert dp.typecode == Typecode.REAL_NUMBER
         assert dp.align.align_code == Align.RIGHT.align_code
         assert dp.align.align_string == Align.RIGHT.align_string
@@ -465,7 +474,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.decimal_places == 1
         assert dp.format_str == "{:.1f}"
 
-        dp = col_dp_list[4]
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
@@ -473,7 +484,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert dp.decimal_places == 1
         assert dp.format_str == "{:s}"
 
-        dp = col_dp_list[5]
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
         assert dp.typecode == Typecode.BOOL
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
@@ -481,7 +494,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{}"
 
-        dp = col_dp_list[6]
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
         assert dp.typecode == Typecode.INFINITY
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
@@ -489,7 +504,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:f}"
 
-        dp = col_dp_list[7]
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
         assert dp.typecode == Typecode.NAN
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string
@@ -497,7 +514,9 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list:
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{:f}"
 
-        dp = col_dp_list[8]
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
         assert dp.typecode == Typecode.STRING
         assert dp.align.align_code == Align.LEFT.align_code
         assert dp.align.align_string == Align.LEFT.align_string

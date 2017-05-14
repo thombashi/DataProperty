@@ -341,7 +341,7 @@ class Test_ColumnDataPeroperty:
     def test_min_padding_len(self):
         min_padding_len = 100
 
-        col_dp = ColumnDataProperty(min_padding_len)
+        col_dp = ColumnDataProperty(min_padding_len=min_padding_len)
         col_dp.update_header(DataProperty("abc"))
 
         for value in [0, -1.234, 55.55]:

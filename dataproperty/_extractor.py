@@ -330,6 +330,7 @@ class DataPropertyExtractor(object):
                     ])
                 ]):
                     col_dp_list.append(ColumnDataProperty(
+                        column_index=col_idx,
                         min_padding_len=self.min_padding_len,
                         datetime_format_str=self.datetime_format_str,
                         east_asian_ambiguous_width=self.east_asian_ambiguous_width
@@ -442,8 +443,9 @@ class DataPropertyExtractor(object):
         header_dp_list = self.to_header_dataproperty_list()
         col_dp_list = []
 
-        for header_dp in header_dp_list:
+        for col_idx, header_dp in enumerate(header_dp_list):
             col_dp = ColumnDataProperty(
+                column_index=col_idx,
                 min_padding_len=self.min_padding_len,
                 datetime_format_str=self.datetime_format_str,
                 east_asian_ambiguous_width=self.east_asian_ambiguous_width
