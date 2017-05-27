@@ -129,14 +129,14 @@ class DataPropertyExtractor(object):
 
     @property
     def min_padding_len(self):
-        return self.__min_padding_len
+        return self.__min_col_ascii_char_width
 
     @min_padding_len.setter
     def min_padding_len(self, x):
-        if self.__min_padding_len == x:
+        if self.__min_col_ascii_char_width == x:
             return
 
-        self.__min_padding_len = x
+        self.__min_col_ascii_char_width = x
         self.__clear_cache()
 
     @property
@@ -255,7 +255,7 @@ class DataPropertyExtractor(object):
 
         self.__strip_str_header = None
         self.__strip_str_value = None
-        self.__min_padding_len = 0
+        self.__min_col_ascii_char_width = 0
         self.__float_type = None
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
         self.__strict_type_mapping = copy.deepcopy(
