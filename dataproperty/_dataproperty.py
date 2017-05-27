@@ -445,12 +445,12 @@ class ColumnDataProperty(DataPeropertyBase):
         return self.__TYPE_CLASS_TABLE.get(self.typecode)
 
     def __init__(
-            self, column_index=None, min_padding_len=0,
+            self, column_index=None, min_width=0,
             datetime_format_str=DefaultValue.DATETIME_FORMAT,
             east_asian_ambiguous_width=1):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
 
-        self.__ascii_char_width = min_padding_len
+        self.__ascii_char_width = min_width
         self.__column_index = column_index
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 

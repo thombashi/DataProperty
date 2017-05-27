@@ -339,9 +339,9 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.max_value == 0
 
     def test_min_padding_len(self):
-        min_padding_len = 100
+        min_width = 100
 
-        col_dp = ColumnDataProperty(min_padding_len=min_padding_len)
+        col_dp = ColumnDataProperty(min_width=min_width)
         col_dp.update_header(DataProperty("abc"))
 
         for value in [0, -1.234, 55.55]:
@@ -350,7 +350,7 @@ class Test_ColumnDataPeroperty:
         assert col_dp.align == Align.RIGHT
         assert col_dp.decimal_places == 3
         assert col_dp.typecode == Typecode.REAL_NUMBER
-        assert col_dp.ascii_char_width == min_padding_len
+        assert col_dp.ascii_char_width == min_width
 
         assert col_dp.minmax_integer_digits.min_value == 1
         assert col_dp.minmax_integer_digits.max_value == 2
