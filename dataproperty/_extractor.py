@@ -302,9 +302,9 @@ class DataPropertyExtractor(object):
             for data in data_list
         ]
 
-    def to_col_dataproperty_list(self, column_dp_list=None):
+    def to_col_dataproperty_list(self, previous_column_dp_list=None):
         logger.debug("to_col_dataproperty_list: columns={}".format(
-            len(column_dp_list) if column_dp_list else None))
+            len(previous_column_dp_list) if previous_column_dp_list else None))
 
         col_dp_list = self.__get_col_dp_list_base()
 
@@ -343,7 +343,7 @@ class DataPropertyExtractor(object):
             col_dp.begin_update()
 
             try:
-                col_dp.merge(column_dp_list[col_idx])
+                col_dp.merge(previous_column_dp_list[col_idx])
             except (TypeError, IndexError):
                 pass
 
