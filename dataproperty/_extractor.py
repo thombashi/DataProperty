@@ -128,11 +128,11 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def min_padding_len(self):
+    def min_column_width(self):
         return self.__min_col_ascii_char_width
 
-    @min_padding_len.setter
-    def min_padding_len(self, x):
+    @min_column_width.setter
+    def min_column_width(self, x):
         if self.__min_col_ascii_char_width == x:
             return
 
@@ -330,7 +330,7 @@ class DataPropertyExtractor(object):
                     ])
                 ]):
                     col_dp_list.append(ColumnDataProperty(
-                        column_index=col_idx, min_width=self.min_padding_len,
+                        column_index=col_idx, min_width=self.min_column_width,
                         datetime_format_str=self.datetime_format_str,
                         east_asian_ambiguous_width=self.east_asian_ambiguous_width
                     ))
@@ -444,7 +444,7 @@ class DataPropertyExtractor(object):
 
         for col_idx, header_dp in enumerate(header_dp_list):
             col_dp = ColumnDataProperty(
-                column_index=col_idx, min_width=self.min_padding_len,
+                column_index=col_idx, min_width=self.min_column_width,
                 datetime_format_str=self.datetime_format_str,
                 east_asian_ambiguous_width=self.east_asian_ambiguous_width)
             col_dp.update_header(header_dp)
