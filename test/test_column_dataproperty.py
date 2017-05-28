@@ -338,7 +338,7 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
-    def test_min_padding_len(self):
+    def test_min_width(self):
         min_width = 100
 
         col_dp = ColumnDataProperty(min_width=min_width)
