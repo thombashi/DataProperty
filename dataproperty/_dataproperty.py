@@ -485,6 +485,9 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return ", ".join(element_list)
 
+    def extend_width(self, dwidth):
+        self.__ascii_char_width += dwidth
+
     def update_header(self, dataprop):
         self.__ascii_char_width = max(
             self.__ascii_char_width, dataprop.ascii_char_width)

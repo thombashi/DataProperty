@@ -366,6 +366,16 @@ class Test_ColumnDataPeroperty:
             "integer_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
             "additional_format_len=(min=0, max=1)")
 
+    def test_extend_width(self):
+        col_dp = ColumnDataProperty()
+        col_dp.update_header(DataProperty("abc"))
+
+        assert col_dp.ascii_char_width == 3
+
+        col_dp.extend_width(2)
+
+        assert col_dp.ascii_char_width == 5
+
     def test_null(self):
         col_dp = ColumnDataProperty()
         assert col_dp.align == Align.LEFT
