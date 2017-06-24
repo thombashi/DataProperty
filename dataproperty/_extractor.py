@@ -303,7 +303,7 @@ class DataPropertyExtractor(object):
         ]
 
     def to_col_dataproperty_list(self, previous_column_dp_list=None):
-        logger.debug("to_col_dataproperty_list: columns={}".format(
+        logger.debug("to_col_dataproperty_list: previous_columns={}".format(
             len(previous_column_dp_list) if previous_column_dp_list else None))
 
         col_dp_list = self.__get_col_dp_list_base()
