@@ -237,9 +237,12 @@ class DataProperty(DataPeropertyBase):
         element_list.extend([
             "typename={:s}".format(self.typename),
             "align={}".format(self.align),
-            "length={}".format(self.length),
             "ascii_char_width={:d}".format(self.ascii_char_width),
         ])
+
+        if Integer(self.length).is_type():
+            element_list.append(
+                "length={}".format(self.length))
 
         if Integer(self.integer_digits).is_type():
             element_list.append(

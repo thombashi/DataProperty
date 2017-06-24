@@ -516,90 +516,90 @@ class Test_DataPeroperty_repr(object):
         [
             0,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=0, typename=INTEGER, align=right, length=None, "
+            "data=0, typename=INTEGER, align=right, "
             "ascii_char_width=1, "
             "integer_digits=1, decimal_places=0, additional_format_len=0",
         ],
         [
             -1.0,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-1, typename=INTEGER, align=right, length=None, "
+            "data=-1, typename=INTEGER, align=right, "
             "ascii_char_width=2, "
             "integer_digits=1, decimal_places=0, additional_format_len=1",
         ],
         [
             -1.1,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-1.1, typename=REAL_NUMBER, align=right, length=None, "
+            "data=-1.1, typename=REAL_NUMBER, align=right, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=1, additional_format_len=1",
         ],
         [
             -12.234,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=-12.23, typename=REAL_NUMBER, align=right, length=None, "
+            "data=-12.23, typename=REAL_NUMBER, align=right, "
             "ascii_char_width=6, "
             "integer_digits=2, decimal_places=2, additional_format_len=1",
         ],
         [
             0.01,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=0.01, typename=REAL_NUMBER, align=right, length=None, "
+            "data=0.01, typename=REAL_NUMBER, align=right, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=2, additional_format_len=0",
         ],
         [
             "abcdefg",
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=abcdefg, typename=STRING, align=left, length=7, "
-            "ascii_char_width=7, "
+            "data=abcdefg, typename=STRING, align=left, "
+            "ascii_char_width=7, length=7, "
             "additional_format_len=0",
         ],
         [
             None,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=None, typename=NONE, align=left, length=None, "
+            "data=None, typename=NONE, align=left, "
             "ascii_char_width=4, "
             "additional_format_len=0",
         ],
         [
             True,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=True, typename=BOOL, align=left, length=None, "
+            "data=True, typename=BOOL, align=left, "
             "ascii_char_width=4, "
             "additional_format_len=0",
         ],
         [
             DATATIME_DATA,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=2017-01-02 03:04:05, typename=DATETIME, "
-            "align=left, length=None, ascii_char_width=19, "
+            "data=2017-01-02 03:04:05, typename=DATETIME, align=left, "
+            "ascii_char_width=19, "
             "additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05",
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=2017-01-02 03:04:05, typename=STRING, "
-            "align=left, length=19, ascii_char_width=19, "
+            "data=2017-01-02 03:04:05, typename=STRING, align=left, "
+            "ascii_char_width=19, length=19, "
             "additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05+0900",
             NOT_STRICT_TYPE_MAPPING,
-            "data=2017-01-02 03:04:05+09:00, typename=DATETIME, "
-            "align=left, length=None, ascii_char_width=24, "
+            "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, "
+            "ascii_char_width=24, "
             "additional_format_len=0",
         ],
         [
             inf,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=Infinity, typename=INFINITY, align=left, length=None, "
+            "data=Infinity, typename=INFINITY, align=left, "
             "ascii_char_width=8, additional_format_len=0",
         ],
         [
             nan,
             DefaultValue.STRICT_LEVEL_MAPPING,
-            "data=NaN, typename=NAN, align=left, length=None, "
+            "data=NaN, typename=NAN, align=left, "
             "ascii_char_width=3, additional_format_len=0",
         ],
     ])
