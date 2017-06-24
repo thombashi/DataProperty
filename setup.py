@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 """
-.. codeauthor:: Tsuyoshi Hombashi <gogogo.vm@gmail.com>
+.. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
 from __future__ import unicode_literals
@@ -39,7 +39,7 @@ needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
 pytest_runner = ["pytest-runner"] if needs_pytest else []
 
 author = "Tsuyoshi Hombashi"
-email = "gogogo.vm@gmail.com"
+email = "tsuyoshi.hombashi@gmail.com"
 project_name = "DataProperty"
 
 setuptools.setup(
