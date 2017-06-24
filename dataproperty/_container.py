@@ -40,6 +40,9 @@ class AbstractContainer(object):
             "max={}".format(self.max_value),
         ])
 
+    def has_value(self):
+        return self.min_value is not None and self.max_value is not None
+
 
 class ListContainer(AbstractContainer):
     __slots__ = ("__value_list")
