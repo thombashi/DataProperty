@@ -286,6 +286,33 @@ class Test_ColumnDataPeroperty:
             "integer_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
             "additional_format_len=(min=0, max=1)")
 
+    @pytest.mark.parametrize(["value_list", "expected"], [
+        [[0, 1, 0, 1], 1],
+        [[-128, 0, 127, None], 8],
+    ])
+    def test_normal_bit_length(self, value_list, expected):
+        col_dp = ColumnDataProperty()
+        col_dp.update_header(DataProperty("dummy"))
+
+        for value in value_list:
+            col_dp.update_body(DataProperty(value))
+
+        assert col_dp.typecode == Typecode.INTEGER
+        assert col_dp.bit_length == expected
+
+    @pytest.mark.parametrize(["value_list", "expected"], [
+        [[0.1, 1], None],
+        [["aaa", "0.0.0.0"], None],
+    ])
+    def test_abnormal_bit_length(self, value_list, expected):
+        col_dp = ColumnDataProperty()
+        col_dp.update_header(DataProperty("dummy"))
+
+        for value in value_list:
+            col_dp.update_body(DataProperty(value))
+
+        assert col_dp.bit_length == expected
+
     def test_normal_multibyte_char(self):
         col_dp = ColumnDataProperty()
         col_dp.update_header(DataProperty("abc"))

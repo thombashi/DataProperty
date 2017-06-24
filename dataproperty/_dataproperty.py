@@ -404,6 +404,21 @@ class ColumnDataProperty(DataPeropertyBase):
         return align_getter.get_align_from_typecode(self.typecode)
 
     @property
+    def bit_length(self):
+        if self.typecode != Typecode.INTEGER:
+            return None
+
+        bit_length = 0
+        for dp in self.__dataproperty_list:
+            try:
+                bit_length = max(
+                    bit_length, int.bit_length(dp.data))
+            except TypeError:
+                pass
+
+        return bit_length
+
+    @property
     def column_index(self):
         return self.__column_index
 
