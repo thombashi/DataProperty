@@ -256,8 +256,6 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=INFINITY, align=left, ascii_char_width=8, "
-            "integer_digits=(min=None, max=None), "
-            "decimal_places=(min=None, max=None), "
             "additional_format_len=(min=0, max=0)")
 
     def test_normal_mix_0(self):
@@ -336,8 +334,6 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=STRING, align=left, ascii_char_width=6, "
-            "integer_digits=(min=None, max=None), "
-            "decimal_places=(min=None, max=None), "
             "additional_format_len=(min=0, max=0)"
         )
 

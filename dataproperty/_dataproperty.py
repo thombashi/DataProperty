@@ -503,13 +503,25 @@ class ColumnDataProperty(DataPeropertyBase):
         element_list.extend([
             "align={}".format(six.text_type(self.align)),
             "ascii_char_width={}".format(six.text_type(self.ascii_char_width)),
-            "integer_digits=({})".format(
-                six.text_type(self.minmax_integer_digits)),
-            "decimal_places=({})".format(
-                six.text_type(self.minmax_decimal_places)),
-            "additional_format_len=({})".format(
-                six.text_type(self.minmax_additional_format_len)),
         ])
+
+        if Integer(self.bit_length).is_type():
+            element_list.append("bit_length={:d}".format(self.bit_length))
+
+        if self.minmax_integer_digits.has_value():
+            element_list.append(
+                "integer_digits=({})".format(
+                    six.text_type(self.minmax_integer_digits)))
+
+        if self.minmax_decimal_places.has_value():
+            element_list.append(
+                "decimal_places=({})".format(
+                    six.text_type(self.minmax_decimal_places)))
+
+        if self.minmax_additional_format_len.has_value():
+            element_list.append(
+                "additional_format_len=({})".format(
+                    six.text_type(self.minmax_additional_format_len)))
 
         return ", ".join(element_list)
 
