@@ -45,7 +45,7 @@ def main():
     col_dp_list = dp_extractor.to_col_dataproperty_list()
 
     print("---------- typename ----------")
-    print([Typecode.get_typename(dp.typecode) for dp in col_dp_list])
+    print([dp.typecode.name for dp in col_dp_list])
 
     display_col_dp(col_dp_list, "align")
     display_col_dp(col_dp_list, "ascii_char_width")

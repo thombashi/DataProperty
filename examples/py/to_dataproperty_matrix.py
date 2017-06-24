@@ -44,7 +44,7 @@ def main():
 
     print("---------- typename ----------")
     for dp_list in dp_matrix:
-        print([Typecode.get_typename(dp.typecode) for dp in dp_list])
+        print([dp.typecode.name for dp in dp_list])
 
     display_dp_matrix_attr(dp_matrix, "data")
     display_dp_matrix_attr(dp_matrix, "align")
