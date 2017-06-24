@@ -386,8 +386,12 @@ class DataPropertyExtractor(object):
     def __to_dataproperty(
             self, data, type_hint=None, strip_str=None,
             strict_type_mapping=None):
-        if data in self.__dp_cache_mapping:
-            return self.__dp_cache_mapping.get(data)
+        try:
+            if data in self.__dp_cache_mapping:
+                return self.__dp_cache_mapping.get(data)
+        except TypeError:
+            # unhashable type
+            pass
 
         if data == 0:
             if str(data) != "False":
