@@ -233,15 +233,25 @@ class DataProperty(DataPeropertyBase):
             except UnicodeEncodeError:
                 element_list.append("data={}".format(
                     MultiByteStrDecoder(self.data).unicode_str))
+
         element_list.extend([
             "typename={:s}".format(self.typename),
             "align={}".format(self.align),
             "length={}".format(self.length),
             "ascii_char_width={:d}".format(self.ascii_char_width),
-            "integer_digits={}".format(self.integer_digits),
-            "decimal_places={}".format(self.decimal_places),
-            "additional_format_len={}".format(self.additional_format_len),
         ])
+
+        if Integer(self.integer_digits).is_type():
+            element_list.append(
+                "integer_digits={}".format(self.integer_digits))
+
+        if Integer(self.decimal_places).is_type():
+            element_list.append(
+                "decimal_places={}".format(self.decimal_places))
+
+        if Integer(self.additional_format_len).is_type():
+            element_list.append(
+                "additional_format_len={}".format(self.additional_format_len))
 
         return ", ".join(element_list)
 

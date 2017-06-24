@@ -553,56 +553,54 @@ class Test_DataPeroperty_repr(object):
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=abcdefg, typename=STRING, align=left, length=7, "
             "ascii_char_width=7, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+            "additional_format_len=0",
         ],
         [
             None,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=None, typename=NONE, align=left, length=None, "
             "ascii_char_width=4, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+            "additional_format_len=0",
         ],
         [
             True,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=True, typename=BOOL, align=left, length=None, "
             "ascii_char_width=4, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+            "additional_format_len=0",
         ],
         [
             DATATIME_DATA,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=2017-01-02 03:04:05, typename=DATETIME, "
             "align=left, length=None, ascii_char_width=19, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+            "additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05",
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=2017-01-02 03:04:05, typename=STRING, "
             "align=left, length=19, ascii_char_width=19, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+            "additional_format_len=0",
         ],
         [
             "2017-01-02 03:04:05+0900",
             NOT_STRICT_TYPE_MAPPING,
             "data=2017-01-02 03:04:05+09:00, typename=DATETIME, "
             "align=left, length=None, ascii_char_width=24, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+            "additional_format_len=0",
         ],
         [
             inf,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=Infinity, typename=INFINITY, align=left, length=None, "
-            "ascii_char_width=8, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+            "ascii_char_width=8, additional_format_len=0",
         ],
         [
             nan,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=NaN, typename=NAN, align=left, length=None, "
-            "ascii_char_width=3, "
-            "integer_digits=nan, decimal_places=nan, additional_format_len=0",
+            "ascii_char_width=3, additional_format_len=0",
         ],
     ])
     def test_normal(self, value, strict_type_mapping, expected):
