@@ -53,7 +53,7 @@ class DataPeropertyBase(DataPeropertyInterface):
 
     @property
     def typename(self):
-        return Typecode.get_typename(self.typecode)
+        return self.typecode.name
 
     @property
     def format_str(self):
@@ -464,7 +464,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
 
-        self.__typecode_bitmap = Typecode.NONE
+        self.__typecode_bitmap = Typecode.NONE.value
         self.__calc_typecode_from_bitmap()
 
     def __repr__(self):
@@ -496,7 +496,7 @@ class ColumnDataProperty(DataPeropertyBase):
             self.__ascii_char_width, dataprop.ascii_char_width)
 
     def update_body(self, dataprop):
-        self.__typecode_bitmap |= dataprop.typecode
+        self.__typecode_bitmap |= dataprop.typecode.value
         self.__calc_typecode_from_bitmap()
 
         if dataprop.typecode in (Typecode.REAL_NUMBER, Typecode.INTEGER):
@@ -513,7 +513,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_ascii_char_width()
 
     def merge(self, col_dataprop):
-        self.__typecode_bitmap |= col_dataprop.typecode
+        self.__typecode_bitmap |= col_dataprop.typecode.value
         self.__calc_typecode_from_bitmap()
 
         self.__minmax_integer_digits.merge(col_dataprop.minmax_integer_digits)
@@ -545,15 +545,17 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __is_float_typecode(self):
         FLOAT_TYPECODE_BMP = (
-            Typecode.REAL_NUMBER | Typecode.INFINITY | Typecode.NAN)
-        NUMBER_TYPECODE_BMP = FLOAT_TYPECODE_BMP | Typecode.INTEGER
+            Typecode.REAL_NUMBER.value
+            | Typecode.INFINITY.value
+            | Typecode.NAN.value)
+        NUMBER_TYPECODE_BMP = FLOAT_TYPECODE_BMP | Typecode.INTEGER.value
 
         if self.__is_not_single_typecode(
-                NUMBER_TYPECODE_BMP | Typecode.NULL_STRING):
+                NUMBER_TYPECODE_BMP | Typecode.NULL_STRING.value):
             return False
 
         if bin(self.__typecode_bitmap & (
-                FLOAT_TYPECODE_BMP | Typecode.NULL_STRING)).count("1") >= 2:
+                FLOAT_TYPECODE_BMP | Typecode.NULL_STRING.value)).count("1") >= 2:
             return True
 
         if bin(self.__typecode_bitmap & NUMBER_TYPECODE_BMP).count("1") >= 2:
@@ -566,8 +568,8 @@ class ColumnDataProperty(DataPeropertyBase):
             return Typecode.REAL_NUMBER
 
         if any([
-            self.__is_not_single_typecode(Typecode.BOOL),
-            self.__is_not_single_typecode(Typecode.DATETIME),
+            self.__is_not_single_typecode(Typecode.BOOL.value),
+            self.__is_not_single_typecode(Typecode.DATETIME.value),
         ]):
             return Typecode.STRING
 
@@ -584,10 +586,10 @@ class ColumnDataProperty(DataPeropertyBase):
         ]
 
         for typecode in typecode_list:
-            if self.__typecode_bitmap & typecode:
+            if self.__typecode_bitmap & typecode.value:
                 return typecode
 
-        if self.__typecode_bitmap == Typecode.NONE:
+        if self.__typecode_bitmap == Typecode.NONE.value:
             return Typecode.NONE
 
         return Typecode.STRING

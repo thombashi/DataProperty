@@ -32,9 +32,9 @@ NULL_QUOTE_FLAG_MAPPING = {
 }
 
 STRICT_TYPE_MAPPING = dict(
-    itertools.product(Typecode.TYPE_LIST, [StrictLevel.MAX]))
+    itertools.product(list(Typecode), [StrictLevel.MAX]))
 NOT_STRICT_TYPE_MAPPING = dict(
-    itertools.product(Typecode.TYPE_LIST, [StrictLevel.MIN]))
+    itertools.product(list(Typecode), [StrictLevel.MIN]))
 
 
 class DefaultValue(object):
