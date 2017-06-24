@@ -44,7 +44,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_DataPeroperty_data_typecode:
+class Test_DataPeroperty_data_typecode(object):
 
     @pytest.mark.parametrize(
         ["value", "expected_data", "expected_typecode"],
@@ -245,7 +245,7 @@ class Test_DataPeroperty_data_typecode:
         assert dp.typecode == expected_typecode
 
 
-class Test_DataPeroperty_to_str:
+class Test_DataPeroperty_to_str(object):
 
     @pytest.mark.parametrize(
         ["value", "type_hint", "is_strict", "expected_data", "expected_str"],
@@ -267,7 +267,7 @@ class Test_DataPeroperty_to_str:
         assert dp.to_str() == expected_str
 
 
-class Test_DataPeroperty_set_data:
+class Test_DataPeroperty_set_data(object):
 
     @pytest.mark.parametrize(
         [
@@ -294,7 +294,7 @@ class Test_DataPeroperty_set_data:
         assert dp.data == expected
 
 
-class Test_DataPeroperty_float_type:
+class Test_DataPeroperty_float_type(object):
 
     @pytest.mark.parametrize(
         ["value",  "float_type", "expected"],
@@ -309,7 +309,7 @@ class Test_DataPeroperty_float_type:
         assert dp.data == expected
 
 
-class Test_DataPeroperty_align:
+class Test_DataPeroperty_align(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         [1, Align.RIGHT],
@@ -326,7 +326,7 @@ class Test_DataPeroperty_align:
         assert dp.align == expected
 
 
-class Test_DataPeroperty_len:
+class Test_DataPeroperty_len(object):
 
     @pytest.mark.parametrize(["value", "expected_acs", "expected_len"], [
         [1, 1, None],
@@ -389,7 +389,7 @@ class Test_DataPeroperty_len:
             DataProperty(value, east_asian_ambiguous_width=eaaw)
 
 
-class Test_DataPeroperty_get_padding_len:
+class Test_DataPeroperty_get_padding_len(object):
 
     @pytest.mark.parametrize(["value", "ascii_char_width", "expected"], [
         [1, 8, 8],
@@ -416,7 +416,7 @@ class Test_DataPeroperty_get_padding_len:
         assert dp.get_padding_len(ascii_char_width) == expected
 
 
-class Test_DataPeroperty_integer_digits:
+class Test_DataPeroperty_integer_digits(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         [1, 1],
@@ -440,7 +440,7 @@ class Test_DataPeroperty_integer_digits:
         Nan(dp.integer_digits).is_type()
 
 
-class Test_DataPeroperty_decimal_places:
+class Test_DataPeroperty_decimal_places(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         [1, 0],
@@ -465,7 +465,7 @@ class Test_DataPeroperty_decimal_places:
         Nan(dp.decimal_places).is_type()
 
 
-class Test_DataPeroperty_additional_format_len:
+class Test_DataPeroperty_additional_format_len(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         [2147483648, 0],
@@ -489,7 +489,7 @@ class Test_DataPeroperty_additional_format_len:
         assert dp.additional_format_len == expected
 
 
-class Test_DataPeroperty_repr:
+class Test_DataPeroperty_repr(object):
 
     @pytest.mark.parametrize(["value", "strict_type_mapping", "expected"], [
         [

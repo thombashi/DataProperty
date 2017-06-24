@@ -17,14 +17,14 @@ def container():
     return MinMaxContainer()
 
 
-class Test_MinMaxContainer_property:
+class Test_MinMaxContainer_property(object):
 
     def test_null(self, container):
         assert container.min_value is None
         assert container.max_value is None
 
 
-class Test_MinMaxContainer_repr:
+class Test_MinMaxContainer_repr(object):
 
     def test_normal(self):
         container = MinMaxContainer([1, 3])
@@ -35,7 +35,7 @@ class Test_MinMaxContainer_repr:
         assert container.max_value is None
 
 
-class Test_MinMaxContainer_eq_ne:
+class Test_MinMaxContainer_eq_ne(object):
 
     @pytest.mark.parametrize(["lhs", "rhs", "expected"], [
         [
@@ -64,7 +64,7 @@ class Test_MinMaxContainer_eq_ne:
         assert (lhs != rhs) == (not expected)
 
 
-class Test_MinMaxContainer_contains:
+class Test_MinMaxContainer_contains(object):
 
     @pytest.mark.parametrize(["lhs", "rhs", "expected"], [
         [
@@ -92,7 +92,7 @@ class Test_MinMaxContainer_contains:
         assert (lhs in rhs) == expected
 
 
-class Test_MinMaxContainer_mean:
+class Test_MinMaxContainer_mean(object):
 
     def test_normal(self, container):
         for value in [1, 3]:
@@ -104,7 +104,7 @@ class Test_MinMaxContainer_mean:
         assert Nan(container.mean()).is_type()
 
 
-class Test_MinMaxContainer_diff:
+class Test_MinMaxContainer_diff(object):
 
     def test_normal(self, container):
         for value in [1, 3]:
@@ -116,7 +116,7 @@ class Test_MinMaxContainer_diff:
         assert Nan(container.diff()).is_type()
 
 
-class Test_MinMaxContainer_update:
+class Test_MinMaxContainer_update(object):
 
     def test_normal_0(self, container):
         for value in [1, 2, 3]:
@@ -133,7 +133,7 @@ class Test_MinMaxContainer_update:
         assert container.max_value == six.MAXSIZE
 
 
-class Test_MinMaxContainer_merge:
+class Test_MinMaxContainer_merge(object):
 
     def test_normal(self, container):
         for value in [1, 2, 3]:

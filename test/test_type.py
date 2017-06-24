@@ -9,7 +9,7 @@ from typepy import StrictLevel
 from typepy.type import Integer
 
 
-class Test_DataPeroperty_repr:
+class Test_DataPeroperty_repr(object):
 
     @pytest.mark.parametrize(
         ["type_class", "value", "strict_level", "expected"],

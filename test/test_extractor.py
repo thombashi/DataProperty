@@ -50,7 +50,7 @@ def datetime_formatter_tostr_1(value):
     return value.strftime("%Y/%m/%d %H:%M:%S")
 
 
-class Test_DataPropertyExtractor_to_dataproperty:
+class Test_DataPropertyExtractor_to_dataproperty(object):
 
     @pytest.mark.parametrize(
         [
@@ -136,7 +136,7 @@ class Test_DataPropertyExtractor_to_dataproperty:
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping:
+class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping(object):
     ALWAYS_QUOTE_FLAG_MAPPING = {
         Typecode.NONE: True,
         Typecode.INTEGER: True,
@@ -168,7 +168,7 @@ class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping:
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dataproperty_const_value_mapping:
+class Test_DataPropertyExtractor_to_dataproperty_const_value_mapping(object):
     VALUE_MAPPING = {
         True: "true value",
         False: "false value",
@@ -195,7 +195,7 @@ class Test_DataPropertyExtractor_to_dataproperty_const_value_mapping:
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dataproperty_matrix:
+class Test_DataPropertyExtractor_to_dataproperty_matrix(object):
 
     @pytest.mark.parametrize(["value"], [
         [
@@ -327,7 +327,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix:
         assert list(dp_extractor.to_dataproperty_matrix()) == []
 
 
-class Test_DataPropertyExtractor_to_dataproperty_list:
+class Test_DataPropertyExtractor_to_dataproperty_list(object):
 
     @pytest.mark.parametrize(["value", "float_type"], [
         [[0.1, Decimal("1.1")], float],
@@ -396,7 +396,7 @@ class Test_DataPropertyExtractor_to_dataproperty_list:
             assert dp.data == value
 
 
-class Test_DataPropertyExtractor_to_col_dataproperty_list:
+class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
     TEST_DATA_MATRIX = [
         [
             1, 1.1,  "aa",   1,   1,     True,   inf,

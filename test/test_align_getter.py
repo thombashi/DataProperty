@@ -15,7 +15,7 @@ def align_getter():
     return AlignGetter()
 
 
-class Test_AlignGetter_get_align_from_typecode:
+class Test_AlignGetter_get_align_from_typecode(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         [Typecode.STRING, Align.LEFT],

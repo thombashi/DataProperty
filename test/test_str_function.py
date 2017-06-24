@@ -18,7 +18,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_is_multibyte_str:
+class Test_is_multibyte_str(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["吾輩は猫である", True],
@@ -37,7 +37,7 @@ class Test_is_multibyte_str:
         assert is_multibyte_str(value) == expected
 
 
-class Test_get_ascii_char_width:
+class Test_get_ascii_char_width(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         ["吾輩は猫である", 14],

@@ -24,7 +24,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_ColumnDataPeroperty:
+class Test_ColumnDataPeroperty(object):
     DATATIME_DATA = datetime.datetime(2017, 1, 1)
 
     @pytest.mark.parametrize(["value_list", "expected"], [

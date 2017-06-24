@@ -19,7 +19,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_get_integer_digit:
+class Test_get_integer_digit(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         [0, 1], [-0, 1],
@@ -74,7 +74,7 @@ class Test_get_integer_digit:
             get_integer_digit(value)
 
 
-class Test_get_number_of_digit:
+class Test_get_number_of_digit(object):
 
     @pytest.mark.parametrize(["value", "expected"], [
         [0, (1, 0)], [-0, (1, 0)],
