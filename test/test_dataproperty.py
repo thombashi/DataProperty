@@ -17,6 +17,7 @@ from dataproperty import (
     DataProperty,
     DefaultValue,
 )
+import ipaddress
 import pytest
 import six
 from typepy import Typecode
@@ -94,6 +95,15 @@ class Test_DataPeroperty_data_typecode:
 
             ["100-0002", False, "100-0002", Typecode.STRING],
 
+            [
+                "127.0.0.1", False,
+                ipaddress.IPv4Address("127.0.0.1"), Typecode.IP_ADDRESS,
+            ],
+            [
+                "::1", False,
+                ipaddress.IPv6Address("::1"), Typecode.IP_ADDRESS,
+            ],
+
             [[], True, [], Typecode.LIST],
             [[], False, [], Typecode.LIST],
             [{}, True, {}, Typecode.DICTIONARY],
@@ -130,15 +140,22 @@ class Test_DataPeroperty_data_typecode:
 
             ["nan", False, "nan", Typecode.STRING],
 
-            ["Høgskolen i Østfold er et eksempel...", True,
-                "Høgskolen i Østfold er et eksempel...", Typecode.STRING],
-            ["Høgskolen i Østfold er et eksempel...", False,
-                "Høgskolen i Østfold er et eksempel...", Typecode.STRING],
-            ["新しいテキスト ドキュメント.txt".encode("utf_8"), True,
-                "新しいテキスト ドキュメント.txt", Typecode.STRING]
+            [
+                "Høgskolen i Østfold er et eksempel...", True,
+                "Høgskolen i Østfold er et eksempel...", Typecode.STRING,
+            ],
+            [
+                "Høgskolen i Østfold er et eksempel...", False,
+                "Høgskolen i Østfold er et eksempel...", Typecode.STRING,
+            ],
+            [
+                "新しいテキスト ドキュメント.txt".encode("utf_8"), True,
+                "新しいテキスト ドキュメント.txt", Typecode.STRING,
+            ]
         ]
     )
-    def test_normal_strict_mapping(self, value, is_convert, expected_data, expected_typecode):
+    def test_normal_strict_mapping(
+            self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(
             value,
             strict_type_mapping=get_strict_type_mapping(not is_convert))

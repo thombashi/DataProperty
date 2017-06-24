@@ -47,6 +47,10 @@ class Test_ColumnDataPeroperty:
             Typecode.REAL_NUMBER,
         ],
         [
+            ["127.0.0.1", "::1", None],
+            Typecode.IP_ADDRESS,
+        ],
+        [
             [0, 1.1, -six.MAXSIZE, "test"],
             Typecode.STRING,
         ],
