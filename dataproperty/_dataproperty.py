@@ -68,6 +68,7 @@ class DataPeropertyBase(DataPeropertyInterface):
         format_str = {
             Typecode.NONE: "{}",
             Typecode.INTEGER: "{:d}",
+            Typecode.IP_ADDRESS: "{}",
             Typecode.BOOL: "{}",
             Typecode.DATETIME: "{:" + self.__datetime_format_str + "}",
             Typecode.DICTIONARY: "{}",
