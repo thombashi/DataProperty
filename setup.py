@@ -28,7 +28,10 @@ with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
 with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_require = [line.strip() for line in f if line.strip()]
 
-if sys.version_info.major == 2:
+if any([
+    sys.version_info.major < 3,
+    sys.version_info.major == 3 and sys.version_info.minor < 3,
+]):
     tests_require.append("ipaddress")
 
 
