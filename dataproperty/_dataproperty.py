@@ -536,10 +536,10 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_decimal_places()
         self.__calc_ascii_char_width()
 
-    def __is_not_single_typecode(self, typecode):
+    def __is_not_single_typecode(self, typecode_bitmap):
         return (
-            self.__typecode_bitmap & typecode and
-            self.__typecode_bitmap & ~typecode
+            self.__typecode_bitmap & typecode_bitmap and
+            self.__typecode_bitmap & ~typecode_bitmap
         )
 
     def __is_float_typecode(self):
