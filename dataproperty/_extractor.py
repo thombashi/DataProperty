@@ -351,7 +351,7 @@ class DataPropertyExtractor(object):
 
             col_dp.end_update()
 
-            logger.debug("  column={}, property={}".format(col_idx, col_dp))
+            logger.debug("  {:s}".format(str(col_dp)))
 
         return col_dp_list
 

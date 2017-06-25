@@ -496,14 +496,13 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_typecode_from_bitmap()
 
     def __repr__(self):
-        element_list = [
-            "typename={}".format(self.typename),
-        ]
+        element_list = []
 
         if self.column_index is not None:
             element_list.append("column={}".format(self.column_index))
 
         element_list.extend([
+            "typename={}".format(self.typename),
             "align={}".format(six.text_type(self.align)),
             "ascii_char_width={}".format(six.text_type(self.ascii_char_width)),
         ])
