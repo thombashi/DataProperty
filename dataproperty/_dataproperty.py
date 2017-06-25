@@ -401,15 +401,18 @@ class ColumnDataProperty(DataPeropertyBase):
     )
 
     __TYPE_CLASS_TABLE = {
-        Typecode.NONE: NoneType,
-        Typecode.NULL_STRING: NullString,
-        Typecode.STRING: String,
-        Typecode.INTEGER: Integer,
-        Typecode.INFINITY: Infinity,
-        Typecode.NAN: Nan,
-        Typecode.REAL_NUMBER: RealNumber,
         Typecode.BOOL: Bool,
         Typecode.DATETIME: DateTime,
+        Typecode.DICTIONARY: Dictionary,
+        Typecode.INTEGER: Integer,
+        Typecode.INFINITY: Infinity,
+        Typecode.IP_ADDRESS: IpAddress,
+        Typecode.LIST: List,
+        Typecode.NAN: Nan,
+        Typecode.NONE: NoneType,
+        Typecode.NULL_STRING: NullString,
+        Typecode.REAL_NUMBER: RealNumber,
+        Typecode.STRING: String,
     }
 
     @property
@@ -617,7 +620,9 @@ class ColumnDataProperty(DataPeropertyBase):
             Typecode.REAL_NUMBER,
             Typecode.INTEGER,
             Typecode.DATETIME,
+            Typecode.DICTIONARY,
             Typecode.IP_ADDRESS,
+            Typecode.LIST,
             Typecode.BOOL,
             Typecode.INFINITY,
             Typecode.NAN,

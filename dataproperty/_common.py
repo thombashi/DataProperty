@@ -21,13 +21,14 @@ NULL_QUOTE_FLAG_MAPPING = {
     Typecode.BOOL: False,
     Typecode.DATETIME: False,
     Typecode.DICTIONARY: False,
-    Typecode.REAL_NUMBER: False,
     Typecode.INFINITY: False,
     Typecode.INTEGER: False,
+    Typecode.IP_ADDRESS: False,
     Typecode.LIST: False,
     Typecode.NAN: False,
     Typecode.NULL_STRING: False,
     Typecode.NONE: False,
+    Typecode.REAL_NUMBER: False,
     Typecode.STRING: False,
 }
 
@@ -57,6 +58,7 @@ class DefaultValue(object):
         Typecode.REAL_NUMBER: 1,
         Typecode.INFINITY: StrictLevel.MIN,
         Typecode.INTEGER: 1,
+        Typecode.IP_ADDRESS: StrictLevel.MIN,
         Typecode.LIST: StrictLevel.MAX,
         Typecode.NAN: StrictLevel.MIN,
         Typecode.NONE: StrictLevel.MAX,

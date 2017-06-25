@@ -17,7 +17,20 @@ from dataproperty import (
 import pytest
 import six
 from typepy import Typecode
-from typepy.type import Nan
+from typepy.type import (
+    Bool,
+    DateTime,
+    Dictionary,
+    Infinity,
+    Integer,
+    IpAddress,
+    List,
+    Nan,
+    NoneType,
+    RealNumber,
+    String,
+    NullString,
+)
 
 
 nan = float("nan")
@@ -25,84 +38,109 @@ inf = float("inf")
 
 
 class Test_ColumnDataPeroperty(object):
-    DATATIME_DATA = datetime.datetime(2017, 1, 1)
+    DATATIME_DATA = datetime.datetime(2017, 1, 1, 1, 2, 3)
 
-    @pytest.mark.parametrize(["value_list", "expected"], [
-        # single type values
-        [[None, None], Typecode.NONE],
+    @pytest.mark.parametrize(
+        ["value_list", "expected_typecode", "expected_class"],
         [
-            [0, six.MAXSIZE, str(six.MAXSIZE), -six.MAXSIZE],
-            Typecode.INTEGER,
-        ],
-        [
-            [0, 1.1, "0.01", -six.MAXSIZE],
-            Typecode.REAL_NUMBER,
-        ],
-        [
-            [0, 1.1, Decimal("0.1"), None, ""],
-            Typecode.REAL_NUMBER,
-        ],
-        [
-            ["-0.538882625371217", "0.268624155343302", ""],
-            Typecode.REAL_NUMBER,
-        ],
-        [
-            ["127.0.0.1", "::1", None],
-            Typecode.IP_ADDRESS,
-        ],
-        [
-            [0, 1.1, -six.MAXSIZE, "test"],
-            Typecode.STRING,
-        ],
-        [
-            [True, "True", False],
-            Typecode.BOOL,
-        ],
-        [
-            [DATATIME_DATA, str(DATATIME_DATA), DATATIME_DATA],
-            Typecode.STRING,
-        ],
-        [
-            [inf, "inf", "infinity", "INF"],
-            Typecode.INFINITY,
-        ],
-        [
-            [nan, "nan", "NAN"],
-            Typecode.NAN,
-        ],
+            # single type values
+            [[None, None], Typecode.NONE, NoneType],
+            [
+                [0, six.MAXSIZE, str(six.MAXSIZE), -six.MAXSIZE],
+                Typecode.INTEGER, Integer,
+            ],
+            [
+                [0, 1.1, "0.01", -six.MAXSIZE],
+                Typecode.REAL_NUMBER, RealNumber,
+            ],
+            [
+                ["-0.538882625371217", "0.268624155343302", ""],
+                Typecode.REAL_NUMBER, RealNumber,
+            ],
+            [
+                ["127.0.0.1", "::1"],
+                Typecode.IP_ADDRESS, IpAddress,
+            ],
+            [
+                [0, 1.1, -six.MAXSIZE, "test"],
+                Typecode.STRING, String,
+            ],
+            [
+                ["", ""],
+                Typecode.NULL_STRING, NullString,
+            ],
+            [
+                [True, "True", False],
+                Typecode.BOOL, Bool,
+            ],
+            [
+                [DATATIME_DATA, DATATIME_DATA],
+                Typecode.DATETIME, DateTime,
+            ],
+            [
+                [inf, "inf", "infinity", "INF"],
+                Typecode.INFINITY, Infinity,
+            ],
+            [
+                [nan, "nan", "NAN"],
+                Typecode.NAN, Nan,
+            ],
+            [
+                [{"a": 1}, {"b": 2}],
+                Typecode.DICTIONARY, Dictionary,
+            ],
+            [
+                [[1, 2], ["a", "b"]],
+                Typecode.LIST, List,
+            ],
 
-        # None mixed values
-        [[None, six.MAXSIZE, str(-six.MAXSIZE)], Typecode.INTEGER],
-        [[1, None, ""], Typecode.INTEGER],
-        [[1.1, None], Typecode.REAL_NUMBER],
-        [[1.1, None, ""], Typecode.REAL_NUMBER],
-        [[None, "test"], Typecode.STRING],
-        [[None, True, "False"], Typecode.BOOL],
-        [[None, DATATIME_DATA, None], Typecode.DATETIME],
-        [[None, inf], Typecode.INFINITY],
-        [[None, nan], Typecode.NAN],
+            # not mixed types with None value
+            [[None, six.MAXSIZE, str(-six.MAXSIZE)],
+             Typecode.INTEGER, Integer],
+            [[1, None, ""], Typecode.INTEGER, Integer],
+            [[1.1, None], Typecode.REAL_NUMBER, RealNumber],
+            [[1.1, None, ""], Typecode.REAL_NUMBER, RealNumber],
+            [
+                [0, 1.1, Decimal("0.1"), None, ""],
+                Typecode.REAL_NUMBER, RealNumber,
+            ],
+            [
+                ["192.168.0.1", None, "::1", None],
+                Typecode.IP_ADDRESS, IpAddress,
+            ],
+            [[None, "test"], Typecode.STRING, String],
+            [[None, True, "False"], Typecode.BOOL, Bool],
+            [[None, DATATIME_DATA, None], Typecode.DATETIME, DateTime],
+            [[None, inf], Typecode.INFINITY, Infinity],
+            [[None, nan], Typecode.NAN, Nan],
 
-        # mixed values
-        [[True, 1], Typecode.STRING],
-        [[DATATIME_DATA, "test"], Typecode.STRING],
-        [[inf, 0.1], Typecode.REAL_NUMBER],
-        [[inf, "test"], Typecode.STRING],
-        [[nan, 0.1], Typecode.REAL_NUMBER],
-        [[nan, "test"], Typecode.STRING],
-        [[six.MAXSIZE, inf, nan], Typecode.REAL_NUMBER],
-        [
-            [1, 1.1, DATATIME_DATA, "test", None, True, inf, nan],
-            Typecode.STRING,
-        ],
-    ])
-    def test_normal_typecode(self, value_list, expected):
+            # mixed types
+            [[True, 1], Typecode.STRING, String],
+            [[DATATIME_DATA, "test"], Typecode.STRING, String],
+            [[inf, 0.1], Typecode.REAL_NUMBER, RealNumber],
+            [[inf, "test"], Typecode.STRING, String],
+            [[nan, 0.1], Typecode.REAL_NUMBER, RealNumber],
+            [[nan, "test"], Typecode.STRING, String],
+            [[six.MAXSIZE, inf, nan], Typecode.REAL_NUMBER, RealNumber],
+            [
+                [DATATIME_DATA, str(DATATIME_DATA), DATATIME_DATA],
+                Typecode.STRING, String,
+            ],
+            [
+                [1, 1.1, DATATIME_DATA, "test", None, True, inf, Nan],
+                Typecode.STRING, String
+            ],
+        ])
+    def test_normal_typecode_type_class(
+            self, value_list, expected_typecode, expected_class):
         col_dp = ColumnDataProperty()
         col_dp.update_header(DataProperty("dummy"))
 
         for value in value_list:
             col_dp.update_body(DataProperty(value))
 
-        assert col_dp.typecode == expected
+        assert col_dp.typecode == expected_typecode
+        assert col_dp.type_class == expected_class
 
     def test_normal_number_0(self):
         col_dp = ColumnDataProperty()
