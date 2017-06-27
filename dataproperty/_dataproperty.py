@@ -236,7 +236,7 @@ class DataProperty(DataPeropertyBase):
 
         element_list.extend([
             "typename={:s}".format(self.typename),
-            "align={}".format(self.align),
+            "align={}".format(self.align.align_string),
             "ascii_char_width={:d}".format(self.ascii_char_width),
         ])
 
@@ -506,7 +506,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         element_list.extend([
             "typename={}".format(self.typename),
-            "align={}".format(six.text_type(self.align)),
+            "align={}".format(self.align.align_string),
             "ascii_char_width={}".format(six.text_type(self.ascii_char_width)),
         ])
 

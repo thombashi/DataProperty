@@ -9,8 +9,10 @@ from __future__ import unicode_literals
 
 import copy
 
+import enum
 from typepy import is_empty_sequence
 from typepy.type import String
+
 from six.moves import zip
 
 from ._common import (
@@ -25,7 +27,8 @@ from ._dataproperty_converter import DataPropertyConverter
 from ._logger import logger
 
 
-class MissmatchProcessing(object):
+@enum.unique
+class MissmatchProcessing(enum.Enum):
     EXCEPTION = 1 << 1
     TRIM = 1 << 2
     EXTEND = 1 << 3
