@@ -690,6 +690,16 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
                 MissmatchProcessing.EXTEND,
                 9
             ],
+            [
+                None,
+                [
+                    ["a", 0],
+                    ["b", 1, "abc"],
+                    ["c", 2],
+                ],
+                MissmatchProcessing.EXTEND,
+                3
+            ],
         ])
     def test_normal_mismatch_processing(
             self, dp_extractor, header_list, value, mismatch_processing,

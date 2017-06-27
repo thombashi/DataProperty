@@ -374,7 +374,8 @@ class DataPropertyExtractor(object):
             self.__to_dataproperty_list(
                 data_list, type_hint=self.__get_col_type_hint(col_idx),
                 strip_str=self.strip_str_value)
-            for col_idx, data_list in enumerate(zip(*self.data_matrix))
+            for col_idx, data_list
+            in enumerate(zip(*self.__to_dataproperty_matrix()))
         ]))
 
         return self.__dp_matrix_cache
@@ -451,6 +452,32 @@ class DataPropertyExtractor(object):
                 strict_type_mapping=strict_type_mapping)
             for data in data_list
         ]
+
+    def __to_dataproperty_matrix(self):
+        if self.mismatch_processing == MissmatchProcessing.TRIM:
+            return self.data_matrix
+
+        header_col_size = len(self.header_list) if self.header_list else 0
+        max_col_size = max([header_col_size] + [
+            len(data_list) for data_list in self.data_matrix
+        ])
+
+        for row_idx in range(len(self.data_matrix)):
+            diff_col_size = max_col_size - len(self.data_matrix[row_idx])
+
+            if (diff_col_size > 0 and
+                    self.mismatch_processing == MissmatchProcessing.EXCEPTION):
+                raise ValueError(
+                    "miss match column size: max={}, row={}, diff={}".format(
+                        max_col_size, row_idx, diff_col_size))
+
+            if self.mismatch_processing != MissmatchProcessing.EXTEND:
+                continue
+
+            for _i in range(diff_col_size):
+                self.__data_matrix[row_idx].append(None)
+
+        return self.__data_matrix
 
     def __get_col_dp_list_base(self):
         header_dp_list = self.to_header_dataproperty_list()
