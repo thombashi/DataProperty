@@ -306,14 +306,19 @@ class DataPropertyExtractor(object):
         ]
 
     def to_col_dataproperty_list(self, previous_column_dp_list=None):
-        logger.debug("to_col_dataproperty_list: previous_columns={}".format(
-            len(previous_column_dp_list) if previous_column_dp_list else None))
+        logger.debug(
+            "to_col_dataproperty_list: prev_col_count={}, "
+            "mismatch_process={}".format(
+                len(previous_column_dp_list)
+                if previous_column_dp_list else None,
+                self.mismatch_processing))
 
         col_dp_list = self.__get_col_dp_list_base()
 
         try:
             dp_matrix = self.to_dataproperty_matrix()
-        except TypeError:
+        except TypeError as e:
+            logger.debug(e)
             return col_dp_list
 
         for col_idx, value_dp_list in enumerate(zip(*dp_matrix)):
@@ -338,7 +343,9 @@ class DataPropertyExtractor(object):
                         east_asian_ambiguous_width=self.east_asian_ambiguous_width
                     ))
                 elif self.mismatch_processing == MissmatchProcessing.TRIM:
-                    # ignore columns that longer than header column
+                    logger.debug(
+                        "ignore columns (column index={}) which longer than "
+                        "the header column".format(col_idx))
                     continue
 
             col_dp = col_dp_list[col_idx]
