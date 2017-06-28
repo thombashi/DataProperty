@@ -687,7 +687,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             [
                 None,
                 TEST_DATA_MATRIX,
-                MatrixFormatting.FILL,
+                MatrixFormatting.FILL_NONE,
                 9
             ],
             [
@@ -697,7 +697,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
                     ["b", 1, "abc"],
                     ["c", 2],
                 ],
-                MatrixFormatting.FILL,
+                MatrixFormatting.FILL_NONE,
                 3
             ],
         ])

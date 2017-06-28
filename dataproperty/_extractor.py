@@ -37,7 +37,7 @@ class MatrixFormatting(enum.Enum):
 
     # Append None values to columns so that it is the same as the maximum
     # column size.
-    FILL = 1 << 3
+    FILL_NONE = 1 << 3
 
 
 class DataPropertyExtractor(object):
@@ -337,7 +337,7 @@ class DataPropertyExtractor(object):
                             len(col_dp_list), col_idx))
 
                 if any([
-                    self.matrix_formatting == MatrixFormatting.FILL,
+                    self.matrix_formatting == MatrixFormatting.FILL_NONE,
                     all([
                         self.matrix_formatting == MatrixFormatting.TRIM,
                         is_empty_sequence(self.header_list),
@@ -477,7 +477,7 @@ class DataPropertyExtractor(object):
                     "miss match column size: max={}, row={}, diff={}".format(
                         max_col_size, row_idx, diff_col_size))
 
-            if self.matrix_formatting != MatrixFormatting.FILL:
+            if self.matrix_formatting != MatrixFormatting.FILL_NONE:
                 continue
 
             for _i in range(diff_col_size):
