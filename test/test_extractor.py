@@ -676,7 +676,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
         assert dp.format_str == "{}"
 
     @pytest.mark.parametrize(
-        ["header_list", "value", "mismatch_processing", "expected"],
+        ["header_list", "value", "matrix_formatting", "expected"],
         [
             [
                 ["i", "f", "s", "if", "mix"],
@@ -702,17 +702,17 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             ],
         ])
     def test_normal_mismatch_processing(
-            self, dp_extractor, header_list, value, mismatch_processing,
+            self, dp_extractor, header_list, value, matrix_formatting,
             expected):
         dp_extractor.header_list = header_list
         dp_extractor.data_matrix = value
-        dp_extractor.mismatch_processing = mismatch_processing
+        dp_extractor.matrix_formatting = matrix_formatting
         col_dp_list = dp_extractor.to_col_dataproperty_list()
 
         assert len(col_dp_list) == expected
 
     @pytest.mark.parametrize(
-        ["header_list", "value", "mismatch_processing", "expected"],
+        ["header_list", "value", "matrix_formatting", "expected"],
         [
             [
                 ["i", "f", "s", "if", "mix"],
@@ -722,11 +722,11 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             ],
         ])
     def test_exception_mismatch_processing(
-            self, dp_extractor, header_list, value, mismatch_processing,
+            self, dp_extractor, header_list, value, matrix_formatting,
             expected):
         dp_extractor.header_list = header_list
         dp_extractor.data_matrix = value
-        dp_extractor.mismatch_processing = mismatch_processing
+        dp_extractor.matrix_formatting = matrix_formatting
 
         with pytest.raises(expected):
             dp_extractor.to_col_dataproperty_list()
