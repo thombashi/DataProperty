@@ -29,8 +29,14 @@ from ._logger import logger
 
 @enum.unique
 class MatrixFormatting(enum.Enum):
+    # raise exception if the matrix is not properly formatted
     EXCEPTION = 1 << 1
+
+    # trim to the minimum size column
     TRIM = 1 << 2
+
+    # Append None values to columns so that it is the same as the maximum
+    # column size.
     EXTEND = 1 << 3
 
 
