@@ -28,7 +28,7 @@ from ._logger import logger
 
 
 @enum.unique
-class MissmatchProcessing(enum.Enum):
+class MatrixFormatting(enum.Enum):
     EXCEPTION = 1 << 1
     TRIM = 1 << 2
     EXTEND = 1 << 3
@@ -273,7 +273,7 @@ class DataPropertyExtractor(object):
             DefaultValue.QUOTE_FLAG_MAPPING)
         self.__datetime_formatter = None
 
-        self.__mismatch_processing = MissmatchProcessing.TRIM
+        self.__mismatch_processing = MatrixFormatting.TRIM
 
         self.__clear_cache()
 
@@ -325,15 +325,15 @@ class DataPropertyExtractor(object):
             try:
                 col_dp_list[col_idx]
             except IndexError:
-                if self.mismatch_processing == MissmatchProcessing.EXCEPTION:
+                if self.mismatch_processing == MatrixFormatting.EXCEPTION:
                     raise ValueError(
                         "column not found: col-size={}, col-index={}".format(
                             len(col_dp_list), col_idx))
 
                 if any([
-                    self.mismatch_processing == MissmatchProcessing.EXTEND,
+                    self.mismatch_processing == MatrixFormatting.EXTEND,
                     all([
-                        self.mismatch_processing == MissmatchProcessing.TRIM,
+                        self.mismatch_processing == MatrixFormatting.TRIM,
                         is_empty_sequence(self.header_list),
                     ])
                 ]):
@@ -342,7 +342,7 @@ class DataPropertyExtractor(object):
                         datetime_format_str=self.datetime_format_str,
                         east_asian_ambiguous_width=self.east_asian_ambiguous_width
                     ))
-                elif self.mismatch_processing == MissmatchProcessing.TRIM:
+                elif self.mismatch_processing == MatrixFormatting.TRIM:
                     logger.debug(
                         "ignore columns (column index={}) which longer than "
                         "the header column".format(col_idx))
@@ -454,7 +454,7 @@ class DataPropertyExtractor(object):
         ]
 
     def __to_dataproperty_matrix(self):
-        if self.mismatch_processing == MissmatchProcessing.TRIM:
+        if self.mismatch_processing == MatrixFormatting.TRIM:
             return self.data_matrix
 
         header_col_size = len(self.header_list) if self.header_list else 0
@@ -466,12 +466,12 @@ class DataPropertyExtractor(object):
             diff_col_size = max_col_size - len(self.data_matrix[row_idx])
 
             if (diff_col_size > 0 and
-                    self.mismatch_processing == MissmatchProcessing.EXCEPTION):
+                    self.mismatch_processing == MatrixFormatting.EXCEPTION):
                 raise ValueError(
                     "miss match column size: max={}, row={}, diff={}".format(
                         max_col_size, row_idx, diff_col_size))
 
-            if self.mismatch_processing != MissmatchProcessing.EXTEND:
+            if self.mismatch_processing != MatrixFormatting.EXTEND:
                 continue
 
             for _i in range(diff_col_size):

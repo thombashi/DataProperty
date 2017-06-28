@@ -12,7 +12,7 @@ from decimal import Decimal
 from dataproperty import (
     Align,
     DataPropertyExtractor,
-    MissmatchProcessing,
+    MatrixFormatting,
 )
 import pytest
 import six
@@ -681,13 +681,13 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             [
                 ["i", "f", "s", "if", "mix"],
                 TEST_DATA_MATRIX,
-                MissmatchProcessing.TRIM,
+                MatrixFormatting.TRIM,
                 5,
             ],
             [
                 None,
                 TEST_DATA_MATRIX,
-                MissmatchProcessing.EXTEND,
+                MatrixFormatting.EXTEND,
                 9
             ],
             [
@@ -697,7 +697,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
                     ["b", 1, "abc"],
                     ["c", 2],
                 ],
-                MissmatchProcessing.EXTEND,
+                MatrixFormatting.EXTEND,
                 3
             ],
         ])
@@ -717,7 +717,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             [
                 ["i", "f", "s", "if", "mix"],
                 TEST_DATA_MATRIX,
-                MissmatchProcessing.EXCEPTION,
+                MatrixFormatting.EXCEPTION,
                 ValueError,
             ],
         ])

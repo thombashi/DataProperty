@@ -21,7 +21,7 @@ from ._dataproperty import (
 )
 from ._extractor import (
     DataPropertyExtractor,
-    MissmatchProcessing,
+    MatrixFormatting,
 )
 from ._function import (
     is_multibyte_str,
