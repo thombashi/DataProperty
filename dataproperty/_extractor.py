@@ -469,7 +469,10 @@ class DataPropertyExtractor(object):
             return self.data_matrix
 
         if self.matrix_formatting == MatrixFormatting.HEADER_ALIGNED:
-            format_col_size = header_col_size
+            if header_col_size > 0:
+                format_col_size = header_col_size
+            else:
+                format_col_size = max_col_size
         elif self.matrix_formatting == MatrixFormatting.TRIM:
             format_col_size = min_col_size
         elif self.matrix_formatting == MatrixFormatting.FILL_NONE:
