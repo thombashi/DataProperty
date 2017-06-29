@@ -474,6 +474,9 @@ class DataPropertyExtractor(object):
             format_col_size = min_col_size
         elif self.matrix_formatting == MatrixFormatting.FILL_NONE:
             format_col_size = max_col_size
+        else:
+            raise ValueError(
+                "unknown matrix formatting: {}".format(self.matrix_formatting))
 
         return [
             self.data_matrix[row_idx][:format_col_size] +
