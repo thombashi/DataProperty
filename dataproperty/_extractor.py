@@ -39,6 +39,8 @@ class MatrixFormatting(enum.Enum):
     # column size.
     FILL_NONE = 1 << 3
 
+    HEADER_ALIGNED = 1 << 4
+
 
 class DataPropertyExtractor(object):
     """
@@ -331,28 +333,11 @@ class DataPropertyExtractor(object):
             try:
                 col_dp_list[col_idx]
             except IndexError:
-                if self.matrix_formatting == MatrixFormatting.EXCEPTION:
-                    raise ValueError(
-                        "column not found: col-size={}, col-index={}".format(
-                            len(col_dp_list), col_idx))
-
-                if any([
-                    self.matrix_formatting == MatrixFormatting.FILL_NONE,
-                    all([
-                        self.matrix_formatting == MatrixFormatting.TRIM,
-                        is_empty_sequence(self.header_list),
-                    ])
-                ]):
-                    col_dp_list.append(ColumnDataProperty(
-                        column_index=col_idx, min_width=self.min_column_width,
-                        datetime_format_str=self.datetime_format_str,
-                        east_asian_ambiguous_width=self.east_asian_ambiguous_width
-                    ))
-                elif self.matrix_formatting == MatrixFormatting.TRIM:
-                    logger.debug(
-                        "ignore columns (column index={}) which longer than "
-                        "the header column".format(col_idx))
-                    continue
+                col_dp_list.append(ColumnDataProperty(
+                    column_index=col_idx, min_width=self.min_column_width,
+                    datetime_format_str=self.datetime_format_str,
+                    east_asian_ambiguous_width=self.east_asian_ambiguous_width
+                ))
 
             col_dp = col_dp_list[col_idx]
             col_dp.begin_update()
@@ -460,30 +445,41 @@ class DataPropertyExtractor(object):
         ]
 
     def __to_dataproperty_matrix(self):
-        if self.matrix_formatting == MatrixFormatting.TRIM:
+        header_col_size = len(self.header_list) if self.header_list else 0
+        col_size_list = [
+            len(data_list) for data_list in self.data_matrix
+        ]
+
+        if self.header_list:
+            min_col_size = min([header_col_size] + col_size_list)
+            max_col_size = max([header_col_size] + col_size_list)
+        elif col_size_list:
+            min_col_size = min(col_size_list)
+            max_col_size = max(col_size_list)
+        else:
+            min_col_size = 0
+            max_col_size = 0
+
+        if self.matrix_formatting == MatrixFormatting.EXCEPTION:
+            if min_col_size != max_col_size:
+                raise ValueError(
+                    "nonuniform column size: min={}, max={}".format(
+                        min_col_size, max_col_size))
+
             return self.data_matrix
 
-        header_col_size = len(self.header_list) if self.header_list else 0
-        max_col_size = max([header_col_size] + [
-            len(data_list) for data_list in self.data_matrix
-        ])
+        if self.matrix_formatting == MatrixFormatting.HEADER_ALIGNED:
+            format_col_size = header_col_size
+        elif self.matrix_formatting == MatrixFormatting.TRIM:
+            format_col_size = min_col_size
+        elif self.matrix_formatting == MatrixFormatting.FILL_NONE:
+            format_col_size = max_col_size
 
-        for row_idx in range(len(self.data_matrix)):
-            diff_col_size = max_col_size - len(self.data_matrix[row_idx])
-
-            if (diff_col_size > 0 and
-                    self.matrix_formatting == MatrixFormatting.EXCEPTION):
-                raise ValueError(
-                    "miss match column size: max={}, row={}, diff={}".format(
-                        max_col_size, row_idx, diff_col_size))
-
-            if self.matrix_formatting != MatrixFormatting.FILL_NONE:
-                continue
-
-            for _i in range(diff_col_size):
-                self.__data_matrix[row_idx].append(None)
-
-        return self.__data_matrix
+        return [
+            self.data_matrix[row_idx][:format_col_size] +
+            [None] * (format_col_size - col_size)
+            for row_idx, col_size in enumerate(col_size_list)
+        ]
 
     def __get_col_dp_list_base(self):
         header_dp_list = self.to_header_dataproperty_list()

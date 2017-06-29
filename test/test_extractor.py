@@ -675,33 +675,62 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
         assert Nan(dp.decimal_places).is_type()
         assert dp.format_str == "{}"
 
+
+class Test_DataPropertyExtractor_matrix_formatting(object):
+    TEST_DATA_MATRIX_NORMAL_COL3 = [
+        ["a", 0, "aa"],
+        ["b", 1, "bb"],
+        ["c", 2, "ccc"],
+    ]
+
+    TEST_DATA_MATRIX_NOUNIFORM_COL1 = [
+        ["a", 0],
+        ["b", 1, "bb"],
+        ["c", 2, "ccc", 0.1],
+        ["d"]
+    ]
+
     @pytest.mark.parametrize(
         ["header_list", "value", "matrix_formatting", "expected"],
         [
             [
-                ["i", "f", "s", "if", "mix"],
-                TEST_DATA_MATRIX,
+                None,
+                TEST_DATA_MATRIX_NOUNIFORM_COL1,
                 MatrixFormatting.TRIM,
-                5,
+                1,
+            ],
+            [
+                ["a", "b"],
+                TEST_DATA_MATRIX_NORMAL_COL3,
+                MatrixFormatting.TRIM,
+                2,
             ],
             [
                 None,
-                TEST_DATA_MATRIX,
+                TEST_DATA_MATRIX_NOUNIFORM_COL1,
                 MatrixFormatting.FILL_NONE,
-                9
+                4
             ],
             [
-                None,
-                [
-                    ["a", 0],
-                    ["b", 1, "abc"],
-                    ["c", 2],
-                ],
+                ["a", "b", "c"],
+                TEST_DATA_MATRIX_NORMAL_COL3,
                 MatrixFormatting.FILL_NONE,
                 3
             ],
+            [
+                ["a", "b", "c"],
+                TEST_DATA_MATRIX_NOUNIFORM_COL1,
+                MatrixFormatting.HEADER_ALIGNED,
+                3
+            ],
+            [
+                ["a", "b", "c", "d", "e"],
+                TEST_DATA_MATRIX_NOUNIFORM_COL1,
+                MatrixFormatting.HEADER_ALIGNED,
+                5
+            ],
         ])
-    def test_normal_mismatch_processing(
+    def test_normal_matrix_formatting(
             self, dp_extractor, header_list, value, matrix_formatting,
             expected):
         dp_extractor.header_list = header_list
@@ -716,12 +745,12 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
         [
             [
                 ["i", "f", "s", "if", "mix"],
-                TEST_DATA_MATRIX,
+                TEST_DATA_MATRIX_NOUNIFORM_COL1,
                 MatrixFormatting.EXCEPTION,
                 ValueError,
             ],
         ])
-    def test_exception_mismatch_processing(
+    def test_exception_matrix_formatting(
             self, dp_extractor, header_list, value, matrix_formatting,
             expected):
         dp_extractor.header_list = header_list
