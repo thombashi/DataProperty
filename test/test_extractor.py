@@ -136,7 +136,7 @@ class Test_DataPropertyExtractor_to_dataproperty(object):
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping(object):
+class Test_DataPropertyExtractor_to_dataproperty_quoting_flags(object):
     ALWAYS_QUOTE_FLAG_MAPPING = {
         Typecode.NONE: True,
         Typecode.INTEGER: True,
