@@ -138,11 +138,11 @@ class DataProperty(DataPeropertyBase):
     @property
     def typecode(self):
         """
-        Return the type code that corresponds to the type of the ``data``.
+        ``typepy.Typecode`` that corresponds to the type of the ``data``.
 
         :return:
-            One of the constants that are defined in the ``Typecode`` class.
-        :rtype: int
+            One of the Enum value that are defined ``typepy.Typecode``.
+        :rtype: typepy.Typecode
         """
 
         return self.__typecode

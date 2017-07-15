@@ -44,7 +44,7 @@ class MatrixFormatting(enum.Enum):
 
 class DataPropertyExtractor(object):
     """
-    .. py:attribute:: quote_flag_mapping
+    .. py:attribute:: quoting_flags
 
         Configurations to add double quote to for each items in a matrix,
         where |Typecode| of table-value is |True| in the ``quote_flag_table``
@@ -58,13 +58,14 @@ class DataPropertyExtractor(object):
                 Typecode.BOOL: False,
                 Typecode.DATETIME: False,
                 Typecode.DICTIONARY: False,
-                Typecode.REAL_NUMBER: False,
                 Typecode.INFINITY: False,
                 Typecode.INTEGER: False,
+                Typecode.IP_ADDRESS: False,
                 Typecode.LIST: False,
                 Typecode.NAN: False,
                 Typecode.NULL_STRING: False,
                 Typecode.NONE: False,
+                Typecode.REAL_NUMBER: False,
                 Typecode.STRING: False,
             }
     """
