@@ -23,7 +23,7 @@
 
 Summary
 =======
-A python library for extract property from data.
+A Python library for extract property from data.
 
 
 Installation
@@ -155,7 +155,7 @@ Full example source code can be found at *examples/py/to_dataproperty_matrix.py*
 
 Extract property for each column from a matrix
 ------------------------------------------------------
-``DataPropertyExtractor.to_col_dataproperty_list`` method will return a list of ``DataProperty`` instances from a data matrix. The list represents the properties for each column.
+``DataPropertyExtractor.to_col_dataproperty_list`` method returns a list of ``DataProperty`` instances from a data matrix. The list represents the properties for each column.
 An example data set and the result are as follows:
 
 Example data set and result are as follows:
@@ -193,14 +193,12 @@ Full example source code can be found at *examples/py/to_col_dataproperty_list.p
 
 Dependencies
 ============
-
 Python 2.7+ or 3.3+
 
 - `typepy <https://github.com/thombashi/typepy>`__
 
 Test dependencies
 -----------------
-
--  `pytest <https://pypi.python.org/pypi/pytest>`__
--  `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
--  `tox <https://pypi.python.org/pypi/tox>`__
+- `pytest <https://pypi.python.org/pypi/pytest>`__
+- `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
+- `tox <https://pypi.python.org/pypi/tox>`__
