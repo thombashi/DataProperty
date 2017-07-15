@@ -38,7 +38,7 @@ class DataPropertyConverter(object):
             if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING)
         self.__quote_flag_mapping = (
             quote_flag_mapping
-            if quote_flag_mapping else DefaultValue.QUOTE_FLAG_MAPPING)
+            if quote_flag_mapping else DefaultValue.QUOTING_FLAGS)
 
         self.__datetime_formatter = datetime_formatter
         self.__datetime_format_str = datetime_format_str

@@ -49,7 +49,7 @@ class DefaultValue(object):
         False: False,
     }
 
-    QUOTE_FLAG_MAPPING = copy.deepcopy(NOT_QUOTING_FLAGS)
+    QUOTING_FLAGS = copy.deepcopy(NOT_QUOTING_FLAGS)
 
     STRICT_LEVEL_MAPPING = {
         Typecode.BOOL: 1,

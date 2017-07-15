@@ -277,8 +277,7 @@ class DataPropertyExtractor(object):
             DefaultValue.TYPE_VALUE_MAPPING)
         self.__const_value_mapping = copy.deepcopy(
             DefaultValue.CONST_VALUE_MAPPING)
-        self.__quote_flag_mapping = copy.deepcopy(
-            DefaultValue.QUOTE_FLAG_MAPPING)
+        self.__quote_flag_mapping = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None
 
         self.__matrix_formatting = MatrixFormatting.TRIM
