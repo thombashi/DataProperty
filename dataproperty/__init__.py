@@ -9,7 +9,7 @@ from __future__ import absolute_import
 from ._align import Align
 from ._align_getter import align_getter
 from ._common import (
-    NULL_QUOTE_FLAG_MAPPING,
+    NOT_QUOTING_FLAGS,
     NOT_STRICT_TYPE_MAPPING,
     STRICT_TYPE_MAPPING,
     DefaultValue,

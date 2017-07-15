@@ -17,7 +17,7 @@ from typepy import (
 )
 
 
-NULL_QUOTE_FLAG_MAPPING = {
+NOT_QUOTING_FLAGS = {
     Typecode.BOOL: False,
     Typecode.DATETIME: False,
     Typecode.DICTIONARY: False,
@@ -49,7 +49,7 @@ class DefaultValue(object):
         False: False,
     }
 
-    QUOTE_FLAG_MAPPING = copy.deepcopy(NULL_QUOTE_FLAG_MAPPING)
+    QUOTE_FLAG_MAPPING = copy.deepcopy(NOT_QUOTING_FLAGS)
 
     STRICT_LEVEL_MAPPING = {
         Typecode.BOOL: 1,
