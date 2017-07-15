@@ -224,14 +224,14 @@ class DataPropertyExtractor(object):
 
     @property
     def quote_flag_mapping(self):
-        return self.__quote_flag_mapping
+        return self.__quoting_flags
 
     @quote_flag_mapping.setter
     def quote_flag_mapping(self, x):
-        if self.__quote_flag_mapping == x:
+        if self.__quoting_flags == x:
             return
 
-        self.__quote_flag_mapping = x
+        self.__quoting_flags = x
         self.__clear_cache()
 
     @property
@@ -277,7 +277,7 @@ class DataPropertyExtractor(object):
             DefaultValue.TYPE_VALUE_MAPPING)
         self.__const_value_mapping = copy.deepcopy(
             DefaultValue.CONST_VALUE_MAPPING)
-        self.__quote_flag_mapping = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
+        self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None
 
         self.__matrix_formatting = MatrixFormatting.TRIM

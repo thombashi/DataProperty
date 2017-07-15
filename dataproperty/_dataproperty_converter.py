@@ -36,7 +36,7 @@ class DataPropertyConverter(object):
         self.__const_value_mapping = (
             const_value_mapping
             if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING)
-        self.__quote_flag_mapping = (
+        self.__quoting_flags = (
             quote_flag_mapping
             if quote_flag_mapping else DefaultValue.QUOTING_FLAGS)
 
@@ -49,7 +49,7 @@ class DataPropertyConverter(object):
         try:
             return self.__create_dataproperty(self.__convert_value(dp_value))
         except TypeConversionError:
-            if not self.__quote_flag_mapping.get(dp_value.typecode):
+            if not self.__quoting_flags.get(dp_value.typecode):
                 return dp_value
 
             return self.__create_dataproperty(
@@ -63,7 +63,7 @@ class DataPropertyConverter(object):
             strict_type_mapping=STRICT_TYPE_MAPPING)
 
     def __apply_quote(self, typecode, data):
-        if not self.__quote_flag_mapping.get(typecode):
+        if not self.__quoting_flags.get(typecode):
             return data
 
         try:
