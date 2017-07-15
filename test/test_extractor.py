@@ -150,7 +150,7 @@ class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping(object):
     }
 
     @pytest.mark.parametrize(
-        ["value", "quote_flag_mapping", "is_strict", "expected"],
+        ["value", "quoting_flags", "is_strict", "expected"],
         [
             ["string", ALWAYS_QUOTE_FLAG_MAPPING, False, '"string"'],
             ['"string"', ALWAYS_QUOTE_FLAG_MAPPING, False, '"string"'],
@@ -160,9 +160,9 @@ class Test_DataPropertyExtractor_to_dataproperty_quote_flag_mapping(object):
         ]
     )
     def test_normal_always_quote(
-            self, dp_extractor, value, quote_flag_mapping, is_strict,
+            self, dp_extractor, value, quoting_flags, is_strict,
             expected):
-        dp_extractor.quote_flag_mapping = quote_flag_mapping
+        dp_extractor.quoting_flags = quoting_flags
         dp = dp_extractor.to_dataproperty(value)
 
         assert dp.data == expected

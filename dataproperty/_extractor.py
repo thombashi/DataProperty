@@ -223,11 +223,11 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def quote_flag_mapping(self):
+    def quoting_flags(self):
         return self.__quoting_flags
 
-    @quote_flag_mapping.setter
-    def quote_flag_mapping(self, x):
+    @quoting_flags.setter
+    def quoting_flags(self, x):
         if self.__quoting_flags == x:
             return
 
@@ -504,7 +504,7 @@ class DataPropertyExtractor(object):
         self.__dp_converter = DataPropertyConverter(
             type_value_mapping=self.type_value_mapping,
             const_value_mapping=self.const_value_mapping,
-            quote_flag_mapping=self.quote_flag_mapping,
+            quoting_flags=self.quoting_flags,
             datetime_formatter=self.datetime_formatter,
             datetime_format_str=self.datetime_format_str,
             float_type=self.float_type,

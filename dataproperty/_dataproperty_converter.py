@@ -26,7 +26,7 @@ class DataPropertyConverter(object):
 
     def __init__(
             self, type_value_mapping=None, const_value_mapping=None,
-            quote_flag_mapping=None,
+            quoting_flags=None,
             datetime_formatter=None,
             datetime_format_str=None,
             float_type=None, strict_type_mapping=None):
@@ -37,8 +37,7 @@ class DataPropertyConverter(object):
             const_value_mapping
             if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING)
         self.__quoting_flags = (
-            quote_flag_mapping
-            if quote_flag_mapping else DefaultValue.QUOTING_FLAGS)
+            quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS)
 
         self.__datetime_formatter = datetime_formatter
         self.__datetime_format_str = datetime_format_str
