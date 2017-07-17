@@ -102,7 +102,7 @@ e.g. Extract a ``bool`` value property
 
 Extract data property for each element from a matrix
 ----------------------------------------------------
-``DataPropertyExtractor.to_dataproperty_matrix`` method will return a matrix of ``DataProperty`` instances from a data matrix. 
+``DataPropertyExtractor.to_dataproperty_matrix`` method returns a matrix of ``DataProperty`` instances from a data matrix. 
 An example data set and the result are as follows:
 
 .. code:: python
