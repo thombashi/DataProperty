@@ -45,7 +45,9 @@ class AbstractContainer(object):
 
 
 class ListContainer(AbstractContainer):
-    __slots__ = ("__value_list")
+    __slots__ = (
+        "__value_list",
+    )
 
     @property
     def min_value(self):
