@@ -86,9 +86,9 @@ class ListContainer(AbstractContainer):
 
         self.__value_list.append(store_value)
 
-    def merge(self, list_container):
+    def merge(self, value):
         try:
-            self.__value_list.extend(list_container)
+            self.__value_list.extend(value)
         except TypeError:
             pass
 
@@ -155,6 +155,6 @@ class MinMaxContainer(AbstractContainer):
         else:
             self.__max_value = max(self.__max_value, value)
 
-    def merge(self, minmax_container):
-        self.update(minmax_container.min_value)
-        self.update(minmax_container.max_value)
+    def merge(self, value):
+        self.update(value.min_value)
+        self.update(value.max_value)
