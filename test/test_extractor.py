@@ -84,8 +84,7 @@ class Test_DataPropertyExtractor_to_dataproperty(object):
                 False, "NAN_4", Typecode.STRING],
             ["nan", {Typecode.NAN: "NAN_5"},
                 True, "nan", Typecode.STRING],
-        ]
-    )
+        ])
     def test_normal_type_value_mapping(
             self, dp_extractor, value, type_value_mapping, is_strict,
             expected_value, expected_typecode):
@@ -123,8 +122,7 @@ class Test_DataPropertyExtractor_to_dataproperty(object):
                 "s",
                 True, "2017-01-01 00:00:00",
             ],
-        ]
-    )
+        ])
     def test_normal_datetime(
             self, dp_extractor, value, datetime_formatter, datetime_format_str,
             is_strict, expected):
@@ -157,8 +155,7 @@ class Test_DataPropertyExtractor_to_dataproperty_quoting_flags(object):
             [' "123"', ALWAYS_QUOTE_FLAG_MAPPING, False, ' "123"'],
             ['"string" ', ALWAYS_QUOTE_FLAG_MAPPING, False, '"string" '],
             [' "12 345" ', ALWAYS_QUOTE_FLAG_MAPPING, False, ' "12 345" '],
-        ]
-    )
+        ])
     def test_normal_always_quote(
             self, dp_extractor, value, quoting_flags, is_strict,
             expected):
@@ -183,8 +180,7 @@ class Test_DataPropertyExtractor_to_dataproperty_const_value_mapping(object):
             ["True", VALUE_MAPPING, True, "True"],
             [True, VALUE_MAPPING, True, "true value"],
             ["const", VALUE_MAPPING, True, "const value"]
-        ]
-    )
+        ])
     def test_normal(
             self, dp_extractor, value, const_value_mapping, is_strict,
             expected):
@@ -237,8 +233,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix(object):
                 {True: "true", False: "false"},
                 datetime_formatter_test,
             ],
-        ]
-    )
+        ])
     def test_normal(
             self, dp_extractor, value, type_value_mapping,
             const_value_mapping, datetime_formatter):
@@ -447,8 +442,7 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             "column=0, typename=INTEGER, align=right, "
             "ascii_char_width=1, bit_length=2, integer_digits=(min=1, max=1), "
             "decimal_places=(min=0, max=0), "
-            "additional_format_len=(min=0, max=0)"
-        )
+            "additional_format_len=(min=0, max=0)")
 
         col_idx += 1
         dp = col_dp_list[col_idx]

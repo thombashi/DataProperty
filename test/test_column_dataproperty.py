@@ -372,8 +372,7 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=STRING, align=left, ascii_char_width=6, "
-            "additional_format_len=(min=0, max=0)"
-        )
+            "additional_format_len=(min=0, max=0)")
 
     @pytest.mark.parametrize(["ambiguous_width", "ascii_char_width"], [
         [2, 6],

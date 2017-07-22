@@ -52,8 +52,7 @@ class Test_get_ascii_char_width(object):
         ["value", "ambiguous_width"],
         itertools.product(
             ["Ø", "α", "β", "γ", "θ", "κ", "λ", "π", "ǎ"],
-            [1, 2])
-    )
+            [1, 2]))
     def test_normal_east_asian_ambiguous(
             self, value, ambiguous_width):
         assert get_ascii_char_width(value, ambiguous_width) == ambiguous_width

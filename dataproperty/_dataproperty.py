@@ -453,8 +453,7 @@ class ColumnDataProperty(DataPeropertyBase):
         warnings.warn(
             "padding_len will be deleted in the future, "
             "use ascii_char_width instead.",
-            DeprecationWarning
-        )
+            DeprecationWarning)
 
         return self.ascii_char_width
 

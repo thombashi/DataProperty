@@ -54,8 +54,7 @@ class Test_DataPeroperty_data_typecode(object):
                 Decimal("-0.00284241876820074"),
                 Typecode.REAL_NUMBER
             ],
-        ]
-    )
+        ])
     def test_normal(self, value, expected_data, expected_typecode):
         dp = DataProperty(value)
 
@@ -152,8 +151,7 @@ class Test_DataPeroperty_data_typecode(object):
                 "新しいテキスト ドキュメント.txt".encode("utf_8"), True,
                 "新しいテキスト ドキュメント.txt", Typecode.STRING,
             ]
-        ]
-    )
+        ])
     def test_normal_strict_mapping(
             self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(
@@ -175,8 +173,7 @@ class Test_DataPeroperty_data_typecode(object):
             ['"1"', '', False, '"1"', Typecode.STRING],
             ['"1"', '"', True, "1", Typecode.STRING],
             ['"1"', '', False, '"1"', Typecode.STRING],
-        ]
-    )
+        ])
     def test_normal_strip_str(
             self, value, strip_str, is_strict,
             expected_data, expected_typecode):
@@ -216,8 +213,7 @@ class Test_DataPeroperty_data_typecode(object):
 
             ["true", Bool, False, Typecode.BOOL],
             ["false", Bool, False, Typecode.BOOL],
-        ]
-    )
+        ])
     def test_normal_type_hint(
             self, value, type_hint, is_strict, expected_typecode):
 
@@ -233,8 +229,7 @@ class Test_DataPeroperty_data_typecode(object):
             [nan, True, nan, Typecode.NAN],
             [nan, False, nan, Typecode.NAN],
             ["nan", True, nan, Typecode.NAN],
-        ]
-    )
+        ])
     def test_normal_nan(
             self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(
@@ -361,8 +356,7 @@ class Test_DataPeroperty_len(object):
         [
             ["øø", 1, 2, 2],
             ["øø", 2, 4, 2],
-        ]
-    )
+        ])
     def test_normal_eaaw(self, value, eaaw, expected_acs, expected_len):
         dp = DataProperty(value, east_asian_ambiguous_width=eaaw)
 
@@ -382,8 +376,7 @@ class Test_DataPeroperty_len(object):
             ["øø", None, ValueError],
             ["øø", 0, ValueError],
             ["øø", 3, ValueError],
-        ]
-    )
+        ])
     def test_exception_eaaw(self, value, eaaw, expected):
         with pytest.raises(expected):
             DataProperty(value, east_asian_ambiguous_width=eaaw)
@@ -408,8 +401,7 @@ class Test_DataPeroperty_get_padding_len(object):
         [
             ["aøb", 4, 1, 4],
             ["aøb", 4, 2, 3],
-        ]
-    )
+        ])
     def test_normal_east_asian_ambiguous_width(
             self, value, ascii_char_width, ambiguous_width, expected):
         dp = DataProperty(value, east_asian_ambiguous_width=ambiguous_width)
