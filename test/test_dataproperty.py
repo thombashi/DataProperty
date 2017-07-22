@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 
 import datetime
 from decimal import Decimal
+import ipaddress
 import sys
 
 from dataproperty import (
@@ -17,7 +18,6 @@ from dataproperty import (
     DataProperty,
     DefaultValue,
 )
-import ipaddress
 import pytest
 import six
 from typepy import Typecode
