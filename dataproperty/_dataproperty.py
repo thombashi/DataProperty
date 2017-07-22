@@ -609,8 +609,8 @@ class ColumnDataProperty(DataPeropertyBase):
             return Typecode.REAL_NUMBER
 
         if any([
-            self.__is_not_single_typecode(Typecode.BOOL.value),
-            self.__is_not_single_typecode(Typecode.DATETIME.value),
+                self.__is_not_single_typecode(Typecode.BOOL.value),
+                self.__is_not_single_typecode(Typecode.DATETIME.value),
         ]):
             return Typecode.STRING
 
