@@ -32,7 +32,8 @@ with open(os.path.join(REQUIREMENT_DIR, "docs_requirements.txt")) as f:
     docs_requires = [line.strip() for line in f if line.strip()]
 
 needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
-pytest_runner = ["pytest-runner"] if needs_pytest else []
+pytest_runner_require = ["pytest-runner"] if needs_pytest else []
+setuptools_require = ["setuptools>=20.2.2"]
 
 author = "Tsuyoshi Hombashi"
 email = "tsuyoshi.hombashi@gmail.com"
@@ -47,7 +48,6 @@ setuptools.setup(
     author_email=email,
     description=summary,
     include_package_data=True,
-    install_requires=install_requires,
     keywords=["data", "property"],
     license="MIT License",
     long_description=long_description,
@@ -55,7 +55,8 @@ setuptools.setup(
     maintainer_email=email,
     packages=setuptools.find_packages(exclude=["test*"]),
 
-    setup_requires=pytest_runner,
+    install_requires=setuptools_require + install_requires,
+    setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
     extras_require={
         "test": tests_requires,

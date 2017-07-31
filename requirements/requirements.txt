@@ -1,5 +1,4 @@
 enum34;python_version<"3.4"
 ipaddress;python_version<"3.3"
 logbook>=1.1.0
-setuptools>=20.2.2
-typepy>=0.0.15
+typepy>=0.0.17
