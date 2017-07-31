@@ -42,8 +42,6 @@ setuptools.setup(
     name=project_name,
     version="0.25.1",
     url="https://github.com/thombashi/{}".format(project_name),
-    bugtrack_url="https://github.com/thombashi/{}/issues".format(
-        project_name),
 
     author=author,
     author_email=email,
