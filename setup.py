@@ -40,7 +40,7 @@ project_name = "DataProperty"
 
 setuptools.setup(
     name=project_name,
-    version="0.25.1",
+    version="0.25.2",
     url="https://github.com/thombashi/{}".format(project_name),
 
     author=author,
