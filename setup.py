@@ -40,7 +40,7 @@ project_name = "DataProperty"
 
 setuptools.setup(
     name=project_name,
-    version="0.25.2",
+    version="0.25.3",
     url="https://github.com/thombashi/{}".format(project_name),
 
     author=author,
@@ -54,6 +54,7 @@ setuptools.setup(
     maintainer=author,
     maintainer_email=email,
     packages=setuptools.find_packages(exclude=["test*"]),
+
     setup_requires=pytest_runner,
     tests_require=tests_requires,
     extras_require={
