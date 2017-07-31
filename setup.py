@@ -35,14 +35,14 @@ needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
 pytest_runner_require = ["pytest-runner"] if needs_pytest else []
 setuptools_require = ["setuptools>=20.2.2"]
 
+MODULE_NAME = "DataProperty"
 author = "Tsuyoshi Hombashi"
 email = "tsuyoshi.hombashi@gmail.com"
-project_name = "DataProperty"
 
 setuptools.setup(
-    name=project_name,
+    name=MODULE_NAME,
     version="0.25.3",
-    url="https://github.com/thombashi/{}".format(project_name),
+    url="https://github.com/thombashi/{}".format(MODULE_NAME),
 
     author=author,
     author_email=email,
