@@ -41,7 +41,7 @@ email = "tsuyoshi.hombashi@gmail.com"
 
 setuptools.setup(
     name=MODULE_NAME,
-    version="0.25.3",
+    version="0.25.4",
     url="https://github.com/thombashi/{}".format(MODULE_NAME),
 
     author=author,
