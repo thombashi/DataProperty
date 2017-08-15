@@ -522,7 +522,7 @@ class ColumnDataProperty(DataPeropertyBase):
                 "decimal_places=({})".format(
                     six.text_type(self.minmax_decimal_places)))
 
-        if self.minmax_additional_format_len.has_value():
+        if not self.minmax_additional_format_len.is_zero():
             element_list.append(
                 "additional_format_len=({})".format(
                     six.text_type(self.minmax_additional_format_len)))

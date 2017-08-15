@@ -191,8 +191,7 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=REAL_NUMBER, align=right, ascii_char_width=8, "
-            "integer_digits=(min=1, max=1), decimal_places=(min=0, max=0), "
-            "additional_format_len=(min=0, max=0)")
+            "integer_digits=(min=1, max=1), decimal_places=(min=0, max=0)")
 
     def test_normal_number_2(self):
         col_dp = ColumnDataProperty()
@@ -243,8 +242,7 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=(min=1, max=1), decimal_places=(min=1, max=2), "
-            "additional_format_len=(min=0, max=0)")
+            "integer_digits=(min=1, max=1), decimal_places=(min=1, max=2)")
 
     def test_normal_number_4(self):
         col_dp = ColumnDataProperty()
@@ -268,8 +266,7 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=(min=1, max=1), decimal_places=(min=0, max=2), "
-            "additional_format_len=(min=0, max=0)")
+            "integer_digits=(min=1, max=1), decimal_places=(min=0, max=2)")
 
     def test_normal_inf(self):
         col_dp = ColumnDataProperty()
@@ -293,8 +290,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert str(col_dp) == (
-            "typename=INFINITY, align=left, ascii_char_width=8, "
-            "additional_format_len=(min=0, max=0)")
+            "typename=INFINITY, align=left, ascii_char_width=8")
 
     def test_normal_mix_0(self):
         col_dp = ColumnDataProperty()
@@ -371,8 +367,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert str(col_dp) == (
-            "typename=STRING, align=left, ascii_char_width=6, "
-            "additional_format_len=(min=0, max=0)")
+            "typename=STRING, align=left, ascii_char_width=6")
 
     @pytest.mark.parametrize(["ambiguous_width", "ascii_char_width"], [
         [2, 6],
