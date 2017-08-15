@@ -32,6 +32,7 @@ class Test_MinMaxContainer_repr(object):
 
     def test_null(self, container):
         assert not container.has_value()
+        assert container.is_zero()
         assert container.min_value is None
         assert container.max_value is None
 
@@ -100,6 +101,7 @@ class Test_MinMaxContainer_mean(object):
             container.update(value)
 
         assert container.has_value()
+        assert not container.is_zero()
         assert container.mean() == 2
 
     def test_null(self, container):
@@ -113,6 +115,7 @@ class Test_MinMaxContainer_diff(object):
             container.update(value)
 
         assert container.has_value()
+        assert not container.is_zero()
         assert container.diff() == 2
 
     def test_null(self, container):
@@ -126,6 +129,7 @@ class Test_MinMaxContainer_update(object):
             container.update(value)
 
         assert container.has_value()
+        assert not container.is_zero()
         assert container.min_value == 1
         assert container.max_value == 3
 
@@ -134,6 +138,7 @@ class Test_MinMaxContainer_update(object):
             container.update(value)
 
         assert container.has_value()
+        assert not container.is_zero()
         assert container.min_value == -six.MAXSIZE
         assert container.max_value == six.MAXSIZE
 
@@ -149,5 +154,14 @@ class Test_MinMaxContainer_merge(object):
         container.merge(other)
 
         assert container.has_value()
+        assert not container.is_zero()
         assert container.min_value == 0
         assert container.max_value == 10
+
+
+class Test_MinMaxContainer_is_zero(object):
+
+    def test_normal(self, container):
+        container = MinMaxContainer([0, 0])
+
+        assert container.is_zero()
