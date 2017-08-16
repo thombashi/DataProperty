@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 
 import datetime
 from decimal import Decimal
+from ipaddress import ip_address
 
 from dataproperty import (
     Align,
@@ -58,7 +59,7 @@ class Test_ColumnDataPeroperty(object):
                 Typecode.REAL_NUMBER, RealNumber,
             ],
             [
-                ["127.0.0.1", "::1"],
+                [ip_address("127.0.0.1"), ip_address("::1")],
                 Typecode.IP_ADDRESS, IpAddress,
             ],
             [
@@ -105,7 +106,7 @@ class Test_ColumnDataPeroperty(object):
                 Typecode.REAL_NUMBER, RealNumber,
             ],
             [
-                ["192.168.0.1", None, "::1", None],
+                [ip_address("192.168.0.1"), None, ip_address("::1"), None],
                 Typecode.IP_ADDRESS, IpAddress,
             ],
             [[None, "test"], Typecode.STRING, String],

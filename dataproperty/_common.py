@@ -58,7 +58,7 @@ class DefaultValue(object):
         Typecode.REAL_NUMBER: 1,
         Typecode.INFINITY: StrictLevel.MIN,
         Typecode.INTEGER: 1,
-        Typecode.IP_ADDRESS: StrictLevel.MIN,
+        Typecode.IP_ADDRESS: StrictLevel.MAX,
         Typecode.LIST: StrictLevel.MAX,
         Typecode.NAN: StrictLevel.MIN,
         Typecode.NONE: StrictLevel.MAX,

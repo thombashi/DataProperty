@@ -95,13 +95,15 @@ class Test_DataPeroperty_data_typecode(object):
             ["100-0002", False, "100-0002", Typecode.STRING],
 
             [
-                "127.0.0.1", False,
+                "127.0.0.1", True,
                 ipaddress.IPv4Address("127.0.0.1"), Typecode.IP_ADDRESS,
             ],
+            ["127.0.0.1", False, "127.0.0.1", Typecode.STRING],
             [
-                "::1", False,
+                "::1", True,
                 ipaddress.IPv6Address("::1"), Typecode.IP_ADDRESS,
             ],
+            ["::1", False, "::1", Typecode.STRING],
 
             [[], True, [], Typecode.LIST],
             [[], False, [], Typecode.LIST],
