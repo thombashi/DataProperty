@@ -415,7 +415,7 @@ class DataPropertyExtractor(object):
     def __to_dataproperty_raw(
             self, data, type_hint=None, strip_str=None,
             strict_type_mapping=None):
-        dp = DataProperty(
+        value_dp = DataProperty(
             data,
             type_hint=(
                 type_hint if type_hint is not None else self.default_type_hint
@@ -429,7 +429,7 @@ class DataPropertyExtractor(object):
             east_asian_ambiguous_width=self.east_asian_ambiguous_width
         )
 
-        return self.__dp_converter.convert(dp)
+        return self.__dp_converter.convert(value_dp)
 
     def __to_dataproperty_list(
             self, data_list, type_hint=None, strip_str=None,

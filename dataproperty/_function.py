@@ -139,8 +139,8 @@ def get_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
     import unicodedata
 
     width = 0
-    for c in unicode_str:
-        char_width = unicodedata.east_asian_width(c)
+    for char in unicode_str:
+        char_width = unicodedata.east_asian_width(char)
         if char_width in "WF":
             width += 2
         elif char_width == "A":

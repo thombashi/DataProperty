@@ -425,10 +425,10 @@ class ColumnDataProperty(DataPeropertyBase):
             return None
 
         bit_length = 0
-        for dp in self.__dataproperty_list:
+        for value_dp in self.__dataproperty_list:
             try:
                 bit_length = max(
-                    bit_length, int.bit_length(dp.data))
+                    bit_length, int.bit_length(value_dp.data))
             except TypeError:
                 pass
 
@@ -644,12 +644,12 @@ class ColumnDataProperty(DataPeropertyBase):
         col_format_str = self.format_str
         max_width = self.__ascii_char_width
 
-        for dp in self.__dataproperty_list:
-            if dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
+        for value_dp in self.__dataproperty_list:
+            if value_dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
                 continue
 
             try:
-                formatted_value = col_format_str.format(dp.data)
+                formatted_value = col_format_str.format(value_dp.data)
             except (TypeError, ValueError):
                 continue
 
