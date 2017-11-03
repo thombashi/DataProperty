@@ -373,7 +373,7 @@ class DataPropertyExtractor(object):
                 data_list, type_hint=self.__get_col_type_hint(col_idx),
                 strip_str=self.strip_str_value)
             for col_idx, data_list
-            in enumerate(zip(*self.__to_dataproperty_matrix()))
+            in enumerate(zip(*self.__strip_data_matrix()))
         ]))
 
         return self.__dp_matrix_cache
@@ -451,7 +451,7 @@ class DataPropertyExtractor(object):
             for data in data_list
         ]
 
-    def __to_dataproperty_matrix(self):
+    def __strip_data_matrix(self):
         header_col_size = len(self.header_list) if self.header_list else 0
         col_size_list = [
             len(data_list) for data_list in self.data_matrix
