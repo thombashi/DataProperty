@@ -83,9 +83,15 @@ class DataPeropertyBase(DataPeropertyInterface):
             if Nan(self.decimal_places).is_type():
                 return "{:f}"
 
-            return "{:" + ".{:d}f".format(self.decimal_places) + "}"
+            return self._get_realnumber_format()
 
         return "{:s}"
+
+    def _get_realnumber_format(self):
+        try:
+            return "{:" + ".{:d}f".format(self.decimal_places) + "}"
+        except ValueError:
+            return "{:f}"
 
     def __init__(self, datetime_format_str):
         self.__datetime_format_str = datetime_format_str
