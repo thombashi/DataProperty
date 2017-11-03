@@ -489,7 +489,7 @@ class DataPropertyExtractor(object):
                 "unknown matrix formatting: {}".format(self.matrix_formatting))
 
         return [
-            self.data_matrix[row_idx][:format_col_size] +
+            list(self.data_matrix[row_idx][:format_col_size]) +
             [None] * (format_col_size - col_size)
             for row_idx, col_size in enumerate(col_size_list)
         ]

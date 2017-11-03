@@ -406,6 +406,20 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             "NAN", "2017-11-01 01:23:45+0900"
         ],
     ]
+    TEST_DATA_MATRIX_TUPLE = (
+        (
+            1, 1.1,  "aa",   1,   1,     True,   inf,
+            nan, datetime.datetime(2017, 1, 1, 0, 0, 0)
+        ),
+        (
+            2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf",
+            "nan", "2017-01-01T01:23:45+0900"
+        ),
+        (
+            3, 3.33, "cccc", -3,  "ccc", "true", "infinity",
+            "NAN", "2017-11-01 01:23:45+0900"
+        ),
+    )
 
     @pytest.mark.parametrize(["header_list", "value"], [
         [
@@ -419,6 +433,10 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
         [
             [],
             TEST_DATA_MATRIX,
+        ],
+        [
+            ("i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"),
+            TEST_DATA_MATRIX_TUPLE,
         ],
     ])
     def test_normal_default(self, dp_extractor, header_list, value):
