@@ -327,7 +327,8 @@ class DataProperty(DataPeropertyBase):
 
         return get_ascii_char_width(unicode_str, east_asian_ambiguous_width)
 
-    def __preprocess_data(self, data, strip_str):
+    @staticmethod
+    def __preprocess_data(data, strip_str):
         if strip_str is None:
             return data
 
@@ -604,8 +605,10 @@ class ColumnDataProperty(DataPeropertyBase):
                 NUMBER_TYPECODE_BMP | Typecode.NULL_STRING.value):
             return False
 
-        if bin(self.__typecode_bitmap & (
-                FLOAT_TYPECODE_BMP | Typecode.NULL_STRING.value)).count("1") >= 2:
+        if bin(
+                self.__typecode_bitmap &
+                (FLOAT_TYPECODE_BMP | Typecode.NULL_STRING.value)
+        ).count("1") >= 2:
             return True
 
         if bin(self.__typecode_bitmap & NUMBER_TYPECODE_BMP).count("1") >= 2:
