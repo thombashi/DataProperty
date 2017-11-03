@@ -647,26 +647,20 @@ class ColumnDataProperty(DataPeropertyBase):
         return Typecode.STRING
 
     def __get_ascii_char_width(self):
-        if self.typecode != Typecode.REAL_NUMBER:
+        if not self.__typecode_bitmap & Typecode.REAL_NUMBER.value:
             return self.__ascii_char_width
 
-        col_format_str = self.format_str
         max_width = self.__ascii_char_width
 
         for value_dp in self.__dataproperty_list:
             if value_dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
                 continue
 
-            try:
-                formatted_value = col_format_str.format(value_dp.data)
-            except (TypeError, ValueError):
-                continue
-
             max_width = max(
                 max_width,
                 get_ascii_char_width(
-                    formatted_value, self.__east_asian_ambiguous_width)
-            )
+                    self.dp_to_str(value_dp),
+                    self.__east_asian_ambiguous_width))
 
         return max_width
 
