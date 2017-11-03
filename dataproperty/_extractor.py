@@ -323,19 +323,16 @@ class DataPropertyExtractor(object):
         ]
 
     def to_col_dataproperty_list(self, previous_column_dp_list=None):
-        logger.debug(
-            "to_col_dataproperty_list: prev_col_count={}, "
-            "mismatch_process={}".format(
-                len(previous_column_dp_list)
-                if previous_column_dp_list else None,
-                self.matrix_formatting))
+        logger.debug("prev_col_count={}, mismatch_process={}".format(
+            len(previous_column_dp_list) if previous_column_dp_list else None,
+            self.matrix_formatting))
 
         col_dp_list = self.__get_col_dp_list_base()
 
         try:
             dp_matrix = self.to_dataproperty_matrix()
         except TypeError as e:
-            logger.debug(e)
+            logger.debug("{:s}: {}".format(e.__class__.__name__, e))
             return col_dp_list
 
         for col_idx, value_dp_list in enumerate(zip(*dp_matrix)):
