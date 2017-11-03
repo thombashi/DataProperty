@@ -36,23 +36,23 @@ pytest_runner_require = ["pytest-runner"] if needs_pytest else []
 setuptools_require = ["setuptools>=20.2.2"]
 
 MODULE_NAME = "DataProperty"
-author = "Tsuyoshi Hombashi"
-email = "tsuyoshi.hombashi@gmail.com"
+AUTHOR = "Tsuyoshi Hombashi"
+EMAIL = "tsuyoshi.hombashi@gmail.com"
 
 setuptools.setup(
     name=MODULE_NAME,
     version="0.25.6",
     url="https://github.com/thombashi/{}".format(MODULE_NAME),
 
-    author=author,
-    author_email=email,
+    author=AUTHOR,
+    author_email=EMAIL,
     description=summary,
     include_package_data=True,
     keywords=["data", "property"],
     license="MIT License",
     long_description=long_description,
-    maintainer=author,
-    maintainer_email=email,
+    maintainer=AUTHOR,
+    maintainer_email=EMAIL,
     packages=setuptools.find_packages(exclude=["test*"]),
 
     install_requires=setuptools_require + install_requires,
@@ -77,5 +77,4 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
-    ],
-)
+    ])
