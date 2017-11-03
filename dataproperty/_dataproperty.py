@@ -539,6 +539,30 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return ", ".join(element_list)
 
+    def dp_to_str(self, value_dp):
+        to_string_format_str = self.__get_tostring_format(value_dp)
+
+        if any([
+                self.typecode in [Typecode.BOOL, Typecode.DATETIME],
+                all([self.typecode == Typecode.STRING,
+                     value_dp.typecode == Typecode.REAL_NUMBER]),
+        ]):
+            return to_string_format_str.format(value_dp.data)
+
+        try:
+            value = self.type_class(
+                value_dp.data, strict_level=StrictLevel.MIN
+            ).convert()
+        except TypeConversionError:
+            value = value_dp.data
+
+        try:
+            item = to_string_format_str.format(value)
+        except ValueError:
+            item = MultiByteStrDecoder(value).unicode_str
+
+        return item
+
     def extend_width(self, dwidth):
         self.__ascii_char_width += dwidth
 
@@ -616,6 +640,60 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return False
 
+    def __get_ascii_char_width(self):
+        if not self.__typecode_bitmap & Typecode.REAL_NUMBER.value:
+            return self.__ascii_char_width
+
+        max_width = self.__ascii_char_width
+
+        for value_dp in self.__dataproperty_list:
+            if value_dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
+                continue
+
+            max_width = max(
+                max_width,
+                get_ascii_char_width(
+                    self.dp_to_str(value_dp),
+                    self.__east_asian_ambiguous_width))
+
+        return max_width
+
+    def __get_decimal_places(self):
+        try:
+            avg = self.minmax_decimal_places.mean()
+        except TypeError:
+            return float("nan")
+
+        if Nan(avg).is_type():
+            return float("nan")
+
+        return int(min(
+            math.ceil(avg + Decimal("1.0")),
+            self.minmax_decimal_places.max_value))
+
+    def __get_tostring_format(self, value_dp):
+        if all([value_dp.typecode == Typecode.REAL_NUMBER,
+                self.__is_formatting_float]):
+            return self._get_realnumber_format()
+
+        if any([
+                all([
+                    self.typecode == Typecode.REAL_NUMBER,
+                    not self.__is_formatting_float,
+                    value_dp.typecode in [
+                        Typecode.INTEGER, Typecode.REAL_NUMBER],
+                ]),
+                value_dp.typecode == Typecode.NONE,
+        ]):
+            return "{}"
+
+        try:
+            self.format_str.format(value_dp.data)
+        except (TypeError, ValueError):
+            return "{}"
+
+        return self.format_str
+
     def __get_typecode_from_bitmap(self):
         if self.__is_float_typecode():
             return Typecode.REAL_NUMBER
@@ -649,37 +727,6 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return Typecode.STRING
 
-    def __get_ascii_char_width(self):
-        if not self.__typecode_bitmap & Typecode.REAL_NUMBER.value:
-            return self.__ascii_char_width
-
-        max_width = self.__ascii_char_width
-
-        for value_dp in self.__dataproperty_list:
-            if value_dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
-                continue
-
-            max_width = max(
-                max_width,
-                get_ascii_char_width(
-                    self.dp_to_str(value_dp),
-                    self.__east_asian_ambiguous_width))
-
-        return max_width
-
-    def __get_decimal_places(self):
-        try:
-            avg = self.minmax_decimal_places.mean()
-        except TypeError:
-            return float("nan")
-
-        if Nan(avg).is_type():
-            return float("nan")
-
-        return int(min(
-            math.ceil(avg + Decimal("1.0")),
-            self.minmax_decimal_places.max_value))
-
     def __calc_ascii_char_width(self):
         if not self.__is_calculate:
             return
@@ -697,50 +744,3 @@ class ColumnDataProperty(DataPeropertyBase):
             return
 
         self.__typecode = self.__get_typecode_from_bitmap()
-
-    def dp_to_str(self, value_dp):
-        to_string_format_str = self.__get_tostring_format(value_dp)
-
-        if any([
-                self.typecode in [Typecode.BOOL, Typecode.DATETIME],
-                all([self.typecode == Typecode.STRING,
-                     value_dp.typecode == Typecode.REAL_NUMBER]),
-        ]):
-            return to_string_format_str.format(value_dp.data)
-
-        try:
-            value = self.type_class(
-                value_dp.data, strict_level=StrictLevel.MIN
-            ).convert()
-        except TypeConversionError:
-            value = value_dp.data
-
-        try:
-            item = to_string_format_str.format(value)
-        except ValueError:
-            item = MultiByteStrDecoder(value).unicode_str
-
-        return item
-
-    def __get_tostring_format(self, value_dp):
-        if all([value_dp.typecode == Typecode.REAL_NUMBER,
-                self.__is_formatting_float]):
-            return self._get_realnumber_format()
-
-        if any([
-                all([
-                    self.typecode == Typecode.REAL_NUMBER,
-                    not self.__is_formatting_float,
-                    value_dp.typecode in [
-                        Typecode.INTEGER, Typecode.REAL_NUMBER],
-                ]),
-                value_dp.typecode == Typecode.NONE,
-        ]):
-            return "{}"
-
-        try:
-            self.format_str.format(value_dp.data)
-        except (TypeError, ValueError):
-            return "{}"
-
-        return self.format_str
