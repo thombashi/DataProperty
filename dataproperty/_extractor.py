@@ -116,6 +116,14 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
+    def is_formatting_float(self):
+        return self.__is_formatting_float
+
+    @is_formatting_float.setter
+    def is_formatting_float(self, value):
+        self.__is_formatting_float = value
+
+    @property
     def strip_str_header(self):
         return self.__strip_str_header
 
@@ -267,6 +275,7 @@ class DataPropertyExtractor(object):
 
         self.__strip_str_header = None
         self.__strip_str_value = None
+        self.__is_formatting_float = True
         self.__min_col_ascii_char_width = 0
         self.__float_type = None
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
@@ -335,6 +344,7 @@ class DataPropertyExtractor(object):
             except IndexError:
                 col_dp_list.append(ColumnDataProperty(
                     column_index=col_idx, min_width=self.min_column_width,
+                    is_formatting_float=self.is_formatting_float,
                     datetime_format_str=self.datetime_format_str,
                     east_asian_ambiguous_width=self.east_asian_ambiguous_width
                 ))
@@ -494,6 +504,7 @@ class DataPropertyExtractor(object):
         for col_idx, header_dp in enumerate(header_dp_list):
             col_dp = ColumnDataProperty(
                 column_index=col_idx, min_width=self.min_column_width,
+                is_formatting_float=self.is_formatting_float,
                 datetime_format_str=self.datetime_format_str,
                 east_asian_ambiguous_width=self.east_asian_ambiguous_width)
             col_dp.update_header(header_dp)

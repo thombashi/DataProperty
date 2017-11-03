@@ -398,6 +398,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__dataproperty_list",
         "__east_asian_ambiguous_width",
         "__is_calculate",
+        "__is_formatting_float",
         "__length",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
@@ -485,6 +486,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __init__(
             self, column_index=None, min_width=0,
+            is_formatting_float=True,
             datetime_format_str=DefaultValue.DATETIME_FORMAT,
             east_asian_ambiguous_width=1):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
@@ -494,6 +496,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
         self.__is_calculate = True
+        self.__is_formatting_float = is_formatting_float
         self.__dataproperty_list = []
         self.__decimal_places = float("nan")
         self.__minmax_integer_digits = MinMaxContainer()
@@ -697,3 +700,50 @@ class ColumnDataProperty(DataPeropertyBase):
             return
 
         self.__typecode = self.__get_typecode_from_bitmap()
+
+    def dp_to_str(self, value_dp):
+        to_string_format_str = self.__get_tostring_format(value_dp)
+
+        if any([
+                self.typecode in [Typecode.BOOL, Typecode.DATETIME],
+                all([self.typecode == Typecode.STRING,
+                     value_dp.typecode == Typecode.REAL_NUMBER]),
+        ]):
+            return to_string_format_str.format(value_dp.data)
+
+        try:
+            value = self.type_class(
+                value_dp.data, strict_level=StrictLevel.MIN
+            ).convert()
+        except TypeConversionError:
+            value = value_dp.data
+
+        try:
+            item = to_string_format_str.format(value)
+        except ValueError:
+            item = MultiByteStrDecoder(value).unicode_str
+
+        return item
+
+    def __get_tostring_format(self, value_dp):
+        if all([value_dp.typecode == Typecode.REAL_NUMBER,
+                self.__is_formatting_float]):
+            return self._get_realnumber_format()
+
+        if any([
+                all([
+                    self.typecode == Typecode.REAL_NUMBER,
+                    not self.__is_formatting_float,
+                    value_dp.typecode in [
+                        Typecode.INTEGER, Typecode.REAL_NUMBER],
+                ]),
+                value_dp.typecode == Typecode.NONE,
+        ]):
+            return "{}"
+
+        try:
+            self.format_str.format(value_dp.data)
+        except (TypeError, ValueError):
+            return "{}"
+
+        return self.format_str

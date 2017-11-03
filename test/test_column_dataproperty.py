@@ -442,3 +442,32 @@ class Test_ColumnDataPeroperty(object):
         assert Nan(col_dp.decimal_places).is_type()
         assert col_dp.typecode == Typecode.NONE
         assert col_dp.ascii_char_width == 0
+
+
+class Test_ColumnDataPeroperty_dp_to_str(object):
+
+    def test_normal_0(self):
+        col_dp = ColumnDataProperty()
+        value_list = [
+            0.1, 3.4375, 65.5397978633, 189.74439359, 10064.0097539, "abcd"]
+        expected_list = [
+            "0.100", "3.437", "65.540", "189.744", "10064.010", "abcd"]
+
+        col_dp.update_header(DataProperty("abc"))
+        for value in value_list:
+            col_dp.update_body(DataProperty(value))
+
+        for value, expected in zip(value_list, expected_list):
+            assert col_dp.dp_to_str(DataProperty(value)) == expected
+
+    def test_normal_1(self):
+        col_dp = ColumnDataProperty()
+        value_list = [0, 0.1]
+        expected_list = ["0", "0.1"]
+
+        col_dp.update_header(DataProperty("abc"))
+        for value in ["abcd", "efg"]:
+            col_dp.update_body(DataProperty(value))
+
+        for value, expected in zip(value_list, expected_list):
+            assert col_dp.dp_to_str(DataProperty(value)) == expected
