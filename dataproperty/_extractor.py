@@ -75,11 +75,11 @@ class DataPropertyExtractor(object):
         return self.__header_list
 
     @header_list.setter
-    def header_list(self, x):
-        if self.__header_list == x:
+    def header_list(self, value):
+        if self.__header_list == value:
             return
 
-        self.__header_list = x
+        self.__header_list = value
         self.__clear_cache()
 
     @property
@@ -87,8 +87,8 @@ class DataPropertyExtractor(object):
         return self.__data_matrix
 
     @data_matrix.setter
-    def data_matrix(self, x):
-        self.__data_matrix = x
+    def data_matrix(self, value):
+        self.__data_matrix = value
         self.__clear_cache()
 
     @property
@@ -96,11 +96,11 @@ class DataPropertyExtractor(object):
         return self.__default_type_hint
 
     @default_type_hint.setter
-    def default_type_hint(self, x):
-        if self.__default_type_hint == x:
+    def default_type_hint(self, value):
+        if self.__default_type_hint == value:
             return
 
-        self.__default_type_hint = x
+        self.__default_type_hint = value
         self.__clear_cache()
 
     @property
@@ -108,11 +108,11 @@ class DataPropertyExtractor(object):
         return self.__col_type_hint_list
 
     @col_type_hint_list.setter
-    def col_type_hint_list(self, x):
-        if self.__col_type_hint_list == x:
+    def col_type_hint_list(self, value):
+        if self.__col_type_hint_list == value:
             return
 
-        self.__col_type_hint_list = x
+        self.__col_type_hint_list = value
         self.__clear_cache()
 
     @property
@@ -128,11 +128,11 @@ class DataPropertyExtractor(object):
         return self.__strip_str_header
 
     @strip_str_header.setter
-    def strip_str_header(self, x):
-        if self.__strip_str_header == x:
+    def strip_str_header(self, value):
+        if self.__strip_str_header == value:
             return
 
-        self.__strip_str_header = x
+        self.__strip_str_header = value
         self.__clear_cache()
 
     @property
@@ -140,11 +140,11 @@ class DataPropertyExtractor(object):
         return self.__strip_str_value
 
     @strip_str_value.setter
-    def strip_str_value(self, x):
-        if self.__strip_str_value == x:
+    def strip_str_value(self, value):
+        if self.__strip_str_value == value:
             return
 
-        self.__strip_str_value = x
+        self.__strip_str_value = value
         self.__clear_cache()
 
     @property
@@ -152,11 +152,11 @@ class DataPropertyExtractor(object):
         return self.__min_col_ascii_char_width
 
     @min_column_width.setter
-    def min_column_width(self, x):
-        if self.__min_col_ascii_char_width == x:
+    def min_column_width(self, value):
+        if self.__min_col_ascii_char_width == value:
             return
 
-        self.__min_col_ascii_char_width = x
+        self.__min_col_ascii_char_width = value
         self.__clear_cache()
 
     @property
@@ -164,11 +164,11 @@ class DataPropertyExtractor(object):
         return self.__float_type
 
     @float_type.setter
-    def float_type(self, x):
-        if self.__float_type == x:
+    def float_type(self, value):
+        if self.__float_type == value:
             return
 
-        self.__float_type = x
+        self.__float_type = value
         self.__clear_cache()
 
     @property
@@ -176,11 +176,11 @@ class DataPropertyExtractor(object):
         return self.__datetime_format_str
 
     @datetime_format_str.setter
-    def datetime_format_str(self, x):
-        if self.__datetime_format_str == x:
+    def datetime_format_str(self, value):
+        if self.__datetime_format_str == value:
             return
 
-        self.__datetime_format_str = x
+        self.__datetime_format_str = value
         self.__clear_cache()
 
     @property
@@ -188,11 +188,11 @@ class DataPropertyExtractor(object):
         return self.__strict_type_mapping
 
     @strict_type_mapping.setter
-    def strict_type_mapping(self, x):
-        if self.__strict_type_mapping == x:
+    def strict_type_mapping(self, value):
+        if self.__strict_type_mapping == value:
             return
 
-        self.__strict_type_mapping = x
+        self.__strict_type_mapping = value
         self.__clear_cache()
 
     @property
@@ -200,11 +200,11 @@ class DataPropertyExtractor(object):
         return self.__east_asian_ambiguous_width
 
     @east_asian_ambiguous_width.setter
-    def east_asian_ambiguous_width(self, x):
-        if self.__east_asian_ambiguous_width == x:
+    def east_asian_ambiguous_width(self, value):
+        if self.__east_asian_ambiguous_width == value:
             return
 
-        self.__east_asian_ambiguous_width = x
+        self.__east_asian_ambiguous_width = value
         self.__clear_cache()
 
     @property
@@ -212,11 +212,11 @@ class DataPropertyExtractor(object):
         return self.__type_value_mapping
 
     @type_value_mapping.setter
-    def type_value_mapping(self, x):
-        if self.__type_value_mapping == x:
+    def type_value_mapping(self, value):
+        if self.__type_value_mapping == value:
             return
 
-        self.__type_value_mapping = x
+        self.__type_value_mapping = value
         self.__clear_cache()
 
     @property
@@ -224,11 +224,11 @@ class DataPropertyExtractor(object):
         return self.__const_value_mapping
 
     @const_value_mapping.setter
-    def const_value_mapping(self, x):
-        if self.__const_value_mapping == x:
+    def const_value_mapping(self, value):
+        if self.__const_value_mapping == value:
             return
 
-        self.__const_value_mapping = x
+        self.__const_value_mapping = value
         self.__clear_cache()
 
     @property
@@ -236,11 +236,11 @@ class DataPropertyExtractor(object):
         return self.__quoting_flags
 
     @quoting_flags.setter
-    def quoting_flags(self, x):
-        if self.__quoting_flags == x:
+    def quoting_flags(self, value):
+        if self.__quoting_flags == value:
             return
 
-        self.__quoting_flags = x
+        self.__quoting_flags = value
         self.__clear_cache()
 
     @property
@@ -248,11 +248,11 @@ class DataPropertyExtractor(object):
         return self.__datetime_formatter
 
     @datetime_formatter.setter
-    def datetime_formatter(self, x):
-        if self.__datetime_formatter == x:
+    def datetime_formatter(self, value):
+        if self.__datetime_formatter == value:
             return
 
-        self.__datetime_formatter = x
+        self.__datetime_formatter = value
         self.__clear_cache()
 
     @property
@@ -260,11 +260,11 @@ class DataPropertyExtractor(object):
         return self.__matrix_formatting
 
     @matrix_formatting.setter
-    def matrix_formatting(self, x):
-        if self.__matrix_formatting == x:
+    def matrix_formatting(self, value):
+        if self.__matrix_formatting == value:
             return
 
-        self.__matrix_formatting = x
+        self.__matrix_formatting = value
         self.__clear_cache()
 
     def __init__(self):
