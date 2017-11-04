@@ -17,7 +17,7 @@ install:
   - "%PYTHON%/Scripts/pip.exe install pytest==2.9.2"
 
 test_script:
-  - "%PYTHON%/python.exe setup.py test"
+  - "%PYTHON%/python.exe invoke_pytest.py"
 
 notifications:
   - provider: Slack
