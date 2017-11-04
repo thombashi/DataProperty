@@ -310,16 +310,13 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix(object):
         assert dp.format_str == "{:s}"
 
     @pytest.mark.parametrize(["value", "expected"], [
-        [None, TypeError],
+        [None, []],
+        [[], []],
+        [(), []],
     ])
-    def test_exception(self, dp_extractor, value, expected):
-        with pytest.raises(expected):
-            dp_extractor.data_matrix = value
-            dp_extractor.to_dataproperty_matrix()
-
-    def test_empty(self, dp_extractor):
-        dp_extractor.data_matrix = []
-        assert list(dp_extractor.to_dataproperty_matrix()) == []
+    def test_empty(self, dp_extractor, value, expected):
+        dp_extractor.data_matrix = value
+        assert dp_extractor.to_dataproperty_matrix() == expected
 
 
 class Test_DataPropertyExtractor_to_dataproperty_list(object):

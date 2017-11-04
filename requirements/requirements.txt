@@ -1,4 +1,5 @@
 enum34;python_version<"3.4"
+futures;python_version<"3.2"
 ipaddress;python_version<"3.3"
 logbook>=1.1.0
 typepy>=0.0.20

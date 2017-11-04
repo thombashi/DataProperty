@@ -8,6 +8,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import copy
+import multiprocessing
 
 import enum
 from typepy import is_empty_sequence
@@ -268,6 +269,8 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     def __init__(self):
+        self.max_workers = multiprocessing.cpu_count()
+
         self.__header_list = []
         self.__data_matrix = []
         self.__default_type_hint = None
@@ -289,7 +292,6 @@ class DataPropertyExtractor(object):
             DefaultValue.CONST_VALUE_MAPPING)
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None
-
         self.__matrix_formatting = MatrixFormatting.TRIM
 
         self.__clear_cache()
@@ -364,16 +366,34 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def to_dataproperty_matrix(self):
+        from concurrent import futures
+
         if self.__dp_matrix_cache:
             return self.__dp_matrix_cache
 
         self.__update_dp_converter()
+
+        col_data_mapping = {}
+        try:
+            with futures.ProcessPoolExecutor(self.max_workers) as executor:
+                future_list = [
+                    executor.submit(
+                        _to_dataproperty_list_helper, self, col_idx,
+                        data_list, self.__get_col_type_hint(col_idx),
+                        self.strip_str_value
+                    )
+                    for col_idx, data_list
+                    in enumerate(zip(*self.__strip_data_matrix()))
+                ]
+
+                for future in futures.as_completed(future_list):
+                    col_idx, value_dp_list = future.result()
+                    col_data_mapping[col_idx] = value_dp_list
+        finally:
+            executor.shutdown()
+
         self.__dp_matrix_cache = list(zip(*[
-            self.__to_dataproperty_list(
-                data_list, type_hint=self.__get_col_type_hint(col_idx),
-                strip_str=self.strip_str_value)
-            for col_idx, data_list
-            in enumerate(zip(*self.__strip_data_matrix()))
+            col_data_mapping[col_idx] for col_idx in sorted(col_data_mapping)
         ]))
 
         return self.__dp_matrix_cache
@@ -381,7 +401,7 @@ class DataPropertyExtractor(object):
     def to_header_dataproperty_list(self):
         self.__update_dp_converter()
 
-        return self.__to_dataproperty_list(
+        return self._to_dataproperty_list(
             self.header_list, type_hint=String,
             strip_str=self.strip_str_header,
             strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
@@ -438,7 +458,7 @@ class DataPropertyExtractor(object):
 
         return self.__dp_converter.convert(value_dp)
 
-    def __to_dataproperty_list(
+    def _to_dataproperty_list(
             self, data_list, type_hint=None, strip_str=None,
             strict_type_mapping=None):
         if is_empty_sequence(data_list):
@@ -453,9 +473,12 @@ class DataPropertyExtractor(object):
 
     def __strip_data_matrix(self):
         header_col_size = len(self.header_list) if self.header_list else 0
-        col_size_list = [
-            len(data_list) for data_list in self.data_matrix
-        ]
+        try:
+            col_size_list = [
+                len(data_list) for data_list in self.data_matrix
+            ]
+        except TypeError:
+            return []
 
         if self.header_list:
             min_col_size = min([header_col_size] + col_size_list)
@@ -518,3 +541,10 @@ class DataPropertyExtractor(object):
             datetime_format_str=self.datetime_format_str,
             float_type=self.float_type,
             strict_type_mapping=self.strict_type_mapping)
+
+
+def _to_dataproperty_list_helper(
+        extractor, col_idx, data_list, type_hint, strip_str):
+    return (col_idx,
+            extractor._to_dataproperty_list(
+                data_list, type_hint=type_hint, strip_str=strip_str))
