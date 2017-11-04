@@ -337,6 +337,7 @@ class DataPropertyExtractor(object):
             logger.debug("{:s}: {}".format(e.__class__.__name__, e))
             return col_dp_list
 
+        logger.debug("converting to column dataproperty:")
         for col_idx, value_dp_list in enumerate(zip(*dp_matrix)):
             try:
                 col_dp_list[col_idx]
@@ -390,6 +391,7 @@ class DataPropertyExtractor(object):
                     col_idx, value_dp_list = future.result()
                     col_data_mapping[col_idx] = value_dp_list
         finally:
+            logger.debug("shutdown ProcessPoolExecutor")
             executor.shutdown()
 
         self.__dp_matrix_cache = list(zip(*[
