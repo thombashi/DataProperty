@@ -2,7 +2,7 @@
 
 """
 Unit tests at Windows environments required to invoke from py module,
-because of multiprocessing module:
+because of multiprocessing/concurrent module:
 http://py.readthedocs.io/en/latest/faq.html?highlight=cmdline#issues-with-py-test-multiprocess-and-setuptools
 """
 
