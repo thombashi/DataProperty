@@ -471,3 +471,15 @@ class Test_ColumnDataPeroperty_dp_to_str(object):
 
         for value, expected in zip(value_list, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
+
+    def test_normal_2(self):
+        col_dp = ColumnDataProperty()
+        value_list = [1.1, 2.2, 3.33]
+        expected_list = ["1.10", "2.20", "3.33"]
+
+        col_dp.update_header(DataProperty("abc"))
+        for value in value_list:
+            col_dp.update_body(DataProperty(value))
+
+        for value, expected in zip(value_list, expected_list):
+            assert col_dp.dp_to_str(DataProperty(value)) == expected
