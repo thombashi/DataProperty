@@ -373,6 +373,7 @@ class DataPropertyExtractor(object):
             return self.__dp_matrix_cache
 
         self.__update_dp_converter()
+        logger.debug("max_workers = {}".format(self.max_workers))
 
         col_data_mapping = {}
         try:
