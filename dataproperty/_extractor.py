@@ -464,15 +464,34 @@ class DataPropertyExtractor(object):
     def _to_dataproperty_list(
             self, data_list, type_hint=None, strip_str=None,
             strict_type_mapping=None):
+        from collections import Counter
+        from typepy import StrictLevel
+
         if is_empty_sequence(data_list):
             return []
 
-        return [
-            self.__to_dataproperty(
-                data=data, type_hint=type_hint, strip_str=strip_str,
+        type_counter = Counter()
+
+        dp_list = []
+        for data in data_list:
+            expect_type_hist = type_hint
+            if type_hint is None:
+                try:
+                    expect_type_hist, _count = type_counter.most_common(1)[0]
+                    if not expect_type_hist(
+                            data, strict_level=StrictLevel.MAX).is_type():
+                        expect_type_hist = None
+                except IndexError:
+                    pass
+
+            dataprop = self.__to_dataproperty(
+                data=data, type_hint=expect_type_hist, strip_str=strip_str,
                 strict_type_mapping=strict_type_mapping)
-            for data in data_list
-        ]
+            type_counter[dataprop.type_class] += 1
+
+            dp_list.append(dataprop)
+
+        return dp_list
 
     def __strip_data_matrix(self):
         header_col_size = len(self.header_list) if self.header_list else 0
