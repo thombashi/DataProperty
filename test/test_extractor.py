@@ -9,11 +9,6 @@ from __future__ import unicode_literals
 import datetime
 from decimal import Decimal
 
-from dataproperty import (
-    Align,
-    DataPropertyExtractor,
-    MatrixFormatting,
-)
 import pytest
 import six
 from typepy import Typecode
@@ -22,6 +17,12 @@ from typepy.type import (
     Nan,
     RealNumber,
     String,
+)
+
+from dataproperty import (
+    Align,
+    DataPropertyExtractor,
+    MatrixFormatting,
 )
 
 from .common import get_strict_type_mapping
@@ -221,7 +222,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix(object):
             [
                 [
                     [None, "1"],
-                    ["1.1", "a"],
+                    [1.1, "a"],
                     [nan, inf],
                     ["false", DATATIME_DATA]
                 ],

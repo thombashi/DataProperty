@@ -319,10 +319,8 @@ class DataPropertyExtractor(object):
 
         self.__update_dp_converter()
 
-        return [
-            self.__to_dataproperty(data, strip_str=self.strip_str_value)
-            for data in data_list
-        ]
+        return self._to_dataproperty_list(
+            data_list, strip_str=self.strip_str_value)
 
     def to_col_dataproperty_list(self, previous_column_dp_list=None):
         logger.debug("prev_col_count={}, mismatch_process={}".format(
