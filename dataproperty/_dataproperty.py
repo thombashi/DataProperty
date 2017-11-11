@@ -51,6 +51,25 @@ class DataPeropertyBase(DataPeropertyInterface):
         "__format_str",
     )
 
+    __TYPE_CLASS_TABLE = {
+        Typecode.BOOL: Bool,
+        Typecode.DATETIME: DateTime,
+        Typecode.DICTIONARY: Dictionary,
+        Typecode.INTEGER: Integer,
+        Typecode.INFINITY: Infinity,
+        Typecode.IP_ADDRESS: IpAddress,
+        Typecode.LIST: List,
+        Typecode.NAN: Nan,
+        Typecode.NONE: NoneType,
+        Typecode.NULL_STRING: NullString,
+        Typecode.REAL_NUMBER: RealNumber,
+        Typecode.STRING: String,
+    }
+
+    @property
+    def type_class(self):
+        return self.__TYPE_CLASS_TABLE.get(self.typecode)
+
     @property
     def typename(self):
         return self.typecode.name
@@ -408,21 +427,6 @@ class ColumnDataProperty(DataPeropertyBase):
         "__typecode_bitmap",
     )
 
-    __TYPE_CLASS_TABLE = {
-        Typecode.BOOL: Bool,
-        Typecode.DATETIME: DateTime,
-        Typecode.DICTIONARY: Dictionary,
-        Typecode.INTEGER: Integer,
-        Typecode.INFINITY: Infinity,
-        Typecode.IP_ADDRESS: IpAddress,
-        Typecode.LIST: List,
-        Typecode.NAN: Nan,
-        Typecode.NONE: NoneType,
-        Typecode.NULL_STRING: NullString,
-        Typecode.REAL_NUMBER: RealNumber,
-        Typecode.STRING: String,
-    }
-
     @property
     def align(self):
         return align_getter.get_align_from_typecode(self.typecode)
@@ -480,10 +484,6 @@ class ColumnDataProperty(DataPeropertyBase):
     @property
     def minmax_additional_format_len(self):
         return self.__minmax_additional_format_len
-
-    @property
-    def type_class(self):
-        return self.__TYPE_CLASS_TABLE.get(self.typecode)
 
     def __init__(
             self, column_index=None, min_width=0,
