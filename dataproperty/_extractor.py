@@ -371,6 +371,9 @@ class DataPropertyExtractor(object):
         self.__update_dp_converter()
         logger.debug("max_workers = {}".format(self.max_workers))
 
+        if not self.max_workers:
+            self.max_workers = multiprocessing.cpu_count()
+
         if self.max_workers <= 1:
             dp_matrix = self.__to_dataproperty_matrix_st()
         else:
