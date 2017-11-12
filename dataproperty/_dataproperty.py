@@ -124,6 +124,7 @@ class DataProperty(DataPeropertyBase):
         "__align",
         "__integer_digits",
         "__decimal_places",
+        "__east_asian_ambiguous_width",
         "__additional_format_len",
         "__length",
         "__ascii_char_width",
@@ -146,6 +147,9 @@ class DataProperty(DataPeropertyBase):
 
     @property
     def align(self):
+        if not self.__align:
+            self.__align = align_getter.get_align_from_typecode(self.typecode)
+
         return self.__align
 
     @property
@@ -157,6 +161,9 @@ class DataProperty(DataPeropertyBase):
             Otherwise, returns ``float("nan")``.
         :rtype: int
         """
+
+        if not self.__decimal_places:
+            self.__set_digit()
 
         return self.__decimal_places
 
@@ -188,10 +195,17 @@ class DataProperty(DataPeropertyBase):
         :rtype: int
         """
 
+        if not self.__length:
+            self.__length = self.__get_length()
+
         return self.__length
 
     @property
     def ascii_char_width(self):
+        if not self.__ascii_char_width:
+            self.__ascii_char_width = self.__get_ascii_char_width(
+                self.__east_asian_ambiguous_width)
+
         return self.__ascii_char_width
 
     @property
@@ -203,10 +217,16 @@ class DataProperty(DataPeropertyBase):
         :rtype: int
         """
 
+        if not self.__integer_digits:
+            self.__set_digit()
+
         return self.__integer_digits
 
     @property
     def additional_format_len(self):
+        if not self.__additional_format_len:
+            self.__additional_format_len = self.__get_additional_format_len()
+
         return self.__additional_format_len
 
     def __init__(
@@ -219,20 +239,18 @@ class DataProperty(DataPeropertyBase):
             replace_tabs_with_spaces=True, tab_length=2,
             east_asian_ambiguous_width=1):
         super(DataProperty, self).__init__(datetime_format_str)
+        self.__additional_format_len = None
+        self.__align = None
+        self.__ascii_char_width = None
+        self.__decimal_places = None
+        self.__east_asian_ambiguous_width = east_asian_ambiguous_width
+        self.__integer_digits = None
+        self.__length = None
         self.__typecode = None
 
         data = self.__preprocess_data(data, strip_str)
         self.__set_data(data, type_hint, float_type, strict_type_mapping)
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
-        self.__align = align_getter.get_align_from_typecode(self.typecode)
-
-        integer_digits, decimal_places = get_number_of_digit(data)
-        self.__integer_digits = integer_digits
-        self.__decimal_places = decimal_places
-        self.__additional_format_len = self.__get_additional_format_len()
-        self.__length = self.__get_length()
-        self.__ascii_char_width = self.__get_ascii_char_width(
-            east_asian_ambiguous_width)
 
     def __eq__(self, other):
         return all([
@@ -387,6 +405,11 @@ class DataProperty(DataPeropertyBase):
         raise TypeConversionError(
             "failed to convert: data={}, strict_level={}".format(
                 data, strict_type_mapping))
+
+    def __set_digit(self):
+        integer_digits, decimal_places = get_number_of_digit(self.__data)
+        self.__integer_digits = integer_digits
+        self.__decimal_places = decimal_places
 
     def __try_convert_type(self, data, type_class, strict_level, float_type):
         type_obj = type_class(data, strict_level, float_type=float_type)

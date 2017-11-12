@@ -9,15 +9,9 @@ from __future__ import unicode_literals
 
 import datetime
 from decimal import Decimal
-import ipaddress
 import sys
 
-from dataproperty import (
-    NOT_STRICT_TYPE_MAPPING,
-    Align,
-    DataProperty,
-    DefaultValue,
-)
+import ipaddress
 import pytest
 import six
 from typepy import Typecode
@@ -28,6 +22,13 @@ from typepy.type import (
     Integer,
     RealNumber,
     String,
+)
+
+from dataproperty import (
+    NOT_STRICT_TYPE_MAPPING,
+    Align,
+    DataProperty,
+    DefaultValue,
 )
 
 from .common import get_strict_type_mapping
@@ -381,7 +382,8 @@ class Test_DataPeroperty_len(object):
         ])
     def test_exception_eaaw(self, value, eaaw, expected):
         with pytest.raises(expected):
-            DataProperty(value, east_asian_ambiguous_width=eaaw)
+            DataProperty(
+                value, east_asian_ambiguous_width=eaaw).ascii_char_width
 
 
 class Test_DataPeroperty_get_padding_len(object):
