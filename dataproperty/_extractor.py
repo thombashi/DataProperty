@@ -371,7 +371,12 @@ class DataPropertyExtractor(object):
         self.__update_dp_converter()
         logger.debug("max_workers = {}".format(self.max_workers))
 
-        self.__dp_matrix_cache = self.__to_dataproperty_matrix_mt()
+        if self.max_workers <= 1:
+            dp_matrix = self.__to_dataproperty_matrix_st()
+        else:
+            dp_matrix = self.__to_dataproperty_matrix_mt()
+
+        self.__dp_matrix_cache = dp_matrix
 
         return self.__dp_matrix_cache
 
@@ -434,6 +439,17 @@ class DataPropertyExtractor(object):
         )
 
         return self.__dp_converter.convert(value_dp)
+
+    def __to_dataproperty_matrix_st(self):
+        return list(zip(*[
+            _to_dataproperty_list_helper(
+                self, col_idx,
+                data_list, self.__get_col_type_hint(col_idx),
+                self.strip_str_value
+            )[1]
+            for col_idx, data_list
+            in enumerate(zip(*self.__strip_data_matrix()))
+        ]))
 
     def __to_dataproperty_matrix_mt(self):
         from concurrent import futures
