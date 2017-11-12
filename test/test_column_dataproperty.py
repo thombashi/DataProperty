@@ -269,6 +269,30 @@ class Test_ColumnDataPeroperty(object):
             "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
             "integer_digits=(min=1, max=1), decimal_places=(min=0, max=2)")
 
+    def test_normal_number_5(self):
+        col_dp = ColumnDataProperty()
+        col_dp.update_header(DataProperty("abc"))
+
+        for value in [1.1, 2.2, 3.33]:
+            col_dp.update_body(DataProperty(value))
+
+        assert col_dp.align == Align.RIGHT
+        assert col_dp.decimal_places == 2
+        assert col_dp.typecode == Typecode.REAL_NUMBER
+        assert col_dp.ascii_char_width == 4
+
+        assert col_dp.minmax_integer_digits.min_value == 1
+        assert col_dp.minmax_integer_digits.max_value == 1
+
+        assert col_dp.minmax_decimal_places.min_value == 1
+        assert col_dp.minmax_decimal_places.max_value == 2
+        assert col_dp.minmax_additional_format_len.min_value == 0
+        assert col_dp.minmax_additional_format_len.max_value == 0
+
+        assert str(col_dp) == (
+            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
+            "integer_digits=(min=1, max=1), decimal_places=(min=1, max=2)")
+
     def test_normal_inf(self):
         col_dp = ColumnDataProperty()
         col_dp.update_header(DataProperty("inf"))

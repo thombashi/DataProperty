@@ -419,25 +419,36 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
         ),
     )
 
-    @pytest.mark.parametrize(["header_list", "value"], [
+    @pytest.mark.parametrize(["max_workers", "header_list", "value"], [
         [
+            1,
+            ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"],
+            TEST_DATA_MATRIX,
+        ],
+        [
+            4,
             ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"],
             TEST_DATA_MATRIX,
         ],
         [
             None,
+            None,
             TEST_DATA_MATRIX,
         ],
         [
+            None,
             [],
             TEST_DATA_MATRIX,
         ],
         [
+            None,
             ("i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"),
             TEST_DATA_MATRIX_TUPLE,
         ],
     ])
-    def test_normal_default(self, dp_extractor, header_list, value):
+    def test_normal_default(
+            self, dp_extractor, max_workers, header_list, value):
+        dp_extractor.max_workers = max_workers
         dp_extractor.header_list = header_list
         dp_extractor.data_matrix = value
         col_dp_list = dp_extractor.to_col_dataproperty_list()
