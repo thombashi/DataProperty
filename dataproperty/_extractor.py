@@ -365,37 +365,13 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def to_dataproperty_matrix(self):
-        from concurrent import futures
-
         if self.__dp_matrix_cache:
             return self.__dp_matrix_cache
 
         self.__update_dp_converter()
         logger.debug("max_workers = {}".format(self.max_workers))
 
-        col_data_mapping = {}
-        try:
-            with futures.ProcessPoolExecutor(self.max_workers) as executor:
-                future_list = [
-                    executor.submit(
-                        _to_dataproperty_list_helper, self, col_idx,
-                        data_list, self.__get_col_type_hint(col_idx),
-                        self.strip_str_value
-                    )
-                    for col_idx, data_list
-                    in enumerate(zip(*self.__strip_data_matrix()))
-                ]
-
-                for future in futures.as_completed(future_list):
-                    col_idx, value_dp_list = future.result()
-                    col_data_mapping[col_idx] = value_dp_list
-        finally:
-            logger.debug("shutdown ProcessPoolExecutor")
-            executor.shutdown()
-
-        self.__dp_matrix_cache = list(zip(*[
-            col_data_mapping[col_idx] for col_idx in sorted(col_data_mapping)
-        ]))
+        self.__dp_matrix_cache = self.__to_dataproperty_matrix_mt()
 
         return self.__dp_matrix_cache
 
@@ -458,6 +434,33 @@ class DataPropertyExtractor(object):
         )
 
         return self.__dp_converter.convert(value_dp)
+
+    def __to_dataproperty_matrix_mt(self):
+        from concurrent import futures
+
+        col_data_mapping = {}
+        try:
+            with futures.ProcessPoolExecutor(self.max_workers) as executor:
+                future_list = [
+                    executor.submit(
+                        _to_dataproperty_list_helper, self, col_idx,
+                        data_list, self.__get_col_type_hint(col_idx),
+                        self.strip_str_value
+                    )
+                    for col_idx, data_list
+                    in enumerate(zip(*self.__strip_data_matrix()))
+                ]
+
+                for future in futures.as_completed(future_list):
+                    col_idx, value_dp_list = future.result()
+                    col_data_mapping[col_idx] = value_dp_list
+        finally:
+            logger.debug("shutdown ProcessPoolExecutor")
+            executor.shutdown()
+
+        return list(zip(*[
+            col_data_mapping[col_idx] for col_idx in sorted(col_data_mapping)
+        ]))
 
     def _to_dataproperty_list(
             self, data_list, type_hint=None, strip_str=None,
