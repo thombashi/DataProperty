@@ -301,7 +301,7 @@ class DataPropertyExtractor(object):
     def to_dataproperty(self, data):
         self.__update_dp_converter()
 
-        return self.__to_dataproperty(data, strip_str=self.strip_str_value)
+        return self.__to_dp(data, strip_str=self.strip_str_value)
 
     def to_dataproperty_list(self, data_list):
         if is_empty_sequence(data_list):
@@ -396,7 +396,7 @@ class DataPropertyExtractor(object):
         except (TypeError, IndexError):
             return self.default_type_hint
 
-    def __to_dataproperty(
+    def __to_dp(
             self, data, type_hint=None, strip_str=None,
             strict_type_mapping=None):
         try:
@@ -503,7 +503,7 @@ class DataPropertyExtractor(object):
                 except IndexError:
                     pass
 
-            dataprop = self.__to_dataproperty(
+            dataprop = self.__to_dp(
                 data=data, type_hint=expect_type_hist, strip_str=strip_str,
                 strict_type_mapping=strict_type_mapping)
             type_counter[dataprop.type_class] += 1
