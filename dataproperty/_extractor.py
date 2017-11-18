@@ -289,13 +289,13 @@ class DataPropertyExtractor(object):
     def __clear_cache(self):
         self.__update_dp_converter()
         self.__dp_matrix_cache = None
-        self.__dp_cache_zero = self.__to_dataproperty_raw(0)
-        self.__dp_cache_one = self.__to_dataproperty_raw(1)
-        self.__dp_cache_true = self.__to_dataproperty_raw(True)
-        self.__dp_cache_false = self.__to_dataproperty_raw(False)
+        self.__dp_cache_zero = self.__to_dp_raw(0)
+        self.__dp_cache_one = self.__to_dp_raw(1)
+        self.__dp_cache_true = self.__to_dp_raw(True)
+        self.__dp_cache_false = self.__to_dp_raw(False)
         self.__dp_cache_mapping = {
-            None: self.__to_dataproperty_raw(None),
-            "": self.__to_dataproperty_raw(""),
+            None: self.__to_dp_raw(None),
+            "": self.__to_dp_raw(""),
         }
 
     def to_dataproperty(self, data):
@@ -417,13 +417,13 @@ class DataPropertyExtractor(object):
 
             return self.__dp_cache_true
 
-        return self.__to_dataproperty_raw(
+        return self.__to_dp_raw(
             data,
             type_hint=type_hint,
             strip_str=strip_str,
             strict_type_mapping=strict_type_mapping)
 
-    def __to_dataproperty_raw(
+    def __to_dp_raw(
             self, data, type_hint=None, strip_str=None,
             strict_type_mapping=None):
         value_dp = DataProperty(
