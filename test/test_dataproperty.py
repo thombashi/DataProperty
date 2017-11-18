@@ -9,9 +9,15 @@ from __future__ import unicode_literals
 
 import datetime
 from decimal import Decimal
+import ipaddress
 import sys
 
-import ipaddress
+from dataproperty import (
+    NOT_STRICT_TYPE_MAPPING,
+    Align,
+    DataProperty,
+    DefaultValue,
+)
 import pytest
 import six
 from typepy import Typecode
@@ -22,13 +28,6 @@ from typepy.type import (
     Integer,
     RealNumber,
     String,
-)
-
-from dataproperty import (
-    NOT_STRICT_TYPE_MAPPING,
-    Align,
-    DataProperty,
-    DefaultValue,
 )
 
 from .common import get_strict_type_mapping
@@ -43,6 +42,28 @@ DATATIME_DATA = datetime.datetime(2017, 1, 2, 3, 4, 5)
 
 nan = float("nan")
 inf = float("inf")
+
+
+class Test_DataPeroperty_eq(object):
+
+    @pytest.mark.parametrize(
+        ["lhs", "rhs", "expected"],
+        [
+            [1, 1, True],
+            [1, 2, False],
+            [1, 0.1, False],
+            [1, True, False],
+            [1.1, 1.1, True],
+            [1, nan, False],
+            [nan, nan, True],
+            [None, None, True],
+        ])
+    def test_normal(self, lhs, rhs, expected):
+        lhs = DataProperty(lhs)
+        rhs = DataProperty(rhs)
+
+        assert (lhs == rhs) == expected
+        assert (lhs != rhs) == (not expected)
 
 
 class Test_DataPeroperty_data_typecode(object):

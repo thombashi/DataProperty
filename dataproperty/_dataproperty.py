@@ -253,16 +253,22 @@ class DataProperty(DataPeropertyBase):
         self.__replace_tabs(replace_tabs_with_spaces, tab_length)
 
     def __eq__(self, other):
-        return all([
-            self.data == other.data,
-            self.typecode == other.typecode,
-        ])
+        if self.typecode != other.typecode:
+            return False
+
+        if self.typecode == Typecode.NAN:
+            return True
+
+        return self.data == other.data
 
     def __ne__(self, other):
-        return any([
-            self.data != other.data,
-            self.typecode != other.typecode,
-        ])
+        if self.typecode != other.typecode:
+            return True
+
+        if self.typecode == Typecode.NAN:
+            return False
+
+        return self.data != other.data
 
     def __repr__(self):
         element_list = []
