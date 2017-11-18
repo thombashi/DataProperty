@@ -39,17 +39,14 @@ Extract property of data
 
 e.g. Extract a ``float`` value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. code:: python
 
     >>> from dataproperty import DataProperty
     >>> DataProperty(-1.1)
     data=-1.1, typename=REAL_NUMBER, align=right, ascii_char_width=4, integer_digits=1, decimal_places=1, additional_format_len=1
 
-
 e.g. Extract a ``int`` value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. code:: python
 
     >>> from dataproperty import DataProperty
@@ -58,7 +55,6 @@ e.g. Extract a ``int`` value property
 
 e.g. Extract a ``str`` (ascii) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. code:: python
 
     >>> from dataproperty import DataProperty
@@ -67,7 +63,6 @@ e.g. Extract a ``str`` (ascii) value property
 
 e.g. Extract a ``str`` (multi-byte) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. code:: python
 
     >>> import six
@@ -75,11 +70,8 @@ e.g. Extract a ``str`` (multi-byte) value property
     >>> six.text_type(DataProperty("吾輩は猫である"))
     data=吾輩は猫である, typename=STRING, align=left, length=7, ascii_char_width=14, additional_format_len=0
 
-::
-
 e.g. Extract a time (``datetime``) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. code:: python
 
     >>> import datetime
@@ -89,7 +81,6 @@ e.g. Extract a time (``datetime``) value property
 
 e.g. Extract a ``bool`` value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .. code:: python
 
     >>> from dataproperty import DataProperty
@@ -99,93 +90,110 @@ e.g. Extract a ``bool`` value property
 
 Extract data property for each element from a matrix
 ----------------------------------------------------
-``DataPropertyExtractor.to_dataproperty_matrix`` method returns a matrix of ``DataProperty`` instances from a data matrix. 
+``DataPropertyExtractor.to_dp_matrix`` method returns a matrix of ``DataProperty`` instances from a data matrix. 
 An example data set and the result are as follows:
 
-.. code:: python
+:Sample Code:
+    .. code:: python
+    
+        import datetime
+        from dataproperty import DataPropertyExtractor
 
-    dt = datetime.datetime(2017, 1, 1, 0, 0, 0)
-    inf = float("inf")
-    nan = float("nan")
+        dp_extractor = DataPropertyExtractor()
+        dt = datetime.datetime(2017, 1, 1, 0, 0, 0)
+        inf = float("inf")
+        nan = float("nan")
 
-    data_matrix = [
-        [1, 1.1,  "aa",   1,   1,     True,   inf,   nan,   dt],
-        [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf", "nan", dt],
-        [3, 3.33, "cccc", -3,  "ccc", "true", inf,   "NAN", "2017-01-01T01:23:45+0900"],
-    ]
+        dp_matrix = dp_extractor.to_dp_matrix([
+            [1, 1.1, "aa", 1, 1, True, inf, nan, dt],
+            [2, 2.2, "bbb", 2.2, 2.2, False, "inf", "nan", dt],
+            [3, 3.33, "cccc", -3, "ccc", "true", inf, "NAN", "2017-01-01T01:23:45+0900"],
+        ])
 
-::
+        for row, dp_list in enumerate(dp_matrix):
+            for col, dp in enumerate(dp_list):
+                print("row={:d}, col={:d}, {}".format(row, col, str(dp)))
 
-    $ ./to_dataproperty_matrix.py
-    ---------- typename ----------
-    ['INTEGER', 'REAL_NUMBER', 'STRING', 'INTEGER', 'INTEGER', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
-    ['INTEGER', 'REAL_NUMBER', 'STRING', 'REAL_NUMBER', 'REAL_NUMBER', 'BOOL', 'INFINITY', 'NAN', 'DATETIME']
-    ['INTEGER', 'REAL_NUMBER', 'STRING', 'INTEGER', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
+:Output:
+    ::
 
-    ---------- data ----------
-    [1, Decimal('1.1'), 'aa', 1, 1, True, Decimal('Infinity'), Decimal('NaN'), datetime.datetime(2017, 1, 1, 0, 0)]
-    [2, Decimal('2.2'), 'bbb', Decimal('2.2'), Decimal('2.2'), False, Decimal('Infinity'), Decimal('NaN'), datetime.datetime(2017, 1, 1, 0, 0)]
-    [3, Decimal('3.33'), 'cccc', -3, 'ccc', True, Decimal('Infinity'), Decimal('NaN'), '2017-01-01T01:23:45+0900']
+        row=0, col=0, data=1, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
+        row=0, col=1, data=1.1, typename=REAL_NUMBER, align=right, ascii_char_width=3, integer_digits=1, decimal_places=1, additional_format_len=0
+        row=0, col=2, data=aa, typename=STRING, align=left, ascii_char_width=2, length=2, additional_format_len=0
+        row=0, col=3, data=1, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
+        row=0, col=4, data=1, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
+        row=0, col=5, data=True, typename=BOOL, align=left, ascii_char_width=4, additional_format_len=0
+        row=0, col=6, data=Infinity, typename=INFINITY, align=left, ascii_char_width=8, additional_format_len=0
+        row=0, col=7, data=NaN, typename=NAN, align=left, ascii_char_width=3, additional_format_len=0
+        row=0, col=8, data=2017-01-01 00:00:00, typename=DATETIME, align=left, ascii_char_width=19, additional_format_len=0
+        row=1, col=0, data=2, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
+        row=1, col=1, data=2.2, typename=REAL_NUMBER, align=right, ascii_char_width=3, integer_digits=1, decimal_places=1, additional_format_len=0
+        row=1, col=2, data=bbb, typename=STRING, align=left, ascii_char_width=3, length=3, additional_format_len=0
+        row=1, col=3, data=2.2, typename=REAL_NUMBER, align=right, ascii_char_width=3, integer_digits=1, decimal_places=1, additional_format_len=0
+        row=1, col=4, data=2.2, typename=REAL_NUMBER, align=right, ascii_char_width=3, integer_digits=1, decimal_places=1, additional_format_len=0
+        row=1, col=5, data=False, typename=BOOL, align=left, ascii_char_width=5, additional_format_len=0
+        row=1, col=6, data=Infinity, typename=INFINITY, align=left, ascii_char_width=8, additional_format_len=0
+        row=1, col=7, data=NaN, typename=NAN, align=left, ascii_char_width=3, additional_format_len=0
+        row=1, col=8, data=2017-01-01 00:00:00, typename=DATETIME, align=left, ascii_char_width=19, additional_format_len=0
+        row=2, col=0, data=3, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
+        row=2, col=1, data=3.33, typename=REAL_NUMBER, align=right, ascii_char_width=4, integer_digits=1, decimal_places=2, additional_format_len=0
+        row=2, col=2, data=cccc, typename=STRING, align=left, ascii_char_width=4, length=4, additional_format_len=0
+        row=2, col=3, data=-3, typename=INTEGER, align=right, ascii_char_width=2, integer_digits=1, decimal_places=0, additional_format_len=1
+        row=2, col=4, data=ccc, typename=STRING, align=left, ascii_char_width=3, length=3, additional_format_len=0
+        row=2, col=5, data=True, typename=BOOL, align=left, ascii_char_width=4, additional_format_len=0
+        row=2, col=6, data=Infinity, typename=INFINITY, align=left, ascii_char_width=8, additional_format_len=0
+        row=2, col=7, data=NaN, typename=NAN, align=left, ascii_char_width=3, additional_format_len=0
+        row=2, col=8, data=2017-01-01T01:23:45+0900, typename=STRING, align=left, ascii_char_width=24, length=24, additional_format_len=0
 
-    ---------- align ----------
-    [right, right, left, right, right, left, left, left, left]
-    [right, right, left, right, right, left, left, left, left]
-    [right, right, left, right, left, left, left, left, left]
 
-    ---------- length ----------
-    [1, 3, 2, 1, 1, 4, 8, 3, 19]
-    [1, 3, 3, 3, 3, 5, 8, 3, 19]
-    [1, 4, 4, 2, 3, 4, 8, 3, 24]
-
-    ---------- integer_digits ----------
-    [1, 1, nan, 1, 1, nan, nan, nan, nan]
-    [1, 1, nan, 1, 1, nan, nan, nan, nan]
-    [1, 1, nan, 1, nan, nan, nan, nan, nan]
-
-    ---------- decimal_places ----------
-    [0, 1, nan, 0, 0, nan, nan, nan, nan]
-    [0, 1, nan, 1, 1, nan, nan, nan, nan]
-    [0, 2, nan, 0, nan, nan, nan, nan, nan]
-
-Full example source code can be found at *examples/py/to_dataproperty_matrix.py*
+Full example source code can be found at *examples/py/to_dp_matrix.py*
 
 
 Extract property for each column from a matrix
 ------------------------------------------------------
-``DataPropertyExtractor.to_col_dataproperty_list`` method returns a list of ``DataProperty`` instances from a data matrix. The list represents the properties for each column.
+``DataPropertyExtractor.to_column_dp_list`` method returns a list of ``DataProperty`` instances from a data matrix. The list represents the properties for each column.
 An example data set and the result are as follows:
 
 Example data set and result are as follows:
 
-.. code:: python
+:Sample Code:
+    .. code:: python
 
-    dt = datetime.datetime(2017, 1, 1, 0, 0, 0)
-    inf = float("inf")
-    nan = float("nan")
+        import datetime
+        from dataproperty import DataPropertyExtractor
 
-    data_matrix = [
-        [1, 1.1,  "aa",   1,   1,     True,   inf,   nan,   dt],
-        [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf", "nan", dt],
-        [3, 3.33, "cccc", -3,  "ccc", "true", inf,   "NAN", "2017-01-01T01:23:45+0900"],
-    ]
+        dp_extractor = DataPropertyExtractor()
+        dt = datetime.datetime(2017, 1, 1, 0, 0, 0)
+        inf = float("inf")
+        nan = float("nan")
 
-::
+        data_matrix = [
+            [1, 1.1,  "aa",   1,   1,     True,   inf,   nan,   dt],
+            [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf", "nan", dt],
+            [3, 3.33, "cccc", -3,  "ccc", "true", inf,   "NAN", "2017-01-01T01:23:45+0900"],
+        ]
+        
+        dp_extractor.header_list = [
+            "int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
+        col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(dp_matrix))
 
-    $ ./to_col_dataproperty_list.py
-    ---------- typename ----------
-    ['INTEGER', 'REAL_NUMBER', 'STRING', 'REAL_NUMBER', 'STRING', 'BOOL', 'INFINITY', 'NAN', 'STRING']
+        for col_idx, col_dp in enumerate(col_dp_list):
+            print(str(col_dp))
 
-    ---------- align ----------
-    [right, right, left, right, left, left, left, left, left]
+:Output:
+    ::
 
-    ---------- ascii_char_width ----------
-    [3, 5, 4, 4, 3, 5, 8, 3, 24]
+    column=0, typename=INTEGER, align=right, ascii_char_width=3, bit_length=2, integer_digits=(min=1, max=1), decimal_places=(min=0, max=0)
+    column=1, typename=REAL_NUMBER, align=right, ascii_char_width=5, integer_digits=(min=1, max=1), decimal_places=(min=1, max=2)
+    column=2, typename=STRING, align=left, ascii_char_width=4
+    column=3, typename=REAL_NUMBER, align=right, ascii_char_width=4, integer_digits=(min=1, max=1), decimal_places=(min=0, max=1), additional_format_len=(min=0, max=1)
+    column=4, typename=STRING, align=left, ascii_char_width=3, integer_digits=(min=1, max=1), decimal_places=(min=0, max=1)
+    column=5, typename=BOOL, align=left, ascii_char_width=5
+    column=6, typename=INFINITY, align=left, ascii_char_width=8
+    column=7, typename=NAN, align=left, ascii_char_width=3
+    column=8, typename=STRING, align=left, ascii_char_width=24
 
-    ---------- decimal_places ----------
-    [0, 2, nan, 1, 1, nan, nan, nan, nan]
-
-
-Full example source code can be found at *examples/py/to_col_dataproperty_list.py*
+Full example source code can be found at *examples/py/to_column_dp_list.py*
 
 
 Dependencies
