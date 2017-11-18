@@ -444,7 +444,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__ascii_char_width",
         "__column_index",
         "__decimal_places",
-        "__dataproperty_list",
+        "__dp_list",
         "__east_asian_ambiguous_width",
         "__is_calculate",
         "__is_formatting_float",
@@ -466,7 +466,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return None
 
         bit_length = 0
-        for value_dp in self.__dataproperty_list:
+        for value_dp in self.__dp_list:
             try:
                 bit_length = max(
                     bit_length, int.bit_length(value_dp.data))
@@ -527,7 +527,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__is_calculate = True
         self.__is_formatting_float = is_formatting_float
-        self.__dataproperty_list = []
+        self.__dp_list = []
         self.__decimal_places = float("nan")
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
@@ -611,7 +611,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_additional_format_len.update(
             dataprop.additional_format_len)
 
-        self.__dataproperty_list.append(dataprop)
+        self.__dp_list.append(dataprop)
         self.__ascii_char_width = max(
             self.__ascii_char_width, dataprop.ascii_char_width)
         self.__calc_ascii_char_width()
@@ -675,7 +675,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         max_width = self.__ascii_char_width
 
-        for value_dp in self.__dataproperty_list:
+        for value_dp in self.__dp_list:
             if value_dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
                 continue
 
