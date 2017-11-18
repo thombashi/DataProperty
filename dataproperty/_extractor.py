@@ -376,7 +376,7 @@ class DataPropertyExtractor(object):
             if self.max_workers <= 1:
                 dp_matrix = self.__to_dp_matrix_st(value_matrix)
             else:
-                dp_matrix = self.__to_dataproperty_matrix_mt(value_matrix)
+                dp_matrix = self.__to_dp_matrix_mt(value_matrix)
 
         self.__dp_matrix_cache = dp_matrix
 
@@ -453,7 +453,7 @@ class DataPropertyExtractor(object):
             in enumerate(zip(*value_matrix))
         ]))
 
-    def __to_dataproperty_matrix_mt(self, value_matrix):
+    def __to_dp_matrix_mt(self, value_matrix):
         from concurrent import futures
 
         col_data_mapping = {}
