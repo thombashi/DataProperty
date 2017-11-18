@@ -586,7 +586,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
     def test_normal_col_type_hint_list(self, dp_extractor):
         dp_extractor.header_list = [
             "none", "to_float", "to_str", "to_datetime"]
-        dp_extractor.col_type_hint_list = [
+        dp_extractor.column_type_hint_list = [
             None, RealNumber, String, DateTime]
         col_dp_list = dp_extractor.to_column_dp_list(
             dp_extractor.to_dp_matrix([

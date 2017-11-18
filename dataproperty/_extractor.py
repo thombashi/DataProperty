@@ -96,11 +96,11 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def col_type_hint_list(self):
+    def column_type_hint_list(self):
         return self.__col_type_hint_list
 
-    @col_type_hint_list.setter
-    def col_type_hint_list(self, value):
+    @column_type_hint_list.setter
+    def column_type_hint_list(self, value):
         if self.__col_type_hint_list == value:
             return
 
@@ -581,6 +581,18 @@ class DataPropertyExtractor(object):
             datetime_format_str=self.datetime_format_str,
             float_type=self.float_type,
             strict_type_mapping=self.strict_type_mapping)
+
+    @property
+    def col_type_hint_list(self):
+        # mark as delete
+
+        return self.column_type_hint_list
+
+    @col_type_hint_list.setter
+    def col_type_hint_list(self, value):
+        # mark as delete
+
+        self.column_type_hint_list = value
 
     def to_dataproperty(self, data):
         # mark as delete
