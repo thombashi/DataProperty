@@ -374,7 +374,7 @@ class DataPropertyExtractor(object):
         else:
             value_matrix = self.__strip_data_matrix(value_matrix)
             if self.max_workers <= 1:
-                dp_matrix = self.__to_dataproperty_matrix_st(value_matrix)
+                dp_matrix = self.__to_dp_matrix_st(value_matrix)
             else:
                 dp_matrix = self.__to_dataproperty_matrix_mt(value_matrix)
 
@@ -442,7 +442,7 @@ class DataPropertyExtractor(object):
 
         return self.__dp_converter.convert(value_dp)
 
-    def __to_dataproperty_matrix_st(self, value_matrix):
+    def __to_dp_matrix_st(self, value_matrix):
         return list(zip(*[
             _to_dataproperty_list_helper(
                 self, col_idx,
