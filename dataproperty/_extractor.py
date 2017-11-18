@@ -84,15 +84,6 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def data_matrix(self):
-        return self.__data_matrix
-
-    @data_matrix.setter
-    def data_matrix(self, value):
-        self.__data_matrix = value
-        self.__clear_cache()
-
-    @property
     def default_type_hint(self):
         return self.__default_type_hint
 
@@ -272,7 +263,6 @@ class DataPropertyExtractor(object):
         self.max_workers = multiprocessing.cpu_count()
 
         self.__header_list = []
-        self.__data_matrix = []
         self.__default_type_hint = None
         self.__col_type_hint_list = None
 
