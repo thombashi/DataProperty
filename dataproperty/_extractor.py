@@ -322,21 +322,16 @@ class DataPropertyExtractor(object):
         return self._to_dataproperty_list(
             data_list, strip_str=self.strip_str_value)
 
-    def to_col_dataproperty_list(self, previous_column_dp_list=None):
+    def to_col_dataproperty_list(
+            self, value_dp_matrix, previous_column_dp_list=None):
         logger.debug("prev_col_count={}, mismatch_process={}".format(
             len(previous_column_dp_list) if previous_column_dp_list else None,
             self.matrix_formatting))
 
         col_dp_list = self.__get_col_dp_list_base()
 
-        try:
-            dp_matrix = self.to_dataproperty_matrix()
-        except TypeError as e:
-            logger.debug("{:s}: {}".format(e.__class__.__name__, e))
-            return col_dp_list
-
         logger.debug("converting to column dataproperty:")
-        for col_idx, value_dp_list in enumerate(zip(*dp_matrix)):
+        for col_idx, value_dp_list in enumerate(zip(*value_dp_matrix)):
             try:
                 col_dp_list[col_idx]
             except IndexError:
@@ -364,7 +359,17 @@ class DataPropertyExtractor(object):
 
         return col_dp_list
 
-    def to_dataproperty_matrix(self):
+    @staticmethod
+    def __is_dp_matrix(value):
+        if not value:
+            return False
+
+        try:
+            return isinstance(value[0][0], DataProperty)
+        except (TypeError, IndexError):
+            return False
+
+    def to_dataproperty_matrix(self, value_matrix):
         if self.__dp_matrix_cache:
             return self.__dp_matrix_cache
 
@@ -374,10 +379,14 @@ class DataPropertyExtractor(object):
         if not self.max_workers:
             self.max_workers = multiprocessing.cpu_count()
 
-        if self.max_workers <= 1:
-            dp_matrix = self.__to_dataproperty_matrix_st()
+        if self.__is_dp_matrix(value_matrix):
+            dp_matrix = value_matrix
         else:
-            dp_matrix = self.__to_dataproperty_matrix_mt()
+            value_matrix = self.__strip_data_matrix(value_matrix)
+            if self.max_workers <= 1:
+                dp_matrix = self.__to_dataproperty_matrix_st(value_matrix)
+            else:
+                dp_matrix = self.__to_dataproperty_matrix_mt(value_matrix)
 
         self.__dp_matrix_cache = dp_matrix
 
@@ -443,7 +452,7 @@ class DataPropertyExtractor(object):
 
         return self.__dp_converter.convert(value_dp)
 
-    def __to_dataproperty_matrix_st(self):
+    def __to_dataproperty_matrix_st(self, value_matrix):
         return list(zip(*[
             _to_dataproperty_list_helper(
                 self, col_idx,
@@ -451,10 +460,10 @@ class DataPropertyExtractor(object):
                 self.strip_str_value
             )[1]
             for col_idx, data_list
-            in enumerate(zip(*self.__strip_data_matrix()))
+            in enumerate(zip(*value_matrix))
         ]))
 
-    def __to_dataproperty_matrix_mt(self):
+    def __to_dataproperty_matrix_mt(self, value_matrix):
         from concurrent import futures
 
         col_data_mapping = {}
@@ -467,7 +476,7 @@ class DataPropertyExtractor(object):
                         self.strip_str_value
                     )
                     for col_idx, data_list
-                    in enumerate(zip(*self.__strip_data_matrix()))
+                    in enumerate(zip(*value_matrix))
                 ]
 
                 for future in futures.as_completed(future_list):
@@ -513,11 +522,11 @@ class DataPropertyExtractor(object):
 
         return dp_list
 
-    def __strip_data_matrix(self):
+    def __strip_data_matrix(self, data_matrix):
         header_col_size = len(self.header_list) if self.header_list else 0
         try:
             col_size_list = [
-                len(data_list) for data_list in self.data_matrix
+                len(data_list) for data_list in data_matrix
             ]
         except TypeError:
             return []
@@ -538,7 +547,7 @@ class DataPropertyExtractor(object):
                     "nonuniform column size: min={}, max={}".format(
                         min_col_size, max_col_size))
 
-            return self.data_matrix
+            return data_matrix
 
         if self.matrix_formatting == MatrixFormatting.HEADER_ALIGNED:
             if header_col_size > 0:
@@ -554,7 +563,7 @@ class DataPropertyExtractor(object):
                 "unknown matrix formatting: {}".format(self.matrix_formatting))
 
         return [
-            list(self.data_matrix[row_idx][:format_col_size]) +
+            list(data_matrix[row_idx][:format_col_size]) +
             [None] * (format_col_size - col_size)
             for row_idx, col_size in enumerate(col_size_list)
         ]
