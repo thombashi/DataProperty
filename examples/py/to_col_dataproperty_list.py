@@ -41,8 +41,8 @@ def main():
     dp_extractor = DataPropertyExtractor()
     dp_extractor.header_list = [
         "int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
-    dp_extractor.data_matrix = data_matrix
-    col_dp_list = dp_extractor.to_col_dataproperty_list()
+    col_dp_list = dp_extractor.to_column_dp_list(
+        dp_extractor.to_dp_matrix(data_matrix))
 
     print("---------- typename ----------")
     print([dp.typecode.name for dp in col_dp_list])
