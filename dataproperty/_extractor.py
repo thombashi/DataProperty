@@ -298,20 +298,20 @@ class DataPropertyExtractor(object):
             "": self.__to_dp_raw(""),
         }
 
-    def to_dataproperty(self, data):
+    def to_dp(self, value):
         self.__update_dp_converter()
 
-        return self.__to_dp(data, strip_str=self.strip_str_value)
+        return self.__to_dp(value, strip_str=self.strip_str_value)
 
-    def to_dataproperty_list(self, data_list):
-        if is_empty_sequence(data_list):
+    def to_dp_list(self, value_list):
+        if is_empty_sequence(value_list):
             return []
 
         self.__update_dp_converter()
 
-        return self._to_dp_list(data_list, strip_str=self.strip_str_value)
+        return self._to_dp_list(value_list, strip_str=self.strip_str_value)
 
-    def to_col_dataproperty_list(
+    def to_column_dp_list(
             self, value_dp_matrix, previous_column_dp_list=None):
         logger.debug("prev_col_count={}, mismatch_process={}".format(
             len(previous_column_dp_list) if previous_column_dp_list else None,
@@ -348,17 +348,7 @@ class DataPropertyExtractor(object):
 
         return col_dp_list
 
-    @staticmethod
-    def __is_dp_matrix(value):
-        if not value:
-            return False
-
-        try:
-            return isinstance(value[0][0], DataProperty)
-        except (TypeError, IndexError):
-            return False
-
-    def to_dataproperty_matrix(self, value_matrix):
+    def to_dp_matrix(self, value_matrix):
         if self.__dp_matrix_cache:
             return self.__dp_matrix_cache
 
@@ -381,13 +371,23 @@ class DataPropertyExtractor(object):
 
         return self.__dp_matrix_cache
 
-    def to_header_dataproperty_list(self):
+    def to_header_dp_list(self):
         self.__update_dp_converter()
 
         return self._to_dp_list(
             self.header_list, type_hint=String,
             strip_str=self.strip_str_header,
             strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
+
+    @staticmethod
+    def __is_dp_matrix(value):
+        if not value:
+            return False
+
+        try:
+            return isinstance(value[0][0], DataProperty)
+        except (TypeError, IndexError):
+            return False
 
     def __get_col_type_hint(self, col_idx):
         try:
@@ -443,7 +443,7 @@ class DataPropertyExtractor(object):
 
     def __to_dp_matrix_st(self, value_matrix):
         return list(zip(*[
-            _to_dataproperty_list_helper(
+            _to_dp_list_helper(
                 self, col_idx,
                 data_list, self.__get_col_type_hint(col_idx),
                 self.strip_str_value
@@ -460,7 +460,7 @@ class DataPropertyExtractor(object):
             with futures.ProcessPoolExecutor(self.max_workers) as executor:
                 future_list = [
                     executor.submit(
-                        _to_dataproperty_list_helper, self, col_idx,
+                        _to_dp_list_helper, self, col_idx,
                         data_list, self.__get_col_type_hint(col_idx),
                         self.strip_str_value
                     )
@@ -558,7 +558,7 @@ class DataPropertyExtractor(object):
         ]
 
     def __get_col_dp_list_base(self):
-        header_dp_list = self.to_header_dataproperty_list()
+        header_dp_list = self.to_header_dp_list()
         col_dp_list = []
 
         for col_idx, header_dp in enumerate(header_dp_list):
@@ -582,8 +582,34 @@ class DataPropertyExtractor(object):
             float_type=self.float_type,
             strict_type_mapping=self.strict_type_mapping)
 
+    def to_dataproperty(self, data):
+        # mark as delete
 
-def _to_dataproperty_list_helper(
+        return self.to_dp(data)
+
+    def to_dataproperty_list(self, data_list):
+        # mark as delete
+
+        return self.to_dp_list(data_list)
+
+    def to_col_dataproperty_list(
+            self, value_dp_matrix, previous_column_dp_list=None):
+        # mark as delete
+
+        return self.to_column_dp_list(value_dp_matrix, previous_column_dp_list)
+
+    def to_dataproperty_matrix(self, value_matrix):
+        # mark as delete
+
+        return self.to_dp_matrix(value_matrix)
+
+    def to_header_dataproperty_list(self):
+        # mark as delete
+
+        return self.to_header_dp_list()
+
+
+def _to_dp_list_helper(
         extractor, col_idx, data_list, type_hint, strip_str):
     return (col_idx,
             extractor._to_dp_list(

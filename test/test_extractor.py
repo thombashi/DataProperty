@@ -50,7 +50,7 @@ def datetime_formatter_tostr_1(value):
     return value.strftime("%Y/%m/%d %H:%M:%S")
 
 
-class Test_DataPropertyExtractor_to_dataproperty(object):
+class Test_DataPropertyExtractor_to_dp(object):
 
     @pytest.mark.parametrize(
         [
@@ -90,7 +90,7 @@ class Test_DataPropertyExtractor_to_dataproperty(object):
             expected_value, expected_typecode):
         dp_extractor.type_value_mapping = type_value_mapping
         dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
-        dp = dp_extractor.to_dataproperty(value)
+        dp = dp_extractor.to_dp(value)
 
         assert dp.data == expected_value
         assert dp.typecode == expected_typecode
@@ -129,12 +129,12 @@ class Test_DataPropertyExtractor_to_dataproperty(object):
         dp_extractor.datetime_formatter = datetime_formatter
         dp_extractor.datetime_format_str = datetime_format_str
         dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
-        dp = dp_extractor.to_dataproperty(value)
+        dp = dp_extractor.to_dp(value)
 
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dataproperty_quoting_flags(object):
+class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
     ALWAYS_QUOTE_FLAG_MAPPING = {
         Typecode.NONE: True,
         Typecode.INTEGER: True,
@@ -160,12 +160,12 @@ class Test_DataPropertyExtractor_to_dataproperty_quoting_flags(object):
             self, dp_extractor, value, quoting_flags, is_strict,
             expected):
         dp_extractor.quoting_flags = quoting_flags
-        dp = dp_extractor.to_dataproperty(value)
+        dp = dp_extractor.to_dp(value)
 
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dataproperty_const_value_mapping(object):
+class Test_DataPropertyExtractor_to_dp_const_value_mapping(object):
     VALUE_MAPPING = {
         True: "true value",
         False: "false value",
@@ -186,12 +186,12 @@ class Test_DataPropertyExtractor_to_dataproperty_const_value_mapping(object):
             expected):
         dp_extractor.const_value_mapping = const_value_mapping
         dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
-        dp = dp_extractor.to_dataproperty(value)
+        dp = dp_extractor.to_dp(value)
 
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dataproperty_matrix(object):
+class Test_DataPropertyExtractor_to_dp_matrix(object):
 
     @pytest.mark.parametrize(["value"], [
         [
@@ -208,7 +208,7 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix(object):
         ],
     ])
     def test_smoke(self, dp_extractor, value):
-        assert len(list(dp_extractor.to_dataproperty_matrix(value))) > 0
+        assert len(list(dp_extractor.to_dp_matrix(value))) > 0
 
     @pytest.mark.parametrize(
         [
@@ -238,8 +238,8 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix(object):
         dp_extractor.type_value_mapping = type_value_mapping
         dp_extractor.const_value_mapping = const_value_mapping
         dp_extractor.datetime_formatter = datetime_formatter
-        dp_matrix = list(dp_extractor.to_dataproperty_matrix(
-            dp_extractor.to_dataproperty_matrix(value)))
+        dp_matrix = list(dp_extractor.to_dp_matrix(
+            dp_extractor.to_dp_matrix(value)))
 
         assert len(dp_matrix) == 4
 
@@ -313,10 +313,10 @@ class Test_DataPropertyExtractor_to_dataproperty_matrix(object):
         [(), []],
     ])
     def test_empty(self, dp_extractor, value, expected):
-        assert dp_extractor.to_dataproperty_matrix(value) == expected
+        assert dp_extractor.to_dp_matrix(value) == expected
 
 
-class Test_DataPropertyExtractor_to_dataproperty_list(object):
+class Test_DataPropertyExtractor_to_dp_list(object):
 
     @pytest.mark.parametrize(["value", "float_type"], [
         [[0.1, Decimal("1.1")], float],
@@ -324,7 +324,7 @@ class Test_DataPropertyExtractor_to_dataproperty_list(object):
     ])
     def test_normal_float(self, dp_extractor, value, float_type):
         dp_extractor.float_type = float_type
-        dp_list = dp_extractor.to_dataproperty_list(value)
+        dp_list = dp_extractor.to_dp_list(value)
 
         for dp in dp_list:
             assert isinstance(dp.data, float_type)
@@ -350,7 +350,7 @@ class Test_DataPropertyExtractor_to_dataproperty_list(object):
     def test_normal_type_hint(
             self, dp_extractor, value, type_hint, expected_list):
         dp_extractor.default_type_hint = type_hint
-        dp_list = dp_extractor.to_dataproperty_list(value)
+        dp_list = dp_extractor.to_dp_list(value)
 
         for dp, expected in zip(dp_list, expected_list):
             assert dp.typecode == expected
@@ -379,13 +379,13 @@ class Test_DataPropertyExtractor_to_dataproperty_list(object):
             expected):
         dp_extractor.strip_str_header = strip_str_header
         dp_extractor.strip_str_value = strip_str_value
-        dp_list = dp_extractor.to_dataproperty_list(value)
+        dp_list = dp_extractor.to_dp_list(value)
 
         for dp, value in zip(dp_list, expected):
             assert dp.data == value
 
 
-class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
+class Test_DataPropertyExtractor_to_column_dp_list(object):
     TEST_DATA_MATRIX = [
         [
             1, 1.1,  "aa",   1,   1,     True,   inf,
@@ -446,8 +446,8 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             self, dp_extractor, max_workers, header_list, value):
         dp_extractor.max_workers = max_workers
         dp_extractor.header_list = header_list
-        col_dp_list = dp_extractor.to_col_dataproperty_list(
-            dp_extractor.to_dataproperty_matrix(value))
+        col_dp_list = dp_extractor.to_column_dp_list(
+            dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == 9
 
@@ -562,8 +562,8 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
     ])
     def test_normal_not_strict(self, dp_extractor, header_list, value):
         dp_extractor.header_list = header_list
-        col_dp_list = dp_extractor.to_col_dataproperty_list(
-            dp_extractor.to_dataproperty_matrix(value))
+        col_dp_list = dp_extractor.to_column_dp_list(
+            dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == 9
 
@@ -588,8 +588,8 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             "none", "to_float", "to_str", "to_datetime"]
         dp_extractor.col_type_hint_list = [
             None, RealNumber, String, DateTime]
-        col_dp_list = dp_extractor.to_col_dataproperty_list(
-            dp_extractor.to_dataproperty_matrix([
+        col_dp_list = dp_extractor.to_column_dp_list(
+            dp_extractor.to_dp_matrix([
                 [1, "1.1", 1, "2017-01-02 03:04:05"],
                 [2, "2.2", 0.1, "2017-01-02 03:04:05"],
             ]))
@@ -610,8 +610,8 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
 
     def test_normal_nan_inf(self, dp_extractor):
         dp_extractor.header_list = ["n", "i"]
-        col_dp_list = dp_extractor.to_col_dataproperty_list(
-            dp_extractor.to_dataproperty_matrix([
+        col_dp_list = dp_extractor.to_column_dp_list(
+            dp_extractor.to_dp_matrix([
                 [nan, inf],
                 ["nan", "inf"],
             ]))
@@ -640,8 +640,8 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
             self, dp_extractor, ambiguous_width):
         dp_extractor.header_list = ["ascii", "eaa"]
         dp_extractor.east_asian_ambiguous_width = ambiguous_width
-        col_dp_list = dp_extractor.to_col_dataproperty_list(
-            dp_extractor.to_dataproperty_matrix([
+        col_dp_list = dp_extractor.to_column_dp_list(
+            dp_extractor.to_dp_matrix([
                 ["abcdefg", "Øαββ"],
                 ["abcdefghij", "ØØ"],
             ]))
@@ -664,8 +664,8 @@ class Test_DataPropertyExtractor_to_col_dataproperty_list(object):
 
     def test_normal_empty_value(self, dp_extractor):
         dp_extractor.header_list = ["a", "22", "cccc"]
-        col_dp_list = dp_extractor.to_col_dataproperty_list(
-            dp_extractor.to_dataproperty_matrix(None))
+        col_dp_list = dp_extractor.to_column_dp_list(
+            dp_extractor.to_dp_matrix(None))
 
         dp = col_dp_list[0]
         assert dp.typecode == Typecode.NONE
@@ -751,8 +751,8 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
             expected):
         dp_extractor.header_list = header_list
         dp_extractor.matrix_formatting = matrix_formatting
-        col_dp_list = dp_extractor.to_col_dataproperty_list(
-            dp_extractor.to_dataproperty_matrix(value))
+        col_dp_list = dp_extractor.to_column_dp_list(
+            dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == expected
 
@@ -773,5 +773,5 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
         dp_extractor.matrix_formatting = matrix_formatting
 
         with pytest.raises(expected):
-            dp_extractor.to_col_dataproperty_list(
-                dp_extractor.to_dataproperty_matrix(value))
+            dp_extractor.to_column_dp_list(
+                dp_extractor.to_dp_matrix(value))
