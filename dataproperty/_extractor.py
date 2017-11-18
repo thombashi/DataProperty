@@ -309,8 +309,7 @@ class DataPropertyExtractor(object):
 
         self.__update_dp_converter()
 
-        return self._to_dataproperty_list(
-            data_list, strip_str=self.strip_str_value)
+        return self._to_dp_list(data_list, strip_str=self.strip_str_value)
 
     def to_col_dataproperty_list(
             self, value_dp_matrix, previous_column_dp_list=None):
@@ -385,7 +384,7 @@ class DataPropertyExtractor(object):
     def to_header_dataproperty_list(self):
         self.__update_dp_converter()
 
-        return self._to_dataproperty_list(
+        return self._to_dp_list(
             self.header_list, type_hint=String,
             strip_str=self.strip_str_header,
             strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
@@ -480,7 +479,7 @@ class DataPropertyExtractor(object):
             col_data_mapping[col_idx] for col_idx in sorted(col_data_mapping)
         ]))
 
-    def _to_dataproperty_list(
+    def _to_dp_list(
             self, data_list, type_hint=None, strip_str=None,
             strict_type_mapping=None):
         from collections import Counter
@@ -587,5 +586,5 @@ class DataPropertyExtractor(object):
 def _to_dataproperty_list_helper(
         extractor, col_idx, data_list, type_hint, strip_str):
     return (col_idx,
-            extractor._to_dataproperty_list(
+            extractor._to_dp_list(
                 data_list, type_hint=type_hint, strip_str=strip_str))
