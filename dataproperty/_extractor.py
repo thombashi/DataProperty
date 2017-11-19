@@ -288,7 +288,6 @@ class DataPropertyExtractor(object):
 
     def __clear_cache(self):
         self.__update_dp_converter()
-        self.__dp_matrix_cache = None
         self.__dp_cache_zero = self.__to_dp_raw(0)
         self.__dp_cache_one = self.__to_dp_raw(1)
         self.__dp_cache_true = self.__to_dp_raw(True)
@@ -349,9 +348,6 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def to_dp_matrix(self, value_matrix):
-        if self.__dp_matrix_cache:
-            return self.__dp_matrix_cache
-
         self.__update_dp_converter()
         logger.debug("max_workers = {}".format(self.max_workers))
 
@@ -359,17 +355,13 @@ class DataPropertyExtractor(object):
             self.max_workers = multiprocessing.cpu_count()
 
         if self.__is_dp_matrix(value_matrix):
-            dp_matrix = value_matrix
-        else:
-            value_matrix = self.__strip_data_matrix(value_matrix)
-            if self.max_workers <= 1:
-                dp_matrix = self.__to_dp_matrix_st(value_matrix)
-            else:
-                dp_matrix = self.__to_dp_matrix_mt(value_matrix)
+            return value_matrix
 
-        self.__dp_matrix_cache = dp_matrix
+        value_matrix = self.__strip_data_matrix(value_matrix)
+        if self.max_workers <= 1:
+            return self.__to_dp_matrix_st(value_matrix)
 
-        return self.__dp_matrix_cache
+        return self.__to_dp_matrix_mt(value_matrix)
 
     def to_header_dp_list(self):
         self.__update_dp_converter()
