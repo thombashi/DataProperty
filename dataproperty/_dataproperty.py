@@ -156,8 +156,8 @@ class DataProperty(DataPeropertyBase):
     def decimal_places(self):
         """
         :return:
-            Decimal places if the ``data`` is ``float``.
-            Returns ``0`` if the ``data`` is ``int``.
+            Decimal places if the ``data`` type either ``float`` or
+            ``decimal.Decimal``. Returns ``0`` if the ``data`` type is ``int``.
             Otherwise, returns ``float("nan")``.
         :rtype: int
         """
@@ -182,7 +182,7 @@ class DataProperty(DataPeropertyBase):
     @property
     def data(self):
         """
-        :return: Original data.
+        :return: Original data value.
         :rtype: Original data type.
         """
 
