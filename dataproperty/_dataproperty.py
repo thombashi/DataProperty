@@ -107,6 +107,9 @@ class DataPeropertyBase(DataPeropertyInterface):
         return "{:s}"
 
     def _get_realnumber_format(self):
+        if self.decimal_places is None:
+            return "{:f}"
+
         try:
             return "{:" + ".{:d}f".format(self.decimal_places) + "}"
         except ValueError:
@@ -528,7 +531,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__is_calculate = True
         self.__is_formatting_float = is_formatting_float
         self.__dp_list = []
-        self.__decimal_places = float("nan")
+        self.__decimal_places = None
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -691,10 +694,10 @@ class ColumnDataProperty(DataPeropertyBase):
         try:
             avg = self.minmax_decimal_places.mean()
         except TypeError:
-            return float("nan")
+            return None
 
         if Nan(avg).is_type():
-            return float("nan")
+            return None
 
         return int(min(
             math.ceil(avg + Decimal("1.0")),

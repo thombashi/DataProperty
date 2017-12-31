@@ -301,7 +301,7 @@ class Test_ColumnDataPeroperty(object):
             col_dp.update_body(DataProperty(value))
 
         assert col_dp.align == Align.LEFT
-        assert Nan(col_dp.decimal_places).is_type()
+        assert col_dp.decimal_places is None
         assert col_dp.typecode == Typecode.INFINITY
         assert col_dp.ascii_char_width == 8
 
@@ -378,7 +378,7 @@ class Test_ColumnDataPeroperty(object):
             col_dp.update_body(DataProperty(value))
 
         assert col_dp.align == Align.LEFT
-        assert Nan(col_dp.decimal_places).is_type()
+        assert col_dp.decimal_places is None
         assert col_dp.typecode == Typecode.STRING
         assert col_dp.ascii_char_width == 6
 
@@ -409,7 +409,7 @@ class Test_ColumnDataPeroperty(object):
                 value, east_asian_ambiguous_width=ambiguous_width))
 
         assert col_dp.align == Align.LEFT
-        assert Nan(col_dp.decimal_places).is_type()
+        assert col_dp.decimal_places is None
         assert col_dp.typecode == Typecode.STRING
         assert col_dp.ascii_char_width == ascii_char_width
 
@@ -463,7 +463,7 @@ class Test_ColumnDataPeroperty(object):
     def test_null(self):
         col_dp = ColumnDataProperty()
         assert col_dp.align == Align.LEFT
-        assert Nan(col_dp.decimal_places).is_type()
+        assert col_dp.decimal_places is None
         assert col_dp.typecode == Typecode.NONE
         assert col_dp.ascii_char_width == 0
 

@@ -114,5 +114,5 @@ class Test_get_number_of_digit(object):
     ])
     def test_nan(self, value):
         integer_digits, decimal_places = get_number_of_digit(value)
-        assert Nan(integer_digits).is_type()
-        assert Nan(decimal_places).is_type()
+        assert integer_digits is None
+        assert decimal_places is None

@@ -96,12 +96,12 @@ def get_number_of_digit(value):
     try:
         integer_digits = get_integer_digit(value)
     except (ValueError, TypeError, OverflowError):
-        return (nan, nan)
+        return (None, None)
 
     try:
         decimal_places = _digit_calculator.get_decimal_places(value)
     except (ValueError, TypeError):
-        decimal_places = nan
+        decimal_places = None
 
     return (integer_digits, decimal_places)
 
