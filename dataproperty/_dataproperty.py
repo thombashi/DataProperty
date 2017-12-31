@@ -206,8 +206,7 @@ class DataProperty(DataPeropertyBase):
     @property
     def ascii_char_width(self):
         if not self.__ascii_char_width:
-            self.__ascii_char_width = self.__get_ascii_char_width(
-                self.__east_asian_ambiguous_width)
+            self.__ascii_char_width = self.__get_ascii_char_width()
 
         return self.__ascii_char_width
 
@@ -350,7 +349,7 @@ class DataProperty(DataPeropertyBase):
 
         return None
 
-    def __get_ascii_char_width(self, east_asian_ambiguous_width):
+    def __get_ascii_char_width(self):
         if self.typecode == Typecode.INTEGER:
             return self.integer_digits + self.additional_format_len
 
@@ -371,7 +370,7 @@ class DataProperty(DataPeropertyBase):
         except ValueError:
             unicode_str = self.to_str()
 
-        return get_ascii_char_width(unicode_str, east_asian_ambiguous_width)
+        return get_ascii_char_width(unicode_str, self.__east_asian_ambiguous_width)
 
     @staticmethod
     def __preprocess_data(data, strip_str):
