@@ -214,7 +214,8 @@ class DataProperty(DataPeropertyBase):
     def integer_digits(self):
         """
         :return:
-            Integer digits if the ``data`` type either ``int``/``float``/``decimal.Decimal``.
+            Integer digits if the ``data`` type either
+            ``int``/``float``/``decimal.Decimal``.
             Otherwise, returns ``None``.
         :rtype: int
         """
@@ -370,7 +371,8 @@ class DataProperty(DataPeropertyBase):
         except ValueError:
             unicode_str = self.to_str()
 
-        return get_ascii_char_width(unicode_str, self.__east_asian_ambiguous_width)
+        return get_ascii_char_width(
+            unicode_str, self.__east_asian_ambiguous_width)
 
     @staticmethod
     def __preprocess_data(data, strip_str):
