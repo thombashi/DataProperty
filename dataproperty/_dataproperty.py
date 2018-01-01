@@ -214,8 +214,8 @@ class DataProperty(DataPeropertyBase):
     def integer_digits(self):
         """
         :return:
-            Integer digits if the ``data`` is ``int``/``float``.
-            Otherwise, returns ``float("nan")``.
+            Integer digits if the ``data`` type either ``int``/``float``/``decimal.Decimal``.
+            Otherwise, returns ``None``.
         :rtype: int
         """
 
