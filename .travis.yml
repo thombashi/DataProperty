@@ -3,10 +3,10 @@ language: python
 python: 3.6
 env:
   matrix:
-    - TOXENV=py2.7
-    - TOXENV=py3.4
-    - TOXENV=py3.5
-    - TOXENV=py3.6
+    - TOXENV=python2.7
+    - TOXENV=python3.4
+    - TOXENV=python3.5
+    - TOXENV=python3.6
 
 os:
   - linux
