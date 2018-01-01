@@ -201,6 +201,7 @@ Dependencies
 Python 2.7+ or 3.4+
 
 - `logbook <http://logbook.readthedocs.io/en/stable/>`__
+- `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
 - `typepy <https://github.com/thombashi/typepy>`__
 
 Test dependencies
