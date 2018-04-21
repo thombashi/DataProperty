@@ -13,8 +13,16 @@ import sys
 import setuptools
 
 
+MODULE_NAME = "DataProperty"
+REPOSITORY_URL = "https://github.com/thombashi/{:s}".format(MODULE_NAME)
 MISC_DIR = "misc"
 REQUIREMENT_DIR = "requirements"
+
+pkg_info = {}
+
+
+with open(os.path.join(MODULE_NAME.lower(), "__version__.py")) as f:
+    exec(f.read(), pkg_info)
 
 with io.open("README.rst", encoding="utf8") as f:
     long_description = f.read()
@@ -33,26 +41,22 @@ with open(os.path.join(REQUIREMENT_DIR, "docs_requirements.txt")) as f:
 
 needs_pytest = set(["pytest", "test", "ptr"]).intersection(sys.argv)
 pytest_runner_require = ["pytest-runner"] if needs_pytest else []
-setuptools_require = ["setuptools>=20.2.2"]
-
-MODULE_NAME = "DataProperty"
-AUTHOR = "Tsuyoshi Hombashi"
-EMAIL = "tsuyoshi.hombashi@gmail.com"
+setuptools_require = ["setuptools>=38.3.0"]
 
 setuptools.setup(
     name=MODULE_NAME,
-    version="0.30.0",
-    url="https://github.com/thombashi/{}".format(MODULE_NAME),
+    version=pkg_info["__version__"],
+    url=REPOSITORY_URL,
 
-    author=AUTHOR,
-    author_email=EMAIL,
+    author=pkg_info["__author__"],
+    author_email=pkg_info["__email__"],
     description=summary,
     include_package_data=True,
     keywords=["data", "property"],
-    license="MIT License",
+    license=pkg_info["__license__"],
     long_description=long_description,
-    maintainer=AUTHOR,
-    maintainer_email=EMAIL,
+    maintainer=pkg_info["__author__"],
+    maintainer_email=pkg_info["__email__"],
     packages=setuptools.find_packages(exclude=["test*"]),
 
     install_requires=setuptools_require + install_requires,
