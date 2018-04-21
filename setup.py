@@ -20,7 +20,7 @@ with io.open("README.rst", encoding="utf8") as f:
     long_description = f.read()
 
 with io.open(os.path.join(MISC_DIR, "summary.txt"), encoding="utf8") as f:
-    summary = f.read()
+    summary = f.read().strip()
 
 with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
     install_requires = [line.strip() for line in f if line.strip()]
