@@ -9,20 +9,11 @@ from __future__ import unicode_literals
 import datetime
 from decimal import Decimal
 
-from dataproperty import (
-    Align,
-    DataPropertyExtractor,
-    MatrixFormatting,
-)
 import pytest
 import six
+from dataproperty import Align, DataPropertyExtractor, MatrixFormatting
 from typepy import Typecode
-from typepy.type import (
-    DateTime,
-    Nan,
-    RealNumber,
-    String,
-)
+from typepy.type import DateTime, Nan, RealNumber, String
 
 from .common import get_strict_type_mapping
 

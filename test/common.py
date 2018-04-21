@@ -6,11 +6,7 @@
 
 from __future__ import absolute_import
 
-
-from dataproperty._common import (
-    STRICT_TYPE_MAPPING,
-    NOT_STRICT_TYPE_MAPPING,
-)
+from dataproperty._common import NOT_STRICT_TYPE_MAPPING, STRICT_TYPE_MAPPING
 
 
 def get_strict_type_mapping(is_strict):

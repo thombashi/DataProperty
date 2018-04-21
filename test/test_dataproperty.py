@@ -4,31 +4,18 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import print_function, unicode_literals
 
 import datetime
-from decimal import Decimal
 import ipaddress
 import sys
+from decimal import Decimal
 
-from dataproperty import (
-    NOT_STRICT_TYPE_MAPPING,
-    Align,
-    DataProperty,
-    DefaultValue,
-)
 import pytest
 import six
+from dataproperty import NOT_STRICT_TYPE_MAPPING, Align, DataProperty, DefaultValue
 from typepy import Typecode
-from typepy.type import (
-    Bool,
-    DateTime,
-    Nan,
-    Integer,
-    RealNumber,
-    String,
-)
+from typepy.type import Bool, DateTime, Integer, Nan, RealNumber, String
 
 from .common import get_strict_type_mapping
 

@@ -10,28 +10,13 @@ import datetime
 from decimal import Decimal
 from ipaddress import ip_address
 
-from dataproperty import (
-    Align,
-    ColumnDataProperty,
-    DataProperty,
-)
 import pytest
 import six
+from dataproperty import Align, ColumnDataProperty, DataProperty
 from typepy import Typecode
 from typepy.type import (
-    Bool,
-    DateTime,
-    Dictionary,
-    Infinity,
-    Integer,
-    IpAddress,
-    List,
-    Nan,
-    NoneType,
-    RealNumber,
-    String,
-    NullString,
-)
+    Bool, DateTime, Dictionary, Infinity, Integer, IpAddress, List, Nan, NoneType, NullString,
+    RealNumber, String)
 
 
 nan = float("nan")

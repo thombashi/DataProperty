@@ -4,9 +4,9 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+import pytest
 from dataproperty import Align
 from dataproperty._align_getter import AlignGetter
-import pytest
 from typepy import Typecode
 
 

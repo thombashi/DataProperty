@@ -4,17 +4,13 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import copy
-from decimal import Decimal
 import itertools
+from decimal import Decimal
 
-from typepy import (
-    Typecode,
-    StrictLevel,
-)
+from typepy import StrictLevel, Typecode
 
 
 NOT_QUOTING_FLAGS = {

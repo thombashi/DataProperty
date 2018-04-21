@@ -4,44 +4,22 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
-from decimal import Decimal
 import math
+from decimal import Decimal
 
-from mbstrdecoder import MultiByteStrDecoder
 import six
-from typepy import (
-    TypeConversionError,
-    Typecode,
-    StrictLevel,
-)
+from mbstrdecoder import MultiByteStrDecoder
+from typepy import StrictLevel, Typecode, TypeConversionError
 from typepy.type import (
-    Bool,
-    DateTime,
-    Dictionary,
-    Infinity,
-    Integer,
-    IpAddress,
-    List,
-    Nan,
-    NoneType,
-    RealNumber,
-    String,
-    NullString,
-)
+    Bool, DateTime, Dictionary, Infinity, Integer, IpAddress, List, Nan, NoneType, NullString,
+    RealNumber, String)
 
 from ._align_getter import align_getter
 from ._common import DefaultValue
-from ._container import (
-    MinMaxContainer,
-    ListContainer,
-)
-from ._function import (
-    get_number_of_digit,
-    get_ascii_char_width,
-)
+from ._container import ListContainer, MinMaxContainer
+from ._function import get_ascii_char_width, get_number_of_digit
 from ._interface import DataPeropertyInterface
 
 

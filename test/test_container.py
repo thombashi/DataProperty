@@ -6,9 +6,9 @@
 
 from __future__ import unicode_literals
 
-from dataproperty import MinMaxContainer
 import pytest
 import six
+from dataproperty import MinMaxContainer
 from typepy.type import Nan
 
 

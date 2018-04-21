@@ -5,13 +5,11 @@
 """
 
 from __future__ import unicode_literals
+
 import itertools
 
-from dataproperty import (
-    get_ascii_char_width,
-    is_multibyte_str,
-)
 import pytest
+from dataproperty import get_ascii_char_width, is_multibyte_str
 
 
 nan = float("nan")

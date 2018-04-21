@@ -4,26 +4,18 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import copy
+import enum
 import multiprocessing
 
-import enum
+from six.moves import zip
 from typepy import is_empty_sequence
 from typepy.type import String
 
-from six.moves import zip
-
-from ._common import (
-    NOT_STRICT_TYPE_MAPPING,
-    DefaultValue,
-)
-from ._dataproperty import (
-    DataProperty,
-    ColumnDataProperty,
-)
+from ._common import NOT_STRICT_TYPE_MAPPING, DefaultValue
+from ._dataproperty import ColumnDataProperty, DataProperty
 from ._dataproperty_converter import DataPropertyConverter
 from ._logger import logger
 
