@@ -83,8 +83,6 @@ _digit_calculator = DigitCalculator()
 
 
 def get_number_of_digit(value):
-    nan = float("nan")
-
     try:
         integer_digits = get_integer_digit(value)
     except (ValueError, TypeError, OverflowError):
