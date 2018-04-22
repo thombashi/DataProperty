@@ -71,22 +71,19 @@ class DataPropertyConverter(object):
             try:
                 if dp_value.data in self.__const_value_mapping:
                     return self.__apply_quote(
-                        dp_value.typecode,
-                        self.__const_value_mapping.get(dp_value.data))
+                        dp_value.typecode, self.__const_value_mapping.get(dp_value.data))
             except TypeError:
                 # unhashable type will be reached this line
                 raise TypeConversionError
 
         if dp_value.typecode in self.__type_value_mapping:
             return self.__apply_quote(
-                dp_value.typecode,
-                self.__type_value_mapping.get(dp_value.typecode))
+                dp_value.typecode, self.__type_value_mapping.get(dp_value.typecode))
 
         if dp_value.typecode == Typecode.DATETIME:
             try:
                 return self.__apply_quote(
-                    dp_value.typecode,
-                    self.__datetime_formatter(dp_value.data))
+                    dp_value.typecode, self.__datetime_formatter(dp_value.data))
             except TypeError:
                 raise TypeConversionError
 

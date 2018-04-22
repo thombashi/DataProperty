@@ -333,8 +333,7 @@ class DataProperty(DataPeropertyBase):
             return self.integer_digits + self.additional_format_len
 
         if self.typecode == Typecode.REAL_NUMBER:
-            return (
-                self.__get_base_float_len() + self.additional_format_len)
+            return (self.__get_base_float_len() + self.additional_format_len)
 
         if self.typecode == Typecode.DATETIME:
             try:
@@ -386,8 +385,7 @@ class DataProperty(DataPeropertyBase):
             strict_level = strict_type_mapping.get(
                 type_class(None).typecode, False)
 
-            if self.__try_convert_type(
-                    data, type_class, strict_level, float_type):
+            if self.__try_convert_type(data, type_class, strict_level, float_type):
                 return
 
         raise TypeConversionError(
@@ -450,8 +448,7 @@ class ColumnDataProperty(DataPeropertyBase):
         bit_length = 0
         for value_dp in self.__dp_list:
             try:
-                bit_length = max(
-                    bit_length, int.bit_length(value_dp.data))
+                bit_length = max(bit_length, int.bit_length(value_dp.data))
             except TypeError:
                 pass
 
@@ -534,19 +531,16 @@ class ColumnDataProperty(DataPeropertyBase):
             element_list.append("bit_length={:d}".format(self.bit_length))
 
         if self.minmax_integer_digits.has_value():
-            element_list.append(
-                "integer_digits=({})".format(
-                    six.text_type(self.minmax_integer_digits)))
+            element_list.append("integer_digits=({})".format(
+                six.text_type(self.minmax_integer_digits)))
 
         if self.minmax_decimal_places.has_value():
-            element_list.append(
-                "decimal_places=({})".format(
-                    six.text_type(self.minmax_decimal_places)))
+            element_list.append("decimal_places=({})".format(
+                six.text_type(self.minmax_decimal_places)))
 
         if not self.minmax_additional_format_len.is_zero():
-            element_list.append(
-                "additional_format_len=({})".format(
-                    six.text_type(self.minmax_additional_format_len)))
+            element_list.append("additional_format_len=({})".format(
+                six.text_type(self.minmax_additional_format_len)))
 
         return ", ".join(element_list)
 
@@ -554,16 +548,13 @@ class ColumnDataProperty(DataPeropertyBase):
         to_string_format_str = self.__get_tostring_format(value_dp)
 
         if any([
-                self.typecode in [Typecode.BOOL, Typecode.DATETIME],
-                all([self.typecode == Typecode.STRING,
-                     value_dp.typecode == Typecode.REAL_NUMBER]),
+            self.typecode in [Typecode.BOOL, Typecode.DATETIME],
+            all([self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER]),
         ]):
             return to_string_format_str.format(value_dp.data)
 
         try:
-            value = self.type_class(
-                value_dp.data, strict_level=StrictLevel.MIN
-            ).convert()
+            value = self.type_class(value_dp.data, strict_level=StrictLevel.MIN).convert()
         except TypeConversionError:
             value = value_dp.data
 
@@ -663,9 +654,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
             max_width = max(
                 max_width,
-                get_ascii_char_width(
-                    self.dp_to_str(value_dp),
-                    self.__east_asian_ambiguous_width))
+                get_ascii_char_width(self.dp_to_str(value_dp), self.__east_asian_ambiguous_width))
 
         return max_width
 
@@ -688,13 +677,12 @@ class ColumnDataProperty(DataPeropertyBase):
             return self._get_realnumber_format()
 
         if any([
-                all([
-                    self.typecode == Typecode.REAL_NUMBER,
-                    not self.__is_formatting_float,
-                    value_dp.typecode in [
-                        Typecode.INTEGER, Typecode.REAL_NUMBER],
-                ]),
-                value_dp.typecode == Typecode.NONE,
+            all([
+                self.typecode == Typecode.REAL_NUMBER,
+                not self.__is_formatting_float,
+                value_dp.typecode in [Typecode.INTEGER, Typecode.REAL_NUMBER],
+            ]),
+            value_dp.typecode == Typecode.NONE,
         ]):
             return "{}"
 

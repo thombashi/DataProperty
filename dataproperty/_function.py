@@ -15,8 +15,7 @@ from mbstrdecoder import MultiByteStrDecoder
 from six.moves import range
 
 
-decimal.setcontext(
-    decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
+decimal.setcontext(decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
 
 
 def get_integer_digit(value):
@@ -28,16 +27,14 @@ def get_integer_digit(value):
     try:
         abs_value = abs(float_type.convert())
     except TypeConversionError:
-        raise ValueError(
-            "the value must be a number: value='{}' type='{}'".format(
-                value, type(value)))
+        raise ValueError("the value must be a number: value='{}' type='{}'".format(
+            value, type(value)))
 
     if abs_value.is_zero():
         return 1
 
     try:
-        return len(str(abs_value.quantize(
-            Decimal("1."), rounding=decimal.ROUND_DOWN)))
+        return len(str(abs_value.quantize(Decimal("1."), rounding=decimal.ROUND_DOWN)))
     except decimal.InvalidOperation as e:
         raise ValueError(e)
 
@@ -50,11 +47,8 @@ class DigitCalculator(object):
 
         self.__min_digit_len = 1
         self.__treshold_list = [
-            self.Threshold(
-                upper_threshold.pow + i, upper_threshold.digit_len - i)
-            for i, _
-            in enumerate(
-                range(upper_threshold.digit_len, self.__min_digit_len - 1, -1))
+            self.Threshold(upper_threshold.pow + i, upper_threshold.digit_len - i)
+            for i, _ in enumerate(range(upper_threshold.digit_len, self.__min_digit_len - 1, -1))
         ]
 
     def get_decimal_places(self, value):

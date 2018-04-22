@@ -413,9 +413,7 @@ class DataPropertyExtractor(object):
             strict_type_mapping=None):
         value_dp = DataProperty(
             data,
-            type_hint=(
-                type_hint if type_hint is not None else self.default_type_hint
-            ),
+            type_hint=(type_hint if type_hint is not None else self.default_type_hint),
             strip_str=strip_str,
             float_type=self.float_type,
             datetime_format_str=self.datetime_format_str,
@@ -448,8 +446,7 @@ class DataPropertyExtractor(object):
                     executor.submit(
                         _to_dp_list_helper, self, col_idx,
                         data_list, self.__get_col_type_hint(col_idx),
-                        self.strip_str_value
-                    )
+                        self.strip_str_value)
                     for col_idx, data_list
                     in enumerate(zip(*value_matrix))
                 ]
@@ -482,8 +479,7 @@ class DataPropertyExtractor(object):
             if type_hint is None:
                 try:
                     expect_type_hist, _count = type_counter.most_common(1)[0]
-                    if not expect_type_hist(
-                            data, strict_level=StrictLevel.MAX).is_type():
+                    if not expect_type_hist(data, strict_level=StrictLevel.MAX).is_type():
                         expect_type_hist = None
                 except IndexError:
                     pass
@@ -500,9 +496,7 @@ class DataPropertyExtractor(object):
     def __strip_data_matrix(self, data_matrix):
         header_col_size = len(self.header_list) if self.header_list else 0
         try:
-            col_size_list = [
-                len(data_list) for data_list in data_matrix
-            ]
+            col_size_list = [len(data_list) for data_list in data_matrix]
         except TypeError:
             return []
 
@@ -518,9 +512,8 @@ class DataPropertyExtractor(object):
 
         if self.matrix_formatting == MatrixFormatting.EXCEPTION:
             if min_col_size != max_col_size:
-                raise ValueError(
-                    "nonuniform column size: min={}, max={}".format(
-                        min_col_size, max_col_size))
+                raise ValueError("nonuniform column size: min={}, max={}".format(
+                    min_col_size, max_col_size))
 
             return data_matrix
 
@@ -609,6 +602,4 @@ class DataPropertyExtractor(object):
 
 def _to_dp_list_helper(
         extractor, col_idx, data_list, type_hint, strip_str):
-    return (col_idx,
-            extractor._to_dp_list(
-                data_list, type_hint=type_hint, strip_str=strip_str))
+    return (col_idx, extractor._to_dp_list(data_list, type_hint=type_hint, strip_str=strip_str))
