@@ -209,7 +209,7 @@ class Test_DataPeroperty_data_typecode(object):
             [DATATIME_DATA, None, True, Typecode.DATETIME],
             [DATATIME_DATA, String, False, Typecode.STRING],
             [DATATIME_DATA, String, True, Typecode.STRING],
-            ["100-0002", None, False, Typecode.DATETIME],
+            ["100-0002", None, False, Typecode.STRING],
 
             [1, String, True, Typecode.STRING],
             [1, String, False, Typecode.STRING],
@@ -499,7 +499,7 @@ class Test_DataPeroperty_repr(object):
         [
             "100-0004",
             NOT_STRICT_TYPE_MAPPING,
-            100
+            95
         ],
         [
             {"a": 1},
