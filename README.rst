@@ -12,7 +12,7 @@
 .. image:: https://coveralls.io/repos/github/thombashi/DataProperty/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/DataProperty?branch=master
 
-    
+
 .. contents:: Table of contents
    :backlinks: top
    :local:
@@ -90,12 +90,12 @@ e.g. Extract a ``bool`` value property
 
 Extract data property for each element from a matrix
 ----------------------------------------------------
-``DataPropertyExtractor.to_dp_matrix`` method returns a matrix of ``DataProperty`` instances from a data matrix. 
+``DataPropertyExtractor.to_dp_matrix`` method returns a matrix of ``DataProperty`` instances from a data matrix.
 An example data set and the result are as follows:
 
 :Sample Code:
     .. code:: python
-    
+
         import datetime
         from dataproperty import DataPropertyExtractor
 
@@ -172,7 +172,7 @@ Example data set and result are as follows:
             [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf", "nan", dt],
             [3, 3.33, "cccc", -3,  "ccc", "true", inf,   "NAN", "2017-01-01T01:23:45+0900"],
         ]
-        
+
         dp_extractor.header_list = [
             "int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
         col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(dp_matrix))
