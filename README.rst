@@ -183,15 +183,15 @@ Example data set and result are as follows:
 :Output:
     ::
 
-    column=0, typename=INTEGER, align=right, ascii_char_width=3, bit_length=2, integer_digits=(min=1, max=1), decimal_places=(min=0, max=0)
-    column=1, typename=REAL_NUMBER, align=right, ascii_char_width=5, integer_digits=(min=1, max=1), decimal_places=(min=1, max=2)
-    column=2, typename=STRING, align=left, ascii_char_width=4
-    column=3, typename=REAL_NUMBER, align=right, ascii_char_width=4, integer_digits=(min=1, max=1), decimal_places=(min=0, max=1), additional_format_len=(min=0, max=1)
-    column=4, typename=STRING, align=left, ascii_char_width=3, integer_digits=(min=1, max=1), decimal_places=(min=0, max=1)
-    column=5, typename=BOOL, align=left, ascii_char_width=5
-    column=6, typename=INFINITY, align=left, ascii_char_width=8
-    column=7, typename=NAN, align=left, ascii_char_width=3
-    column=8, typename=STRING, align=left, ascii_char_width=24
+        column=0, typename=INTEGER, align=right, ascii_char_width=3, bit_length=2, integer_digits=(min=1, max=1), decimal_places=(min=0, max=0)
+        column=1, typename=REAL_NUMBER, align=right, ascii_char_width=5, integer_digits=(min=1, max=1), decimal_places=(min=1, max=2)
+        column=2, typename=STRING, align=left, ascii_char_width=4
+        column=3, typename=REAL_NUMBER, align=right, ascii_char_width=4, integer_digits=(min=1, max=1), decimal_places=(min=0, max=1), additional_format_len=(min=0, max=1)
+        column=4, typename=STRING, align=left, ascii_char_width=3, integer_digits=(min=1, max=1), decimal_places=(min=0, max=1)
+        column=5, typename=BOOL, align=left, ascii_char_width=5
+        column=6, typename=INFINITY, align=left, ascii_char_width=8
+        column=7, typename=NAN, align=left, ascii_char_width=3
+        column=8, typename=STRING, align=left, ascii_char_width=24
 
 Full example source code can be found at *examples/py/to_column_dp_list.py*
 
