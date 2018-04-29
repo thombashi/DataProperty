@@ -70,6 +70,7 @@ setuptools.setup(
     maintainer=pkg_info["__author__"],
     maintainer_email=pkg_info["__email__"],
     packages=setuptools.find_packages(exclude=["test*"]),
+    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*',
 
     install_requires=setuptools_require + install_requires,
     setup_requires=setuptools_require + pytest_runner_require,
