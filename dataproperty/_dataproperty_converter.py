@@ -20,15 +20,12 @@ class DataPropertyConverter(object):
     def __init__(
             self, type_value_mapping=None, const_value_mapping=None,
             quoting_flags=None,
-            datetime_formatter=None,
-            datetime_format_str=None,
+            datetime_formatter=None, datetime_format_str=None,
             float_type=None, strict_type_mapping=None):
         self.__type_value_mapping = (
-            type_value_mapping
-            if type_value_mapping else DefaultValue.TYPE_VALUE_MAPPING)
+            type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAPPING)
         self.__const_value_mapping = (
-            const_value_mapping
-            if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING)
+            const_value_mapping if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING)
         self.__quoting_flags = (
             quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS)
 

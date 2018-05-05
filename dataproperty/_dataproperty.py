@@ -74,8 +74,7 @@ class DataPeropertyBase(DataPeropertyInterface):
         if format_str is not None:
             return format_str
 
-        if self.typecode in (
-                Typecode.REAL_NUMBER, Typecode.INFINITY, Typecode.NAN):
+        if self.typecode in (Typecode.REAL_NUMBER, Typecode.INFINITY, Typecode.NAN):
             if Nan(self.decimal_places).is_type():
                 return "{:f}"
 
@@ -254,8 +253,7 @@ class DataProperty(DataPeropertyBase):
         element_list = []
 
         if self.typecode == Typecode.DATETIME:
-            element_list.append(
-                "data={:s}".format(six.text_type(self.data)))
+            element_list.append("data={:s}".format(six.text_type(self.data)))
         else:
             try:
                 element_list.append("data=" + self.to_str())
@@ -270,20 +268,16 @@ class DataProperty(DataPeropertyBase):
         ])
 
         if Integer(self.length).is_type():
-            element_list.append(
-                "length={}".format(self.length))
+            element_list.append("length={}".format(self.length))
 
         if Integer(self.integer_digits).is_type():
-            element_list.append(
-                "integer_digits={}".format(self.integer_digits))
+            element_list.append("integer_digits={}".format(self.integer_digits))
 
         if Integer(self.decimal_places).is_type():
-            element_list.append(
-                "decimal_places={}".format(self.decimal_places))
+            element_list.append("decimal_places={}".format(self.decimal_places))
 
         if Integer(self.additional_format_len).is_type():
-            element_list.append(
-                "additional_format_len={}".format(self.additional_format_len))
+            element_list.append("additional_format_len={}".format(self.additional_format_len))
 
         return ", ".join(element_list)
 
@@ -321,8 +315,7 @@ class DataProperty(DataPeropertyBase):
         return float_len
 
     def __get_length(self):
-        if self.typecode in (
-                Typecode.DICTIONARY, Typecode.LIST, Typecode.STRING):
+        if self.typecode in (Typecode.DICTIONARY, Typecode.LIST, Typecode.STRING):
             return len(self.data)
 
         return None
@@ -370,8 +363,7 @@ class DataProperty(DataPeropertyBase):
             strict_type_mapping = DefaultValue.STRICT_LEVEL_MAPPING
 
         if type_hint:
-            type_obj = type_hint(
-                data, strict_level=StrictLevel.MIN, float_type=float_type)
+            type_obj = type_hint(data, strict_level=StrictLevel.MIN, float_type=float_type)
             self.__typecode = type_obj.typecode
             self.__data = type_obj.try_convert()
 
@@ -381,15 +373,13 @@ class DataProperty(DataPeropertyBase):
                 return
 
         for type_class in self.__type_class_list:
-            strict_level = strict_type_mapping.get(
-                type_class(None).typecode, False)
+            strict_level = strict_type_mapping.get(type_class(None).typecode, False)
 
             if self.__try_convert_type(data, type_class, strict_level, float_type):
                 return
 
-        raise TypeConversionError(
-            "failed to convert: data={}, strict_level={}".format(
-                data, strict_type_mapping))
+        raise TypeConversionError("failed to convert: data={}, strict_level={}".format(
+            data, strict_type_mapping))
 
     def __set_digit(self):
         integer_digits, decimal_places = get_number_of_digit(self.__data)
@@ -470,8 +460,7 @@ class ColumnDataProperty(DataPeropertyBase):
         import warnings
 
         warnings.warn(
-            "padding_len will be deleted in the future, "
-            "use ascii_char_width instead.",
+            "padding_len will be deleted in the future, use ascii_char_width instead.",
             DeprecationWarning)
 
         return self.ascii_char_width
@@ -614,10 +603,8 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_ascii_char_width()
 
     def __is_not_single_typecode(self, typecode_bitmap):
-        return (
-            self.__typecode_bitmap & typecode_bitmap and
-            self.__typecode_bitmap & ~typecode_bitmap
-        )
+        return (self.__typecode_bitmap & typecode_bitmap and
+                self.__typecode_bitmap & ~typecode_bitmap)
 
     def __is_float_typecode(self):
         FLOAT_TYPECODE_BMP = (
@@ -671,8 +658,7 @@ class ColumnDataProperty(DataPeropertyBase):
             self.minmax_decimal_places.max_value))
 
     def __get_tostring_format(self, value_dp):
-        if all([value_dp.typecode == Typecode.REAL_NUMBER,
-                self.__is_formatting_float]):
+        if all([value_dp.typecode == Typecode.REAL_NUMBER, self.__is_formatting_float]):
             return self._get_realnumber_format()
 
         if any([
