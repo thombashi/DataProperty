@@ -299,8 +299,7 @@ class DataPropertyExtractor(object):
 
         return self._to_dp_list(value_list, strip_str=self.strip_str_value)
 
-    def to_column_dp_list(
-            self, value_dp_matrix, previous_column_dp_list=None):
+    def to_column_dp_list(self, value_dp_matrix, previous_column_dp_list=None):
         logger.debug("prev_col_count={}, mismatch_process={}".format(
             len(previous_column_dp_list) if previous_column_dp_list else None,
             self.matrix_formatting))
@@ -358,8 +357,7 @@ class DataPropertyExtractor(object):
         self.__update_dp_converter()
 
         return self._to_dp_list(
-            self.header_list, type_hint=String,
-            strip_str=self.strip_str_header,
+            self.header_list, type_hint=String, strip_str=self.strip_str_header,
             strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
 
     @staticmethod
@@ -449,9 +447,7 @@ class DataPropertyExtractor(object):
             col_data_mapping[col_idx] for col_idx in sorted(col_data_mapping)
         ]))
 
-    def _to_dp_list(
-            self, data_list, type_hint=None, strip_str=None,
-            strict_type_mapping=None):
+    def _to_dp_list(self, data_list, type_hint=None, strip_str=None, strict_type_mapping=None):
         from collections import Counter
         from typepy import StrictLevel
 
@@ -517,8 +513,7 @@ class DataPropertyExtractor(object):
             raise ValueError("unknown matrix formatting: {}".format(self.matrix_formatting))
 
         return [
-            list(data_matrix[row_idx][:format_col_size]) +
-            [None] * (format_col_size - col_size)
+            list(data_matrix[row_idx][:format_col_size]) + [None] * (format_col_size - col_size)
             for row_idx, col_size in enumerate(col_size_list)
         ]
 
