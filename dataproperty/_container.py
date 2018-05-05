@@ -8,7 +8,7 @@ from __future__ import division, unicode_literals
 
 import abc
 
-from typepy.type import RealNumber
+from typepy import RealNumber
 
 
 class AbstractContainer(object):

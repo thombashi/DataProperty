@@ -14,8 +14,7 @@ from decimal import Decimal
 import pytest
 import six
 from dataproperty import NOT_STRICT_TYPE_MAPPING, Align, DataProperty, DefaultValue
-from typepy import Typecode
-from typepy.type import Bool, DateTime, Integer, Nan, RealNumber, String
+from typepy import Bool, DateTime, Integer, Nan, RealNumber, String, Typecode
 
 from .common import get_strict_type_mapping
 

@@ -19,8 +19,7 @@ decimal.setcontext(decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
 
 
 def get_integer_digit(value):
-    from typepy import TypeConversionError
-    from typepy.type import RealNumber
+    from typepy import RealNumber, TypeConversionError
 
     float_type = RealNumber(value)
 
@@ -52,7 +51,7 @@ class DigitCalculator(object):
         ]
 
     def get_decimal_places(self, value):
-        from typepy.type import Integer
+        from typepy import Integer
 
         int_type = Integer(value)
 
@@ -97,8 +96,7 @@ def get_number_of_digit(value):
 
 
 def is_multibyte_str(text):
-    from typepy import StrictLevel
-    from typepy.type import String
+    from typepy import StrictLevel, String
 
     if not String(text, strict_level=StrictLevel.MIN).is_type():
         return False

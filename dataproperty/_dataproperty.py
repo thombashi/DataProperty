@@ -11,10 +11,9 @@ from decimal import Decimal
 
 import six
 from mbstrdecoder import MultiByteStrDecoder
-from typepy import StrictLevel, Typecode, TypeConversionError
-from typepy.type import (
+from typepy import (
     Bool, DateTime, Dictionary, Infinity, Integer, IpAddress, List, Nan, NoneType, NullString,
-    RealNumber, String)
+    RealNumber, StrictLevel, String, Typecode, TypeConversionError)
 
 from ._align_getter import align_getter
 from ._common import DefaultValue
