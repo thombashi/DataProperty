@@ -12,7 +12,7 @@ from decimal import Decimal
 import pytest
 import six
 from dataproperty import Align, DataPropertyExtractor, MatrixFormatting
-from typepy import DateTime, Nan, RealNumber, String, Typecode
+from typepy import DateTime, RealNumber, String, Typecode
 
 from .common import get_strict_type_mapping
 

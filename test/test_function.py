@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 
 import pytest
 from dataproperty import get_integer_digit, get_number_of_digit
-from typepy import Nan
 
 
 nan = float("nan")
