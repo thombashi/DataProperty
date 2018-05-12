@@ -43,10 +43,7 @@ class AbstractContainer(object):
         return self.min_value is not None and self.max_value is not None
 
     def is_zero(self):
-        return any([
-            not self.has_value(),
-            self.has_value() and self.min_value == 0 and self.max_value == 0,
-        ])
+        return self.has_value() and self.min_value == 0 and self.max_value == 0
 
 
 class ListContainer(AbstractContainer):

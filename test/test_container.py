@@ -161,7 +161,13 @@ class Test_MinMaxContainer_merge(object):
 
 class Test_MinMaxContainer_is_zero(object):
 
-    def test_normal(self, container):
-        container = MinMaxContainer([0, 0])
-
-        assert container.is_zero()
+    @pytest.mark.parametrize(["value_list", "expected"], [
+        [[0, 0], True],
+        [[0, 0, 0], True],
+        [[0, 1], False],
+        [[1, 0], False],
+        [[1, 1, 1], False],
+        [[None, None], False],
+    ])
+    def test_normal(self, container, value_list, expected):
+        assert MinMaxContainer(value_list).is_zero() == expected
