@@ -92,8 +92,19 @@ class DataPropertyExtractor(object):
 
     @column_type_hint_list.setter
     def column_type_hint_list(self, value):
+        from typepy import (
+            Bool, DateTime, Dictionary, Infinity, Integer, IpAddress, List, Nan, NoneType,
+            RealNumber, NullString)
+
         if self.__col_type_hint_list == value:
             return
+
+        if value:
+            for type_hint in value:
+                if type_hint not in (
+                        Bool, DateTime, Dictionary, Infinity, Integer, IpAddress, List, Nan,
+                        NoneType, RealNumber, String, NullString, None):
+                    raise ValueError("invalid type hint: {}".format(type(type_hint)))
 
         self.__col_type_hint_list = value
         self.__clear_cache()
