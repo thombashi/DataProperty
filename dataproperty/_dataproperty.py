@@ -258,8 +258,7 @@ class DataProperty(DataPeropertyBase):
             try:
                 element_list.append("data=" + self.to_str())
             except UnicodeEncodeError:
-                element_list.append("data={}".format(
-                    MultiByteStrDecoder(self.data).unicode_str))
+                element_list.append("data={}".format(MultiByteStrDecoder(self.data).unicode_str))
 
         element_list.extend([
             "typename={:s}".format(self.typename),
@@ -304,8 +303,7 @@ class DataProperty(DataPeropertyBase):
 
     def __get_base_float_len(self):
         if any([self.integer_digits < 0, self.decimal_places < 0]):
-            raise ValueError(
-                "integer digits and decimal places must be greater or equals to zero")
+            raise ValueError("integer digits and decimal places must be greater or equals to zero")
 
         float_len = self.integer_digits + self.decimal_places
         if self.decimal_places > 0:
@@ -368,8 +366,7 @@ class DataProperty(DataPeropertyBase):
             self.__data = type_obj.try_convert()
 
             if type_hint(
-                    self.__data, strict_level=StrictLevel.MAX,
-                    float_type=float_type).is_type():
+                    self.__data, strict_level=StrictLevel.MAX, float_type=float_type).is_type():
                 return
 
         for type_class in self.__type_class_list:
@@ -557,8 +554,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__ascii_char_width += dwidth
 
     def update_header(self, dataprop):
-        self.__ascii_char_width = max(
-            self.__ascii_char_width, dataprop.ascii_char_width)
+        self.__ascii_char_width = max(self.__ascii_char_width, dataprop.ascii_char_width)
 
     def update_body(self, dataprop):
         self.__typecode_bitmap |= dataprop.typecode.value
@@ -569,12 +565,10 @@ class ColumnDataProperty(DataPeropertyBase):
             self.__minmax_decimal_places.update(dataprop.decimal_places)
             self.__calc_decimal_places()
 
-        self.__minmax_additional_format_len.update(
-            dataprop.additional_format_len)
+        self.__minmax_additional_format_len.update(dataprop.additional_format_len)
 
         self.__dp_list.append(dataprop)
-        self.__ascii_char_width = max(
-            self.__ascii_char_width, dataprop.ascii_char_width)
+        self.__ascii_char_width = max(self.__ascii_char_width, dataprop.ascii_char_width)
         self.__calc_ascii_char_width()
 
     def merge(self, col_dataprop):
@@ -585,11 +579,9 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_decimal_places.update(col_dataprop.minmax_decimal_places)
         self.__calc_decimal_places()
 
-        self.__minmax_additional_format_len.merge(
-            col_dataprop.minmax_additional_format_len)
+        self.__minmax_additional_format_len.merge(col_dataprop.minmax_additional_format_len)
 
-        self.__ascii_char_width = max(
-            self.__ascii_char_width, col_dataprop.ascii_char_width)
+        self.__ascii_char_width = max(self.__ascii_char_width, col_dataprop.ascii_char_width)
         self.__calc_ascii_char_width()
 
     def begin_update(self):
@@ -608,13 +600,10 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __is_float_typecode(self):
         FLOAT_TYPECODE_BMP = (
-            Typecode.REAL_NUMBER.value
-            | Typecode.INFINITY.value
-            | Typecode.NAN.value)
+            Typecode.REAL_NUMBER.value | Typecode.INFINITY.value | Typecode.NAN.value)
         NUMBER_TYPECODE_BMP = FLOAT_TYPECODE_BMP | Typecode.INTEGER.value
 
-        if self.__is_not_single_typecode(
-                NUMBER_TYPECODE_BMP | Typecode.NULL_STRING.value):
+        if self.__is_not_single_typecode(NUMBER_TYPECODE_BMP | Typecode.NULL_STRING.value):
             return False
 
         if bin(

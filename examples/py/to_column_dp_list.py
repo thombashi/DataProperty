@@ -33,8 +33,7 @@ def main():
     data_matrix = [
         [1, 1.1,  "aa",   1,   1,     True,   inf,   nan,   dt],
         [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf", "nan", dt],
-        [3, 3.33, "cccc", -3,  "ccc", "true", inf,
-            "NAN", "2017-01-01T01:23:45+0900"],
+        [3, 3.33, "cccc", -3,  "ccc", "true", inf, "NAN", "2017-01-01T01:23:45+0900"],
     ]
 
     # extract property for each column from a matrix
