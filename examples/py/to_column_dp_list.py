@@ -11,7 +11,6 @@ import datetime
 import sys
 
 from dataproperty import DataPropertyExtractor
-from typepy import Typecode
 
 
 def display_col_dp(dp_list, attr_name):
