@@ -34,6 +34,9 @@ class AbstractContainer(object):
         pass
 
     def __repr__(self):
+        if not self.has_value():
+            return "None"
+
         return ", ".join([
             "min={}".format(self.min_value),
             "max={}".format(self.max_value),

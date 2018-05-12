@@ -513,19 +513,33 @@ class ColumnDataProperty(DataPeropertyBase):
         ])
 
         if Integer(self.bit_length).is_type():
-            element_list.append("bit_length={:d}".format(self.bit_length))
+            element_list.append("bit_len={:d}".format(self.bit_length))
 
         if self.minmax_integer_digits.has_value():
-            element_list.append("integer_digits=({})".format(
-                six.text_type(self.minmax_integer_digits)))
+            if self.minmax_integer_digits.is_same_value():
+                value = "integer_digits={}".format(self.minmax_integer_digits.min_value)
+            else:
+                value = "integer_digits=({})".format(self.minmax_integer_digits)
+
+            element_list.append(value)
 
         if self.minmax_decimal_places.has_value():
-            element_list.append("decimal_places=({})".format(
-                six.text_type(self.minmax_decimal_places)))
+            if self.minmax_decimal_places.is_same_value():
+                value = "decimal_places={}".format(self.minmax_decimal_places.min_value)
+            else:
+                value = "decimal_places=({})".format(self.minmax_decimal_places)
+
+            element_list.append(value)
 
         if not self.minmax_additional_format_len.is_zero():
-            element_list.append("additional_format_len=({})".format(
-                six.text_type(self.minmax_additional_format_len)))
+            if self.minmax_additional_format_len.is_same_value():
+                value = "additional_format_len={}".format(
+                    self.minmax_additional_format_len.min_value)
+            else:
+                value = "additional_format_len=({})".format(
+                    self.minmax_additional_format_len)
+
+            element_list.append(value)
 
         return ", ".join(element_list)
 
