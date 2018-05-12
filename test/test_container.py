@@ -171,3 +171,17 @@ class Test_MinMaxContainer_is_zero(object):
     ])
     def test_normal(self, container, value_list, expected):
         assert MinMaxContainer(value_list).is_zero() == expected
+
+
+class Test_MinMaxContainer_is_same_value(object):
+
+    @pytest.mark.parametrize(["value_list", "expected"], [
+        [[0, 0], True],
+        [[0, 0, 0], True],
+        [[1, 1, 1], True],
+        [[0, 1], False],
+        [[1, 0], False],
+        [[None, None], False],
+    ])
+    def test_normal(self, container, value_list, expected):
+        assert MinMaxContainer(value_list).is_same_value() == expected
