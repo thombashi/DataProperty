@@ -10,9 +10,8 @@ import copy
 import enum
 import multiprocessing
 
-from typepy import String, is_empty_sequence
-
 from six.moves import zip
+from typepy import String, is_empty_sequence
 
 from ._common import NOT_STRICT_TYPE_MAPPING, DefaultValue
 from ._converter import DataPropertyConverter
