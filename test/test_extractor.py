@@ -43,37 +43,25 @@ def datetime_formatter_tostr_1(value):
 class Test_DataPropertyExtractor_to_dp(object):
 
     @pytest.mark.parametrize(
-        [
-            "value", "type_value_mapping", "is_strict",
-            "expected_value", "expected_typecode",
-        ],
+        ["value", "type_value_mapping", "is_strict", "expected_value", "expected_typecode"],
         [
             [None, {Typecode.NONE: None}, True, None, Typecode.NONE],
             [None, {Typecode.NONE: "null"}, False, "null", Typecode.STRING],
             [None, {Typecode.NONE: ""}, True, "", Typecode.NULL_STRING],
             [None, {Typecode.NONE: 0}, False, 0, Typecode.INTEGER],
 
-            [inf, {Typecode.INFINITY: "INF_1"},
-                False, "INF_1", Typecode.STRING],
-            [inf, {Typecode.INFINITY: "INF_2"},
-                True, "INF_2", Typecode.STRING],
+            [inf, {Typecode.INFINITY: "INF_1"}, False, "INF_1", Typecode.STRING],
+            [inf, {Typecode.INFINITY: "INF_2"}, True, "INF_2", Typecode.STRING],
             [inf, {Typecode.INFINITY: None}, True, None, Typecode.NONE],
-            ["inf", {Typecode.INFINITY: "INF_3"},
-                False, "INF_3", Typecode.STRING],
-            ["inf", {Typecode.INFINITY: "INF_4"},
-                True, "inf", Typecode.STRING],
-            ["inf", {Typecode.INFINITY: inf},
-                False, Decimal('Infinity'), Typecode.INFINITY],
+            ["inf", {Typecode.INFINITY: "INF_3"}, False, "INF_3", Typecode.STRING],
+            ["inf", {Typecode.INFINITY: "INF_4"}, True, "inf", Typecode.STRING],
+            ["inf", {Typecode.INFINITY: inf}, False, Decimal('Infinity'), Typecode.INFINITY],
 
-            [nan, {Typecode.NAN: "NAN_1"}, False,
-                "NAN_1", Typecode.STRING],
-            [nan, {Typecode.NAN: "NAN_2"}, True,
-                "NAN_2", Typecode.STRING],
+            [nan, {Typecode.NAN: "NAN_1"}, False, "NAN_1", Typecode.STRING],
+            [nan, {Typecode.NAN: "NAN_2"}, True, "NAN_2", Typecode.STRING],
             [nan, {Typecode.NAN: None}, True, None, Typecode.NONE],
-            ["nan", {Typecode.NAN: "NAN_4"},
-                False, "NAN_4", Typecode.STRING],
-            ["nan", {Typecode.NAN: "NAN_5"},
-                True, "nan", Typecode.STRING],
+            ["nan", {Typecode.NAN: "NAN_4"}, False, "NAN_4", Typecode.STRING],
+            ["nan", {Typecode.NAN: "NAN_5"}, True, "nan", Typecode.STRING],
         ])
     def test_normal_type_value_mapping(
             self, dp_extractor, value, type_value_mapping, is_strict,
@@ -87,10 +75,7 @@ class Test_DataPropertyExtractor_to_dp(object):
         assert isinstance(dp.to_str(), six.text_type)
 
     @pytest.mark.parametrize(
-        [
-            "value", "datetime_formatter", "datetime_format_str",
-            "is_strict", "expected",
-        ],
+        ["value", "datetime_formatter", "datetime_format_str", "is_strict", "expected"],
         [
             [
                 DATATIME_DATA, datetime_formatter_tostr_0,
@@ -146,9 +131,7 @@ class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
             ['"string" ', ALWAYS_QUOTE_FLAG_MAPPING, False, '"string" '],
             [' "12 345" ', ALWAYS_QUOTE_FLAG_MAPPING, False, ' "12 345" '],
         ])
-    def test_normal_always_quote(
-            self, dp_extractor, value, quoting_flags, is_strict,
-            expected):
+    def test_normal_always_quote(self, dp_extractor, value, quoting_flags, is_strict, expected):
         dp_extractor.quoting_flags = quoting_flags
         dp = dp_extractor.to_dp(value)
 
@@ -171,9 +154,7 @@ class Test_DataPropertyExtractor_to_dp_const_value_mapping(object):
             [True, VALUE_MAPPING, True, "true value"],
             ["const", VALUE_MAPPING, True, "const value"]
         ])
-    def test_normal(
-            self, dp_extractor, value, const_value_mapping, is_strict,
-            expected):
+    def test_normal(self, dp_extractor, value, const_value_mapping, is_strict, expected):
         dp_extractor.const_value_mapping = const_value_mapping
         dp_extractor.strict_type_mapping = get_strict_type_mapping(is_strict)
         dp = dp_extractor.to_dp(value)
@@ -201,10 +182,7 @@ class Test_DataPropertyExtractor_to_dp_matrix(object):
         assert len(list(dp_extractor.to_dp_matrix(value))) > 0
 
     @pytest.mark.parametrize(
-        [
-            "value", "type_value_mapping",
-            "const_value_mapping", "datetime_formatter",
-        ],
+        ["value", "type_value_mapping", "const_value_mapping", "datetime_formatter"],
         [
             [
                 [
@@ -228,8 +206,7 @@ class Test_DataPropertyExtractor_to_dp_matrix(object):
         dp_extractor.type_value_mapping = type_value_mapping
         dp_extractor.const_value_mapping = const_value_mapping
         dp_extractor.datetime_formatter = datetime_formatter
-        dp_matrix = list(dp_extractor.to_dp_matrix(
-            dp_extractor.to_dp_matrix(value)))
+        dp_matrix = list(dp_extractor.to_dp_matrix(dp_extractor.to_dp_matrix(value)))
 
         assert len(dp_matrix) == 4
 
@@ -321,24 +298,17 @@ class Test_DataPropertyExtractor_to_dp_list(object):
 
     @pytest.mark.parametrize(["value", "type_hint", "expected_list"], [
         [
-            [
-                "2017-01-02 03:04:05",
-                datetime.datetime(2017, 1, 2, 3, 4, 5)
-            ],
+            ["2017-01-02 03:04:05", datetime.datetime(2017, 1, 2, 3, 4, 5)],
             None,
             [Typecode.STRING, Typecode.DATETIME]
         ],
         [
-            [
-                "2017-01-02 03:04:05",
-                datetime.datetime(2017, 1, 2, 3, 4, 5)
-            ],
+            ["2017-01-02 03:04:05", datetime.datetime(2017, 1, 2, 3, 4, 5)],
             DateTime,
             [Typecode.DATETIME, Typecode.DATETIME]
         ],
     ])
-    def test_normal_type_hint(
-            self, dp_extractor, value, type_hint, expected_list):
+    def test_normal_type_hint(self, dp_extractor, value, type_hint, expected_list):
         dp_extractor.default_type_hint = type_hint
         dp_list = dp_extractor.to_dp_list(value)
 
@@ -365,8 +335,7 @@ class Test_DataPropertyExtractor_to_dp_list(object):
             ],
         ])
     def test_normal_strip_str(
-            self, dp_extractor, value, strip_str_header, strip_str_value,
-            expected):
+            self, dp_extractor, value, strip_str_header, strip_str_value, expected):
         dp_extractor.strip_str_header = strip_str_header
         dp_extractor.strip_str_value = strip_str_value
         dp_list = dp_extractor.to_dp_list(value)
@@ -432,8 +401,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
             TEST_DATA_MATRIX_TUPLE,
         ],
     ])
-    def test_normal_default(
-            self, dp_extractor, max_workers, header_list, value):
+    def test_normal_default(self, dp_extractor, max_workers, header_list, value):
         dp_extractor.max_workers = max_workers
         dp_extractor.header_list = header_list
         col_dp_list = dp_extractor.to_column_dp_list(
@@ -453,8 +421,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.format_str == "{:d}"
         assert str(dp) == (
             "column=0, typename=INTEGER, align=right, "
-            "ascii_char_width=1, bit_length=2, integer_digits=(min=1, max=1), "
-            "decimal_places=(min=0, max=0)")
+            "ascii_char_width=1, bit_len=2, integer_digits=1, decimal_places=0")
 
         col_idx += 1
         dp = col_dp_list[col_idx]
@@ -552,8 +519,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
     ])
     def test_normal_not_strict(self, dp_extractor, header_list, value):
         dp_extractor.header_list = header_list
-        col_dp_list = dp_extractor.to_column_dp_list(
-            dp_extractor.to_dp_matrix(value))
+        col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == 9
 
@@ -574,10 +540,8 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.format_str == "{:.2f}"
 
     def test_normal_col_type_hint_list(self, dp_extractor):
-        dp_extractor.header_list = [
-            "none", "to_float", "to_str", "to_datetime"]
-        dp_extractor.column_type_hint_list = [
-            None, RealNumber, String, DateTime]
+        dp_extractor.header_list = ["none", "to_float", "to_str", "to_datetime"]
+        dp_extractor.column_type_hint_list = [None, RealNumber, String, DateTime]
         col_dp_list = dp_extractor.to_column_dp_list(
             dp_extractor.to_dp_matrix([
                 [1, "1.1", 1, "2017-01-02 03:04:05"],
@@ -626,8 +590,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         [2],
         [1],
     ])
-    def test_normal_east_asian_ambiguous_width(
-            self, dp_extractor, ambiguous_width):
+    def test_normal_east_asian_ambiguous_width(self, dp_extractor, ambiguous_width):
         dp_extractor.header_list = ["ascii", "eaa"]
         dp_extractor.east_asian_ambiguous_width = ambiguous_width
         col_dp_list = dp_extractor.to_column_dp_list(
@@ -737,8 +700,7 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
             ],
         ])
     def test_normal_matrix_formatting(
-            self, dp_extractor, header_list, value, matrix_formatting,
-            expected):
+            self, dp_extractor, header_list, value, matrix_formatting, expected):
         dp_extractor.header_list = header_list
         dp_extractor.matrix_formatting = matrix_formatting
         col_dp_list = dp_extractor.to_column_dp_list(
@@ -757,8 +719,7 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
             ],
         ])
     def test_exception_matrix_formatting(
-            self, dp_extractor, header_list, value, matrix_formatting,
-            expected):
+            self, dp_extractor, header_list, value, matrix_formatting, expected):
         dp_extractor.header_list = header_list
         dp_extractor.matrix_formatting = matrix_formatting
 

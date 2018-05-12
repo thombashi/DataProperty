@@ -80,8 +80,7 @@ class Test_ColumnDataPeroperty(object):
             ],
 
             # not mixed types with None value
-            [[None, six.MAXSIZE, str(-six.MAXSIZE)],
-             Typecode.INTEGER, Integer],
+            [[None, six.MAXSIZE, str(-six.MAXSIZE)], Typecode.INTEGER, Integer],
             [[1, None, ""], Typecode.INTEGER, Integer],
             [[1.1, None], Typecode.REAL_NUMBER, RealNumber],
             [[1.1, None, ""], Typecode.REAL_NUMBER, RealNumber],
@@ -116,8 +115,7 @@ class Test_ColumnDataPeroperty(object):
                 Typecode.STRING, String
             ],
         ])
-    def test_normal_typecode_type_class(
-            self, value_list, expected_typecode, expected_class):
+    def test_normal_typecode_type_class(self, value_list, expected_typecode, expected_class):
         col_dp = ColumnDataProperty()
         col_dp.update_header(DataProperty("dummy"))
 
@@ -176,7 +174,7 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=REAL_NUMBER, align=right, ascii_char_width=8, "
-            "integer_digits=(min=1, max=1), decimal_places=(min=0, max=0)")
+            "integer_digits=1, decimal_places=0")
 
     def test_normal_number_2(self):
         col_dp = ColumnDataProperty()
@@ -201,7 +199,7 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=(min=1, max=1), decimal_places=(min=0, max=1), "
+            "integer_digits=1, decimal_places=(min=0, max=1), "
             "additional_format_len=(min=0, max=1)")
 
     def test_normal_number_3(self):
@@ -227,7 +225,7 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=(min=1, max=1), decimal_places=(min=1, max=2)")
+            "integer_digits=1, decimal_places=(min=1, max=2)")
 
     def test_normal_number_4(self):
         col_dp = ColumnDataProperty()
@@ -251,7 +249,7 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=(min=1, max=1), decimal_places=(min=0, max=2)")
+            "integer_digits=1, decimal_places=(min=0, max=2)")
 
     def test_normal_number_5(self):
         col_dp = ColumnDataProperty()
@@ -275,7 +273,7 @@ class Test_ColumnDataPeroperty(object):
 
         assert str(col_dp) == (
             "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=(min=1, max=1), decimal_places=(min=1, max=2)")
+            "integer_digits=1, decimal_places=(min=1, max=2)")
 
     def test_normal_inf(self):
         col_dp = ColumnDataProperty()

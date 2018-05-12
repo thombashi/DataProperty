@@ -26,15 +26,13 @@ class Test_MinMaxContainer_property(object):
 
 class Test_MinMaxContainer_repr(object):
 
-    def test_normal(self):
-        container = MinMaxContainer([1, 3])
-        assert str(container) == "min=1, max=3"
-
-    def test_null(self, container):
-        assert not container.has_value()
-        assert container.is_zero()
-        assert container.min_value is None
-        assert container.max_value is None
+    @pytest.mark.parametrize(["value_list", "expected"], [
+        [[1, 3], "min=1, max=3"],
+        [[1], "min=1, max=1"],
+        [[None, None], "None"],
+    ])
+    def test_normal(self, value_list, expected):
+        assert str(MinMaxContainer(value_list)) == expected
 
 
 class Test_MinMaxContainer_eq_ne(object):
@@ -69,26 +67,10 @@ class Test_MinMaxContainer_eq_ne(object):
 class Test_MinMaxContainer_contains(object):
 
     @pytest.mark.parametrize(["lhs", "rhs", "expected"], [
-        [
-            1,
-            MinMaxContainer([1, 3]),
-            True,
-        ],
-        [
-            3,
-            MinMaxContainer([1, 3]),
-            True,
-        ],
-        [
-            0,
-            MinMaxContainer([1, 3]),
-            False,
-        ],
-        [
-            4,
-            MinMaxContainer([1, 3]),
-            False,
-        ],
+        [1, MinMaxContainer([1, 3]), True],
+        [3, MinMaxContainer([1, 3]), True],
+        [0, MinMaxContainer([1, 3]), False],
+        [4, MinMaxContainer([1, 3]), False],
     ])
     def test_normal(self, lhs, rhs, expected):
         assert (lhs in rhs) == expected
