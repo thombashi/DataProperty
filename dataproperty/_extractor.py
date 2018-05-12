@@ -371,7 +371,7 @@ class DataPropertyExtractor(object):
 
     def __get_col_type_hint(self, col_idx):
         try:
-            return self.col_type_hint_list[col_idx]
+            return self.column_type_hint_list[col_idx]
         except (TypeError, IndexError):
             return self.default_type_hint
 
