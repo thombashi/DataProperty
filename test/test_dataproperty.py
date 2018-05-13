@@ -174,10 +174,7 @@ class Test_DataPeroperty_data_typecode(object):
         assert dp.typecode == expected_typecode
 
     @pytest.mark.parametrize(
-        [
-            "value", "strip_str", "is_strict",
-            "expected_data", "expected_typecode"
-        ],
+        ["value", "strip_str", "is_strict", "expected_data", "expected_typecode"],
         [
             ['"1"', '"', False, 1, Typecode.INTEGER],
             ['"1"', '', False, '"1"', Typecode.STRING],
@@ -275,11 +272,7 @@ class Test_DataPeroperty_to_str(object):
 class Test_DataPeroperty_set_data(object):
 
     @pytest.mark.parametrize(
-        [
-            "value", "is_convert",
-            "replace_tabs_with_spaces", "tab_length",
-            "expected"
-        ],
+        ["value", "is_convert", "replace_tabs_with_spaces", "tab_length", "expected"],
         [
             ["a\tb", True, True, 2, "a  b"],
             ["\ta\t\tb\tc\t", True, True, 2, "  a    b  c  "],
@@ -287,9 +280,7 @@ class Test_DataPeroperty_set_data(object):
             ["a\tb", True, False, 4, "a\tb"],
             ["a\tb", True, True, None, "a\tb"],
         ])
-    def test_normal_tab(
-            self, value, is_convert,
-            replace_tabs_with_spaces, tab_length, expected):
+    def test_normal_tab(self, value, is_convert, replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
             value,
             strict_type_mapping=get_strict_type_mapping(not is_convert),
@@ -499,13 +490,11 @@ class Test_DataPeroperty_repr(object):
             "100-0004",
             NOT_STRICT_TYPE_MAPPING,
             95
-        ],
-        [
+        ], [
             {"a": 1},
             DefaultValue.STRICT_LEVEL_MAPPING,
             100
-        ],
-        [
+        ], [
             "新しいテキスト ドキュメント.txt",
             DefaultValue.STRICT_LEVEL_MAPPING,
             100
@@ -522,84 +511,72 @@ class Test_DataPeroperty_repr(object):
             "data=0, typename=INTEGER, align=right, "
             "ascii_char_width=1, "
             "integer_digits=1, decimal_places=0, additional_format_len=0",
-        ],
-        [
+        ], [
             -1.0,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=-1, typename=INTEGER, align=right, "
             "ascii_char_width=2, "
             "integer_digits=1, decimal_places=0, additional_format_len=1",
-        ],
-        [
+        ], [
             -1.1,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=-1.1, typename=REAL_NUMBER, align=right, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=1, additional_format_len=1",
-        ],
-        [
+        ], [
             -12.234,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=-12.23, typename=REAL_NUMBER, align=right, "
             "ascii_char_width=6, "
             "integer_digits=2, decimal_places=2, additional_format_len=1",
-        ],
-        [
+        ], [
             0.01,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=0.01, typename=REAL_NUMBER, align=right, "
             "ascii_char_width=4, "
             "integer_digits=1, decimal_places=2, additional_format_len=0",
-        ],
-        [
+        ], [
             "abcdefg",
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=abcdefg, typename=STRING, align=left, "
             "ascii_char_width=7, length=7, "
             "additional_format_len=0",
-        ],
-        [
+        ], [
             None,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=None, typename=NONE, align=left, "
             "ascii_char_width=4, "
             "additional_format_len=0",
-        ],
-        [
+        ], [
             True,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=True, typename=BOOL, align=left, "
             "ascii_char_width=4, "
             "additional_format_len=0",
-        ],
-        [
+        ], [
             DATATIME_DATA,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=2017-01-02 03:04:05, typename=DATETIME, align=left, "
             "ascii_char_width=19, "
             "additional_format_len=0",
-        ],
-        [
+        ], [
             "2017-01-02 03:04:05",
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=2017-01-02 03:04:05, typename=STRING, align=left, "
             "ascii_char_width=19, length=19, "
             "additional_format_len=0",
-        ],
-        [
+        ], [
             "2017-01-02 03:04:05+0900",
             NOT_STRICT_TYPE_MAPPING,
             "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, "
             "ascii_char_width=24, "
             "additional_format_len=0",
-        ],
-        [
+        ], [
             inf,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=Infinity, typename=INFINITY, align=left, "
             "ascii_char_width=8, additional_format_len=0",
-        ],
-        [
+        ], [
             nan,
             DefaultValue.STRICT_LEVEL_MAPPING,
             "data=NaN, typename=NAN, align=left, "

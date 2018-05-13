@@ -81,18 +81,15 @@ class Test_DataPropertyExtractor_to_dp(object):
                 DATATIME_DATA, datetime_formatter_tostr_0,
                 "s",
                 False, "2017-01-02 03:04:05",
-            ],
-            [
+            ], [
                 "2017-01-01 00:00:00", datetime_formatter_tostr_1,
                 "s",
                 False, "2017/01/01 00:00:00",
-            ],
-            [
+            ], [
                 "2017-01-01 00:00:00", None,
                 "%Y-%m-%dT%H:%M:%S",
                 False, datetime.datetime(2017, 1, 1, 0, 0, 0),
-            ],
-            [
+            ], [
                 "2017-01-01 00:00:00", None,
                 "s",
                 True, "2017-01-01 00:00:00",
@@ -170,8 +167,7 @@ class Test_DataPropertyExtractor_to_dp_matrix(object):
                 [
                     "山田", "太郎", "2001/1/1", "100-0002",
                     "東京都千代田区皇居外苑", "03-1234-5678"
-                ],
-                [
+                ], [
                     "山田", "次郎", "2001/1/2", "251-0036",
                     "神奈川県藤沢市江の島１丁目", "03-9999-9999"
                 ],
@@ -301,8 +297,7 @@ class Test_DataPropertyExtractor_to_dp_list(object):
             ["2017-01-02 03:04:05", datetime.datetime(2017, 1, 2, 3, 4, 5)],
             None,
             [Typecode.STRING, Typecode.DATETIME]
-        ],
-        [
+        ], [
             ["2017-01-02 03:04:05", datetime.datetime(2017, 1, 2, 3, 4, 5)],
             DateTime,
             [Typecode.DATETIME, Typecode.DATETIME]
@@ -322,13 +317,11 @@ class Test_DataPropertyExtractor_to_dp_list(object):
                 ['"1"', '"-1.1"', '"abc"'],
                 '', '"',
                 [1, Decimal("-1.1"), "abc"],
-            ],
-            [
+            ],  [
                 ['"1"', '"-1.1"', '"abc"'],
                 '"', '',
                 ['"1"', '"-1.1"', '"abc"'],
-            ],
-            [
+            ], [
                 ['"1"', '"-1.1"', '"abc"'],
                 None, None,
                 ['"1"', '"-1.1"', '"abc"'],
@@ -346,32 +339,14 @@ class Test_DataPropertyExtractor_to_dp_list(object):
 
 class Test_DataPropertyExtractor_to_column_dp_list(object):
     TEST_DATA_MATRIX = [
-        [
-            1, 1.1,  "aa",   1,   1,     True,   inf,
-            nan, datetime.datetime(2017, 1, 1, 0, 0, 0)
-        ],
-        [
-            2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf",
-            "nan", "2017-01-01T01:23:45+0900"
-        ],
-        [
-            3, 3.33, "cccc", -3,  "ccc", "true", "infinity",
-            "NAN", "2017-11-01 01:23:45+0900"
-        ],
+        [1, 1.1,  "aa",   1,   1,     True,   inf, nan, datetime.datetime(2017, 1, 1, 0, 0, 0)],
+        [2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf", "nan", "2017-01-01T01:23:45+0900"],
+        [3, 3.33, "cccc", -3,  "ccc", "true", "infinity", "NAN", "2017-11-01 01:23:45+0900"],
     ]
     TEST_DATA_MATRIX_TUPLE = (
-        (
-            1, 1.1,  "aa",   1,   1,     True,   inf,
-            nan, datetime.datetime(2017, 1, 1, 0, 0, 0)
-        ),
-        (
-            2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf",
-            "nan", "2017-01-01T01:23:45+0900"
-        ),
-        (
-            3, 3.33, "cccc", -3,  "ccc", "true", "infinity",
-            "NAN", "2017-11-01 01:23:45+0900"
-        ),
+        (1, 1.1,  "aa",   1,   1,     True,   inf, nan, datetime.datetime(2017, 1, 1, 0, 0, 0)),
+        (2, 2.2,  "bbb",  2.2, 2.2,   False,  "inf", "nan", "2017-01-01T01:23:45+0900"),
+        (3, 3.33, "cccc", -3,  "ccc", "true", "infinity", "NAN", "2017-11-01 01:23:45+0900"),
     )
 
     @pytest.mark.parametrize(["max_workers", "header_list", "value"], [
@@ -379,23 +354,19 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
             1,
             ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"],
             TEST_DATA_MATRIX,
-        ],
-        [
+        ], [
             4,
             ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"],
             TEST_DATA_MATRIX,
-        ],
-        [
+        ], [
             None,
             None,
             TEST_DATA_MATRIX,
-        ],
-        [
+        ], [
             None,
             [],
             TEST_DATA_MATRIX,
-        ],
-        [
+        ], [
             None,
             ("i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"),
             TEST_DATA_MATRIX_TUPLE,
@@ -404,8 +375,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
     def test_normal_default(self, dp_extractor, max_workers, header_list, value):
         dp_extractor.max_workers = max_workers
         dp_extractor.header_list = header_list
-        col_dp_list = dp_extractor.to_column_dp_list(
-            dp_extractor.to_dp_matrix(value))
+        col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == 9
 
@@ -505,14 +475,11 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
 
     @pytest.mark.parametrize(["header_list", "value"], [
         [
-            ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"],
-            TEST_DATA_MATRIX,
-        ],
-        [
+            ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"],TEST_DATA_MATRIX,
+        ], [
             None,
             TEST_DATA_MATRIX,
-        ],
-        [
+        ], [
             [],
             TEST_DATA_MATRIX,
         ],
@@ -617,8 +584,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
 
     def test_normal_empty_value(self, dp_extractor):
         dp_extractor.header_list = ["a", "22", "cccc"]
-        col_dp_list = dp_extractor.to_column_dp_list(
-            dp_extractor.to_dp_matrix(None))
+        col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(None))
 
         dp = col_dp_list[0]
         assert dp.typecode == Typecode.NONE
@@ -651,7 +617,6 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
         ["b", 1, "bb"],
         ["c", 2, "ccc"],
     ]
-
     TEST_DATA_MATRIX_NOUNIFORM_COL1 = [
         ["a", 0],
         ["b", 1, "bb"],
@@ -667,32 +632,27 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
                 TEST_DATA_MATRIX_NOUNIFORM_COL1,
                 MatrixFormatting.TRIM,
                 1,
-            ],
-            [
+            ], [
                 ["a", "b"],
                 TEST_DATA_MATRIX_NORMAL_COL3,
                 MatrixFormatting.TRIM,
                 2,
-            ],
-            [
+            ], [
                 None,
                 TEST_DATA_MATRIX_NOUNIFORM_COL1,
                 MatrixFormatting.FILL_NONE,
                 4
-            ],
-            [
+            ], [
                 ["a", "b", "c"],
                 TEST_DATA_MATRIX_NORMAL_COL3,
                 MatrixFormatting.FILL_NONE,
                 3
-            ],
-            [
+            ], [
                 ["a", "b", "c"],
                 TEST_DATA_MATRIX_NOUNIFORM_COL1,
                 MatrixFormatting.HEADER_ALIGNED,
                 3
-            ],
-            [
+            ], [
                 ["a", "b", "c", "d", "e"],
                 TEST_DATA_MATRIX_NOUNIFORM_COL1,
                 MatrixFormatting.HEADER_ALIGNED,
@@ -703,8 +663,7 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
             self, dp_extractor, header_list, value, matrix_formatting, expected):
         dp_extractor.header_list = header_list
         dp_extractor.matrix_formatting = matrix_formatting
-        col_dp_list = dp_extractor.to_column_dp_list(
-            dp_extractor.to_dp_matrix(value))
+        col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == expected
 
@@ -724,5 +683,4 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
         dp_extractor.matrix_formatting = matrix_formatting
 
         with pytest.raises(expected):
-            dp_extractor.to_column_dp_list(
-                dp_extractor.to_dp_matrix(value))
+            dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
