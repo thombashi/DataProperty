@@ -15,7 +15,7 @@ from ._dataproperty import DataProperty
 
 
 class DataPropertyConverter(object):
-    __RE_QUOTE = re.compile("^\s*[\"'].*[\"']\s*$")
+    __RE_QUOTE_LINE = re.compile("^\s*[\"'].*[\"']\s*$")
 
     def __init__(
             self, type_value_mapping=None, const_value_mapping=None,
@@ -56,7 +56,7 @@ class DataPropertyConverter(object):
             return data
 
         try:
-            if self.__RE_QUOTE.search(data):
+            if self.__RE_QUOTE_LINE.search(data):
                 return data
         except TypeError:
             return data
