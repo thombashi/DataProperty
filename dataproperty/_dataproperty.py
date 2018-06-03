@@ -338,8 +338,7 @@ class DataProperty(DataPeropertyBase):
         except ValueError:
             unicode_str = self.to_str()
 
-        return get_ascii_char_width(
-            unicode_str, self.__east_asian_ambiguous_width)
+        return get_ascii_char_width(unicode_str, self.__east_asian_ambiguous_width)
 
     @staticmethod
     def __preprocess_data(data, strip_str):
@@ -621,8 +620,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return False
 
         if bin(
-                self.__typecode_bitmap &
-                (FLOAT_TYPECODE_BMP | Typecode.NULL_STRING.value)
+            self.__typecode_bitmap & (FLOAT_TYPECODE_BMP | Typecode.NULL_STRING.value)
         ).count("1") >= 2:
             return True
 
