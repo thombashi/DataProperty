@@ -475,7 +475,8 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
 
     @pytest.mark.parametrize(["header_list", "value"], [
         [
-            ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"],TEST_DATA_MATRIX,
+            ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"],
+            TEST_DATA_MATRIX,
         ], [
             None,
             TEST_DATA_MATRIX,
