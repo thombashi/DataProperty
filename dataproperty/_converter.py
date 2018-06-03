@@ -15,7 +15,7 @@ from ._dataproperty import DataProperty
 
 
 class DataPropertyConverter(object):
-    __RE_QUOTE = re.compile("^[\s]*[\"].*[\"][\s]*$")
+    __RE_QUOTE = re.compile("^\s*[\"'].*[\"']\s*$")
 
     def __init__(
             self, type_value_mapping=None, const_value_mapping=None,
