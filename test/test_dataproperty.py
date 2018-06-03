@@ -20,7 +20,7 @@ from .common import get_strict_type_mapping
 
 
 if six.PY2:
-    reload(sys)
+    reload(sys)  # noqa: W0602
     sys.setdefaultencoding('utf-8')
 
 
