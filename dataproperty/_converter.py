@@ -16,6 +16,7 @@ from ._dataproperty import DataProperty
 
 class DataPropertyConverter(object):
     __RE_QUOTE_LINE = re.compile("^\s*[\"'].*[\"']\s*$")  # noqa: w605
+    __RE_QUOTE_CHAR = re.compile("[\"\']")
 
     def __init__(
             self, type_value_mapping=None, const_value_mapping=None,
@@ -61,7 +62,7 @@ class DataPropertyConverter(object):
         except TypeError:
             return data
 
-        return '"{}"'.format(data)
+        return '"{}"'.format(self.__RE_QUOTE_CHAR.sub('\\"', data))
 
     def __convert_value(self, dp_value):
         if dp_value.typecode in (Typecode.BOOL, Typecode.STRING):
