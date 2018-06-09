@@ -463,16 +463,6 @@ class ColumnDataProperty(DataPeropertyBase):
         return self.__typecode
 
     @property
-    def padding_len(self):
-        import warnings
-
-        warnings.warn(
-            "padding_len will be deleted in the future, use ascii_char_width instead.",
-            DeprecationWarning)
-
-        return self.ascii_char_width
-
-    @property
     def ascii_char_width(self):
         return self.__ascii_char_width
 

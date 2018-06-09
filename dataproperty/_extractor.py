@@ -563,43 +563,6 @@ class DataPropertyExtractor(object):
             float_type=self.float_type,
             strict_type_mapping=self.strict_type_mapping)
 
-    @property
-    def col_type_hint_list(self):
-        # mark as delete
-
-        return self.column_type_hint_list
-
-    @col_type_hint_list.setter
-    def col_type_hint_list(self, value):
-        # mark as delete
-
-        self.column_type_hint_list = value
-
-    def to_dataproperty(self, data):
-        # mark as delete
-
-        return self.to_dp(data)
-
-    def to_dataproperty_list(self, data_list):
-        # mark as delete
-
-        return self.to_dp_list(data_list)
-
-    def to_col_dataproperty_list(self, value_dp_matrix, previous_column_dp_list=None):
-        # mark as delete
-
-        return self.to_column_dp_list(value_dp_matrix, previous_column_dp_list)
-
-    def to_dataproperty_matrix(self, value_matrix):
-        # mark as delete
-
-        return self.to_dp_matrix(value_matrix)
-
-    def to_header_dataproperty_list(self):
-        # mark as delete
-
-        return self.to_header_dp_list()
-
 
 def _to_dp_list_helper(extractor, col_idx, data_list, type_hint, strip_str):
     return (col_idx, extractor._to_dp_list(data_list, type_hint=type_hint, strip_str=strip_str))
