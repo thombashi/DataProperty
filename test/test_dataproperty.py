@@ -289,6 +289,28 @@ class Test_DataPeroperty_set_data(object):
 
         assert dp.data == expected
 
+class Test_DataPeroperty_is_escape_html_tag(object):
+
+    @pytest.mark.skipif("six.PY2")
+    @pytest.mark.parametrize(
+        ["value", "is_escape_html_tag", "expected"],
+        [
+            [
+                "<a href='https://google.com'>test</a>",
+                True,
+                "&lt;a href=&#x27;https://google.com&#x27;&gt;test&lt;/a&gt;"
+            ], [
+                "<a href='https://google.com'>test</a>",
+                False,
+                "<a href='https://google.com'>test</a>"
+            ],
+        ])
+    def test_normal_tab(self, value, is_escape_html_tag, expected):
+        dp = DataProperty(value, is_escape_html_tag=is_escape_html_tag)
+
+        assert dp.data == expected
+
+
 
 class Test_DataPeroperty_float_type(object):
 

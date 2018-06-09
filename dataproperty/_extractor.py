@@ -118,6 +118,15 @@ class DataPropertyExtractor(object):
         self.__is_formatting_float = value
 
     @property
+    def is_escape_html_tag(self):
+        return self.__is_escape_html_tag
+
+    @is_escape_html_tag.setter
+    def is_escape_html_tag(self, value):
+        self.__is_escape_html_tag = value
+        self.__update_dp_converter()
+
+    @property
     def strip_str_header(self):
         return self.__strip_str_header
 
@@ -271,6 +280,7 @@ class DataPropertyExtractor(object):
         self.__strip_str_header = None
         self.__strip_str_value = None
         self.__is_formatting_float = True
+        self.__is_escape_html_tag = False
         self.__min_col_ascii_char_width = 0
         self.__float_type = None
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
@@ -547,6 +557,7 @@ class DataPropertyExtractor(object):
             type_value_mapping=self.type_value_mapping,
             const_value_mapping=self.const_value_mapping,
             quoting_flags=self.quoting_flags,
+            is_escape_html_tag=self.is_escape_html_tag,
             datetime_formatter=self.datetime_formatter,
             datetime_format_str=self.datetime_format_str,
             float_type=self.float_type,

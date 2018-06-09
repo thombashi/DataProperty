@@ -20,7 +20,7 @@ class DataPropertyConverter(object):
 
     def __init__(
             self, type_value_mapping=None, const_value_mapping=None,
-            quoting_flags=None,
+            quoting_flags=None, is_escape_html_tag=False,
             datetime_formatter=None, datetime_format_str=None,
             float_type=None, strict_type_mapping=None):
         self.__type_value_mapping = (
@@ -34,23 +34,30 @@ class DataPropertyConverter(object):
         self.__datetime_format_str = datetime_format_str
         self.__float_type = float_type
         self.__strict_type_mapping = strict_type_mapping
+        self.__is_escape_html_tag = is_escape_html_tag
 
     def convert(self, dp_value):
         try:
             return self.__create_dataproperty(self.__convert_value(dp_value))
         except TypeConversionError:
-            if not self.__quoting_flags.get(dp_value.typecode):
-                return dp_value
+            pass
 
-            return self.__create_dataproperty(
-                self.__apply_quote(dp_value.typecode, dp_value.to_str()))
+        if not self.__quoting_flags.get(dp_value.typecode):
+            if self.__is_escape_html_tag:
+                return self.__create_dataproperty(dp_value.to_str())
+
+            return dp_value
+
+        return self.__create_dataproperty(
+            self.__apply_quote(dp_value.typecode, dp_value.to_str()))
 
     def __create_dataproperty(self, value):
         return DataProperty(
             value,
             float_type=self.__float_type,
             datetime_format_str=self.__datetime_format_str,
-            strict_type_mapping=STRICT_TYPE_MAPPING)
+            strict_type_mapping=STRICT_TYPE_MAPPING,
+            is_escape_html_tag=self.__is_escape_html_tag)
 
     def __apply_quote(self, typecode, data):
         if not self.__quoting_flags.get(typecode):

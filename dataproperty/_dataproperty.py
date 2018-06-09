@@ -216,8 +216,10 @@ class DataProperty(DataPeropertyBase):
             datetime_format_str=DefaultValue.DATETIME_FORMAT,
             strict_type_mapping=None,
             replace_tabs_with_spaces=True, tab_length=2,
+            is_escape_html_tag=False,
             east_asian_ambiguous_width=1):
         super(DataProperty, self).__init__(datetime_format_str)
+
         self.__additional_format_len = None
         self.__align = None
         self.__ascii_char_width = None
@@ -229,7 +231,8 @@ class DataProperty(DataPeropertyBase):
 
         data = self.__preprocess_data(data, strip_str)
         self.__set_data(data, type_hint, float_type, strict_type_mapping)
-        self.__replace_tabs(replace_tabs_with_spaces, tab_length)
+
+        self.__preprocess_string(replace_tabs_with_spaces, tab_length, is_escape_html_tag)
 
     def __eq__(self, other):
         if self.typecode != other.typecode:
@@ -394,14 +397,22 @@ class DataProperty(DataPeropertyBase):
 
         return True
 
-    def __replace_tabs(self, replace_tabs_with_spaces, tab_length):
-        if not replace_tabs_with_spaces:
+    def __preprocess_string(self, replace_tabs_with_spaces, tab_length, is_escape_html_tag):
+        if replace_tabs_with_spaces:
+            try:
+                self.__data = self.__data.replace("\t", " " * tab_length)
+            except (TypeError, AttributeError):
+                return
+
+        if not is_escape_html_tag:
             return
 
-        try:
-            self.__data = self.__data.replace("\t", " " * tab_length)
-        except (TypeError, AttributeError):
-            pass
+        if six.PY2:
+            import cgi
+            self.__data = cgi.escape(self.__data)
+        else:
+            import html
+            self.__data = html.escape(self.__data)
 
 
 class ColumnDataProperty(DataPeropertyBase):
