@@ -289,6 +289,7 @@ class Test_DataPeroperty_set_data(object):
 
         assert dp.data == expected
 
+
 class Test_DataPeroperty_is_escape_html_tag(object):
 
     @pytest.mark.skipif("six.PY2")
@@ -309,7 +310,6 @@ class Test_DataPeroperty_is_escape_html_tag(object):
         dp = DataProperty(value, is_escape_html_tag=is_escape_html_tag)
 
         assert dp.data == expected
-
 
 
 class Test_DataPeroperty_float_type(object):
