@@ -62,7 +62,7 @@ class DataPropertyConverter(object):
         except TypeError:
             return data
 
-        return '"{}"'.format(self.__RE_QUOTE_CHAR.sub('\\"', data))
+        return '"{}"'.format(self.__RE_QUOTE_CHAR.sub('\\"', data.replace("\\", "\\\\")))
 
     def __convert_value(self, dp_value):
         if dp_value.typecode in (Typecode.BOOL, Typecode.STRING):
