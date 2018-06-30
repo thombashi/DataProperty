@@ -3,7 +3,10 @@
 .. image:: https://badge.fury.io/py/DataProperty.svg
     :target: https://badge.fury.io/py/DataProperty
 
-.. image:: https://img.shields.io/travis/thombashi/DataProperty/master.svg?label=Linux
+.. image:: https://img.shields.io/pypi/pyversions/DataProperty.svg
+   :target: https://pypi.python.org/pypi/DataProperty
+
+.. image:: https://img.shields.io/travis/thombashi/DataProperty/master.svg?label=Linux/macOS
     :target: https://travis-ci.org/thombashi/DataProperty
 
 .. image:: https://img.shields.io/appveyor/ci/thombashi/dataproperty/master.svg?label=Windows
