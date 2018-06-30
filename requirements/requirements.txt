@@ -3,4 +3,4 @@ futures;python_version<"3.2"
 ipaddress;python_version<"3.3"
 logbook>=1.0.1
 mbstrdecoder>=0.4.0
-typepy>=0.1.0
+typepy>=0.1.1
