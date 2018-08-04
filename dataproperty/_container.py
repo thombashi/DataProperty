@@ -12,7 +12,6 @@ from typepy import RealNumber
 
 
 class AbstractContainer(object):
-
     @abc.abstractproperty
     def min_value(self):  # pragma: no cover
         pass
@@ -37,10 +36,7 @@ class AbstractContainer(object):
         if not self.has_value():
             return "None"
 
-        return ", ".join([
-            "min={}".format(self.min_value),
-            "max={}".format(self.max_value),
-        ])
+        return ", ".join(["min={}".format(self.min_value), "max={}".format(self.max_value)])
 
     def has_value(self):
         return self.min_value is not None and self.max_value is not None
@@ -53,9 +49,7 @@ class AbstractContainer(object):
 
 
 class ListContainer(AbstractContainer):
-    __slots__ = (
-        "__value_list",
-    )
+    __slots__ = ("__value_list",)
 
     @property
     def min_value(self):
@@ -123,16 +117,10 @@ class MinMaxContainer(AbstractContainer):
             self.update(value)
 
     def __eq__(self, other):
-        return all([
-            self.min_value == other.min_value,
-            self.max_value == other.max_value,
-        ])
+        return all([self.min_value == other.min_value, self.max_value == other.max_value])
 
     def __ne__(self, other):
-        return any([
-            self.min_value != other.min_value,
-            self.max_value != other.max_value,
-        ])
+        return any([self.min_value != other.min_value, self.max_value != other.max_value])
 
     def __contains__(self, x):
         return self.min_value <= x <= self.max_value

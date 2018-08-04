@@ -12,8 +12,22 @@ from decimal import Decimal
 import six
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import (
-    Bool, DateTime, Dictionary, Infinity, Integer, IpAddress, List, Nan, NoneType, NullString,
-    RealNumber, StrictLevel, String, Typecode, TypeConversionError)
+    Bool,
+    DateTime,
+    Dictionary,
+    Infinity,
+    Integer,
+    IpAddress,
+    List,
+    Nan,
+    NoneType,
+    NullString,
+    RealNumber,
+    StrictLevel,
+    String,
+    Typecode,
+    TypeConversionError,
+)
 
 from ._align_getter import align_getter
 from ._common import DefaultValue
@@ -23,10 +37,7 @@ from ._interface import DataPeropertyInterface
 
 
 class DataPeropertyBase(DataPeropertyInterface):
-    __slots__ = (
-        "__datetime_format_str",
-        "__format_str",
-    )
+    __slots__ = ("__datetime_format_str", "__format_str")
 
     __TYPE_CLASS_TABLE = {
         Typecode.BOOL: Bool,
@@ -209,15 +220,18 @@ class DataProperty(DataPeropertyBase):
         return self.__additional_format_len
 
     def __init__(
-            self, data,
-            type_hint=None,
-            strip_str=None,
-            float_type=None,
-            datetime_format_str=DefaultValue.DATETIME_FORMAT,
-            strict_type_mapping=None,
-            replace_tabs_with_spaces=True, tab_length=2,
-            is_escape_html_tag=False,
-            east_asian_ambiguous_width=1):
+        self,
+        data,
+        type_hint=None,
+        strip_str=None,
+        float_type=None,
+        datetime_format_str=DefaultValue.DATETIME_FORMAT,
+        strict_type_mapping=None,
+        replace_tabs_with_spaces=True,
+        tab_length=2,
+        is_escape_html_tag=False,
+        east_asian_ambiguous_width=1,
+    ):
         super(DataProperty, self).__init__(datetime_format_str)
 
         self.__additional_format_len = None
@@ -263,11 +277,13 @@ class DataProperty(DataPeropertyBase):
             except UnicodeEncodeError:
                 element_list.append("data={}".format(MultiByteStrDecoder(self.data).unicode_str))
 
-        element_list.extend([
-            "typename={:s}".format(self.typename),
-            "align={}".format(self.align.align_string),
-            "ascii_char_width={:d}".format(self.ascii_char_width),
-        ])
+        element_list.extend(
+            [
+                "typename={:s}".format(self.typename),
+                "align={}".format(self.align.align_string),
+                "ascii_char_width={:d}".format(self.ascii_char_width),
+            ]
+        )
 
         if Integer(self.length).is_type():
             element_list.append("length={}".format(self.length))
@@ -326,7 +342,7 @@ class DataProperty(DataPeropertyBase):
             return self.integer_digits + self.additional_format_len
 
         if self.typecode == Typecode.REAL_NUMBER:
-            return (self.__get_base_float_len() + self.additional_format_len)
+            return self.__get_base_float_len() + self.additional_format_len
 
         if self.typecode == Typecode.DATETIME:
             try:
@@ -368,7 +384,8 @@ class DataProperty(DataPeropertyBase):
             self.__data = type_obj.try_convert()
 
             if type_hint(
-                    self.__data, strict_level=StrictLevel.MAX, float_type=float_type).is_type():
+                self.__data, strict_level=StrictLevel.MAX, float_type=float_type
+            ).is_type():
                 return
 
         for type_class in self.__type_class_list:
@@ -377,8 +394,9 @@ class DataProperty(DataPeropertyBase):
             if self.__try_convert_type(data, type_class, strict_level, float_type):
                 return
 
-        raise TypeConversionError("failed to convert: data={}, strict_level={}".format(
-            data, strict_type_mapping))
+        raise TypeConversionError(
+            "failed to convert: data={}, strict_level={}".format(data, strict_type_mapping)
+        )
 
     def __set_digit(self):
         integer_digits, decimal_places = get_number_of_digit(self.__data)
@@ -409,9 +427,11 @@ class DataProperty(DataPeropertyBase):
 
         if six.PY2:
             import cgi
+
             self.__data = cgi.escape(self.__data)
         else:
             import html
+
             self.__data = html.escape(self.__data)
 
 
@@ -479,10 +499,13 @@ class ColumnDataProperty(DataPeropertyBase):
         return self.__minmax_additional_format_len
 
     def __init__(
-            self, column_index=None, min_width=0,
-            is_formatting_float=True,
-            datetime_format_str=DefaultValue.DATETIME_FORMAT,
-            east_asian_ambiguous_width=1):
+        self,
+        column_index=None,
+        min_width=0,
+        is_formatting_float=True,
+        datetime_format_str=DefaultValue.DATETIME_FORMAT,
+        east_asian_ambiguous_width=1,
+    ):
         super(ColumnDataProperty, self).__init__(datetime_format_str)
 
         self.__ascii_char_width = min_width
@@ -506,11 +529,13 @@ class ColumnDataProperty(DataPeropertyBase):
         if self.column_index is not None:
             element_list.append("column={}".format(self.column_index))
 
-        element_list.extend([
-            "typename={}".format(self.typename),
-            "align={}".format(self.align.align_string),
-            "ascii_char_width={}".format(six.text_type(self.ascii_char_width)),
-        ])
+        element_list.extend(
+            [
+                "typename={}".format(self.typename),
+                "align={}".format(self.align.align_string),
+                "ascii_char_width={}".format(six.text_type(self.ascii_char_width)),
+            ]
+        )
 
         if Integer(self.bit_length).is_type():
             element_list.append("bit_len={:d}".format(self.bit_length))
@@ -534,10 +559,10 @@ class ColumnDataProperty(DataPeropertyBase):
         if not self.minmax_additional_format_len.is_zero():
             if self.minmax_additional_format_len.is_same_value():
                 value = "additional_format_len={}".format(
-                    self.minmax_additional_format_len.min_value)
+                    self.minmax_additional_format_len.min_value
+                )
             else:
-                value = "additional_format_len=({})".format(
-                    self.minmax_additional_format_len)
+                value = "additional_format_len=({})".format(self.minmax_additional_format_len)
 
             element_list.append(value)
 
@@ -546,10 +571,12 @@ class ColumnDataProperty(DataPeropertyBase):
     def dp_to_str(self, value_dp):
         to_string_format_str = self.__get_tostring_format(value_dp)
 
-        if any([
-            self.typecode in [Typecode.BOOL, Typecode.DATETIME],
-            all([self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER]),
-        ]):
+        if any(
+            [
+                self.typecode in [Typecode.BOOL, Typecode.DATETIME],
+                all([self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER]),
+            ]
+        ):
             return to_string_format_str.format(value_dp.data)
 
         try:
@@ -609,20 +636,25 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_ascii_char_width()
 
     def __is_not_single_typecode(self, typecode_bitmap):
-        return (self.__typecode_bitmap & typecode_bitmap and
-                self.__typecode_bitmap & ~typecode_bitmap)
+        return (
+            self.__typecode_bitmap & typecode_bitmap and self.__typecode_bitmap & ~typecode_bitmap
+        )
 
     def __is_float_typecode(self):
         FLOAT_TYPECODE_BMP = (
-            Typecode.REAL_NUMBER.value | Typecode.INFINITY.value | Typecode.NAN.value)
+            Typecode.REAL_NUMBER.value | Typecode.INFINITY.value | Typecode.NAN.value
+        )
         NUMBER_TYPECODE_BMP = FLOAT_TYPECODE_BMP | Typecode.INTEGER.value
 
         if self.__is_not_single_typecode(NUMBER_TYPECODE_BMP | Typecode.NULL_STRING.value):
             return False
 
-        if bin(
-            self.__typecode_bitmap & (FLOAT_TYPECODE_BMP | Typecode.NULL_STRING.value)
-        ).count("1") >= 2:
+        if (
+            bin(self.__typecode_bitmap & (FLOAT_TYPECODE_BMP | Typecode.NULL_STRING.value)).count(
+                "1"
+            )
+            >= 2
+        ):
             return True
 
         if bin(self.__typecode_bitmap & NUMBER_TYPECODE_BMP).count("1") >= 2:
@@ -642,7 +674,8 @@ class ColumnDataProperty(DataPeropertyBase):
 
             max_width = max(
                 max_width,
-                get_ascii_char_width(self.dp_to_str(value_dp), self.__east_asian_ambiguous_width))
+                get_ascii_char_width(self.dp_to_str(value_dp), self.__east_asian_ambiguous_width),
+            )
 
         return max_width
 
@@ -655,22 +688,24 @@ class ColumnDataProperty(DataPeropertyBase):
         if Nan(avg).is_type():
             return None
 
-        return int(min(
-            math.ceil(avg + Decimal("1.0")),
-            self.minmax_decimal_places.max_value))
+        return int(min(math.ceil(avg + Decimal("1.0")), self.minmax_decimal_places.max_value))
 
     def __get_tostring_format(self, value_dp):
         if all([value_dp.typecode == Typecode.REAL_NUMBER, self.__is_formatting_float]):
             return self._get_realnumber_format()
 
-        if any([
-            all([
-                self.typecode == Typecode.REAL_NUMBER,
-                not self.__is_formatting_float,
-                value_dp.typecode in [Typecode.INTEGER, Typecode.REAL_NUMBER],
-            ]),
-            value_dp.typecode == Typecode.NONE,
-        ]):
+        if any(
+            [
+                all(
+                    [
+                        self.typecode == Typecode.REAL_NUMBER,
+                        not self.__is_formatting_float,
+                        value_dp.typecode in [Typecode.INTEGER, Typecode.REAL_NUMBER],
+                    ]
+                ),
+                value_dp.typecode == Typecode.NONE,
+            ]
+        ):
             return "{}"
 
         try:
@@ -684,10 +719,12 @@ class ColumnDataProperty(DataPeropertyBase):
         if self.__is_float_typecode():
             return Typecode.REAL_NUMBER
 
-        if any([
+        if any(
+            [
                 self.__is_not_single_typecode(Typecode.BOOL.value),
                 self.__is_not_single_typecode(Typecode.DATETIME.value),
-        ]):
+            ]
+        ):
             return Typecode.STRING
 
         typecode_list = [

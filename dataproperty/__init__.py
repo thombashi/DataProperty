@@ -14,5 +14,9 @@ from ._container import MinMaxContainer
 from ._dataproperty import ColumnDataProperty, DataProperty
 from ._extractor import DataPropertyExtractor, MatrixFormatting
 from ._function import (
-    get_ascii_char_width, get_integer_digit, get_number_of_digit, is_multibyte_str)
+    get_ascii_char_width,
+    get_integer_digit,
+    get_number_of_digit,
+    is_multibyte_str,
+)
 from ._logger import set_log_level, set_logger

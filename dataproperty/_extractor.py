@@ -93,8 +93,18 @@ class DataPropertyExtractor(object):
     @column_type_hint_list.setter
     def column_type_hint_list(self, value):
         from typepy import (
-            Bool, DateTime, Dictionary, Infinity, Integer, IpAddress, List, Nan, NoneType,
-            RealNumber, NullString)
+            Bool,
+            DateTime,
+            Dictionary,
+            Infinity,
+            Integer,
+            IpAddress,
+            List,
+            Nan,
+            NoneType,
+            RealNumber,
+            NullString,
+        )
 
         if self.__col_type_hint_list == value:
             return
@@ -102,8 +112,20 @@ class DataPropertyExtractor(object):
         if value:
             for type_hint in value:
                 if type_hint not in (
-                        Bool, DateTime, Dictionary, Infinity, Integer, IpAddress, List, Nan,
-                        NoneType, RealNumber, String, NullString, None):
+                    Bool,
+                    DateTime,
+                    Dictionary,
+                    Infinity,
+                    Integer,
+                    IpAddress,
+                    List,
+                    Nan,
+                    NoneType,
+                    RealNumber,
+                    String,
+                    NullString,
+                    None,
+                ):
                     raise ValueError("invalid type hint: {}".format(type(type_hint)))
 
         self.__col_type_hint_list = value
@@ -301,10 +323,7 @@ class DataPropertyExtractor(object):
         self.__dp_cache_one = self.__to_dp_raw(1)
         self.__dp_cache_true = self.__to_dp_raw(True)
         self.__dp_cache_false = self.__to_dp_raw(False)
-        self.__dp_cache_mapping = {
-            None: self.__to_dp_raw(None),
-            "": self.__to_dp_raw(""),
-        }
+        self.__dp_cache_mapping = {None: self.__to_dp_raw(None), "": self.__to_dp_raw("")}
 
     def to_dp(self, value):
         self.__update_dp_converter()
@@ -320,9 +339,12 @@ class DataPropertyExtractor(object):
         return self._to_dp_list(value_list, strip_str=self.strip_str_value)
 
     def to_column_dp_list(self, value_dp_matrix, previous_column_dp_list=None):
-        logger.debug("prev_col_count={}, mismatch_process={}".format(
-            len(previous_column_dp_list) if previous_column_dp_list else None,
-            self.matrix_formatting))
+        logger.debug(
+            "prev_col_count={}, mismatch_process={}".format(
+                len(previous_column_dp_list) if previous_column_dp_list else None,
+                self.matrix_formatting,
+            )
+        )
 
         col_dp_list = self.__get_col_dp_list_base()
 
@@ -331,12 +353,15 @@ class DataPropertyExtractor(object):
             try:
                 col_dp_list[col_idx]
             except IndexError:
-                col_dp_list.append(ColumnDataProperty(
-                    column_index=col_idx, min_width=self.min_column_width,
-                    is_formatting_float=self.is_formatting_float,
-                    datetime_format_str=self.datetime_format_str,
-                    east_asian_ambiguous_width=self.east_asian_ambiguous_width
-                ))
+                col_dp_list.append(
+                    ColumnDataProperty(
+                        column_index=col_idx,
+                        min_width=self.min_column_width,
+                        is_formatting_float=self.is_formatting_float,
+                        datetime_format_str=self.datetime_format_str,
+                        east_asian_ambiguous_width=self.east_asian_ambiguous_width,
+                    )
+                )
 
             col_dp = col_dp_list[col_idx]
             col_dp.begin_update()
@@ -377,8 +402,11 @@ class DataPropertyExtractor(object):
         self.__update_dp_converter()
 
         return self._to_dp_list(
-            self.header_list, type_hint=String, strip_str=self.strip_str_header,
-            strict_type_mapping=NOT_STRICT_TYPE_MAPPING)
+            self.header_list,
+            type_hint=String,
+            strip_str=self.strip_str_header,
+            strict_type_mapping=NOT_STRICT_TYPE_MAPPING,
+        )
 
     @staticmethod
     def __is_dp_matrix(value):
@@ -416,10 +444,8 @@ class DataPropertyExtractor(object):
             return self.__dp_cache_true
 
         return self.__to_dp_raw(
-            data,
-            type_hint=type_hint,
-            strip_str=strip_str,
-            strict_type_mapping=strict_type_mapping)
+            data, type_hint=type_hint, strip_str=strip_str, strict_type_mapping=strict_type_mapping
+        )
 
     def __to_dp_raw(self, data, type_hint=None, strip_str=None, strict_type_mapping=None):
         value_dp = DataProperty(
@@ -429,19 +455,28 @@ class DataPropertyExtractor(object):
             float_type=self.float_type,
             datetime_format_str=self.datetime_format_str,
             strict_type_mapping=(
-                strict_type_mapping if type_hint is not None else self.strict_type_mapping),
-            east_asian_ambiguous_width=self.east_asian_ambiguous_width
+                strict_type_mapping if type_hint is not None else self.strict_type_mapping
+            ),
+            east_asian_ambiguous_width=self.east_asian_ambiguous_width,
         )
 
         return self.__dp_converter.convert(value_dp)
 
     def __to_dp_matrix_st(self, value_matrix):
-        return list(zip(*[
-            _to_dp_list_helper(
-                self, col_idx, data_list,
-                self.__get_col_type_hint(col_idx), self.strip_str_value)[1]
-            for col_idx, data_list in enumerate(zip(*value_matrix))
-        ]))
+        return list(
+            zip(
+                *[
+                    _to_dp_list_helper(
+                        self,
+                        col_idx,
+                        data_list,
+                        self.__get_col_type_hint(col_idx),
+                        self.strip_str_value,
+                    )[1]
+                    for col_idx, data_list in enumerate(zip(*value_matrix))
+                ]
+            )
+        )
 
     def __to_dp_matrix_mt(self, value_matrix):
         from concurrent import futures
@@ -451,8 +486,13 @@ class DataPropertyExtractor(object):
             with futures.ProcessPoolExecutor(self.max_workers) as executor:
                 future_list = [
                     executor.submit(
-                        _to_dp_list_helper, self, col_idx, data_list,
-                        self.__get_col_type_hint(col_idx), self.strip_str_value)
+                        _to_dp_list_helper,
+                        self,
+                        col_idx,
+                        data_list,
+                        self.__get_col_type_hint(col_idx),
+                        self.strip_str_value,
+                    )
                     for col_idx, data_list in enumerate(zip(*value_matrix))
                 ]
 
@@ -463,9 +503,7 @@ class DataPropertyExtractor(object):
             logger.debug("shutdown ProcessPoolExecutor")
             executor.shutdown()
 
-        return list(zip(*[
-            col_data_mapping[col_idx] for col_idx in sorted(col_data_mapping)
-        ]))
+        return list(zip(*[col_data_mapping[col_idx] for col_idx in sorted(col_data_mapping)]))
 
     def _to_dp_list(self, data_list, type_hint=None, strip_str=None, strict_type_mapping=None):
         from collections import Counter
@@ -488,8 +526,11 @@ class DataPropertyExtractor(object):
                     pass
 
             dataprop = self.__to_dp(
-                data=data, type_hint=expect_type_hist, strip_str=strip_str,
-                strict_type_mapping=strict_type_mapping)
+                data=data,
+                type_hint=expect_type_hist,
+                strip_str=strip_str,
+                strict_type_mapping=strict_type_mapping,
+            )
             type_counter[dataprop.type_class] += 1
 
             dp_list.append(dataprop)
@@ -515,8 +556,9 @@ class DataPropertyExtractor(object):
 
         if self.matrix_formatting == MatrixFormatting.EXCEPTION:
             if min_col_size != max_col_size:
-                raise ValueError("nonuniform column size: min={}, max={}".format(
-                    min_col_size, max_col_size))
+                raise ValueError(
+                    "nonuniform column size: min={}, max={}".format(min_col_size, max_col_size)
+                )
 
             return data_matrix
 
@@ -543,10 +585,12 @@ class DataPropertyExtractor(object):
 
         for col_idx, header_dp in enumerate(header_dp_list):
             col_dp = ColumnDataProperty(
-                column_index=col_idx, min_width=self.min_column_width,
+                column_index=col_idx,
+                min_width=self.min_column_width,
                 is_formatting_float=self.is_formatting_float,
                 datetime_format_str=self.datetime_format_str,
-                east_asian_ambiguous_width=self.east_asian_ambiguous_width)
+                east_asian_ambiguous_width=self.east_asian_ambiguous_width,
+            )
             col_dp.update_header(header_dp)
             col_dp_list.append(col_dp)
 
@@ -561,7 +605,8 @@ class DataPropertyExtractor(object):
             datetime_formatter=self.datetime_formatter,
             datetime_format_str=self.datetime_format_str,
             float_type=self.float_type,
-            strict_type_mapping=self.strict_type_mapping)
+            strict_type_mapping=self.strict_type_mapping,
+        )
 
 
 def _to_dp_list_helper(extractor, col_idx, data_list, type_hint, strip_str):

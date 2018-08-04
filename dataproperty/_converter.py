@@ -16,19 +16,26 @@ from ._dataproperty import DataProperty
 
 class DataPropertyConverter(object):
     __RE_QUOTE_LINE = re.compile("^\s*[\"'].*[\"']\s*$")  # noqa: w605
-    __RE_QUOTE_CHAR = re.compile("[\"\']")
+    __RE_QUOTE_CHAR = re.compile("[\"']")
 
     def __init__(
-            self, type_value_mapping=None, const_value_mapping=None,
-            quoting_flags=None, is_escape_html_tag=False,
-            datetime_formatter=None, datetime_format_str=None,
-            float_type=None, strict_type_mapping=None):
+        self,
+        type_value_mapping=None,
+        const_value_mapping=None,
+        quoting_flags=None,
+        is_escape_html_tag=False,
+        datetime_formatter=None,
+        datetime_format_str=None,
+        float_type=None,
+        strict_type_mapping=None,
+    ):
         self.__type_value_mapping = (
-            type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAPPING)
+            type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAPPING
+        )
         self.__const_value_mapping = (
-            const_value_mapping if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING)
-        self.__quoting_flags = (
-            quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS)
+            const_value_mapping if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING
+        )
+        self.__quoting_flags = quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS
 
         self.__datetime_formatter = datetime_formatter
         self.__datetime_format_str = datetime_format_str
@@ -48,8 +55,7 @@ class DataPropertyConverter(object):
 
             return dp_value
 
-        return self.__create_dataproperty(
-            self.__apply_quote(dp_value.typecode, dp_value.to_str()))
+        return self.__create_dataproperty(self.__apply_quote(dp_value.typecode, dp_value.to_str()))
 
     def __create_dataproperty(self, value):
         return DataProperty(
@@ -57,7 +63,8 @@ class DataPropertyConverter(object):
             float_type=self.__float_type,
             datetime_format_str=self.__datetime_format_str,
             strict_type_mapping=STRICT_TYPE_MAPPING,
-            is_escape_html_tag=self.__is_escape_html_tag)
+            is_escape_html_tag=self.__is_escape_html_tag,
+        )
 
     def __apply_quote(self, typecode, data):
         if not self.__quoting_flags.get(typecode):
@@ -76,19 +83,22 @@ class DataPropertyConverter(object):
             try:
                 if dp_value.data in self.__const_value_mapping:
                     return self.__apply_quote(
-                        dp_value.typecode, self.__const_value_mapping.get(dp_value.data))
+                        dp_value.typecode, self.__const_value_mapping.get(dp_value.data)
+                    )
             except TypeError:
                 # unhashable type will be reached this line
                 raise TypeConversionError
 
         if dp_value.typecode in self.__type_value_mapping:
             return self.__apply_quote(
-                dp_value.typecode, self.__type_value_mapping.get(dp_value.typecode))
+                dp_value.typecode, self.__type_value_mapping.get(dp_value.typecode)
+            )
 
         if dp_value.typecode == Typecode.DATETIME:
             try:
                 return self.__apply_quote(
-                    dp_value.typecode, self.__datetime_formatter(dp_value.data))
+                    dp_value.typecode, self.__datetime_formatter(dp_value.data)
+                )
             except TypeError:
                 raise TypeConversionError
 

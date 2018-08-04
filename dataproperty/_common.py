@@ -28,10 +28,8 @@ NOT_QUOTING_FLAGS = {
     Typecode.STRING: False,
 }
 
-STRICT_TYPE_MAPPING = dict(
-    itertools.product(list(Typecode), [StrictLevel.MAX]))
-NOT_STRICT_TYPE_MAPPING = dict(
-    itertools.product(list(Typecode), [StrictLevel.MIN]))
+STRICT_TYPE_MAPPING = dict(itertools.product(list(Typecode), [StrictLevel.MAX]))
+NOT_STRICT_TYPE_MAPPING = dict(itertools.product(list(Typecode), [StrictLevel.MIN]))
 
 
 class DefaultValue(object):
@@ -40,10 +38,7 @@ class DefaultValue(object):
     INF_VALUE = FLOAT_TYPE("inf")
     NAN_VALUE = FLOAT_TYPE("nan")
 
-    CONST_VALUE_MAPPING = {
-        True: True,
-        False: False,
-    }
+    CONST_VALUE_MAPPING = {True: True, False: False}
 
     QUOTING_FLAGS = copy.deepcopy(NOT_QUOTING_FLAGS)
 

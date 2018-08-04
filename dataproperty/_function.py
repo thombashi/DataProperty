@@ -26,8 +26,9 @@ def get_integer_digit(value):
     try:
         abs_value = abs(float_type.convert())
     except TypeConversionError:
-        raise ValueError("the value must be a number: value='{}' type='{}'".format(
-            value, type(value)))
+        raise ValueError(
+            "the value must be a number: value='{}' type='{}'".format(value, type(value))
+        )
 
     if abs_value.is_zero():
         return 1
@@ -120,7 +121,9 @@ def _validate_eaaw(east_asian_ambiguous_width):
 
     raise ValueError(
         "invalid east_asian_ambiguous_width: expected=1 or 2, actual={}".format(
-            east_asian_ambiguous_width))
+            east_asian_ambiguous_width
+        )
+    )
 
 
 def get_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):

@@ -12,7 +12,6 @@ from ._align import Align
 
 
 class AlignGetter(object):
-
     @property
     def typecode_align_table(self):
         raise NotImplementedError()
