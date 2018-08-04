@@ -12,6 +12,7 @@ from collections import namedtuple
 from decimal import Decimal
 
 from mbstrdecoder import MultiByteStrDecoder
+from six import text_type
 from six.moves import range
 
 
@@ -34,7 +35,7 @@ def get_integer_digit(value):
         return 1
 
     try:
-        return len(str(abs_value.quantize(Decimal("1."), rounding=decimal.ROUND_DOWN)))
+        return len(text_type(abs_value.quantize(Decimal("1."), rounding=decimal.ROUND_DOWN)))
     except decimal.InvalidOperation as e:
         raise ValueError(e)
 
@@ -61,7 +62,7 @@ class DigitCalculator(object):
             abs_value = abs(int_type.convert())
         else:
             abs_value = abs(float(value))
-            text_value = str(abs_value)
+            text_value = text_type(abs_value)
             float_text = 0
             if text_value.find(".") != -1:
                 float_text = text_value.split(".")[1]

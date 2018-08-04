@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 import pytest
 import six
 from dataproperty import MinMaxContainer
+from six import text_type
 from typepy import Nan
 
 
@@ -29,7 +30,7 @@ class Test_MinMaxContainer_repr(object):
         [[[1, 3], "min=1, max=3"], [[1], "min=1, max=1"], [[None, None], "None"]],
     )
     def test_normal(self, value_list, expected):
-        assert str(MinMaxContainer(value_list)) == expected
+        assert text_type(MinMaxContainer(value_list)) == expected
 
 
 class Test_MinMaxContainer_eq_ne(object):

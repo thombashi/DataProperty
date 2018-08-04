@@ -10,6 +10,7 @@ import copy
 import enum
 import multiprocessing
 
+from six import text_type
 from six.moves import zip
 from typepy import String, is_empty_sequence
 
@@ -376,7 +377,7 @@ class DataPropertyExtractor(object):
 
             col_dp.end_update()
 
-            logger.debug("  {:s}".format(str(col_dp)))
+            logger.debug("  {:s}".format(text_type(col_dp)))
 
         return col_dp_list
 
@@ -433,12 +434,12 @@ class DataPropertyExtractor(object):
             pass
 
         if data == 0:
-            if str(data) != "False":
+            if text_type(data) != "False":
                 return self.__dp_cache_zero
 
             return self.__dp_cache_false
         if data == 1:
-            if str(data) != "True":
+            if text_type(data) != "True":
                 return self.__dp_cache_one
 
             return self.__dp_cache_true

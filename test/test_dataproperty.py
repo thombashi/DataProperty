@@ -14,6 +14,7 @@ from decimal import Decimal
 import pytest
 import six
 from dataproperty import NOT_STRICT_TYPE_MAPPING, Align, DataProperty, DefaultValue
+from six import text_type
 from typepy import Bool, DateTime, Integer, Nan, RealNumber, String, Typecode
 
 from .common import get_strict_type_mapping
@@ -71,8 +72,8 @@ class Test_DataPeroperty_data_typecode(object):
             # [1.0, False, 1, Typecode.INTEGER],
             [six.MAXSIZE, True, six.MAXSIZE, Typecode.INTEGER],
             [-six.MAXSIZE, False, -six.MAXSIZE, Typecode.INTEGER],
-            [str(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INTEGER],
-            [str(six.MAXSIZE), False, str(six.MAXSIZE), Typecode.STRING],
+            [text_type(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INTEGER],
+            [text_type(six.MAXSIZE), False, text_type(six.MAXSIZE), Typecode.STRING],
             [1.1, True, 1, Typecode.INTEGER],
             [-1.1, False, Decimal("-1.1"), Typecode.REAL_NUMBER],
             [Decimal("1.1"), False, Decimal("1.1"), Typecode.REAL_NUMBER],
@@ -531,4 +532,4 @@ class Test_DataPeroperty_repr(object):
         print("[expected] {}".format(expected))
         print("[actual]   {}".format(dp))
 
-        assert str(dp) == expected
+        assert text_type(dp) == expected

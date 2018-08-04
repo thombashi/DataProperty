@@ -12,6 +12,7 @@ from decimal import Decimal
 import pytest
 import six
 from dataproperty import Align, DataPropertyExtractor, MatrixFormatting
+from six import text_type
 from typepy import DateTime, RealNumber, String, Typecode
 
 from .common import get_strict_type_mapping
@@ -349,7 +350,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.ascii_char_width == 1
         assert dp.decimal_places == 0
         assert dp.format_str == "{:d}"
-        assert str(dp) == (
+        assert text_type(dp) == (
             "column=0, typename=INTEGER, align=right, "
             "ascii_char_width=1, bit_len=2, integer_digits=1, decimal_places=0"
         )
