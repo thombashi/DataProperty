@@ -4,7 +4,7 @@
     :target: https://badge.fury.io/py/DataProperty
 
 .. image:: https://img.shields.io/pypi/pyversions/DataProperty.svg
-   :target: https://pypi.python.org/pypi/DataProperty
+   :target: https://pypi.org/project/DataProperty
 
 .. image:: https://img.shields.io/travis/thombashi/DataProperty/master.svg?label=Linux/macOS
     :target: https://travis-ci.org/thombashi/DataProperty
@@ -209,6 +209,6 @@ Python 2.7+ or 3.4+
 
 Test dependencies
 -----------------
-- `pytest <https://pypi.python.org/pypi/pytest>`__
-- `pytest-runner <https://pypi.python.org/pypi/pytest-runner>`__
-- `tox <https://pypi.python.org/pypi/tox>`__
+- `pytest <https://pypi.org/project/pytest>`__
+- `pytest-runner <https://github.com/pytest-dev/pytest-runner>`__
+- `tox <https://pypi.org/project/tox>`__
