@@ -361,6 +361,9 @@ class Test_DataPeroperty_get_padding_len(object):
             ["あ", 8, 7],
             ["あ" * 100, 8, 0],
             ["いろは", 8, 5],
+            [["side", "where"], 20, 20],
+            [["い" * 100, "ろは"], 8, 0],
+            [["い", "ろは"], 20, 17],
         ],
     )
     def test_normal(self, value, ascii_char_width, expected):

@@ -300,6 +300,13 @@ class DataProperty(DataPeropertyBase):
         return ", ".join(element_list)
 
     def get_padding_len(self, ascii_char_width):
+        if self.typecode == Typecode.LIST:
+            return max(
+                ascii_char_width
+                - (self.ascii_char_width - DataProperty(six.text_type(self.data)).length),
+                0,
+            )
+
         try:
             return max(ascii_char_width - (self.ascii_char_width - self.length), 0)
         except TypeError:
