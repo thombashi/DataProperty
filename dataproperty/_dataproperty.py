@@ -301,7 +301,7 @@ class DataProperty(DataPeropertyBase):
 
     def get_padding_len(self, ascii_char_width):
         try:
-            return ascii_char_width - (self.ascii_char_width - self.length)
+            return max(ascii_char_width - (self.ascii_char_width - self.length), 0)
         except TypeError:
             return ascii_char_width
 

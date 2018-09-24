@@ -354,7 +354,14 @@ class Test_DataPeroperty_len(object):
 class Test_DataPeroperty_get_padding_len(object):
     @pytest.mark.parametrize(
         ["value", "ascii_char_width", "expected"],
-        [[1, 8, 8], ["000", 8, 8], ["a" * 1000, 8, 8], ["あ", 8, 7], ["いろは", 8, 5]],
+        [
+            [1, 8, 8],
+            ["000", 8, 8],
+            ["a" * 1000, 8, 8],
+            ["あ", 8, 7],
+            ["あ" * 100, 8, 0],
+            ["いろは", 8, 5],
+        ],
     )
     def test_normal(self, value, ascii_char_width, expected):
         assert DataProperty(value).get_padding_len(ascii_char_width) == expected
