@@ -321,7 +321,10 @@ class DataProperty(DataPeropertyBase):
         if self.typecode == Typecode.LIST:
             return max(
                 ascii_char_width
-                - (self.ascii_char_width - DataProperty(six.text_type(self.data)).length),
+                - (
+                    self.ascii_char_width
+                    - DataProperty(MultiByteStrDecoder(str(self.data)).unicode_str).length
+                ),
                 0,
             )
 

@@ -352,6 +352,7 @@ class Test_DataPeroperty_len(object):
 
 
 class Test_DataPeroperty_get_padding_len(object):
+    @pytest.mark.skipif('six.PY2')
     @pytest.mark.parametrize(
         ["value", "ascii_char_width", "expected"],
         [
@@ -442,6 +443,7 @@ class Test_DataPeroperty_repr(object):
         dp = DataProperty(value, strict_type_mapping=strict_type_mapping)
         assert len(dp.__repr__()) > expected
 
+    @pytest.mark.skipif('six.PY2')
     @pytest.mark.parametrize(
         ["value", "strict_type_mapping", "expected"],
         [
