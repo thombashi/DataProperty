@@ -37,7 +37,7 @@ from ._interface import DataPeropertyInterface
 
 
 class DataPeropertyBase(DataPeropertyInterface):
-    __slots__ = ("__datetime_format_str", "__format_str")
+    __slots__ = ("__datetime_format_str", "__format_str", "__blank_curly_braces_format_types")
 
     __TYPE_CLASS_TABLE = {
         Typecode.BOOL: Bool,
@@ -71,8 +71,9 @@ class DataPeropertyBase(DataPeropertyInterface):
 
         return self.__format_str
 
-    def __get_format_str(self):
-        format_str = {
+    @property
+    def __format_str_mapping(self):
+        return {
             Typecode.NONE: "{}",
             Typecode.INTEGER: "{:d}",
             Typecode.IP_ADDRESS: "{}",
@@ -80,7 +81,23 @@ class DataPeropertyBase(DataPeropertyInterface):
             Typecode.DATETIME: "{:" + self.__datetime_format_str + "}",
             Typecode.DICTIONARY: "{}",
             Typecode.LIST: "{}",
-        }.get(self.typecode)
+        }
+
+    @property
+    def _blank_curly_braces_format_types(self):
+        if self.__blank_curly_braces_format_types:
+            return self.__blank_curly_braces_format_types
+
+        self.__blank_curly_braces_format_types = [
+            typecode
+            for typecode, format_str in self.__format_str_mapping.items()
+            if format_str == "{}"
+        ]
+
+        return self.__blank_curly_braces_format_types
+
+    def __get_format_str(self):
+        format_str = self.__format_str_mapping.get(self.typecode)
 
         if format_str is not None:
             return format_str
@@ -105,6 +122,7 @@ class DataPeropertyBase(DataPeropertyInterface):
     def __init__(self, datetime_format_str):
         self.__datetime_format_str = datetime_format_str
         self.__format_str = None
+        self.__blank_curly_braces_format_types = None
 
 
 class DataProperty(DataPeropertyBase):
@@ -578,11 +596,8 @@ class ColumnDataProperty(DataPeropertyBase):
     def dp_to_str(self, value_dp):
         to_string_format_str = self.__get_tostring_format(value_dp)
 
-        if any(
-            [
-                self.typecode in [Typecode.BOOL, Typecode.DATETIME],
-                all([self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER]),
-            ]
+        if self.typecode in [Typecode.BOOL, Typecode.DATETIME] or all(
+            [self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER]
         ):
             return to_string_format_str.format(value_dp.data)
 
@@ -701,16 +716,11 @@ class ColumnDataProperty(DataPeropertyBase):
         if all([value_dp.typecode == Typecode.REAL_NUMBER, self.__is_formatting_float]):
             return self._get_realnumber_format()
 
-        if any(
+        if value_dp.typecode in self._blank_curly_braces_format_types or all(
             [
-                all(
-                    [
-                        self.typecode == Typecode.REAL_NUMBER,
-                        not self.__is_formatting_float,
-                        value_dp.typecode in [Typecode.INTEGER, Typecode.REAL_NUMBER],
-                    ]
-                ),
-                value_dp.typecode == Typecode.NONE,
+                self.typecode == Typecode.REAL_NUMBER,
+                not self.__is_formatting_float,
+                value_dp.typecode in [Typecode.INTEGER, Typecode.REAL_NUMBER],
             ]
         ):
             return "{}"
