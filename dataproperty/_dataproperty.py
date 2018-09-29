@@ -598,23 +598,14 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def dp_to_str(self, value_dp):
         to_string_format_str = self.__get_tostring_format(value_dp)
-
-        if self.typecode in [Typecode.BOOL, Typecode.DATETIME] or all(
-            [self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER]
-        ):
-            return to_string_format_str.format(value_dp.data)
+        value = self.__preprocess_value_before_tostring(value_dp)
 
         try:
-            value = self.type_class(value_dp.data, strict_level=StrictLevel.MIN).convert()
-        except TypeConversionError:
-            value = value_dp.data
-
-        try:
-            item = to_string_format_str.format(value)
+            return to_string_format_str.format(value)
         except ValueError:
-            item = MultiByteStrDecoder(value).unicode_str
+            pass
 
-        return item
+        return MultiByteStrDecoder(value).unicode_str
 
     def extend_width(self, dwidth):
         self.__ascii_char_width += dwidth
@@ -787,3 +778,16 @@ class ColumnDataProperty(DataPeropertyBase):
             return
 
         self.__typecode = self.__get_typecode_from_bitmap()
+
+    def __preprocess_value_before_tostring(self, value_dp):
+        if self.typecode in [Typecode.BOOL, Typecode.DATETIME] or all(
+            [self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER]
+        ):
+            return value_dp.data
+
+        try:
+            return self.type_class(value_dp.data, strict_level=StrictLevel.MIN).convert()
+        except TypeConversionError:
+            pass
+
+        return value_dp.data
