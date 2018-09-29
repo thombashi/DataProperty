@@ -65,7 +65,7 @@ class Formatter(object):
             return format_str
 
         if typecode == Typecode.INTEGER:
-            return "{:d}"
+            return self.__get_integer_format()
 
         if typecode in (Typecode.REAL_NUMBER, Typecode.INFINITY, Typecode.NAN):
             return self.__get_realnumber_format(decimal_places)
