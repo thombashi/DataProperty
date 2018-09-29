@@ -20,7 +20,7 @@ from typepy import (
 )
 
 
-class FormatFlag(object):
+class Format(object):
     NONE = 0
     THOUSAND_SEPARATOR = 1
 
