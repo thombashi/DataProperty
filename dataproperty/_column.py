@@ -14,6 +14,7 @@ from ._base import DataPeropertyBase
 from ._common import DefaultValue
 from ._container import ListContainer, MinMaxContainer
 from ._function import get_ascii_char_width
+from ._formatter import Formatter
 
 
 class ColumnDataProperty(DataPeropertyBase):
@@ -29,7 +30,6 @@ class ColumnDataProperty(DataPeropertyBase):
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
-        "__typecode",
         "__typecode_bitmap",
     )
 
@@ -58,10 +58,6 @@ class ColumnDataProperty(DataPeropertyBase):
     @property
     def decimal_places(self):
         return self.__decimal_places
-
-    @property
-    def typecode(self):
-        return self.__typecode
 
     @property
     def ascii_char_width(self):
@@ -331,7 +327,7 @@ class ColumnDataProperty(DataPeropertyBase):
         if not self.__is_calculate:
             return
 
-        self.__typecode = self.__get_typecode_from_bitmap()
+        self._typecode = self.__get_typecode_from_bitmap()
 
     def __preprocess_value_before_tostring(self, value_dp):
         if (

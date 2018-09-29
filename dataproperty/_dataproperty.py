@@ -35,7 +35,6 @@ from ._function import get_ascii_char_width, get_number_of_digit
 class DataProperty(DataPeropertyBase):
     __slots__ = (
         "__data",
-        "__typecode",
         "__align",
         "__integer_digits",
         "__decimal_places",
@@ -81,18 +80,6 @@ class DataProperty(DataPeropertyBase):
             self.__set_digit()
 
         return self.__decimal_places
-
-    @property
-    def typecode(self):
-        """
-        ``typepy.Typecode`` that corresponds to the type of the ``data``.
-
-        :return:
-            One of the Enum value that are defined ``typepy.Typecode``.
-        :rtype: typepy.Typecode
-        """
-
-        return self.__typecode
 
     @property
     def data(self):
@@ -166,7 +153,6 @@ class DataProperty(DataPeropertyBase):
         self.__east_asian_ambiguous_width = east_asian_ambiguous_width
         self.__integer_digits = None
         self.__length = None
-        self.__typecode = None
 
         data = self.__preprocess_data(data, strip_str)
         self.__set_data(data, type_hint, float_type, strict_type_mapping)
@@ -315,7 +301,7 @@ class DataProperty(DataPeropertyBase):
 
         if type_hint:
             type_obj = type_hint(data, strict_level=StrictLevel.MIN, float_type=float_type)
-            self.__typecode = type_obj.typecode
+            self._typecode = type_obj.typecode
             self.__data = type_obj.try_convert()
 
             if type_hint(
@@ -346,7 +332,7 @@ class DataProperty(DataPeropertyBase):
         except TypeConversionError:
             return False
 
-        self.__typecode = type_obj.typecode
+        self._typecode = type_obj.typecode
 
         return True
 

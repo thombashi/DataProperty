@@ -22,7 +22,12 @@ from ._interface import DataPeropertyInterface
 
 
 class DataPeropertyBase(DataPeropertyInterface):
-    __slots__ = ("__datetime_format_str", "__format_str", "__blank_curly_braces_format_types")
+    __slots__ = (
+        "_typecode",
+        "__datetime_format_str",
+        "__format_str",
+        "__blank_curly_braces_format_types",
+    )
 
     __TYPE_CLASS_TABLE = {
         Typecode.BOOL: Bool,
@@ -42,6 +47,18 @@ class DataPeropertyBase(DataPeropertyInterface):
     @property
     def type_class(self):
         return self.__TYPE_CLASS_TABLE.get(self.typecode)
+
+    @property
+    def typecode(self):
+        """
+        ``typepy.Typecode`` that corresponds to the type of the ``data``.
+
+        :return:
+            One of the Enum value that are defined ``typepy.Typecode``.
+        :rtype: typepy.Typecode
+        """
+
+        return self._typecode
 
     @property
     def typename(self):
@@ -105,6 +122,8 @@ class DataPeropertyBase(DataPeropertyInterface):
             return "{:f}"
 
     def __init__(self, datetime_format_str):
+        self._typecode = None
+
         self.__datetime_format_str = datetime_format_str
         self.__format_str = None
         self.__blank_curly_braces_format_types = None
