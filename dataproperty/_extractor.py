@@ -14,9 +14,10 @@ from six import text_type
 from six.moves import zip
 from typepy import String, is_empty_sequence
 
+from ._column import ColumnDataProperty
 from ._common import NOT_STRICT_TYPE_MAPPING, DefaultValue
 from ._converter import DataPropertyConverter
-from ._dataproperty import ColumnDataProperty, DataProperty
+from ._dataproperty import DataProperty
 from ._logger import logger
 
 
