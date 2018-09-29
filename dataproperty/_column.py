@@ -21,7 +21,6 @@ class ColumnDataProperty(DataPeropertyBase):
     __slots__ = (
         "__ascii_char_width",
         "__column_index",
-        "__decimal_places",
         "__dp_list",
         "__is_calculate",
         "__is_formatting_float",
@@ -56,7 +55,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     @property
     def decimal_places(self):
-        return self.__decimal_places
+        return self._decimal_places
 
     @property
     def ascii_char_width(self):
@@ -94,7 +93,6 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__is_calculate = True
         self.__is_formatting_float = is_formatting_float
         self.__dp_list = []
-        self.__decimal_places = None
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -322,7 +320,7 @@ class ColumnDataProperty(DataPeropertyBase):
         if not self.__is_calculate:
             return
 
-        self.__decimal_places = self.__get_decimal_places()
+        self._decimal_places = self.__get_decimal_places()
 
     def __calc_typecode_from_bitmap(self):
         if not self.__is_calculate:

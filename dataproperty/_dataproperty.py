@@ -37,7 +37,6 @@ class DataProperty(DataPeropertyBase):
         "__data",
         "__align",
         "__integer_digits",
-        "__decimal_places",
         "__additional_format_len",
         "__length",
         "__ascii_char_width",
@@ -75,10 +74,10 @@ class DataProperty(DataPeropertyBase):
         :rtype: int
         """
 
-        if not self.__decimal_places:
+        if not self._decimal_places:
             self.__set_digit()
 
-        return self.__decimal_places
+        return self._decimal_places
 
     @property
     def data(self):
@@ -151,7 +150,6 @@ class DataProperty(DataPeropertyBase):
         self.__additional_format_len = None
         self.__align = None
         self.__ascii_char_width = None
-        self.__decimal_places = None
         self.__integer_digits = None
         self.__length = None
 
@@ -323,7 +321,7 @@ class DataProperty(DataPeropertyBase):
     def __set_digit(self):
         integer_digits, decimal_places = get_number_of_digit(self.__data)
         self.__integer_digits = integer_digits
-        self.__decimal_places = decimal_places
+        self._decimal_places = decimal_places
 
     def __try_convert_type(self, data, type_class, strict_level, float_type):
         type_obj = type_class(data, strict_level, float_type=float_type)
