@@ -24,7 +24,6 @@ class ColumnDataProperty(DataPeropertyBase):
         "__dp_list",
         "__is_calculate",
         "__is_formatting_float",
-        "__length",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
