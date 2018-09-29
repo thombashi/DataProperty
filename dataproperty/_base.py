@@ -98,6 +98,13 @@ class DataPeropertyBase(DataPeropertyInterface):
 
         return self.__blank_curly_braces_format_types
 
+    def __init__(self, datetime_format_str):
+        self._typecode = None
+
+        self.__datetime_format_str = datetime_format_str
+        self.__format_str = None
+        self.__blank_curly_braces_format_types = None
+
     def __get_format_str(self):
         format_str = self.__format_str_mapping.get(self.typecode)
 
@@ -120,10 +127,3 @@ class DataPeropertyBase(DataPeropertyInterface):
             return "{:" + ".{:d}f".format(self.decimal_places) + "}"
         except ValueError:
             return "{:f}"
-
-    def __init__(self, datetime_format_str):
-        self._typecode = None
-
-        self.__datetime_format_str = datetime_format_str
-        self.__format_str = None
-        self.__blank_curly_braces_format_types = None
