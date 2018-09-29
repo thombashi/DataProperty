@@ -38,7 +38,6 @@ class DataProperty(DataPeropertyBase):
         "__align",
         "__integer_digits",
         "__decimal_places",
-        "__east_asian_ambiguous_width",
         "__additional_format_len",
         "__length",
         "__ascii_char_width",
@@ -144,13 +143,15 @@ class DataProperty(DataPeropertyBase):
         is_escape_html_tag=False,
         east_asian_ambiguous_width=1,
     ):
-        super(DataProperty, self).__init__(datetime_format_str)
+        super(DataProperty, self).__init__(
+            datetime_format_str=datetime_format_str,
+            east_asian_ambiguous_width=east_asian_ambiguous_width,
+        )
 
         self.__additional_format_len = None
         self.__align = None
         self.__ascii_char_width = None
         self.__decimal_places = None
-        self.__east_asian_ambiguous_width = east_asian_ambiguous_width
         self.__integer_digits = None
         self.__length = None
 
@@ -278,7 +279,7 @@ class DataProperty(DataPeropertyBase):
         except ValueError:
             unicode_str = self.to_str()
 
-        return get_ascii_char_width(unicode_str, self.__east_asian_ambiguous_width)
+        return get_ascii_char_width(unicode_str, self._east_asian_ambiguous_width)
 
     @staticmethod
     def __preprocess_data(data, strip_str):

@@ -23,6 +23,7 @@ from ._interface import DataPeropertyInterface
 
 class DataPeropertyBase(DataPeropertyInterface):
     __slots__ = (
+        "_east_asian_ambiguous_width",
         "_typecode",
         "__datetime_format_str",
         "__format_str",
@@ -98,7 +99,8 @@ class DataPeropertyBase(DataPeropertyInterface):
 
         return self.__blank_curly_braces_format_types
 
-    def __init__(self, datetime_format_str):
+    def __init__(self, datetime_format_str, east_asian_ambiguous_width):
+        self._east_asian_ambiguous_width = east_asian_ambiguous_width
         self._typecode = None
 
         self.__datetime_format_str = datetime_format_str

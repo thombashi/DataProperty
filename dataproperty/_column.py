@@ -23,7 +23,6 @@ class ColumnDataProperty(DataPeropertyBase):
         "__column_index",
         "__decimal_places",
         "__dp_list",
-        "__east_asian_ambiguous_width",
         "__is_calculate",
         "__is_formatting_float",
         "__length",
@@ -84,11 +83,13 @@ class ColumnDataProperty(DataPeropertyBase):
         datetime_format_str=DefaultValue.DATETIME_FORMAT,
         east_asian_ambiguous_width=1,
     ):
-        super(ColumnDataProperty, self).__init__(datetime_format_str)
+        super(ColumnDataProperty, self).__init__(
+            datetime_format_str=datetime_format_str,
+            east_asian_ambiguous_width=east_asian_ambiguous_width,
+        )
 
         self.__ascii_char_width = min_width
         self.__column_index = column_index
-        self.__east_asian_ambiguous_width = east_asian_ambiguous_width
 
         self.__is_calculate = True
         self.__is_formatting_float = is_formatting_float
@@ -240,7 +241,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
             max_width = max(
                 max_width,
-                get_ascii_char_width(self.dp_to_str(value_dp), self.__east_asian_ambiguous_width),
+                get_ascii_char_width(self.dp_to_str(value_dp), self._east_asian_ambiguous_width),
             )
 
         return max_width
