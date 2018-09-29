@@ -13,8 +13,8 @@ from ._align_getter import align_getter
 from ._base import DataPeropertyBase
 from ._common import DefaultValue
 from ._container import ListContainer, MinMaxContainer
-from ._function import get_ascii_char_width
 from ._formatter import Formatter
+from ._function import get_ascii_char_width
 
 
 class ColumnDataProperty(DataPeropertyBase):
