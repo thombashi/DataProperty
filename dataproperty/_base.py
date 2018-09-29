@@ -18,17 +18,18 @@ from typepy import (
     Typecode,
 )
 
+from ._formatter import Formatter
 from ._interface import DataPeropertyInterface
 
 
 class DataPeropertyBase(DataPeropertyInterface):
     __slots__ = (
+        "_datetime_format_str",
         "_decimal_places",
         "_east_asian_ambiguous_width",
         "_typecode",
-        "__datetime_format_str",
         "__format_str",
-        "__blank_curly_braces_format_types",
+        "__formatter",
     )
 
     __TYPE_CLASS_TABLE = {
@@ -71,63 +72,18 @@ class DataPeropertyBase(DataPeropertyInterface):
         if self.__format_str:
             return self.__format_str
 
-        self.__format_str = self.__get_format_str()
+        self.__format_str = self.__formatter.make_format_str(self.typecode, self.decimal_places)
 
         return self.__format_str
-
-    @property
-    def __format_str_mapping(self):
-        return {
-            Typecode.NONE: "{}",
-            Typecode.INTEGER: "{:d}",
-            Typecode.IP_ADDRESS: "{}",
-            Typecode.BOOL: "{}",
-            Typecode.DATETIME: "{:" + self.__datetime_format_str + "}",
-            Typecode.DICTIONARY: "{}",
-            Typecode.LIST: "{}",
-        }
-
-    @property
-    def _blank_curly_braces_format_types(self):
-        if self.__blank_curly_braces_format_types:
-            return self.__blank_curly_braces_format_types
-
-        self.__blank_curly_braces_format_types = [
-            typecode
-            for typecode, format_str in self.__format_str_mapping.items()
-            if format_str == "{}"
-        ]
-
-        return self.__blank_curly_braces_format_types
 
     def __init__(self, datetime_format_str, east_asian_ambiguous_width):
         self._decimal_places = None
         self._east_asian_ambiguous_width = east_asian_ambiguous_width
         self._typecode = None
 
-        self.__datetime_format_str = datetime_format_str
+        self._datetime_format_str = datetime_format_str
         self.__format_str = None
-        self.__blank_curly_braces_format_types = None
 
-    def __get_format_str(self):
-        format_str = self.__format_str_mapping.get(self.typecode)
-
-        if format_str is not None:
-            return format_str
-
-        if self.typecode in (Typecode.REAL_NUMBER, Typecode.INFINITY, Typecode.NAN):
-            if Nan(self.decimal_places).is_type():
-                return "{:f}"
-
-            return self._get_realnumber_format()
-
-        return "{:s}"
-
-    def _get_realnumber_format(self):
-        if self.decimal_places is None:
-            return "{:f}"
-
-        try:
-            return "{:" + ".{:d}f".format(self.decimal_places) + "}"
-        except ValueError:
-            return "{:f}"
+        self.__formatter = Formatter(
+            format_flag=None, datetime_format_str=self._datetime_format_str
+        )

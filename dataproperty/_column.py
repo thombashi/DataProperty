@@ -22,6 +22,8 @@ class ColumnDataProperty(DataPeropertyBase):
         "__ascii_char_width",
         "__column_index",
         "__dp_list",
+        "__formatter",
+        "__format_mapping",
         "__is_calculate",
         "__is_formatting_float",
         "__minmax_integer_digits",
@@ -99,6 +101,15 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__typecode_bitmap = Typecode.NONE.value
         self.__calc_typecode_from_bitmap()
 
+        self.__formatter = Formatter(
+            format_flag=None,
+            datetime_format_str=self._datetime_format_str,
+            is_formatting_float=self.__is_formatting_float,
+        )
+        self.__format_mapping = self.__formatter.make_format_mapping(
+            decimal_places=self._decimal_places
+        )
+
     def __repr__(self):
         element_list = []
 
@@ -145,8 +156,12 @@ class ColumnDataProperty(DataPeropertyBase):
         return ", ".join(element_list)
 
     def dp_to_str(self, value_dp):
+        try:
+            value = self.__preprocess_value_before_tostring(value_dp)
+        except TypeConversionError:
+            return self.__format_mapping.get(value_dp.typecode, "{:s}").format(value_dp.data)
+
         to_string_format_str = self.__get_tostring_format(value_dp)
-        value = self.__preprocess_value_before_tostring(value_dp)
 
         try:
             return to_string_format_str.format(value)
@@ -255,24 +270,10 @@ class ColumnDataProperty(DataPeropertyBase):
         return int(min(math.ceil(avg + Decimal("1.0")), self.minmax_decimal_places.max_value))
 
     def __get_tostring_format(self, value_dp):
-        if all([value_dp.typecode == Typecode.REAL_NUMBER, self.__is_formatting_float]):
-            return self._get_realnumber_format()
+        if self.typecode == Typecode.STRING:
+            return self.__format_mapping.get(value_dp.typecode, "{:s}")
 
-        if value_dp.typecode in self._blank_curly_braces_format_types or all(
-            [
-                self.typecode == Typecode.REAL_NUMBER,
-                not self.__is_formatting_float,
-                value_dp.typecode in [Typecode.INTEGER, Typecode.REAL_NUMBER],
-            ]
-        ):
-            return "{}"
-
-        try:
-            self.format_str.format(value_dp.data)
-        except (TypeError, ValueError):
-            return "{}"
-
-        return self.format_str
+        return self.__format_mapping.get(self.typecode, "{:s}")
 
     def __get_typecode_from_bitmap(self):
         if self.__is_float_typecode():
@@ -320,6 +321,9 @@ class ColumnDataProperty(DataPeropertyBase):
             return
 
         self._decimal_places = self.__get_decimal_places()
+        self.__format_mapping = self.__formatter.make_format_mapping(
+            decimal_places=self._decimal_places
+        )
 
     def __calc_typecode_from_bitmap(self):
         if not self.__is_calculate:
@@ -328,16 +332,11 @@ class ColumnDataProperty(DataPeropertyBase):
         self._typecode = self.__get_typecode_from_bitmap()
 
     def __preprocess_value_before_tostring(self, value_dp):
-        if (
-            self.typecode == value_dp.typecode
-            or self.typecode in [Typecode.BOOL, Typecode.DATETIME]
-            or all([self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER])
-        ):
+        if self.typecode == value_dp.typecode or self.typecode in [
+            Typecode.STRING,
+            Typecode.BOOL,
+            Typecode.DATETIME,
+        ]:
             return value_dp.data
 
-        try:
-            return self.type_class(value_dp.data, strict_level=StrictLevel.MIN).convert()
-        except TypeConversionError:
-            pass
-
-        return value_dp.data
+        return self.type_class(value_dp.data, strict_level=StrictLevel.MIN).convert()
