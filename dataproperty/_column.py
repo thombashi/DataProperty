@@ -334,8 +334,10 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__typecode = self.__get_typecode_from_bitmap()
 
     def __preprocess_value_before_tostring(self, value_dp):
-        if self.typecode in [Typecode.BOOL, Typecode.DATETIME] or all(
-            [self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER]
+        if (
+            self.typecode == value_dp.typecode
+            or self.typecode in [Typecode.BOOL, Typecode.DATETIME]
+            or all([self.typecode == Typecode.STRING, value_dp.typecode == Typecode.REAL_NUMBER])
         ):
             return value_dp.data
 
