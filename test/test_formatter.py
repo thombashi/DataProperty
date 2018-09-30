@@ -23,6 +23,7 @@ class TestFormatter_make_format_str(object):
             [None, dt_format, 2, Typecode.INTEGER, "{:d}"],
             [None, dt_format, None, Typecode.REAL_NUMBER, "{:f}"],
             [Format.THOUSAND_SEPARATOR, dt_format, None, Typecode.REAL_NUMBER, "{:,f}"],
+            [Format.THOUSAND_SEPARATOR, dt_format, 2, Typecode.REAL_NUMBER, "{:,.2f}"],
             [None, dt_format, 2, Typecode.REAL_NUMBER, "{:.2f}"],
             [None, dt_format, None, Typecode.INFINITY, "{:f}"],
             [None, dt_format, None, Typecode.NAN, "{:f}"],

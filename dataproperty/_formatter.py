@@ -92,12 +92,14 @@ class Formatter(object):
         if not self.__is_formatting_float:
             return "{}"
 
+        base_format = self.__get_base_format_str()
+
         if decimal_places is None or Nan(decimal_places).is_type():
-            return "{:" + self.__get_base_format_str() + "f}"
+            return "{:" + base_format + "f}"
 
         try:
-            return "{:" + ".{:d}f".format(decimal_places) + "}"
+            return "{:" + "{:s}.{:d}f".format(base_format, decimal_places) + "}"
         except ValueError:
             pass
 
-        return "{:" + self.__get_base_format_str() + "f}"
+        return "{:" + base_format + "f}"
