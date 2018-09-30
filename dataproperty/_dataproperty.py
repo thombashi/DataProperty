@@ -143,6 +143,8 @@ class DataProperty(DataPeropertyBase):
         east_asian_ambiguous_width=1,
     ):
         super(DataProperty, self).__init__(
+            format_flags=None,
+            is_formatting_float=True,
             datetime_format_str=datetime_format_str,
             east_asian_ambiguous_width=east_asian_ambiguous_width,
         )

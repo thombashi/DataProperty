@@ -22,7 +22,6 @@ class ColumnDataProperty(DataPeropertyBase):
         "__ascii_char_width",
         "__column_index",
         "__dp_list",
-        "__formatter",
         "__format_mapping",
         "__is_calculate",
         "__is_formatting_float",
@@ -84,6 +83,8 @@ class ColumnDataProperty(DataPeropertyBase):
         east_asian_ambiguous_width=1,
     ):
         super(ColumnDataProperty, self).__init__(
+            format_flags=format_flags,
+            is_formatting_float=is_formatting_float,
             datetime_format_str=datetime_format_str,
             east_asian_ambiguous_width=east_asian_ambiguous_width,
         )
@@ -101,12 +102,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__typecode_bitmap = Typecode.NONE.value
         self.__calc_typecode_from_bitmap()
 
-        self.__formatter = Formatter(
-            format_flags=format_flags,
-            datetime_format_str=self._datetime_format_str,
-            is_formatting_float=self.__is_formatting_float,
-        )
-        self.__format_mapping = self.__formatter.make_format_mapping(
+        self.__format_mapping = self._formatter.make_format_mapping(
             decimal_places=self._decimal_places
         )
 
@@ -321,7 +317,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return
 
         self._decimal_places = self.__get_decimal_places()
-        self.__format_mapping = self.__formatter.make_format_mapping(
+        self.__format_mapping = self._formatter.make_format_mapping(
             decimal_places=self._decimal_places
         )
 

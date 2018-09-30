@@ -27,9 +27,9 @@ class DataPeropertyBase(DataPeropertyInterface):
         "_datetime_format_str",
         "_decimal_places",
         "_east_asian_ambiguous_width",
+        "_formatter",
         "_typecode",
         "__format_str",
-        "__formatter",
     )
 
     __TYPE_CLASS_TABLE = {
@@ -72,11 +72,13 @@ class DataPeropertyBase(DataPeropertyInterface):
         if self.__format_str:
             return self.__format_str
 
-        self.__format_str = self.__formatter.make_format_str(self.typecode, self.decimal_places)
+        self.__format_str = self._formatter.make_format_str(self.typecode, self.decimal_places)
 
         return self.__format_str
 
-    def __init__(self, datetime_format_str, east_asian_ambiguous_width):
+    def __init__(
+        self, format_flags, is_formatting_float, datetime_format_str, east_asian_ambiguous_width
+    ):
         self._decimal_places = None
         self._east_asian_ambiguous_width = east_asian_ambiguous_width
         self._typecode = None
@@ -84,6 +86,8 @@ class DataPeropertyBase(DataPeropertyInterface):
         self._datetime_format_str = datetime_format_str
         self.__format_str = None
 
-        self.__formatter = Formatter(
-            format_flags=None, datetime_format_str=self._datetime_format_str
+        self._formatter = Formatter(
+            format_flags=format_flags,
+            datetime_format_str=self._datetime_format_str,
+            is_formatting_float=is_formatting_float,
         )
