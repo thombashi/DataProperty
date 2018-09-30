@@ -13,7 +13,7 @@ dt_format = DefaultValue.DATETIME_FORMAT
 
 class TestFormatter_make_format_str(object):
     @pytest.mark.parametrize(
-        ["format_flag", "datetime_format_str", "decimal_places", "typecode", "expected"],
+        ["format_flags", "datetime_format_str", "decimal_places", "typecode", "expected"],
         [
             [None, dt_format, None, Typecode.INTEGER, "{:d}"],
             [None, dt_format, 2, Typecode.INTEGER, "{:d}"],
@@ -30,19 +30,19 @@ class TestFormatter_make_format_str(object):
             [None, None, None, Typecode.LIST, "{}"],
         ],
     )
-    def test_normal(self, format_flag, datetime_format_str, decimal_places, typecode, expected):
-        formatter = Formatter(format_flag=format_flag, datetime_format_str=datetime_format_str)
+    def test_normal(self, format_flags, datetime_format_str, decimal_places, typecode, expected):
+        formatter = Formatter(format_flags=format_flags, datetime_format_str=datetime_format_str)
 
         assert formatter.make_format_str(typecode, decimal_places) == expected
 
 
 class TestFormatter_make_format_mapping(object):
     @pytest.mark.parametrize(
-        ["format_flag", "datetime_format_str", "decimal_places", "expected"],
+        ["format_flags", "datetime_format_str", "decimal_places", "expected"],
         [[None, dt_format, "", {}]],
     )
-    def test_normal(self, format_flag, datetime_format_str, decimal_places, expected):
-        formatter = Formatter(format_flag=format_flag, datetime_format_str=datetime_format_str)
+    def test_normal(self, format_flags, datetime_format_str, decimal_places, expected):
+        formatter = Formatter(format_flags=format_flags, datetime_format_str=datetime_format_str)
 
         assert formatter.make_format_mapping(decimal_places) == {
             Typecode.INTEGER: "{:d}",

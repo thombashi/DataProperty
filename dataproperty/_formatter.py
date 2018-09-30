@@ -40,8 +40,8 @@ class Formatter(object):
     def blank_curly_braces_format_type_list(self):
         return self._BLANK_CURLY_BRACES_FORMAT_MAPPING.keys()
 
-    def __init__(self, format_flag, datetime_format_str, is_formatting_float=True):
-        self.__format_flag = format_flag
+    def __init__(self, format_flags, datetime_format_str, is_formatting_float=True):
+        self.__format_flag = format_flags
         self.__datetime_format_str = datetime_format_str
         self.__is_formatting_float = is_formatting_float
 

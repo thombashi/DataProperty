@@ -85,5 +85,5 @@ class DataPeropertyBase(DataPeropertyInterface):
         self.__format_str = None
 
         self.__formatter = Formatter(
-            format_flag=None, datetime_format_str=self._datetime_format_str
+            format_flags=None, datetime_format_str=self._datetime_format_str
         )

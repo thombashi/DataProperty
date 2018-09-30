@@ -78,7 +78,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self,
         column_index=None,
         min_width=0,
-        format_flag=None,
+        format_flags=None,
         is_formatting_float=True,
         datetime_format_str=DefaultValue.DATETIME_FORMAT,
         east_asian_ambiguous_width=1,
@@ -102,7 +102,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_typecode_from_bitmap()
 
         self.__formatter = Formatter(
-            format_flag=None,
+            format_flags=None,
             datetime_format_str=self._datetime_format_str,
             is_formatting_float=self.__is_formatting_float,
         )
