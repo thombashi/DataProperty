@@ -13,7 +13,7 @@ from decimal import Decimal
 
 import pytest
 import six
-from dataproperty import NOT_STRICT_TYPE_MAPPING, Align, DataProperty, DefaultValue
+from dataproperty import NOT_STRICT_TYPE_MAPPING, Align, DataProperty, DefaultValue, Format
 from six import text_type
 from typepy import Bool, DateTime, Integer, Nan, RealNumber, String, Typecode
 
@@ -222,6 +222,14 @@ class Test_DataPeroperty_to_str(object):
 
         assert dp.data == expected_data
         assert dp.to_str() == expected_str
+
+    @pytest.mark.parametrize(
+        ["value", "format_flags", "expected"], [[1234567, Format.THOUSAND_SEPARATOR, "1,234,567"]]
+    )
+    def test_normal_format_str(self, value, format_flags, expected):
+        dp = DataProperty(value, format_flags=format_flags)
+
+        assert dp.to_str() == expected
 
 
 class Test_DataPeroperty_set_data(object):

@@ -135,6 +135,7 @@ class DataProperty(DataPeropertyBase):
         type_hint=None,
         strip_str=None,
         float_type=None,
+        format_flags=None,
         datetime_format_str=DefaultValue.DATETIME_FORMAT,
         strict_type_mapping=None,
         replace_tabs_with_spaces=True,
@@ -143,7 +144,7 @@ class DataProperty(DataPeropertyBase):
         east_asian_ambiguous_width=1,
     ):
         super(DataProperty, self).__init__(
-            format_flags=None,
+            format_flags=format_flags,
             is_formatting_float=True,
             datetime_format_str=datetime_format_str,
             east_asian_ambiguous_width=east_asian_ambiguous_width,
