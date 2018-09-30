@@ -4,20 +4,7 @@ from __future__ import absolute_import, unicode_literals
 
 import copy
 
-from typepy import (
-    DateTime,
-    Dictionary,
-    Infinity,
-    Integer,
-    IpAddress,
-    List,
-    Nan,
-    NoneType,
-    NullString,
-    RealNumber,
-    String,
-    Typecode,
-)
+from typepy import Nan, Typecode
 
 
 class Format(object):
