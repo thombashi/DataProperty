@@ -14,6 +14,7 @@ from ._common import NOT_QUOTING_FLAGS, NOT_STRICT_TYPE_MAPPING, STRICT_TYPE_MAP
 from ._container import MinMaxContainer
 from ._dataproperty import DataProperty
 from ._extractor import DataPropertyExtractor, MatrixFormatting
+from ._formatter import Format
 from ._function import (
     get_ascii_char_width,
     get_integer_digit,

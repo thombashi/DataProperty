@@ -26,7 +26,7 @@ class Format(object):
 
 
 class Formatter(object):
-    __slots__ = ("__is_formatting_float", "__format_flag", "__datetime_format_str")
+    __slots__ = ("__is_formatting_float", "__format_flags", "__datetime_format_str")
 
     _BLANK_CURLY_BRACES_FORMAT_MAPPING = {
         Typecode.NONE: "{}",
@@ -40,8 +40,12 @@ class Formatter(object):
     def blank_curly_braces_format_type_list(self):
         return self._BLANK_CURLY_BRACES_FORMAT_MAPPING.keys()
 
-    def __init__(self, format_flags, datetime_format_str, is_formatting_float=True):
-        self.__format_flag = format_flags
+    def __init__(self, datetime_format_str, is_formatting_float=True, format_flags=None):
+        if format_flags is not None:
+            self.__format_flags = format_flags
+        else:
+            self.__format_flags = Format.NONE
+
         self.__datetime_format_str = datetime_format_str
         self.__is_formatting_float = is_formatting_float
 
@@ -75,17 +79,25 @@ class Formatter(object):
 
         return "{:s}"
 
+    def __get_base_format_str(self):
+        if self.__format_flags & Format.THOUSAND_SEPARATOR:
+            return ","
+
+        return ""
+
     def __get_integer_format(self):
-        return "{:d}"
+        return "{:" + self.__get_base_format_str() + "d}"
 
     def __get_realnumber_format(self, decimal_places):
         if not self.__is_formatting_float:
             return "{}"
 
         if decimal_places is None or Nan(decimal_places).is_type():
-            return "{:f}"
+            return "{:" + self.__get_base_format_str() + "f}"
 
         try:
             return "{:" + ".{:d}f".format(decimal_places) + "}"
         except ValueError:
-            return "{:f}"
+            pass
+
+        return "{:" + self.__get_base_format_str() + "f}"
