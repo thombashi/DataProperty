@@ -11,7 +11,7 @@ from decimal import Decimal
 
 import pytest
 import six
-from dataproperty import Align, DataPropertyExtractor, MatrixFormatting
+from dataproperty import Align, DataPropertyExtractor, Format, MatrixFormatting
 from six import text_type
 from typepy import DateTime, RealNumber, String, Typecode
 
@@ -434,6 +434,33 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.ascii_char_width == 24
         assert dp.decimal_places is None
         assert dp.format_str == "{:s}"
+
+    @pytest.mark.parametrize(
+        ["header_list", "value"],
+        [[["i", "f"], [[1234, 1234.5], [1234567, 34.5]]], [[], [[1234, 1234.5], [1234567, 34.5]]]],
+    )
+    def test_normal_format_str(self, dp_extractor, header_list, value):
+        dp_extractor.format_flags_list = [Format.THOUSAND_SEPARATOR, Format.THOUSAND_SEPARATOR]
+        dp_extractor.max_workers = 1
+        dp_extractor.header_list = header_list
+        col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
+
+        assert len(col_dp_list) == 2
+
+        col_idx = 0
+
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
+        assert dp.typecode == Typecode.INTEGER
+        assert dp.format_str == "{:,d}"
+        assert dp.ascii_char_width == 9
+
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
+        assert dp.typecode == Typecode.REAL_NUMBER
+        assert dp.format_str == "{:,.1f}"
+        assert dp.ascii_char_width == 7
 
     @pytest.mark.parametrize(
         ["header_list", "value"],

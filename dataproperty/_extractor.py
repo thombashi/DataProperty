@@ -34,6 +34,7 @@ from ._column import ColumnDataProperty
 from ._common import NOT_STRICT_TYPE_MAPPING, DefaultValue
 from ._converter import DataPropertyConverter
 from ._dataproperty import DataProperty
+from ._formatter import Format
 from ._logger import logger
 
 
@@ -189,6 +190,18 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
+    def format_flags_list(self):
+        return self.__format_flags_list
+
+    @format_flags_list.setter
+    def format_flags_list(self, value):
+        if self.__format_flags_list == value:
+            return
+
+        self.__format_flags_list = value
+        self.__clear_cache()
+
+    @property
     def float_type(self):
         return self.__float_type
 
@@ -308,6 +321,7 @@ class DataPropertyExtractor(object):
         self.__is_formatting_float = True
         self.__is_escape_html_tag = False
         self.__min_col_ascii_char_width = 0
+        self.__format_flags_list = []
         self.__float_type = None
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
         self.__strict_type_mapping = copy.deepcopy(DefaultValue.STRICT_LEVEL_MAPPING)
@@ -361,6 +375,7 @@ class DataPropertyExtractor(object):
                     ColumnDataProperty(
                         column_index=col_idx,
                         min_width=self.min_column_width,
+                        format_flags=self.__get_format_flags(col_idx),
                         is_formatting_float=self.is_formatting_float,
                         datetime_format_str=self.datetime_format_str,
                         east_asian_ambiguous_width=self.east_asian_ambiguous_width,
@@ -427,6 +442,12 @@ class DataPropertyExtractor(object):
             return self.column_type_hint_list[col_idx]
         except (TypeError, IndexError):
             return self.default_type_hint
+
+    def __get_format_flags(self, col_idx):
+        try:
+            return self.format_flags_list[col_idx]
+        except (TypeError, IndexError):
+            return Format.NONE
 
     def __to_dp(self, data, type_hint=None, strip_str=None, strict_type_mapping=None):
         try:
@@ -588,6 +609,7 @@ class DataPropertyExtractor(object):
             col_dp = ColumnDataProperty(
                 column_index=col_idx,
                 min_width=self.min_column_width,
+                format_flags=self.__get_format_flags(col_idx),
                 is_formatting_float=self.is_formatting_float,
                 datetime_format_str=self.datetime_format_str,
                 east_asian_ambiguous_width=self.east_asian_ambiguous_width,
