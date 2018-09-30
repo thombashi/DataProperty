@@ -24,7 +24,6 @@ class ColumnDataProperty(DataPeropertyBase):
         "__dp_list",
         "__format_mapping",
         "__is_calculate",
-        "__is_formatting_float",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
@@ -93,7 +92,6 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__column_index = column_index
 
         self.__is_calculate = True
-        self.__is_formatting_float = is_formatting_float
         self.__dp_list = []
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
