@@ -236,7 +236,7 @@ class ColumnDataProperty(DataPeropertyBase):
         return False
 
     def __get_ascii_char_width(self):
-        if not self.__typecode_bitmap & Typecode.REAL_NUMBER.value:
+        if not self.__typecode_bitmap & (Typecode.REAL_NUMBER.value | Typecode.INTEGER.value):
             return self.__ascii_char_width
 
         max_width = self.__ascii_char_width
