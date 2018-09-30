@@ -51,6 +51,7 @@ class Test_ColumnDataPeroperty(object):
             [["", ""], Typecode.NULL_STRING, NullString],
             [[True, "True", False], Typecode.BOOL, Bool],
             [[DATATIME_DATA, DATATIME_DATA], Typecode.DATETIME, DateTime],
+            [["2017-01-01 00:00:00", "2017-01-02 03:04:05+09:00"], Typecode.STRING, String],
             [[inf, "inf", "infinity", "INF"], Typecode.INFINITY, Infinity],
             [[nan, "nan", "NAN"], Typecode.NAN, Nan],
             [[{"a": 1}, {"b": 2}], Typecode.DICTIONARY, Dictionary],
