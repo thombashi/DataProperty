@@ -9,10 +9,26 @@ from __future__ import absolute_import, unicode_literals
 import copy
 import enum
 import multiprocessing
+from collections import Counter
 
 from six import text_type
 from six.moves import zip
-from typepy import String, is_empty_sequence
+from typepy import (
+    Bool,
+    DateTime,
+    Dictionary,
+    Infinity,
+    Integer,
+    IpAddress,
+    List,
+    Nan,
+    NoneType,
+    NullString,
+    RealNumber,
+    StrictLevel,
+    String,
+    is_empty_sequence,
+)
 
 from ._column import ColumnDataProperty
 from ._common import NOT_STRICT_TYPE_MAPPING, DefaultValue
@@ -94,20 +110,6 @@ class DataPropertyExtractor(object):
 
     @column_type_hint_list.setter
     def column_type_hint_list(self, value):
-        from typepy import (
-            Bool,
-            DateTime,
-            Dictionary,
-            Infinity,
-            Integer,
-            IpAddress,
-            List,
-            Nan,
-            NoneType,
-            RealNumber,
-            NullString,
-        )
-
         if self.__col_type_hint_list == value:
             return
 
@@ -508,9 +510,6 @@ class DataPropertyExtractor(object):
         return list(zip(*[col_data_mapping[col_idx] for col_idx in sorted(col_data_mapping)]))
 
     def _to_dp_list(self, data_list, type_hint=None, strip_str=None, strict_type_mapping=None):
-        from collections import Counter
-        from typepy import StrictLevel
-
         if is_empty_sequence(data_list):
             return []
 
