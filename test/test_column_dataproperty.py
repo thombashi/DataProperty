@@ -12,7 +12,7 @@ from ipaddress import ip_address
 
 import pytest
 import six
-from dataproperty import Align, ColumnDataProperty, DataProperty
+from dataproperty import Align, ColumnDataProperty, DataProperty, Format
 from six import text_type
 from typepy import (
     Bool,
@@ -448,6 +448,23 @@ class Test_ColumnDataPeroperty_dp_to_str(object):
         expected_list = ["1.10", "2.20", "3.33"]
 
         col_dp.update_header(DataProperty("abc"))
+        for value in value_list:
+            col_dp.update_body(DataProperty(value))
+
+        for value, expected in zip(value_list, expected_list):
+            assert col_dp.dp_to_str(DataProperty(value)) == expected
+
+    @pytest.mark.parametrize(
+        ["value_list", "expected_list"],
+        [
+            [[1234, 223, 1234567], ["1,234", "223", "1,234,567"]],
+            [[1234.1, 223.33, 1234567.33], ["1,234.1", "223.3", "1,234,567.3"]],
+        ],
+    )
+    def test_normal_format(self, value_list, expected_list):
+        col_dp = ColumnDataProperty(format_flags=Format.THOUSAND_SEPARATOR)
+
+        col_dp.update_header(DataProperty("format test"))
         for value in value_list:
             col_dp.update_body(DataProperty(value))
 

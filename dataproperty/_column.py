@@ -102,7 +102,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_typecode_from_bitmap()
 
         self.__formatter = Formatter(
-            format_flags=None,
+            format_flags=format_flags,
             datetime_format_str=self._datetime_format_str,
             is_formatting_float=self.__is_formatting_float,
         )
