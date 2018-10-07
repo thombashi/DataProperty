@@ -29,7 +29,7 @@ class DataPropertyConverter(object):
         float_type=None,
         strict_type_map=None,
     ):
-        self.__type_value_mapping = (
+        self.__type_value_map = (
             type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAP
         )
         self.__const_value_map = (
@@ -89,9 +89,9 @@ class DataPropertyConverter(object):
                 # unhashable type will be reached this line
                 raise TypeConversionError
 
-        if dp_value.typecode in self.__type_value_mapping:
+        if dp_value.typecode in self.__type_value_map:
             return self.__apply_quote(
-                dp_value.typecode, self.__type_value_mapping.get(dp_value.typecode)
+                dp_value.typecode, self.__type_value_map.get(dp_value.typecode)
             )
 
         if dp_value.typecode == Typecode.DATETIME:

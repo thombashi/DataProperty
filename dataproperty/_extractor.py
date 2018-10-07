@@ -251,14 +251,14 @@ class DataPropertyExtractor(object):
 
     @property
     def type_value_mapping(self):
-        return self.__type_value_mapping
+        return self.__type_value_map
 
     @type_value_mapping.setter
     def type_value_mapping(self, value):
-        if self.__type_value_mapping == value:
+        if self.__type_value_map == value:
             return
 
-        self.__type_value_mapping = value
+        self.__type_value_map = value
         self.__clear_cache()
 
     @property
@@ -327,7 +327,7 @@ class DataPropertyExtractor(object):
         self.__strict_type_map = copy.deepcopy(DefaultValue.STRICT_LEVEL_MAP)
         self.__east_asian_ambiguous_width = 1
 
-        self.__type_value_mapping = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)
+        self.__type_value_map = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)
         self.__const_value_map = copy.deepcopy(DefaultValue.CONST_VALUE_MAP)
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None
