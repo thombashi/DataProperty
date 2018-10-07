@@ -443,8 +443,8 @@ class Test_DataPeroperty_repr(object):
         ["value", "strict_type_mapping", "expected"],
         [
             ["100-0004", NOT_STRICT_TYPE_MAPPING, 95],
-            [{"a": 1}, DefaultValue.STRICT_LEVEL_MAPPING, 100],
-            ["新しいテキスト ドキュメント.txt", DefaultValue.STRICT_LEVEL_MAPPING, 100],
+            [{"a": 1}, DefaultValue.STRICT_LEVEL_MAP, 100],
+            ["新しいテキスト ドキュメント.txt", DefaultValue.STRICT_LEVEL_MAP, 100],
         ],
     )
     def test_smoke(self, value, strict_type_mapping, expected):
@@ -457,72 +457,72 @@ class Test_DataPeroperty_repr(object):
         [
             [
                 0,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=0, typename=INTEGER, align=right, "
                 "ascii_char_width=1, "
                 "integer_digits=1, decimal_places=0, additional_format_len=0",
             ],
             [
                 -1.0,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=-1, typename=INTEGER, align=right, "
                 "ascii_char_width=2, "
                 "integer_digits=1, decimal_places=0, additional_format_len=1",
             ],
             [
                 -1.1,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=-1.1, typename=REAL_NUMBER, align=right, "
                 "ascii_char_width=4, "
                 "integer_digits=1, decimal_places=1, additional_format_len=1",
             ],
             [
                 -12.234,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=-12.23, typename=REAL_NUMBER, align=right, "
                 "ascii_char_width=6, "
                 "integer_digits=2, decimal_places=2, additional_format_len=1",
             ],
             [
                 0.01,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=0.01, typename=REAL_NUMBER, align=right, "
                 "ascii_char_width=4, "
                 "integer_digits=1, decimal_places=2, additional_format_len=0",
             ],
             [
                 "abcdefg",
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=abcdefg, typename=STRING, align=left, "
                 "ascii_char_width=7, length=7, additional_format_len=0",
             ],
             [
                 "いろは",
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=いろは, typename=STRING, align=left, "
                 "ascii_char_width=6, length=3, additional_format_len=0",
             ],
             [
                 None,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=None, typename=NONE, align=left, "
                 "ascii_char_width=4, additional_format_len=0",
             ],
             [
                 True,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=True, typename=BOOL, align=left, "
                 "ascii_char_width=4, additional_format_len=0",
             ],
             [
                 DATATIME_DATA,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=2017-01-02 03:04:05, typename=DATETIME, align=left, "
                 "ascii_char_width=19, additional_format_len=0",
             ],
             [
                 "2017-01-02 03:04:05",
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=2017-01-02 03:04:05, typename=STRING, align=left, "
                 "ascii_char_width=19, length=19, additional_format_len=0",
             ],
@@ -534,25 +534,25 @@ class Test_DataPeroperty_repr(object):
             ],
             [
                 inf,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=Infinity, typename=INFINITY, align=left, "
                 "ascii_char_width=8, additional_format_len=0",
             ],
             [
                 nan,
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=NaN, typename=NAN, align=left, "
                 "ascii_char_width=3, additional_format_len=0",
             ],
             [
                 ["side", "where"],
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=['side', 'where'], typename=LIST, align=left, "
                 "ascii_char_width=17, length=2, additional_format_len=0",
             ],
             [
                 ["い", "ろは"],
-                DefaultValue.STRICT_LEVEL_MAPPING,
+                DefaultValue.STRICT_LEVEL_MAP,
                 "data=['い', 'ろは'], typename=LIST, align=left, "
                 "ascii_char_width=14, length=2, additional_format_len=0",
             ],
