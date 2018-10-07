@@ -27,7 +27,7 @@ class DataPropertyConverter(object):
         datetime_formatter=None,
         datetime_format_str=None,
         float_type=None,
-        strict_type_mapping=None,
+        strict_type_map=None,
     ):
         self.__type_value_mapping = (
             type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAP
@@ -40,7 +40,7 @@ class DataPropertyConverter(object):
         self.__datetime_formatter = datetime_formatter
         self.__datetime_format_str = datetime_format_str
         self.__float_type = float_type
-        self.__strict_type_map = strict_type_mapping
+        self.__strict_type_map = strict_type_map
         self.__is_escape_html_tag = is_escape_html_tag
 
     def convert(self, dp_value):
@@ -62,7 +62,7 @@ class DataPropertyConverter(object):
             value,
             float_type=self.__float_type,
             datetime_format_str=self.__datetime_format_str,
-            strict_type_mapping=STRICT_TYPE_MAP,
+            strict_type_map=STRICT_TYPE_MAP,
             is_escape_html_tag=self.__is_escape_html_tag,
         )
 

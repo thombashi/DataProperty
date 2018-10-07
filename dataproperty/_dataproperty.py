@@ -137,7 +137,7 @@ class DataProperty(DataPeropertyBase):
         float_type=None,
         format_flags=None,
         datetime_format_str=DefaultValue.DATETIME_FORMAT,
-        strict_type_mapping=None,
+        strict_type_map=None,
         replace_tabs_with_spaces=True,
         tab_length=2,
         is_escape_html_tag=False,
@@ -157,7 +157,7 @@ class DataProperty(DataPeropertyBase):
         self.__length = None
 
         data = self.__preprocess_data(data, strip_str)
-        self.__set_data(data, type_hint, float_type, strict_type_mapping)
+        self.__set_data(data, type_hint, float_type, strict_type_map)
 
         self.__preprocess_string(replace_tabs_with_spaces, tab_length, is_escape_html_tag)
 
@@ -294,12 +294,12 @@ class DataProperty(DataPeropertyBase):
         except UnicodeDecodeError:
             return MultiByteStrDecoder(data).unicode_str.strip(strip_str)
 
-    def __set_data(self, data, type_hint, float_type, strict_type_mapping):
+    def __set_data(self, data, type_hint, float_type, strict_type_map):
         if float_type is None:
             float_type = DefaultValue.FLOAT_TYPE
 
-        if strict_type_mapping is None:
-            strict_type_mapping = DefaultValue.STRICT_LEVEL_MAP
+        if strict_type_map is None:
+            strict_type_map = DefaultValue.STRICT_LEVEL_MAP
 
         if type_hint:
             type_obj = type_hint(data, strict_level=StrictLevel.MIN, float_type=float_type)
@@ -312,13 +312,13 @@ class DataProperty(DataPeropertyBase):
                 return
 
         for type_class in self.__type_class_list:
-            strict_level = strict_type_mapping.get(type_class(None).typecode, False)
+            strict_level = strict_type_map.get(type_class(None).typecode, False)
 
             if self.__try_convert_type(data, type_class, strict_level, float_type):
                 return
 
         raise TypeConversionError(
-            "failed to convert: data={}, strict_level={}".format(data, strict_type_mapping)
+            "failed to convert: data={}, strict_level={}".format(data, strict_type_map)
         )
 
     def __set_digit(self):
