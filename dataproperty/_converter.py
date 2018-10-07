@@ -30,7 +30,7 @@ class DataPropertyConverter(object):
         strict_type_mapping=None,
     ):
         self.__type_value_mapping = (
-            type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAPPING
+            type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAP
         )
         self.__const_value_mapping = (
             const_value_mapping if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING

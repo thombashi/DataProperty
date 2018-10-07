@@ -57,7 +57,7 @@ class DefaultValue(object):
         Typecode.STRING: StrictLevel.MIN,
     }
 
-    TYPE_VALUE_MAPPING = {
+    TYPE_VALUE_MAP = {
         Typecode.NONE: None,
         Typecode.INFINITY: INF_VALUE,
         Typecode.NAN: NAN_VALUE,

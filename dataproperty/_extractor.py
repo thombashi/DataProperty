@@ -327,7 +327,7 @@ class DataPropertyExtractor(object):
         self.__strict_type_mapping = copy.deepcopy(DefaultValue.STRICT_LEVEL_MAP)
         self.__east_asian_ambiguous_width = 1
 
-        self.__type_value_mapping = copy.deepcopy(DefaultValue.TYPE_VALUE_MAPPING)
+        self.__type_value_mapping = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)
         self.__const_value_mapping = copy.deepcopy(DefaultValue.CONST_VALUE_MAPPING)
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None
