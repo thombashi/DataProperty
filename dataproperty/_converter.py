@@ -32,7 +32,7 @@ class DataPropertyConverter(object):
         self.__type_value_mapping = (
             type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAP
         )
-        self.__const_value_mapping = (
+        self.__const_value_map = (
             const_value_mapping if const_value_mapping else DefaultValue.CONST_VALUE_MAP
         )
         self.__quoting_flags = quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS
@@ -81,9 +81,9 @@ class DataPropertyConverter(object):
     def __convert_value(self, dp_value):
         if dp_value.typecode in (Typecode.BOOL, Typecode.STRING):
             try:
-                if dp_value.data in self.__const_value_mapping:
+                if dp_value.data in self.__const_value_map:
                     return self.__apply_quote(
-                        dp_value.typecode, self.__const_value_mapping.get(dp_value.data)
+                        dp_value.typecode, self.__const_value_map.get(dp_value.data)
                     )
             except TypeError:
                 # unhashable type will be reached this line
