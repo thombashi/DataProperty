@@ -341,7 +341,7 @@ class DataPropertyExtractor(object):
         self.__dp_cache_one = self.__to_dp_raw(1)
         self.__dp_cache_true = self.__to_dp_raw(True)
         self.__dp_cache_false = self.__to_dp_raw(False)
-        self.__dp_cache_mapping = {None: self.__to_dp_raw(None), "": self.__to_dp_raw("")}
+        self.__dp_cache_map = {None: self.__to_dp_raw(None), "": self.__to_dp_raw("")}
 
     def to_dp(self, value):
         self.__update_dp_converter()
@@ -451,8 +451,8 @@ class DataPropertyExtractor(object):
 
     def __to_dp(self, data, type_hint=None, strip_str=None, strict_type_map=None):
         try:
-            if data in self.__dp_cache_mapping:
-                return self.__dp_cache_mapping.get(data)
+            if data in self.__dp_cache_map:
+                return self.__dp_cache_map.get(data)
         except TypeError:
             # unhashable type
             pass
