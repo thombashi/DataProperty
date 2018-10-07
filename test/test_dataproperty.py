@@ -17,7 +17,7 @@ from dataproperty import NOT_STRICT_TYPE_MAP, Align, DataProperty, DefaultValue,
 from six import text_type
 from typepy import Bool, DateTime, Integer, Nan, RealNumber, String, Typecode
 
-from .common import get_strict_type_mapping
+from .common import get_strict_type_map
 
 
 if six.PY2:
@@ -131,7 +131,7 @@ class Test_DataPeroperty_data_typecode(object):
         ],
     )
     def test_normal_strict_mapping(self, value, is_convert, expected_data, expected_typecode):
-        dp = DataProperty(value, strict_type_mapping=get_strict_type_mapping(not is_convert))
+        dp = DataProperty(value, strict_type_mapping=get_strict_type_map(not is_convert))
 
         assert dp == dp
         assert dp != DataProperty("test for __ne__")
@@ -149,7 +149,7 @@ class Test_DataPeroperty_data_typecode(object):
     )
     def test_normal_strip_str(self, value, strip_str, is_strict, expected_data, expected_typecode):
         dp = DataProperty(
-            value, strip_str=strip_str, strict_type_mapping=get_strict_type_mapping(is_strict)
+            value, strip_str=strip_str, strict_type_mapping=get_strict_type_map(is_strict)
         )
 
         assert dp.data == expected_data
@@ -184,7 +184,7 @@ class Test_DataPeroperty_data_typecode(object):
     def test_normal_type_hint(self, value, type_hint, is_strict, expected_typecode):
 
         dp = DataProperty(
-            value, type_hint=type_hint, strict_type_mapping=get_strict_type_mapping(is_strict)
+            value, type_hint=type_hint, strict_type_mapping=get_strict_type_map(is_strict)
         )
 
         assert dp.typecode == expected_typecode
@@ -198,7 +198,7 @@ class Test_DataPeroperty_data_typecode(object):
         ],
     )
     def test_normal_nan(self, value, is_convert, expected_data, expected_typecode):
-        dp = DataProperty(value, strict_type_mapping=get_strict_type_mapping(not is_convert))
+        dp = DataProperty(value, strict_type_mapping=get_strict_type_map(not is_convert))
 
         assert Nan(dp.data).is_type()
         assert dp.typecode == expected_typecode
@@ -217,7 +217,7 @@ class Test_DataPeroperty_to_str(object):
     )
     def test_normal(self, value, type_hint, is_strict, expected_data, expected_str):
         dp = DataProperty(
-            value, type_hint=type_hint, strict_type_mapping=get_strict_type_mapping(is_strict)
+            value, type_hint=type_hint, strict_type_mapping=get_strict_type_map(is_strict)
         )
 
         assert dp.data == expected_data
@@ -246,7 +246,7 @@ class Test_DataPeroperty_set_data(object):
     def test_normal_tab(self, value, is_convert, replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
             value,
-            strict_type_mapping=get_strict_type_mapping(not is_convert),
+            strict_type_mapping=get_strict_type_map(not is_convert),
             replace_tabs_with_spaces=replace_tabs_with_spaces,
             tab_length=tab_length,
         )
