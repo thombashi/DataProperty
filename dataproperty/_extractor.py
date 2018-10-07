@@ -250,11 +250,11 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def type_value_mapping(self):
+    def type_value_map(self):
         return self.__type_value_map
 
-    @type_value_mapping.setter
-    def type_value_mapping(self, value):
+    @type_value_map.setter
+    def type_value_map(self, value):
         if self.__type_value_map == value:
             return
 
@@ -622,7 +622,7 @@ class DataPropertyExtractor(object):
 
     def __update_dp_converter(self):
         self.__dp_converter = DataPropertyConverter(
-            type_value_mapping=self.type_value_mapping,
+            type_value_map=self.type_value_map,
             const_value_map=self.const_value_map,
             quoting_flags=self.quoting_flags,
             is_escape_html_tag=self.is_escape_html_tag,
