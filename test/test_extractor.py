@@ -130,16 +130,16 @@ class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
 
 
 class Test_DataPropertyExtractor_to_dp_const_value_mapping(object):
-    VALUE_MAPPING = {True: "true value", False: "false value", "const": "const value"}
+    VALUE_MAP = {True: "true value", False: "false value", "const": "const value"}
 
     @pytest.mark.parametrize(
         ["value", "const_value_mapping", "is_strict", "expected"],
         [
-            ["True", VALUE_MAPPING, False, "true value"],
-            ["False", VALUE_MAPPING, False, "false value"],
-            ["True", VALUE_MAPPING, True, "True"],
-            [True, VALUE_MAPPING, True, "true value"],
-            ["const", VALUE_MAPPING, True, "const value"],
+            ["True", VALUE_MAP, False, "true value"],
+            ["False", VALUE_MAP, False, "false value"],
+            ["True", VALUE_MAP, True, "True"],
+            [True, VALUE_MAP, True, "true value"],
+            ["const", VALUE_MAP, True, "const value"],
         ],
     )
     def test_normal(self, dp_extractor, value, const_value_mapping, is_strict, expected):
