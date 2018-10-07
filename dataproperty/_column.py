@@ -21,7 +21,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__ascii_char_width",
         "__column_index",
         "__dp_list",
-        "__format_mapping",
+        "__format_map",
         "__is_calculate",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
@@ -99,7 +99,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__typecode_bitmap = Typecode.NONE.value
         self.__calc_typecode_from_bitmap()
 
-        self.__format_mapping = self._formatter.make_format_mapping(
+        self.__format_map = self._formatter.make_format_mapping(
             decimal_places=self._decimal_places
         )
 
@@ -152,7 +152,7 @@ class ColumnDataProperty(DataPeropertyBase):
         try:
             value = self.__preprocess_value_before_tostring(value_dp)
         except TypeConversionError:
-            return self.__format_mapping.get(value_dp.typecode, "{:s}").format(value_dp.data)
+            return self.__format_map.get(value_dp.typecode, "{:s}").format(value_dp.data)
 
         to_string_format_str = self.__get_tostring_format(value_dp)
 
@@ -264,9 +264,9 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __get_tostring_format(self, value_dp):
         if self.typecode == Typecode.STRING:
-            return self.__format_mapping.get(value_dp.typecode, "{:s}")
+            return self.__format_map.get(value_dp.typecode, "{:s}")
 
-        return self.__format_mapping.get(self.typecode, "{:s}")
+        return self.__format_map.get(self.typecode, "{:s}")
 
     def __get_typecode_from_bitmap(self):
         if self.__is_float_typecode():
@@ -314,7 +314,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return
 
         self._decimal_places = self.__get_decimal_places()
-        self.__format_mapping = self._formatter.make_format_mapping(
+        self.__format_map = self._formatter.make_format_mapping(
             decimal_places=self._decimal_places
         )
 
