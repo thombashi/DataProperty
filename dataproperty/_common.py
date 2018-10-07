@@ -28,8 +28,8 @@ NOT_QUOTING_FLAGS = {
     Typecode.STRING: False,
 }
 
-STRICT_TYPE_MAPPING = dict(itertools.product(list(Typecode), [StrictLevel.MAX]))
-NOT_STRICT_TYPE_MAPPING = dict(itertools.product(list(Typecode), [StrictLevel.MIN]))
+STRICT_TYPE_MAP = dict(itertools.product(list(Typecode), [StrictLevel.MAX]))
+NOT_STRICT_TYPE_MAP = dict(itertools.product(list(Typecode), [StrictLevel.MIN]))
 
 
 class DefaultValue(object):

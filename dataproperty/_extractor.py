@@ -31,7 +31,7 @@ from typepy import (
 )
 
 from ._column import ColumnDataProperty
-from ._common import NOT_STRICT_TYPE_MAPPING, DefaultValue
+from ._common import NOT_STRICT_TYPE_MAP, DefaultValue
 from ._converter import DataPropertyConverter
 from ._dataproperty import DataProperty
 from ._formatter import Format
@@ -424,7 +424,7 @@ class DataPropertyExtractor(object):
             self.header_list,
             type_hint=String,
             strip_str=self.strip_str_header,
-            strict_type_mapping=NOT_STRICT_TYPE_MAPPING,
+            strict_type_mapping=NOT_STRICT_TYPE_MAP,
         )
 
     @staticmethod
