@@ -42,7 +42,7 @@ class TestFormatter_make_format_str(object):
         assert formatter.make_format_str(typecode, decimal_places) == expected
 
 
-class TestFormatter_make_format_mapping(object):
+class TestFormatter_make_format_map(object):
     @pytest.mark.parametrize(
         ["format_flags", "datetime_format_str", "decimal_places", "expected"],
         [[None, dt_format, "", {}]],
@@ -50,7 +50,7 @@ class TestFormatter_make_format_mapping(object):
     def test_normal(self, format_flags, datetime_format_str, decimal_places, expected):
         formatter = Formatter(format_flags=format_flags, datetime_format_str=datetime_format_str)
 
-        assert formatter.make_format_mapping(decimal_places) == {
+        assert formatter.make_format_map(decimal_places) == {
             Typecode.INTEGER: "{:d}",
             Typecode.REAL_NUMBER: "{:f}",
             Typecode.INFINITY: "{:f}",

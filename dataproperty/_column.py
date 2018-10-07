@@ -99,7 +99,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__typecode_bitmap = Typecode.NONE.value
         self.__calc_typecode_from_bitmap()
 
-        self.__format_map = self._formatter.make_format_mapping(
+        self.__format_map = self._formatter.make_format_map(
             decimal_places=self._decimal_places
         )
 
@@ -314,7 +314,7 @@ class ColumnDataProperty(DataPeropertyBase):
             return
 
         self._decimal_places = self.__get_decimal_places()
-        self.__format_map = self._formatter.make_format_mapping(
+        self.__format_map = self._formatter.make_format_map(
             decimal_places=self._decimal_places
         )
 

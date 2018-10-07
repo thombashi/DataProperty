@@ -36,7 +36,7 @@ class Formatter(object):
         self.__datetime_format_str = datetime_format_str
         self.__is_formatting_float = is_formatting_float
 
-    def make_format_mapping(self, decimal_places=None):
+    def make_format_map(self, decimal_places=None):
         format_map = copy.copy(self._BLANK_CURLY_BRACES_FORMAT_MAP)
         format_map.update(
             {
