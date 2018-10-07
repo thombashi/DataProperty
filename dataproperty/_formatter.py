@@ -15,7 +15,7 @@ class Format(object):
 class Formatter(object):
     __slots__ = ("__is_formatting_float", "__format_flags", "__datetime_format_str")
 
-    _BLANK_CURLY_BRACES_FORMAT_MAPPING = {
+    _BLANK_CURLY_BRACES_FORMAT_MAP = {
         Typecode.NONE: "{}",
         Typecode.IP_ADDRESS: "{}",
         Typecode.BOOL: "{}",
@@ -25,7 +25,7 @@ class Formatter(object):
 
     @property
     def blank_curly_braces_format_type_list(self):
-        return self._BLANK_CURLY_BRACES_FORMAT_MAPPING.keys()
+        return self._BLANK_CURLY_BRACES_FORMAT_MAP.keys()
 
     def __init__(self, datetime_format_str, is_formatting_float=True, format_flags=None):
         if format_flags is not None:
@@ -37,7 +37,7 @@ class Formatter(object):
         self.__is_formatting_float = is_formatting_float
 
     def make_format_mapping(self, decimal_places=None):
-        format_mapping = copy.copy(self._BLANK_CURLY_BRACES_FORMAT_MAPPING)
+        format_mapping = copy.copy(self._BLANK_CURLY_BRACES_FORMAT_MAP)
         format_mapping.update(
             {
                 Typecode.INTEGER: self.make_format_str(Typecode.INTEGER),
@@ -51,7 +51,7 @@ class Formatter(object):
         return format_mapping
 
     def make_format_str(self, typecode, decimal_places=None):
-        format_str = self._BLANK_CURLY_BRACES_FORMAT_MAPPING.get(typecode)
+        format_str = self._BLANK_CURLY_BRACES_FORMAT_MAP.get(typecode)
         if format_str is not None:
             return format_str
 
