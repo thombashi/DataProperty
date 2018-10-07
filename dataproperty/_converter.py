@@ -29,9 +29,7 @@ class DataPropertyConverter(object):
         float_type=None,
         strict_type_map=None,
     ):
-        self.__type_value_map = (
-            type_value_map if type_value_map else DefaultValue.TYPE_VALUE_MAP
-        )
+        self.__type_value_map = type_value_map if type_value_map else DefaultValue.TYPE_VALUE_MAP
         self.__const_value_map = (
             const_value_map if const_value_map else DefaultValue.CONST_VALUE_MAP
         )

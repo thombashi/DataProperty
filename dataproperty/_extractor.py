@@ -479,9 +479,7 @@ class DataPropertyExtractor(object):
             strip_str=strip_str,
             float_type=self.float_type,
             datetime_format_str=self.datetime_format_str,
-            strict_type_map=(
-                strict_type_map if type_hint is not None else self.strict_type_map
-            ),
+            strict_type_map=(strict_type_map if type_hint is not None else self.strict_type_map),
             east_asian_ambiguous_width=self.east_asian_ambiguous_width,
         )
 

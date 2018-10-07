@@ -176,9 +176,7 @@ class Test_DataPropertyExtractor_to_dp_matrix(object):
             ]
         ],
     )
-    def test_normal(
-        self, dp_extractor, value, type_value_map, const_value_map, datetime_formatter
-    ):
+    def test_normal(self, dp_extractor, value, type_value_map, const_value_map, datetime_formatter):
         dp_extractor.type_value_map = type_value_map
         dp_extractor.const_value_map = const_value_map
         dp_extractor.datetime_formatter = datetime_formatter
