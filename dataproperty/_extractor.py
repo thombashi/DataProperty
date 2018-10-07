@@ -506,7 +506,8 @@ class DataPropertyExtractor(object):
     def __to_dp_matrix_mt(self, value_matrix):
         from concurrent import futures
 
-        col_data_mapping = {}
+        col_data_map = {}
+
         try:
             with futures.ProcessPoolExecutor(self.max_workers) as executor:
                 future_list = [
@@ -523,12 +524,12 @@ class DataPropertyExtractor(object):
 
                 for future in futures.as_completed(future_list):
                     col_idx, value_dp_list = future.result()
-                    col_data_mapping[col_idx] = value_dp_list
+                    col_data_map[col_idx] = value_dp_list
         finally:
             logger.debug("shutdown ProcessPoolExecutor")
             executor.shutdown()
 
-        return list(zip(*[col_data_mapping[col_idx] for col_idx in sorted(col_data_mapping)]))
+        return list(zip(*[col_data_map[col_idx] for col_idx in sorted(col_data_map)]))
 
     def _to_dp_list(self, data_list, type_hint=None, strip_str=None, strict_type_map=None):
         if is_empty_sequence(data_list):
