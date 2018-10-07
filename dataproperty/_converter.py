@@ -33,7 +33,7 @@ class DataPropertyConverter(object):
             type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAP
         )
         self.__const_value_mapping = (
-            const_value_mapping if const_value_mapping else DefaultValue.CONST_VALUE_MAPPING
+            const_value_mapping if const_value_mapping else DefaultValue.CONST_VALUE_MAP
         )
         self.__quoting_flags = quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS
 
