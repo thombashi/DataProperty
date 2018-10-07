@@ -130,7 +130,7 @@ class Test_DataPeroperty_data_typecode(object):
             ["新しいテキスト ドキュメント.txt".encode("utf_8"), True, "新しいテキスト ドキュメント.txt", Typecode.STRING],
         ],
     )
-    def test_normal_strict_mapping(self, value, is_convert, expected_data, expected_typecode):
+    def test_normal_strict_map(self, value, is_convert, expected_data, expected_typecode):
         dp = DataProperty(value, strict_type_map=get_strict_type_map(not is_convert))
 
         assert dp == dp

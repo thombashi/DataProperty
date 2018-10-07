@@ -62,7 +62,7 @@ class Test_DataPropertyExtractor_to_dp(object):
             ["nan", {Typecode.NAN: "NAN_5"}, True, "nan", Typecode.STRING],
         ],
     )
-    def test_normal_type_value_mapping(
+    def test_normal_type_value_map(
         self, dp_extractor, value, type_value_map, is_strict, expected_value, expected_typecode
     ):
         dp_extractor.type_value_map = type_value_map
@@ -129,7 +129,7 @@ class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dp_const_value_mapping(object):
+class Test_DataPropertyExtractor_to_dp_const_value_map(object):
     VALUE_MAP = {True: "true value", False: "false value", "const": "const value"}
 
     @pytest.mark.parametrize(
