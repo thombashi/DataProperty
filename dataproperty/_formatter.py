@@ -37,8 +37,8 @@ class Formatter(object):
         self.__is_formatting_float = is_formatting_float
 
     def make_format_mapping(self, decimal_places=None):
-        format_mapping = copy.copy(self._BLANK_CURLY_BRACES_FORMAT_MAP)
-        format_mapping.update(
+        format_map = copy.copy(self._BLANK_CURLY_BRACES_FORMAT_MAP)
+        format_map.update(
             {
                 Typecode.INTEGER: self.make_format_str(Typecode.INTEGER),
                 Typecode.REAL_NUMBER: self.make_format_str(Typecode.REAL_NUMBER, decimal_places),
@@ -48,7 +48,7 @@ class Formatter(object):
             }
         )
 
-        return format_mapping
+        return format_map
 
     def make_format_str(self, typecode, decimal_places=None):
         format_str = self._BLANK_CURLY_BRACES_FORMAT_MAP.get(typecode)
