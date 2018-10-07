@@ -262,11 +262,11 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def const_value_mapping(self):
+    def const_value_map(self):
         return self.__const_value_map
 
-    @const_value_mapping.setter
-    def const_value_mapping(self, value):
+    @const_value_map.setter
+    def const_value_map(self, value):
         if self.__const_value_map == value:
             return
 
@@ -623,7 +623,7 @@ class DataPropertyExtractor(object):
     def __update_dp_converter(self):
         self.__dp_converter = DataPropertyConverter(
             type_value_mapping=self.type_value_mapping,
-            const_value_mapping=self.const_value_mapping,
+            const_value_map=self.const_value_map,
             quoting_flags=self.quoting_flags,
             is_escape_html_tag=self.is_escape_html_tag,
             datetime_formatter=self.datetime_formatter,

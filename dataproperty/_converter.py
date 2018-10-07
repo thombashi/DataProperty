@@ -21,7 +21,7 @@ class DataPropertyConverter(object):
     def __init__(
         self,
         type_value_mapping=None,
-        const_value_mapping=None,
+        const_value_map=None,
         quoting_flags=None,
         is_escape_html_tag=False,
         datetime_formatter=None,
@@ -33,7 +33,7 @@ class DataPropertyConverter(object):
             type_value_mapping if type_value_mapping else DefaultValue.TYPE_VALUE_MAP
         )
         self.__const_value_map = (
-            const_value_mapping if const_value_mapping else DefaultValue.CONST_VALUE_MAP
+            const_value_map if const_value_map else DefaultValue.CONST_VALUE_MAP
         )
         self.__quoting_flags = quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS
 

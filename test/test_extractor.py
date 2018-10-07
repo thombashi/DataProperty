@@ -133,7 +133,7 @@ class Test_DataPropertyExtractor_to_dp_const_value_mapping(object):
     VALUE_MAP = {True: "true value", False: "false value", "const": "const value"}
 
     @pytest.mark.parametrize(
-        ["value", "const_value_mapping", "is_strict", "expected"],
+        ["value", "const_value_map", "is_strict", "expected"],
         [
             ["True", VALUE_MAP, False, "true value"],
             ["False", VALUE_MAP, False, "false value"],
@@ -142,8 +142,8 @@ class Test_DataPropertyExtractor_to_dp_const_value_mapping(object):
             ["const", VALUE_MAP, True, "const value"],
         ],
     )
-    def test_normal(self, dp_extractor, value, const_value_mapping, is_strict, expected):
-        dp_extractor.const_value_mapping = const_value_mapping
+    def test_normal(self, dp_extractor, value, const_value_map, is_strict, expected):
+        dp_extractor.const_value_map = const_value_map
         dp_extractor.strict_type_map = get_strict_type_map(is_strict)
         dp = dp_extractor.to_dp(value)
 
@@ -166,7 +166,7 @@ class Test_DataPropertyExtractor_to_dp_matrix(object):
         assert len(list(dp_extractor.to_dp_matrix(value))) > 0
 
     @pytest.mark.parametrize(
-        ["value", "type_value_mapping", "const_value_mapping", "datetime_formatter"],
+        ["value", "type_value_mapping", "const_value_map", "datetime_formatter"],
         [
             [
                 [[None, "1"], [1.1, "a"], [nan, inf], ["false", DATATIME_DATA]],
@@ -177,10 +177,10 @@ class Test_DataPropertyExtractor_to_dp_matrix(object):
         ],
     )
     def test_normal(
-        self, dp_extractor, value, type_value_mapping, const_value_mapping, datetime_formatter
+        self, dp_extractor, value, type_value_mapping, const_value_map, datetime_formatter
     ):
         dp_extractor.type_value_mapping = type_value_mapping
-        dp_extractor.const_value_mapping = const_value_mapping
+        dp_extractor.const_value_map = const_value_map
         dp_extractor.datetime_formatter = datetime_formatter
         dp_matrix = list(dp_extractor.to_dp_matrix(dp_extractor.to_dp_matrix(value)))
 
