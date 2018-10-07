@@ -100,7 +100,7 @@ class Test_DataPropertyExtractor_to_dp(object):
 
 
 class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
-    ALWAYS_QUOTE_FLAG_MAPPING = {
+    ALWAYS_QUOTE_FLAG_MAP = {
         Typecode.NONE: True,
         Typecode.INTEGER: True,
         Typecode.REAL_NUMBER: True,
@@ -115,11 +115,11 @@ class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
     @pytest.mark.parametrize(
         ["value", "quoting_flags", "is_strict", "expected"],
         [
-            ["string", ALWAYS_QUOTE_FLAG_MAPPING, False, '"string"'],
-            ['"string"', ALWAYS_QUOTE_FLAG_MAPPING, False, '"string"'],
-            [' "123"', ALWAYS_QUOTE_FLAG_MAPPING, False, ' "123"'],
-            ['"string" ', ALWAYS_QUOTE_FLAG_MAPPING, False, '"string" '],
-            [' "12 345" ', ALWAYS_QUOTE_FLAG_MAPPING, False, ' "12 345" '],
+            ["string", ALWAYS_QUOTE_FLAG_MAP, False, '"string"'],
+            ['"string"', ALWAYS_QUOTE_FLAG_MAP, False, '"string"'],
+            [' "123"', ALWAYS_QUOTE_FLAG_MAP, False, ' "123"'],
+            ['"string" ', ALWAYS_QUOTE_FLAG_MAP, False, '"string" '],
+            [' "12 345" ', ALWAYS_QUOTE_FLAG_MAP, False, ' "12 345" '],
         ],
     )
     def test_normal_always_quote(self, dp_extractor, value, quoting_flags, is_strict, expected):
