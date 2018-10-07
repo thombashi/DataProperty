@@ -227,14 +227,14 @@ class DataPropertyExtractor(object):
 
     @property
     def strict_type_mapping(self):
-        return self.__strict_type_mapping
+        return self.__strict_type_map
 
     @strict_type_mapping.setter
     def strict_type_mapping(self, value):
-        if self.__strict_type_mapping == value:
+        if self.__strict_type_map == value:
             return
 
-        self.__strict_type_mapping = value
+        self.__strict_type_map = value
         self.__clear_cache()
 
     @property
@@ -324,7 +324,7 @@ class DataPropertyExtractor(object):
         self.__format_flags_list = []
         self.__float_type = None
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
-        self.__strict_type_mapping = copy.deepcopy(DefaultValue.STRICT_LEVEL_MAP)
+        self.__strict_type_map = copy.deepcopy(DefaultValue.STRICT_LEVEL_MAP)
         self.__east_asian_ambiguous_width = 1
 
         self.__type_value_mapping = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)

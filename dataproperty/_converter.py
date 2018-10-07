@@ -40,7 +40,7 @@ class DataPropertyConverter(object):
         self.__datetime_formatter = datetime_formatter
         self.__datetime_format_str = datetime_format_str
         self.__float_type = float_type
-        self.__strict_type_mapping = strict_type_mapping
+        self.__strict_type_map = strict_type_mapping
         self.__is_escape_html_tag = is_escape_html_tag
 
     def convert(self, dp_value):
