@@ -309,7 +309,7 @@ class Test_DataPeroperty_align(object):
 
 class Test_DataPeroperty_len(object):
     @pytest.mark.parametrize(
-        ["value", "expected_acs", "expected_len"],
+        ["value", "expected_acw", "expected_len"],
         [
             [1, 1, None],
             [-1, 2, None],
@@ -330,19 +330,19 @@ class Test_DataPeroperty_len(object):
             [nan, 3, None],
         ],
     )
-    def test_normal(self, value, expected_acs, expected_len):
+    def test_normal(self, value, expected_acw, expected_len):
         dp = DataProperty(value)
 
-        assert dp.ascii_char_width == expected_acs
+        assert dp.ascii_char_width == expected_acw
         assert dp.length == expected_len
 
     @pytest.mark.parametrize(
-        ["value", "eaaw", "expected_acs", "expected_len"], [["øø", 1, 2, 2], ["øø", 2, 4, 2]]
+        ["value", "eaaw", "expected_acw", "expected_len"], [["øø", 1, 2, 2], ["øø", 2, 4, 2]]
     )
-    def test_normal_eaaw(self, value, eaaw, expected_acs, expected_len):
+    def test_normal_eaaw(self, value, eaaw, expected_acw, expected_len):
         dp = DataProperty(value, east_asian_ambiguous_width=eaaw)
 
-        assert dp.ascii_char_width == expected_acs
+        assert dp.ascii_char_width == expected_acw
         assert dp.length == expected_len
 
     @pytest.mark.parametrize(["value", "expected"], [[nan, nan]])
