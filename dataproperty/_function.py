@@ -149,3 +149,14 @@ def calc_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
             width += 1
 
     return width
+
+
+def get_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
+    import warnings
+
+    warnings.warn(
+        "calc_ascii_char_width is now deprecated, use calc_ascii_char_width instead.",
+        DeprecationWarning,
+    )
+
+    return calc_ascii_char_width(unicode_str, east_asian_ambiguous_width)
