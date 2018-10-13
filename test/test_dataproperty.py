@@ -366,6 +366,22 @@ class Test_DataPeroperty_len(object):
             DataProperty(value, east_asian_ambiguous_width=eaaw).ascii_char_width
 
 
+class Test_DataPeroperty_is_include_ansi_escape(object):
+    @pytest.mark.parametrize(
+        ["value", "expected_acw"],
+        [
+            [0, False],
+            [colored(0, "red"), True],
+            [12.34, False],
+            [colored(12.34, "red"), True],
+            ["abc", False],
+            [colored("abc", "green"), True],
+        ],
+    )
+    def test_normal(self, value, expected_acw):
+        assert DataProperty(value).is_include_ansi_escape == expected_acw
+
+
 class Test_DataPeroperty_get_padding_len(object):
     @pytest.mark.skipif("six.PY2")
     @pytest.mark.parametrize(

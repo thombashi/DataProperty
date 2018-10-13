@@ -90,6 +90,13 @@ class DataProperty(DataPeropertyBase):
         return self.__data
 
     @property
+    def is_include_ansi_escape(self):
+        if self.__no_ansi_escape_data is None:
+            return False
+
+        return len(self.__data) != len(self.__no_ansi_escape_data)
+
+    @property
     def length(self):
         """
         :return: Length of the ``data``.
