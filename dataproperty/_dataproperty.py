@@ -280,7 +280,7 @@ class DataProperty(DataPeropertyBase):
         except ValueError:
             unicode_str = self.to_str()
 
-        return get_ascii_char_width(unicode_str, self._east_asian_ambiguous_width)
+        return calc_ascii_char_width(unicode_str, self._east_asian_ambiguous_width)
 
     @staticmethod
     def __preprocess_data(data, strip_str):

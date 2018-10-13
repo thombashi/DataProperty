@@ -127,7 +127,7 @@ def _validate_eaaw(east_asian_ambiguous_width):
     )
 
 
-def get_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
+def calc_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
     import unicodedata
 
     width = 0

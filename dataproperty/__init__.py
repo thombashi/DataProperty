@@ -16,7 +16,7 @@ from ._dataproperty import DataProperty
 from ._extractor import DataPropertyExtractor, MatrixFormatting
 from ._formatter import Format
 from ._function import (
-    get_ascii_char_width,
+    calc_ascii_char_width,
     get_integer_digit,
     get_number_of_digit,
     is_multibyte_str,

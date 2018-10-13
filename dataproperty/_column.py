@@ -13,7 +13,7 @@ from ._align_getter import align_getter
 from ._base import DataPeropertyBase
 from ._common import DefaultValue
 from ._container import ListContainer, MinMaxContainer
-from ._function import get_ascii_char_width
+from ._function import calc_ascii_char_width
 
 
 class ColumnDataProperty(DataPeropertyBase):
@@ -244,7 +244,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
             max_width = max(
                 max_width,
-                get_ascii_char_width(self.dp_to_str(value_dp), self._east_asian_ambiguous_width),
+                calc_ascii_char_width(self.dp_to_str(value_dp), self._east_asian_ambiguous_width),
             )
 
         return max_width
