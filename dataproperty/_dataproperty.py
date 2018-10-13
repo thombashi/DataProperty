@@ -29,12 +29,13 @@ from typepy import (
 from ._align_getter import align_getter
 from ._base import DataPeropertyBase
 from ._common import DefaultValue
-from ._function import get_ascii_char_width, get_number_of_digit
+from ._function import calc_ascii_char_width, get_number_of_digit, strip_ansi_escape
 
 
 class DataProperty(DataPeropertyBase):
     __slots__ = (
         "__data",
+        "__no_ansi_escape_data",
         "__align",
         "__integer_digits",
         "__additional_format_len",
@@ -159,7 +160,13 @@ class DataProperty(DataPeropertyBase):
         data = self.__preprocess_data(data, strip_str)
         self.__set_data(data, type_hint, float_type, strict_type_map)
 
-        self.__preprocess_string(replace_tabs_with_spaces, tab_length, is_escape_html_tag)
+        data, no_ansi_escape_data = self.__preprocess_string(
+            replace_tabs_with_spaces, tab_length, is_escape_html_tag
+        )
+        self.__data = data
+        self.__no_ansi_escape_data = no_ansi_escape_data
+        if no_ansi_escape_data:
+            print("!!", data, no_ansi_escape_data, calc_ascii_char_width(no_ansi_escape_data))
 
     def __eq__(self, other):
         if self.typecode != other.typecode:
@@ -275,8 +282,13 @@ class DataProperty(DataPeropertyBase):
                 # the datetime strftime() methods require year >= 1900.
                 return len(six.text_type(self.data))
 
+        if self.__no_ansi_escape_data:
+            data = self.__no_ansi_escape_data
+        else:
+            data = self.data
+
         try:
-            unicode_str = MultiByteStrDecoder(self.data).unicode_str
+            unicode_str = MultiByteStrDecoder(data).unicode_str
         except ValueError:
             unicode_str = self.to_str()
 
@@ -339,20 +351,25 @@ class DataProperty(DataPeropertyBase):
         return True
 
     def __preprocess_string(self, replace_tabs_with_spaces, tab_length, is_escape_html_tag):
+        data = self.__data
+
         if replace_tabs_with_spaces:
             try:
-                self.__data = self.__data.replace("\t", " " * tab_length)
+                data = data.replace("\t", " " * tab_length)
             except (TypeError, AttributeError):
-                return
+                pass
 
-        if not is_escape_html_tag:
-            return
+        if is_escape_html_tag:
+            if six.PY2:
+                import cgi
 
-        if six.PY2:
-            import cgi
+                data = cgi.escape(data)
+            else:
+                import html
 
-            self.__data = cgi.escape(self.__data)
-        else:
-            import html
+                data = html.escape(data)
 
-            self.__data = html.escape(self.__data)
+        try:
+            return (data, strip_ansi_escape(data))
+        except TypeError:
+            return (data, None)

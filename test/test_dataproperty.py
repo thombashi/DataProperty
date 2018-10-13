@@ -15,6 +15,7 @@ import pytest
 import six
 from dataproperty import NOT_STRICT_TYPE_MAP, Align, DataProperty, DefaultValue, Format
 from six import text_type
+from termcolor import colored
 from typepy import Bool, DateTime, Integer, Nan, RealNumber, String, Typecode
 
 from .common import get_strict_type_map
@@ -335,6 +336,15 @@ class Test_DataPeroperty_len(object):
 
         assert dp.ascii_char_width == expected_acw
         assert dp.length == expected_len
+
+    @pytest.mark.parametrize(
+        ["value", "expected_acw"],
+        [[colored(0, "red"), 1], [colored(12.34, "red"), 5], [colored("abc", "green"), 3]],
+    )
+    def test_normal_ascii_escape_sequence(self, value, expected_acw):
+        dp = DataProperty(value)
+
+        assert dp.ascii_char_width == expected_acw
 
     @pytest.mark.parametrize(
         ["value", "eaaw", "expected_acw", "expected_len"], [["øø", 1, 2, 2], ["øø", 2, 4, 2]]
