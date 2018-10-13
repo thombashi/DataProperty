@@ -338,11 +338,18 @@ class Test_DataPeroperty_len(object):
         assert dp.length == expected_len
 
     @pytest.mark.parametrize(
-        ["value", "expected_acw"],
-        [[colored(0, "red"), 1], [colored(12.34, "red"), 5], [colored("abc", "green"), 3]],
+        ["value", "expected_acw", "expected_len"],
+        [
+            [colored(0, "red"), 1, 10],
+            [colored(12.34, "red"), 5, 14],
+            [colored("abc", "green"), 3, 12],
+        ],
     )
-    def test_normal_ascii_escape_sequence(self, value, expected_acw):
-        assert DataProperty(value).ascii_char_width == expected_acw
+    def test_normal_ascii_escape_sequence(self, value, expected_acw, expected_len):
+        dp = DataProperty(value)
+
+        assert dp.ascii_char_width == expected_acw
+        assert dp.length == expected_len
 
     @pytest.mark.parametrize(
         ["value", "eaaw", "expected_acw", "expected_len"], [["øø", 1, 2, 2], ["øø", 2, 4, 2]]
