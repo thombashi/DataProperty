@@ -342,9 +342,7 @@ class Test_DataPeroperty_len(object):
         [[colored(0, "red"), 1], [colored(12.34, "red"), 5], [colored("abc", "green"), 3]],
     )
     def test_normal_ascii_escape_sequence(self, value, expected_acw):
-        dp = DataProperty(value)
-
-        assert dp.ascii_char_width == expected_acw
+        assert DataProperty(value).ascii_char_width == expected_acw
 
     @pytest.mark.parametrize(
         ["value", "eaaw", "expected_acw", "expected_len"], [["øø", 1, 2, 2], ["øø", 2, 4, 2]]
@@ -357,8 +355,7 @@ class Test_DataPeroperty_len(object):
 
     @pytest.mark.parametrize(["value", "expected"], [[nan, nan]])
     def test_abnormal(self, value, expected):
-        dp = DataProperty(value)
-        Nan(dp.length).is_type()
+        Nan(DataProperty(value).length).is_type()
 
     @pytest.mark.parametrize(
         ["value", "eaaw", "expected"],
