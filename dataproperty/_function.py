@@ -8,6 +8,7 @@ from __future__ import absolute_import, unicode_literals
 
 import decimal
 import math
+import re
 from collections import namedtuple
 from decimal import Decimal
 
@@ -17,6 +18,8 @@ from six.moves import range
 
 
 decimal.setcontext(decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
+
+_ansi_escape = re.compile(r"(\x9b|\x1b\[)[0-?]*[ -\/]*[@-~]", re.IGNORECASE)
 
 
 def get_integer_digit(value):
@@ -125,6 +128,10 @@ def _validate_eaaw(east_asian_ambiguous_width):
             east_asian_ambiguous_width
         )
     )
+
+
+def strip_ansi_escape(unicode_str):
+    return _ansi_escape.sub("", unicode_str)
 
 
 def calc_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
