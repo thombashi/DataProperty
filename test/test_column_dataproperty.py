@@ -301,7 +301,7 @@ class Test_ColumnDataPeroperty(object):
             "additional_format_len=(min=0, max=1)"
         )
 
-    def test_normal_number__anci_escape(self):
+    def test_normal_number_ansi_escape(self):
         col_dp = ColumnDataProperty()
         col_dp.update_header(DataProperty("abc"))
 
@@ -328,7 +328,7 @@ class Test_ColumnDataPeroperty(object):
             "additional_format_len=(min=0, max=1)"
         )
 
-    def test_normal_mix_anci_escape(self):
+    def test_normal_mix_ansi_escape(self):
         col_dp = ColumnDataProperty()
         col_dp.update_header(DataProperty("abc"))
 
