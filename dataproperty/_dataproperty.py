@@ -165,8 +165,6 @@ class DataProperty(DataPeropertyBase):
         )
         self.__data = data
         self.__no_ansi_escape_data = no_ansi_escape_data
-        if no_ansi_escape_data:
-            print("!!", data, no_ansi_escape_data, calc_ascii_char_width(no_ansi_escape_data))
 
     def __eq__(self, other):
         if self.typecode != other.typecode:
