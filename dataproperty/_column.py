@@ -168,6 +168,9 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__ascii_char_width = max(self.__ascii_char_width, dataprop.ascii_char_width)
 
     def update_body(self, dataprop):
+        if dataprop.is_include_ansi_escape:
+            dataprop = dataprop.no_ansi_escape_dp
+
         self.__typecode_bitmap |= dataprop.typecode.value
         self.__calc_typecode_from_bitmap()
 
@@ -241,6 +244,9 @@ class ColumnDataProperty(DataPeropertyBase):
         for value_dp in self.__dp_list:
             if value_dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
                 continue
+
+            if value_dp.is_include_ansi_escape:
+                value_dp = value_dp.no_ansi_escape_dp
 
             max_width = max(
                 max_width,

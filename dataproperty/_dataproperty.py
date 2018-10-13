@@ -61,7 +61,10 @@ class DataProperty(DataPeropertyBase):
     @property
     def align(self):
         if not self.__align:
-            self.__align = align_getter.get_align_from_typecode(self.typecode)
+            if self.is_include_ansi_escape:
+                self.__align = self.no_ansi_escape_dp.align
+            else:
+                self.__align = align_getter.get_align_from_typecode(self.typecode)
 
         return self.__align
 
@@ -91,10 +94,14 @@ class DataProperty(DataPeropertyBase):
 
     @property
     def is_include_ansi_escape(self):
-        if self.__no_ansi_escape_data is None:
+        if self.no_ansi_escape_dp is None:
             return False
 
-        return len(self.__data) != len(self.__no_ansi_escape_data)
+        return self.length != self.no_ansi_escape_dp.length
+
+    @property
+    def no_ansi_escape_dp(self):
+        return self.__no_ansi_escape_data
 
     @property
     def length(self):
@@ -171,7 +178,11 @@ class DataProperty(DataPeropertyBase):
             replace_tabs_with_spaces, tab_length, is_escape_html_tag
         )
         self.__data = data
-        self.__no_ansi_escape_data = no_ansi_escape_data
+
+        if no_ansi_escape_data is None or len(data) == len(no_ansi_escape_data):
+            self.__no_ansi_escape_data = None
+        else:
+            self.__no_ansi_escape_data = DataProperty(no_ansi_escape_data)
 
     def __eq__(self, other):
         if self.typecode != other.typecode:
@@ -287,13 +298,11 @@ class DataProperty(DataPeropertyBase):
                 # the datetime strftime() methods require year >= 1900.
                 return len(six.text_type(self.data))
 
-        if self.__no_ansi_escape_data:
-            data = self.__no_ansi_escape_data
-        else:
-            data = self.data
+        if self.is_include_ansi_escape:
+            return self.no_ansi_escape_dp.ascii_char_width
 
         try:
-            unicode_str = MultiByteStrDecoder(data).unicode_str
+            unicode_str = MultiByteStrDecoder(self.data).unicode_str
         except ValueError:
             unicode_str = self.to_str()
 

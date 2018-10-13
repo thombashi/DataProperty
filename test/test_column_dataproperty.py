@@ -14,6 +14,7 @@ import pytest
 import six
 from dataproperty import Align, ColumnDataProperty, DataProperty, Format
 from six import text_type
+from termcolor import colored
 from typepy import (
     Bool,
     DateTime,
@@ -278,6 +279,65 @@ class Test_ColumnDataPeroperty(object):
         col_dp.update_header(DataProperty("abc"))
 
         for value in [0, -1.234, 55.55, "abcdefg"]:
+            col_dp.update_body(DataProperty(value))
+
+        assert col_dp.align == Align.LEFT
+        assert col_dp.decimal_places == 3
+        assert col_dp.typecode == Typecode.STRING
+        assert col_dp.ascii_char_width == 7
+
+        assert col_dp.minmax_integer_digits.min_value == 1
+        assert col_dp.minmax_integer_digits.max_value == 2
+
+        assert col_dp.minmax_decimal_places.min_value == 0
+        assert col_dp.minmax_decimal_places.max_value == 3
+
+        assert col_dp.minmax_additional_format_len.min_value == 0
+        assert col_dp.minmax_additional_format_len.max_value == 1
+
+        assert text_type(col_dp) == (
+            "typename=STRING, align=left, ascii_char_width=7, "
+            "integer_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
+            "additional_format_len=(min=0, max=1)"
+        )
+
+    def test_normal_number__anci_escape(self):
+        col_dp = ColumnDataProperty()
+        col_dp.update_header(DataProperty("abc"))
+
+        for value in [colored(1, "red"), colored(2.2, "green"), colored(-3, "blue")]:
+            col_dp.update_body(DataProperty(value))
+
+        assert col_dp.align == Align.RIGHT
+        assert col_dp.decimal_places == 1
+        assert col_dp.typecode == Typecode.REAL_NUMBER
+        assert col_dp.ascii_char_width == 4
+
+        assert col_dp.minmax_integer_digits.min_value == 1
+        assert col_dp.minmax_integer_digits.max_value == 1
+
+        assert col_dp.minmax_decimal_places.min_value == 0
+        assert col_dp.minmax_decimal_places.max_value == 1
+
+        assert col_dp.minmax_additional_format_len.min_value == 0
+        assert col_dp.minmax_additional_format_len.max_value == 1
+
+        assert text_type(col_dp) == (
+            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
+            "integer_digits=1, decimal_places=(min=0, max=1), "
+            "additional_format_len=(min=0, max=1)"
+        )
+
+    def test_normal_mix_anci_escape(self):
+        col_dp = ColumnDataProperty()
+        col_dp.update_header(DataProperty("abc"))
+
+        for value in [
+            colored(0, "red"),
+            colored(-1.234, "yellow"),
+            colored(55.55, "green"),
+            colored("abcdefg", "blue"),
+        ]:
             col_dp.update_body(DataProperty(value))
 
         assert col_dp.align == Align.LEFT
