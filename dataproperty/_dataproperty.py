@@ -171,13 +171,14 @@ class DataProperty(DataPeropertyBase):
         self.__integer_digits = None
         self.__length = None
 
-        data = self.__preprocess_data(data, strip_str)
-        self.__set_data(data, type_hint, float_type, strict_type_map)
-
         data, no_ansi_escape_data = self.__preprocess_string(
-            replace_tabs_with_spaces, tab_length, is_escape_html_tag
+            self.__preprocess_data(data, strip_str),
+            replace_tabs_with_spaces,
+            tab_length,
+            is_escape_html_tag,
         )
-        self.__data = data
+
+        self.__set_data(data, type_hint, float_type, strict_type_map)
 
         if no_ansi_escape_data is None or len(data) == len(no_ansi_escape_data):
             self.__no_ansi_escape_data = None
@@ -353,7 +354,7 @@ class DataProperty(DataPeropertyBase):
         self._decimal_places = decimal_places
 
     def __try_convert_type(self, data, type_class, strict_level, float_type):
-        type_obj = type_class(data, strict_level, float_type=float_type)
+        type_obj = type_class(data, strict_level, float_type=float_type, strip_ansi_escape=False)
 
         try:
             self.__data = type_obj.convert()
@@ -364,8 +365,10 @@ class DataProperty(DataPeropertyBase):
 
         return True
 
-    def __preprocess_string(self, replace_tabs_with_spaces, tab_length, is_escape_html_tag):
-        data = self.__data
+    def __preprocess_string(
+        self, raw_data, replace_tabs_with_spaces, tab_length, is_escape_html_tag
+    ):
+        data = raw_data
 
         if replace_tabs_with_spaces:
             try:
