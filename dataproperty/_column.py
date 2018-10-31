@@ -334,4 +334,6 @@ class ColumnDataProperty(DataPeropertyBase):
         ]:
             return value_dp.data
 
-        return self.type_class(value_dp.data, strict_level=StrictLevel.MIN).convert()
+        return self.type_class(
+            value_dp.data, strict_level=StrictLevel.MIN, strip_ansi_escape=False
+        ).convert()

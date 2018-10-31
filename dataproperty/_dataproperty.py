@@ -256,7 +256,7 @@ class DataProperty(DataPeropertyBase):
         return self.format_str.format(self.data)
 
     def __get_additional_format_len(self):
-        if not RealNumber(self.data).is_type():
+        if not RealNumber(self.data, strip_ansi_escape=False).is_type():
             return 0
 
         format_len = 0
@@ -329,12 +329,17 @@ class DataProperty(DataPeropertyBase):
             strict_type_map = DefaultValue.STRICT_LEVEL_MAP
 
         if type_hint:
-            type_obj = type_hint(data, strict_level=StrictLevel.MIN, float_type=float_type)
+            type_obj = type_hint(
+                data, strict_level=StrictLevel.MIN, float_type=float_type, strip_ansi_escape=False
+            )
             self._typecode = type_obj.typecode
             self.__data = type_obj.try_convert()
 
             if type_hint(
-                self.__data, strict_level=StrictLevel.MAX, float_type=float_type
+                self.__data,
+                strict_level=StrictLevel.MAX,
+                float_type=float_type,
+                strip_ansi_escape=False,
             ).is_type():
                 return
 
