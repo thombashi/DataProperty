@@ -493,6 +493,15 @@ class Test_DataPeroperty_repr(object):
                 "integer_digits=1, decimal_places=0, additional_format_len=0",
             ],
             [
+                colored(0, "red"),
+                DefaultValue.STRICT_LEVEL_MAP,
+                (
+                    ("data={}, typename=STRING, align=right, ".format(colored(0, "red")))
+                    + "ascii_char_width=1, length=10, integer_digits=1, decimal_places=0, "
+                    + "additional_format_len=0"
+                ),
+            ],
+            [
                 -1.0,
                 DefaultValue.STRICT_LEVEL_MAP,
                 "data=-1, typename=INTEGER, align=right, "
