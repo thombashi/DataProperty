@@ -70,7 +70,6 @@ class Test_DataPeroperty_data_typecode(object):
         ["value", "is_convert", "expected_data", "expected_typecode"],
         [
             [1.0, True, 1, Typecode.INTEGER],
-            # [1.0, False, 1, Typecode.INTEGER],
             [six.MAXSIZE, True, six.MAXSIZE, Typecode.INTEGER],
             [-six.MAXSIZE, False, -six.MAXSIZE, Typecode.INTEGER],
             [text_type(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INTEGER],
