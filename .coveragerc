@@ -1,8 +1,6 @@
-[run]
-source = dataproperty
-
 [report]
 # Regexes for lines to exclude from consideration
 exclude_lines =
+    except ImportError
     raise NotImplementedError
     pass
