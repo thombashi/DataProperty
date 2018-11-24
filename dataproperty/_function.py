@@ -151,7 +151,7 @@ def calc_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
     return width
 
 
-def get_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
+def get_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):  # pragma: no cover
     import warnings
 
     warnings.warn(
