@@ -6,14 +6,57 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import logbook
-
 
 LOG_FORMAT_STRING = "[{record.level_name}] {record.channel}: {record.message}"
 
 
-logger = logbook.Logger("DataProperty")
-logger.disable()
+class NullLogger(object):
+    level_name = None
+
+    def catch_exceptions(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def critical(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def debug(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def disable(self):  # pragma: no cover
+        pass
+
+    def enable(self):  # pragma: no cover
+        pass
+
+    def error(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def exception(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def info(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def log(self, level, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def notice(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def warn(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def warning(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+
+try:
+    import logbook
+
+    logger = logbook.Logger("DataProperty")
+    logger.disable()
+except ImportError:
+    logger = NullLogger()
 
 
 def set_logger(is_enable):
