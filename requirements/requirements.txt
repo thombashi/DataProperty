@@ -1,5 +1,5 @@
 enum34;python_version<"3.4"
 futures;python_version<"3.2"
 ipaddress;python_version<"3.3"
-mbstrdecoder>=0.5.0
-typepy[datetime]>=0.3.0
+mbstrdecoder[all]>=0.6.1
+typepy[datetime]>=0.3.1
