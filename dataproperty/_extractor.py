@@ -150,6 +150,9 @@ class DataPropertyExtractor(object):
 
     @is_escape_html_tag.setter
     def is_escape_html_tag(self, value):
+        if self.__is_escape_html_tag == value:
+            return
+
         self.__is_escape_html_tag = value
         self.__update_dp_converter()
 
