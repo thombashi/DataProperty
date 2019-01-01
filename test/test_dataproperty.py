@@ -13,7 +13,14 @@ from decimal import Decimal
 
 import pytest
 import six
-from dataproperty import NOT_STRICT_TYPE_MAP, Align, DataProperty, DefaultValue, Format
+from dataproperty import (
+    NOT_STRICT_TYPE_MAP,
+    Align,
+    DataProperty,
+    DefaultValue,
+    Format,
+    LineBreakHandling,
+)
 from six import text_type
 from termcolor import colored
 from typepy import Bool, DateTime, Integer, Nan, RealNumber, String, Typecode
@@ -386,6 +393,21 @@ class Test_DataPeroperty_is_include_ansi_escape(object):
     )
     def test_normal(self, value, expected_acw):
         assert DataProperty(value).is_include_ansi_escape == expected_acw
+
+
+class Test_DataPeroperty_line_break_handling(object):
+    @pytest.mark.parametrize(
+        ["value", "line_break_handling", "expected"],
+        [
+            ["a\nb", LineBreakHandling.NOP, "a\nb"],
+            ["a\nb", LineBreakHandling.REPLACE, "a b"],
+            ["a\nb", LineBreakHandling.ESCAPE, "a\\nb"],
+            ["a\r\nb", LineBreakHandling.ESCAPE, "a\\r\\nb"],
+            [123, LineBreakHandling.ESCAPE, 123],
+        ],
+    )
+    def test_normal(self, value, line_break_handling, expected):
+        assert DataProperty(value, line_break_handling=line_break_handling).data == expected
 
 
 class Test_DataPeroperty_get_padding_len(object):

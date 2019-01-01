@@ -11,7 +11,7 @@ from decimal import Decimal
 
 import pytest
 import six
-from dataproperty import Align, DataPropertyExtractor, Format, MatrixFormatting
+from dataproperty import Align, DataPropertyExtractor, Format, LineBreakHandling, MatrixFormatting
 from six import text_type
 from typepy import DateTime, RealNumber, String, Typecode
 
@@ -299,6 +299,21 @@ class Test_DataPropertyExtractor_to_dp_list(object):
     ):
         dp_extractor.strip_str_header = strip_str_header
         dp_extractor.strip_str_value = strip_str_value
+        dp_list = dp_extractor.to_dp_list(value)
+
+        for dp, value in zip(dp_list, expected):
+            assert dp.data == value
+
+    @pytest.mark.parametrize(
+        ["value", "line_break_handling", "expected"],
+        [
+            [["a\nb", "a\r\nb"], LineBreakHandling.NOP, ["a\nb", "a\r\nb"]],
+            [["a\nb", "a\r\nb"], LineBreakHandling.REPLACE, ["a b", "a b"]],
+            [["a\nb", "a\r\nb"], LineBreakHandling.ESCAPE, ["a\\nb", "a\\r\\nb"]],
+        ],
+    )
+    def test_normal_line_break_handling(self, dp_extractor, value, line_break_handling, expected):
+        dp_extractor.line_break_handling = line_break_handling
         dp_list = dp_extractor.to_dp_list(value)
 
         for dp, value in zip(dp_list, expected):

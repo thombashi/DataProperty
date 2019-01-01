@@ -6,6 +6,8 @@
 
 from __future__ import absolute_import, unicode_literals
 
+import re
+
 import six
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import (
@@ -30,6 +32,10 @@ from ._align_getter import align_getter
 from ._base import DataPeropertyBase
 from ._common import DefaultValue
 from ._function import calc_ascii_char_width, get_number_of_digit, strip_ansi_escape
+from ._line_break import LineBreakHandling
+
+
+_RE_LINE_BREAK = re.compile("[\r\n]+")
 
 
 class DataProperty(DataPeropertyBase):
@@ -155,6 +161,7 @@ class DataProperty(DataPeropertyBase):
         strict_type_map=None,
         replace_tabs_with_spaces=True,
         tab_length=2,
+        line_break_handling=None,
         is_escape_html_tag=False,
         east_asian_ambiguous_width=1,
     ):
@@ -172,7 +179,7 @@ class DataProperty(DataPeropertyBase):
         self.__length = None
 
         data, no_ansi_escape_data = self.__preprocess_string(
-            self.__preprocess_data(data, strip_str),
+            self.__process_line_break(self.__preprocess_data(data, strip_str), line_break_handling),
             replace_tabs_with_spaces,
             tab_length,
             is_escape_html_tag,
@@ -395,3 +402,19 @@ class DataProperty(DataPeropertyBase):
             return (data, strip_ansi_escape(data))
         except TypeError:
             return (data, None)
+
+    @staticmethod
+    def __process_line_break(data, line_break_handling):
+        if line_break_handling is None or line_break_handling == LineBreakHandling.NOP:
+            return data
+
+        try:
+            if line_break_handling == LineBreakHandling.REPLACE:
+                return _RE_LINE_BREAK.sub(" ", data)
+
+            if line_break_handling == LineBreakHandling.ESCAPE:
+                return data.replace("\n", "\\n").replace("\r", "\\r")
+        except (TypeError, AttributeError):
+            return data
+
+        raise ValueError("unexpected line_break_handling: {}".format(line_break_handling))

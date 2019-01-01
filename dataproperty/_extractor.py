@@ -35,6 +35,7 @@ from ._common import NOT_STRICT_TYPE_MAP, DefaultValue
 from ._converter import DataPropertyConverter
 from ._dataproperty import DataProperty
 from ._formatter import Format
+from ._line_break import LineBreakHandling
 from ._logger import logger
 
 
@@ -135,6 +136,18 @@ class DataPropertyExtractor(object):
 
         self.__col_type_hint_list = value
         self.__clear_cache()
+
+    @property
+    def line_break_handling(self):
+        return self.__line_break_handling
+
+    @line_break_handling.setter
+    def line_break_handling(self, value):
+        if self.__line_break_handling == value:
+            return
+
+        self.__line_break_handling = value
+        self.__update_dp_converter()
 
     @property
     def is_formatting_float(self):
@@ -322,6 +335,7 @@ class DataPropertyExtractor(object):
         self.__strip_str_header = None
         self.__strip_str_value = None
         self.__is_formatting_float = True
+        self.__line_break_handling = LineBreakHandling.NOP
         self.__is_escape_html_tag = False
         self.__min_col_ascii_char_width = 0
         self.__format_flags_list = []
@@ -479,6 +493,7 @@ class DataPropertyExtractor(object):
         value_dp = DataProperty(
             data,
             type_hint=(type_hint if type_hint is not None else self.default_type_hint),
+            line_break_handling=self.line_break_handling,
             strip_str=strip_str,
             float_type=self.float_type,
             datetime_format_str=self.datetime_format_str,
@@ -626,6 +641,7 @@ class DataPropertyExtractor(object):
             type_value_map=self.type_value_map,
             const_value_map=self.const_value_map,
             quoting_flags=self.quoting_flags,
+            line_break_handling=self.line_break_handling,
             is_escape_html_tag=self.is_escape_html_tag,
             datetime_formatter=self.datetime_formatter,
             datetime_format_str=self.datetime_format_str,

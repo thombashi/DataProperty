@@ -21,4 +21,5 @@ from ._function import (
     get_number_of_digit,
     is_multibyte_str,
 )
+from ._line_break import LineBreakHandling
 from ._logger import set_log_level, set_logger

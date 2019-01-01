@@ -23,6 +23,7 @@ class DataPropertyConverter(object):
         type_value_map=None,
         const_value_map=None,
         quoting_flags=None,
+        line_break_handling=None,
         is_escape_html_tag=False,
         datetime_formatter=None,
         datetime_format_str=None,
@@ -39,6 +40,7 @@ class DataPropertyConverter(object):
         self.__datetime_format_str = datetime_format_str
         self.__float_type = float_type
         self.__strict_type_map = strict_type_map
+        self.__line_break_handling = line_break_handling
         self.__is_escape_html_tag = is_escape_html_tag
 
     def convert(self, dp_value):
@@ -61,6 +63,7 @@ class DataPropertyConverter(object):
             float_type=self.__float_type,
             datetime_format_str=self.__datetime_format_str,
             strict_type_map=STRICT_TYPE_MAP,
+            line_break_handling=self.__line_break_handling,
             is_escape_html_tag=self.__is_escape_html_tag,
         )
 
