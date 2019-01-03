@@ -85,8 +85,8 @@ setuptools.setup(
     extras_require={
         "build": ["wheel"],
         "docs": docs_requires,
-        "logging": ["logbook>=1.0.1"],
-        "release": ["releasecmd>=0.0.12"],
+        "logging": ["logbook>=1.0.1,<2.0.0"],
+        "release": ["releasecmd>=0.0.12,<0.1.0"],
         "test": tests_requires,
     },
 
