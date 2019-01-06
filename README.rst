@@ -2,15 +2,19 @@
 
 .. image:: https://badge.fury.io/py/DataProperty.svg
     :target: https://badge.fury.io/py/DataProperty
+    :alt: PyPI package version
 
 .. image:: https://img.shields.io/pypi/pyversions/DataProperty.svg
    :target: https://pypi.org/project/DataProperty
+    :alt: Supported Python versions
 
-.. image:: https://img.shields.io/travis/thombashi/DataProperty/master.svg?label=Linux/macOS
+.. image:: https://img.shields.io/travis/thombashi/DataProperty/master.svg?label=Linux/macOS-CI
     :target: https://travis-ci.org/thombashi/DataProperty
+    :alt: Linux/macOS CI status
 
-.. image:: https://img.shields.io/appveyor/ci/thombashi/dataproperty/master.svg?label=Windows
+.. image:: https://img.shields.io/appveyor/ci/thombashi/dataproperty/master.svg?label=Windows-CI
     :target: https://ci.appveyor.com/project/thombashi/dataproperty
+    :alt: Windows CI status
 
 .. image:: https://coveralls.io/repos/github/thombashi/DataProperty/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/DataProperty?branch=master
