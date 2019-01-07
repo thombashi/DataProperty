@@ -18,7 +18,8 @@ from ._function import calc_ascii_char_width
 
 class ColumnDataProperty(DataPeropertyBase):
     __slots__ = (
-        "__ascii_char_width",
+        "__header_ascii_char_width",
+        "__body_ascii_char_width",
         "__column_index",
         "__dp_list",
         "__format_map",
@@ -57,7 +58,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     @property
     def ascii_char_width(self):
-        return self.__ascii_char_width
+        return max(self.__header_ascii_char_width, self.__body_ascii_char_width)
 
     @property
     def minmax_integer_digits(self):
@@ -87,7 +88,8 @@ class ColumnDataProperty(DataPeropertyBase):
             east_asian_ambiguous_width=east_asian_ambiguous_width,
         )
 
-        self.__ascii_char_width = min_width
+        self.__header_ascii_char_width = 0
+        self.__body_ascii_char_width = min_width
         self.__column_index = column_index
 
         self.__is_calculate = True
@@ -162,10 +164,11 @@ class ColumnDataProperty(DataPeropertyBase):
         return MultiByteStrDecoder(value).unicode_str
 
     def extend_width(self, dwidth):
-        self.__ascii_char_width += dwidth
+        self.__header_ascii_char_width += dwidth
+        self.__body_ascii_char_width += dwidth
 
     def update_header(self, dataprop):
-        self.__ascii_char_width = max(self.__ascii_char_width, dataprop.ascii_char_width)
+        self.__header_ascii_char_width = dataprop.ascii_char_width
 
     def update_body(self, dataprop):
         if dataprop.is_include_ansi_escape:
@@ -182,7 +185,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_additional_format_len.update(dataprop.additional_format_len)
 
         self.__dp_list.append(dataprop)
-        self.__ascii_char_width = max(self.__ascii_char_width, dataprop.ascii_char_width)
+        self.__body_ascii_char_width = max(self.__body_ascii_char_width, dataprop.ascii_char_width)
         self.__calc_ascii_char_width()
 
     def merge(self, col_dataprop):
@@ -195,7 +198,9 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__minmax_additional_format_len.merge(col_dataprop.minmax_additional_format_len)
 
-        self.__ascii_char_width = max(self.__ascii_char_width, col_dataprop.ascii_char_width)
+        self.__body_ascii_char_width = max(
+            self.__body_ascii_char_width, col_dataprop.ascii_char_width
+        )
         self.__calc_ascii_char_width()
 
     def begin_update(self):
@@ -237,9 +242,9 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __get_ascii_char_width(self):
         if not self.__typecode_bitmap & (Typecode.REAL_NUMBER.value | Typecode.INTEGER.value):
-            return self.__ascii_char_width
+            return self.__body_ascii_char_width
 
-        max_width = self.__ascii_char_width
+        max_width = self.__body_ascii_char_width
 
         for value_dp in self.__dp_list:
             if value_dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
@@ -311,7 +316,7 @@ class ColumnDataProperty(DataPeropertyBase):
         if not self.__is_calculate:
             return
 
-        self.__ascii_char_width = self.__get_ascii_char_width()
+        self.__body_ascii_char_width = self.__get_ascii_char_width()
 
     def __calc_decimal_places(self):
         if not self.__is_calculate:
