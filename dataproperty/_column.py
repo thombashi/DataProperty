@@ -173,39 +173,39 @@ class ColumnDataProperty(DataPeropertyBase):
     def extend_body_width(self, ascii_char_width):
         self.__body_ascii_char_width += ascii_char_width
 
-    def update_header(self, dataprop):
-        self.__header_ascii_char_width = dataprop.ascii_char_width
+    def update_header(self, header_db):
+        self.__header_ascii_char_width = header_db.ascii_char_width
 
-    def update_body(self, dataprop):
-        if dataprop.is_include_ansi_escape:
-            dataprop = dataprop.no_ansi_escape_dp
+    def update_body(self, value_dp):
+        if value_dp.is_include_ansi_escape:
+            value_dp = value_dp.no_ansi_escape_dp
 
-        self.__typecode_bitmap |= dataprop.typecode.value
+        self.__typecode_bitmap |= value_dp.typecode.value
         self.__calc_typecode_from_bitmap()
 
-        if dataprop.typecode in (Typecode.REAL_NUMBER, Typecode.INTEGER):
-            self.__minmax_integer_digits.update(dataprop.integer_digits)
-            self.__minmax_decimal_places.update(dataprop.decimal_places)
+        if value_dp.typecode in (Typecode.REAL_NUMBER, Typecode.INTEGER):
+            self.__minmax_integer_digits.update(value_dp.integer_digits)
+            self.__minmax_decimal_places.update(value_dp.decimal_places)
             self.__calc_decimal_places()
 
-        self.__minmax_additional_format_len.update(dataprop.additional_format_len)
+        self.__minmax_additional_format_len.update(value_dp.additional_format_len)
 
-        self.__dp_list.append(dataprop)
-        self.__body_ascii_char_width = max(self.__body_ascii_char_width, dataprop.ascii_char_width)
+        self.__dp_list.append(value_dp)
+        self.__body_ascii_char_width = max(self.__body_ascii_char_width, value_dp.ascii_char_width)
         self.__calc_ascii_char_width()
 
-    def merge(self, col_dataprop):
-        self.__typecode_bitmap |= col_dataprop.typecode.value
+    def merge(self, column_dp):
+        self.__typecode_bitmap |= column_dp.typecode.value
         self.__calc_typecode_from_bitmap()
 
-        self.__minmax_integer_digits.merge(col_dataprop.minmax_integer_digits)
-        self.__minmax_decimal_places.update(col_dataprop.minmax_decimal_places)
+        self.__minmax_integer_digits.merge(column_dp.minmax_integer_digits)
+        self.__minmax_decimal_places.update(column_dp.minmax_decimal_places)
         self.__calc_decimal_places()
 
-        self.__minmax_additional_format_len.merge(col_dataprop.minmax_additional_format_len)
+        self.__minmax_additional_format_len.merge(column_dp.minmax_additional_format_len)
 
         self.__body_ascii_char_width = max(
-            self.__body_ascii_char_width, col_dataprop.ascii_char_width
+            self.__body_ascii_char_width, column_dp.ascii_char_width
         )
         self.__calc_ascii_char_width()
 
