@@ -240,7 +240,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return False
 
-    def __get_ascii_char_width(self):
+    def __update_body_ascii_char_width(self):
         if not self.__typecode_bitmap & (Typecode.REAL_NUMBER.value | Typecode.INTEGER.value):
             return self.__body_ascii_char_width
 
@@ -316,7 +316,7 @@ class ColumnDataProperty(DataPeropertyBase):
         if not self.__is_calculate:
             return
 
-        self.__body_ascii_char_width = self.__get_ascii_char_width()
+        self.__body_ascii_char_width = self.__update_body_ascii_char_width()
 
     def __calc_decimal_places(self):
         if not self.__is_calculate:
