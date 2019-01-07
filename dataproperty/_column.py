@@ -163,15 +163,15 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return MultiByteStrDecoder(value).unicode_str
 
-    def extend_width(self, dwidth):
-        self.extend_header_width(dwidth)
-        self.extend_body_width(dwidth)
+    def extend_width(self, ascii_char_width):
+        self.extend_header_width(ascii_char_width)
+        self.extend_body_width(ascii_char_width)
 
-    def extend_header_width(self, dwidth):
-        self.__header_ascii_char_width += dwidth
+    def extend_header_width(self, ascii_char_width):
+        self.__header_ascii_char_width += ascii_char_width
 
-    def extend_body_width(self, dwidth):
-        self.__body_ascii_char_width += dwidth
+    def extend_body_width(self, ascii_char_width):
+        self.__body_ascii_char_width += ascii_char_width
 
     def update_header(self, dataprop):
         self.__header_ascii_char_width = dataprop.ascii_char_width
