@@ -14,11 +14,16 @@ try:
 
     logger = logbook.Logger("DataProperty")
     logger.disable()
+    LOGBOOK_INSTALLED = True
 except ImportError:
     logger = NullLogger()
+    LOGBOOK_INSTALLED = False
 
 
 def set_logger(is_enable):
+    if not LOGBOOK_INSTALLED:
+        return
+
     if is_enable:
         logger.enable()
     else:
@@ -36,6 +41,9 @@ def set_log_level(log_level):
         Disabled logging if the ``log_level`` is ``logbook.NOTSET``.
     :raises LookupError: If ``log_level`` is an invalid value.
     """
+
+    if not LOGBOOK_INSTALLED:
+        return
 
     # validate log level
     logbook.get_level_name(log_level)
