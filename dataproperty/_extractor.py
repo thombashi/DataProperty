@@ -36,7 +36,7 @@ from ._converter import DataPropertyConverter
 from ._dataproperty import DataProperty
 from ._formatter import Format
 from ._line_break import LineBreakHandling
-from ._logger import logger
+from .logger import logger
 
 
 @enum.unique
