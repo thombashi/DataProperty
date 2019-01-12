@@ -1,4 +1,12 @@
-**DataProperty**
+.. contents:: **DataProperty**
+   :backlinks: top
+   :local:
+
+
+Summary
+=======
+A Python library for extract property from data.
+
 
 .. image:: https://badge.fury.io/py/DataProperty.svg
     :target: https://badge.fury.io/py/DataProperty
@@ -19,16 +27,6 @@
 .. image:: https://coveralls.io/repos/github/thombashi/DataProperty/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/DataProperty?branch=master
     :alt: Test coverage
-
-
-.. contents:: Table of contents
-   :backlinks: top
-   :local:
-
-
-Summary
-=======
-A Python library for extract property from data.
 
 
 Installation
@@ -214,7 +212,7 @@ Python 2.7+ or 3.4+
 Optional dependencies
 ---------------------
 - `logbook <https://logbook.readthedocs.io/en/stable/>`__
-    - Output logs using logbook if the package installed
+    - Logging using logbook if the package installed
 
 Test dependencies
 -----------------
