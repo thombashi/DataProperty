@@ -10,7 +10,7 @@ import pytest
 from dataproperty import set_log_level, set_logger
 
 
-docutils = pytest.importorskip("docutils", minversion="1.0.1")
+logbook = pytest.importorskip("logbook", minversion="1.0.1")
 
 import logbook  # isort:skip
 
