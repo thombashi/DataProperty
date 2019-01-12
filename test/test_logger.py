@@ -6,9 +6,13 @@
 
 from __future__ import print_function, unicode_literals
 
-import logbook
 import pytest
 from dataproperty import set_log_level, set_logger
+
+
+docutils = pytest.importorskip("docutils", minversion="1.0.1")
+
+import logbook  # isort:skip
 
 
 class Test_set_logger(object):
