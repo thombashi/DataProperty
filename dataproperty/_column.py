@@ -204,9 +204,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__minmax_additional_format_len.merge(column_dp.minmax_additional_format_len)
 
-        self.__body_ascii_char_width = max(
-            self.__body_ascii_char_width, column_dp.ascii_char_width
-        )
+        self.__body_ascii_char_width = max(self.__body_ascii_char_width, column_dp.ascii_char_width)
         self.__calc_ascii_char_width()
 
     def begin_update(self):
