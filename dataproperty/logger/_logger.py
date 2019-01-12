@@ -9,9 +9,6 @@ from __future__ import absolute_import, unicode_literals
 from ._null_logger import NullLogger
 
 
-LOG_FORMAT_STRING = "[{record.level_name}] {record.channel}: {record.message}"
-
-
 try:
     import logbook
 
