@@ -37,7 +37,7 @@ def main():
 
     # extract property for each column from a matrix
     dp_extractor = DataPropertyExtractor()
-    dp_extractor.header_list = ["int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
+    dp_extractor.headers = ["int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
     col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(data_matrix))
 
     print("---------- typename ----------")
