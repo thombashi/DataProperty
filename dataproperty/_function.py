@@ -50,7 +50,7 @@ class DigitCalculator(object):
         upper_threshold = self.Threshold(pow=-2, digit_len=6)
 
         self.__min_digit_len = 1
-        self.__treshold_list = [
+        self.__tresholds = [
             self.Threshold(upper_threshold.pow + i, upper_threshold.digit_len - i)
             for i, _ in enumerate(range(upper_threshold.digit_len, self.__min_digit_len - 1, -1))
         ]
@@ -75,7 +75,7 @@ class DigitCalculator(object):
                 float_digit_len = int(float_text) - 1
 
         abs_digit = self.__min_digit_len
-        for treshold in self.__treshold_list:
+        for treshold in self.__tresholds:
             if abs_value < math.pow(10, treshold.pow):
                 abs_digit = treshold.digit_len
                 break
