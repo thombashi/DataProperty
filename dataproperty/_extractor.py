@@ -84,14 +84,14 @@ class DataPropertyExtractor(object):
 
     @property
     def header_list(self):
-        return self.__header_list
+        return self.__headers
 
     @header_list.setter
     def header_list(self, value):
-        if self.__header_list == value:
+        if self.__headers == value:
             return
 
-        self.__header_list = value
+        self.__headers = value
         self.__clear_cache()
 
     @property
@@ -328,7 +328,7 @@ class DataPropertyExtractor(object):
     def __init__(self):
         self.max_workers = multiprocessing.cpu_count()
 
-        self.__header_list = []
+        self.__headers = []
         self.__default_type_hint = None
         self.__col_type_hint_list = None
 
