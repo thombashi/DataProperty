@@ -75,6 +75,7 @@ setuptools.setup(
     maintainer_email=pkg_info["__email__"],
     packages=setuptools.find_packages(exclude=["test*"]),
     project_urls={
+        "Source": REPOSITORY_URL,
         "Tracker": "{:s}/issues".format(REPOSITORY_URL),
     },
 
@@ -85,7 +86,7 @@ setuptools.setup(
     extras_require={
         "build": ["wheel"],
         "docs": docs_requires,
-        "logging": ["logbook>=1.0.1,<2.0.0"],
+        "logging": ["Logbook>=1.0.1,<2.0.0"],
         "release": ["releasecmd>=0.0.12,<0.1.0"],
         "test": tests_requires,
     },
