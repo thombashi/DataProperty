@@ -26,11 +26,11 @@ class Test_MinMaxContainer_property(object):
 
 class Test_MinMaxContainer_repr(object):
     @pytest.mark.parametrize(
-        ["value_list", "expected"],
+        ["values", "expected"],
         [[[1, 3], "min=1, max=3"], [[1], "min=1, max=1"], [[None, None], "None"]],
     )
-    def test_normal(self, value_list, expected):
-        assert text_type(MinMaxContainer(value_list)) == expected
+    def test_normal(self, values, expected):
+        assert text_type(MinMaxContainer(values)) == expected
 
 
 class Test_MinMaxContainer_eq_ne(object):
@@ -125,7 +125,7 @@ class Test_MinMaxContainer_merge(object):
 
 class Test_MinMaxContainer_is_zero(object):
     @pytest.mark.parametrize(
-        ["value_list", "expected"],
+        ["values", "expected"],
         [
             [[0, 0], True],
             [[0, 0, 0], True],
@@ -135,13 +135,13 @@ class Test_MinMaxContainer_is_zero(object):
             [[None, None], False],
         ],
     )
-    def test_normal(self, container, value_list, expected):
-        assert MinMaxContainer(value_list).is_zero() == expected
+    def test_normal(self, container, values, expected):
+        assert MinMaxContainer(values).is_zero() == expected
 
 
 class Test_MinMaxContainer_is_same_value(object):
     @pytest.mark.parametrize(
-        ["value_list", "expected"],
+        ["values", "expected"],
         [
             [[0, 0], True],
             [[0, 0, 0], True],
@@ -151,5 +151,5 @@ class Test_MinMaxContainer_is_same_value(object):
             [[None, None], False],
         ],
     )
-    def test_normal(self, container, value_list, expected):
-        assert MinMaxContainer(value_list).is_same_value() == expected
+    def test_normal(self, container, values, expected):
+        assert MinMaxContainer(values).is_same_value() == expected

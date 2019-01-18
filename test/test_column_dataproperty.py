@@ -40,7 +40,7 @@ class Test_ColumnDataPeroperty(object):
     DATATIME_DATA = datetime.datetime(2017, 1, 1, 1, 2, 3)
 
     @pytest.mark.parametrize(
-        ["value_list", "expected_typecode", "expected_class"],
+        ["values", "expected_typecode", "expected_class"],
         [
             # single type values
             [[None, None], Typecode.NONE, NoneType],
@@ -85,11 +85,11 @@ class Test_ColumnDataPeroperty(object):
             [[1, 1.1, DATATIME_DATA, "test", None, True, inf, Nan], Typecode.STRING, String],
         ],
     )
-    def test_normal_typecode_type_class(self, value_list, expected_typecode, expected_class):
+    def test_normal_typecode_type_class(self, values, expected_typecode, expected_class):
         col_dp = ColumnDataProperty()
         col_dp.update_header(DataProperty("dummy"))
 
-        for value in value_list:
+        for value in values:
             col_dp.update_body(DataProperty(value))
 
         assert col_dp.typecode == expected_typecode
@@ -360,27 +360,23 @@ class Test_ColumnDataPeroperty(object):
             "additional_format_len=(min=0, max=1)"
         )
 
-    @pytest.mark.parametrize(
-        ["value_list", "expected"], [[[0, 1, 0, 1], 1], [[-128, 0, 127, None], 8]]
-    )
-    def test_normal_bit_length(self, value_list, expected):
+    @pytest.mark.parametrize(["values", "expected"], [[[0, 1, 0, 1], 1], [[-128, 0, 127, None], 8]])
+    def test_normal_bit_length(self, values, expected):
         col_dp = ColumnDataProperty()
         col_dp.update_header(DataProperty("dummy"))
 
-        for value in value_list:
+        for value in values:
             col_dp.update_body(DataProperty(value))
 
         assert col_dp.typecode == Typecode.INTEGER
         assert col_dp.bit_length == expected
 
-    @pytest.mark.parametrize(
-        ["value_list", "expected"], [[[0.1, 1], None], [["aaa", "0.0.0.0"], None]]
-    )
-    def test_abnormal_bit_length(self, value_list, expected):
+    @pytest.mark.parametrize(["values", "expected"], [[[0.1, 1], None], [["aaa", "0.0.0.0"], None]])
+    def test_abnormal_bit_length(self, values, expected):
         col_dp = ColumnDataProperty()
         col_dp.update_header(DataProperty("dummy"))
 
-        for value in value_list:
+        for value in values:
             col_dp.update_body(DataProperty(value))
 
         assert col_dp.bit_length == expected
@@ -480,53 +476,53 @@ class Test_ColumnDataPeroperty(object):
 class Test_ColumnDataPeroperty_dp_to_str(object):
     def test_normal_0(self):
         col_dp = ColumnDataProperty()
-        value_list = [0.1, 3.4375, 65.5397978633, 189.74439359, 10064.0097539, "abcd"]
+        values = [0.1, 3.4375, 65.5397978633, 189.74439359, 10064.0097539, "abcd"]
         expected_list = ["0.100", "3.437", "65.540", "189.744", "10064.010", "abcd"]
 
         col_dp.update_header(DataProperty("abc"))
-        for value in value_list:
+        for value in values:
             col_dp.update_body(DataProperty(value))
 
-        for value, expected in zip(value_list, expected_list):
+        for value, expected in zip(values, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
 
     def test_normal_1(self):
         col_dp = ColumnDataProperty()
-        value_list = [0, 0.1]
+        values = [0, 0.1]
         expected_list = ["0", "0.1"]
 
         col_dp.update_header(DataProperty("abc"))
         for value in ["abcd", "efg"]:
             col_dp.update_body(DataProperty(value))
 
-        for value, expected in zip(value_list, expected_list):
+        for value, expected in zip(values, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
 
     def test_normal_2(self):
         col_dp = ColumnDataProperty()
-        value_list = [1.1, 2.2, 3.33]
+        values = [1.1, 2.2, 3.33]
         expected_list = ["1.10", "2.20", "3.33"]
 
         col_dp.update_header(DataProperty("abc"))
-        for value in value_list:
+        for value in values:
             col_dp.update_body(DataProperty(value))
 
-        for value, expected in zip(value_list, expected_list):
+        for value, expected in zip(values, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
 
     @pytest.mark.parametrize(
-        ["value_list", "expected_list"],
+        ["values", "expected_list"],
         [
             [[1234, 223, 1234567], ["1,234", "223", "1,234,567"]],
             [[1234.1, 223.33, 1234567.33], ["1,234.1", "223.3", "1,234,567.3"]],
         ],
     )
-    def test_normal_format(self, value_list, expected_list):
+    def test_normal_format(self, values, expected_list):
         col_dp = ColumnDataProperty(format_flags=Format.THOUSAND_SEPARATOR)
 
         col_dp.update_header(DataProperty("format test"))
-        for value in value_list:
+        for value in values:
             col_dp.update_body(DataProperty(value))
 
-        for value, expected in zip(value_list, expected_list):
+        for value, expected in zip(values, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
