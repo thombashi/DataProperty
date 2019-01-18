@@ -383,13 +383,13 @@ class DataPropertyExtractor(object):
 
         return self.__to_dp(value, strip_str=self.strip_str_value)
 
-    def to_dp_list(self, value_list):
-        if is_empty_sequence(value_list):
+    def to_dp_list(self, values):
+        if is_empty_sequence(values):
             return []
 
         self.__update_dp_converter()
 
-        return self._to_dp_list(value_list, strip_str=self.strip_str_value)
+        return self._to_dp_list(values, strip_str=self.strip_str_value)
 
     def to_column_dp_list(self, value_dp_matrix, previous_column_dp_list=None):
         logger.debug(
