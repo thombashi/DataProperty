@@ -333,7 +333,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
     )
 
     @pytest.mark.parametrize(
-        ["max_workers", "header_list", "value"],
+        ["max_workers", "headers", "value"],
         [
             [1, ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"], TEST_DATA_MATRIX],
             [4, ["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"], TEST_DATA_MATRIX],
@@ -346,9 +346,9 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
             ],
         ],
     )
-    def test_normal_default(self, dp_extractor, max_workers, header_list, value):
+    def test_normal_default(self, dp_extractor, max_workers, headers, value):
         dp_extractor.max_workers = max_workers
-        dp_extractor.header_list = header_list
+        dp_extractor.headers = headers
         col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == 9
@@ -449,13 +449,13 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.format_str == "{:s}"
 
     @pytest.mark.parametrize(
-        ["header_list", "value"],
+        ["headers", "value"],
         [[["i", "f"], [[1234, 1234.5], [1234567, 34.5]]], [[], [[1234, 1234.5], [1234567, 34.5]]]],
     )
-    def test_normal_format_str(self, dp_extractor, header_list, value):
+    def test_normal_format_str(self, dp_extractor, headers, value):
         dp_extractor.format_flags_list = [Format.THOUSAND_SEPARATOR, Format.THOUSAND_SEPARATOR]
         dp_extractor.max_workers = 1
-        dp_extractor.header_list = header_list
+        dp_extractor.headers = headers
         col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == 2
@@ -476,15 +476,15 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.ascii_char_width == 7
 
     @pytest.mark.parametrize(
-        ["header_list", "value"],
+        ["headers", "value"],
         [
             [["i", "f", "s", "if", "mix", "bool", "inf", "nan", "time"], TEST_DATA_MATRIX],
             [None, TEST_DATA_MATRIX],
             [[], TEST_DATA_MATRIX],
         ],
     )
-    def test_normal_not_strict(self, dp_extractor, header_list, value):
-        dp_extractor.header_list = header_list
+    def test_normal_not_strict(self, dp_extractor, headers, value):
+        dp_extractor.headers = headers
         col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == 9
@@ -506,7 +506,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.format_str == "{:.2f}"
 
     def test_normal_col_type_hint_list(self, dp_extractor):
-        dp_extractor.header_list = ["none", "to_float", "to_str", "to_datetime"]
+        dp_extractor.headers = ["none", "to_float", "to_str", "to_datetime"]
         dp_extractor.column_type_hint_list = [None, RealNumber, String, DateTime]
         col_dp_list = dp_extractor.to_column_dp_list(
             dp_extractor.to_dp_matrix(
@@ -529,7 +529,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert col_dp.typecode == Typecode.DATETIME
 
     def test_normal_nan_inf(self, dp_extractor):
-        dp_extractor.header_list = ["n", "i"]
+        dp_extractor.headers = ["n", "i"]
         col_dp_list = dp_extractor.to_column_dp_list(
             dp_extractor.to_dp_matrix([[nan, inf], ["nan", "inf"]])
         )
@@ -552,7 +552,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
 
     @pytest.mark.parametrize(["ambiguous_width"], [[2], [1]])
     def test_normal_east_asian_ambiguous_width(self, dp_extractor, ambiguous_width):
-        dp_extractor.header_list = ["ascii", "eaa"]
+        dp_extractor.headers = ["ascii", "eaa"]
         dp_extractor.east_asian_ambiguous_width = ambiguous_width
         col_dp_list = dp_extractor.to_column_dp_list(
             dp_extractor.to_dp_matrix([["abcdefg", "Øαββ"], ["abcdefghij", "ØØ"]])
@@ -575,7 +575,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.decimal_places is None
 
     def test_normal_empty_value(self, dp_extractor):
-        dp_extractor.header_list = ["a", "22", "cccc"]
+        dp_extractor.headers = ["a", "22", "cccc"]
         col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(None))
 
         dp = col_dp_list[0]
@@ -608,7 +608,7 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
     TEST_DATA_MATRIX_NOUNIFORM_COL1 = [["a", 0], ["b", 1, "bb"], ["c", 2, "ccc", 0.1], ["d"]]
 
     @pytest.mark.parametrize(
-        ["header_list", "value", "matrix_formatting", "expected"],
+        ["headers", "value", "matrix_formatting", "expected"],
         [
             [None, TEST_DATA_MATRIX_NOUNIFORM_COL1, MatrixFormatting.TRIM, 1],
             [["a", "b"], TEST_DATA_MATRIX_NORMAL_COL3, MatrixFormatting.TRIM, 2],
@@ -624,16 +624,16 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
         ],
     )
     def test_normal_matrix_formatting(
-        self, dp_extractor, header_list, value, matrix_formatting, expected
+        self, dp_extractor, headers, value, matrix_formatting, expected
     ):
-        dp_extractor.header_list = header_list
+        dp_extractor.headers = headers
         dp_extractor.matrix_formatting = matrix_formatting
         col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
 
         assert len(col_dp_list) == expected
 
     @pytest.mark.parametrize(
-        ["header_list", "value", "matrix_formatting", "expected"],
+        ["headers", "value", "matrix_formatting", "expected"],
         [
             [
                 ["i", "f", "s", "if", "mix"],
@@ -644,9 +644,9 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
         ],
     )
     def test_exception_matrix_formatting(
-        self, dp_extractor, header_list, value, matrix_formatting, expected
+        self, dp_extractor, headers, value, matrix_formatting, expected
     ):
-        dp_extractor.header_list = header_list
+        dp_extractor.headers = headers
         dp_extractor.matrix_formatting = matrix_formatting
 
         with pytest.raises(expected):

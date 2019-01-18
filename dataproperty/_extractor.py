@@ -83,16 +83,26 @@ class DataPropertyExtractor(object):
     """
 
     @property
-    def header_list(self):
+    def headers(self):
         return self.__headers
 
-    @header_list.setter
-    def header_list(self, value):
+    @headers.setter
+    def headers(self, value):
         if self.__headers == value:
             return
 
         self.__headers = value
         self.__clear_cache()
+
+    @property
+    def header_list(self):
+        """alias to headers"""
+        return self.headers
+
+    @header_list.setter
+    def header_list(self, value):
+        """alias to headers"""
+        self.headers = value
 
     @property
     def default_type_hint(self):
@@ -438,7 +448,7 @@ class DataPropertyExtractor(object):
         self.__update_dp_converter()
 
         return self._to_dp_list(
-            self.header_list,
+            self.headers,
             type_hint=String,
             strip_str=self.strip_str_header,
             strict_type_map=NOT_STRICT_TYPE_MAP,
@@ -577,13 +587,13 @@ class DataPropertyExtractor(object):
         return dp_list
 
     def __strip_data_matrix(self, data_matrix):
-        header_col_size = len(self.header_list) if self.header_list else 0
+        header_col_size = len(self.headers) if self.headers else 0
         try:
             col_size_list = [len(data_list) for data_list in data_matrix]
         except TypeError:
             return []
 
-        if self.header_list:
+        if self.headers:
             min_col_size = min([header_col_size] + col_size_list)
             max_col_size = max([header_col_size] + col_size_list)
         elif col_size_list:
