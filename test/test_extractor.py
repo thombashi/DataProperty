@@ -507,7 +507,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
 
     def test_normal_col_type_hint_list(self, dp_extractor):
         dp_extractor.headers = ["none", "to_float", "to_str", "to_datetime"]
-        dp_extractor.column_type_hint_list = [None, RealNumber, String, DateTime]
+        dp_extractor.column_type_hints = [None, RealNumber, String, DateTime]
         col_dp_list = dp_extractor.to_column_dp_list(
             dp_extractor.to_dp_matrix(
                 [[1, "1.1", 1, "2017-01-02 03:04:05"], [2, "2.2", 0.1, "2017-01-02 03:04:05"]]

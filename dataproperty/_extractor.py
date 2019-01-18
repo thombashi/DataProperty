@@ -117,11 +117,11 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def column_type_hint_list(self):
+    def column_type_hints(self):
         return self.__col_type_hints
 
-    @column_type_hint_list.setter
-    def column_type_hint_list(self, value):
+    @column_type_hints.setter
+    def column_type_hints(self, value):
         if self.__col_type_hints == value:
             return
 
@@ -146,6 +146,14 @@ class DataPropertyExtractor(object):
 
         self.__col_type_hints = value
         self.__clear_cache()
+
+    @property
+    def column_type_hint_list(self):
+        return self.column_type_hints
+
+    @column_type_hint_list.setter
+    def column_type_hint_list(self, value):
+        self.column_type_hints = value
 
     @property
     def line_break_handling(self):
@@ -466,7 +474,7 @@ class DataPropertyExtractor(object):
 
     def __get_col_type_hint(self, col_idx):
         try:
-            return self.column_type_hint_list[col_idx]
+            return self.column_type_hints[col_idx]
         except (TypeError, IndexError):
             return self.default_type_hint
 
