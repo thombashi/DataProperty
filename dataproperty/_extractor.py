@@ -108,11 +108,11 @@ class DataPropertyExtractor(object):
 
     @property
     def column_type_hint_list(self):
-        return self.__col_type_hint_list
+        return self.__col_type_hints
 
     @column_type_hint_list.setter
     def column_type_hint_list(self, value):
-        if self.__col_type_hint_list == value:
+        if self.__col_type_hints == value:
             return
 
         if value:
@@ -134,7 +134,7 @@ class DataPropertyExtractor(object):
                 ):
                     raise ValueError("invalid type hint: {}".format(type(type_hint)))
 
-        self.__col_type_hint_list = value
+        self.__col_type_hints = value
         self.__clear_cache()
 
     @property
@@ -330,7 +330,7 @@ class DataPropertyExtractor(object):
 
         self.__headers = []
         self.__default_type_hint = None
-        self.__col_type_hint_list = None
+        self.__col_type_hints = None
 
         self.__strip_str_header = None
         self.__strip_str_value = None
