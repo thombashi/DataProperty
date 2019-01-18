@@ -179,7 +179,7 @@ Example data set and result are as follows:
             [3, 3.33, "cccc", -3,  "ccc", "true", inf,   "NAN", "2017-01-01T01:23:45+0900"],
         ]
 
-        dp_extractor.header_list = ["int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
+        dp_extractor.headers = ["int", "float", "str", "num", "mix", "bool", "inf", "nan", "time"]
         col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(dp_matrix))
 
         for col_idx, col_dp in enumerate(col_dp_list):
