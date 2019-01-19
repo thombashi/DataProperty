@@ -79,7 +79,7 @@ setuptools.setup(
         "Tracker": "{:s}/issues".format(REPOSITORY_URL),
     },
 
-    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*',
+    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*",
     install_requires=setuptools_require + install_requires,
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
@@ -87,7 +87,7 @@ setuptools.setup(
         "build": ["wheel"],
         "docs": docs_requires,
         "logging": ["Logbook>=1.0.1,<2.0.0"],
-        "release": ["releasecmd>=0.0.12,<0.1.0"],
+        "release": ["releasecmd>=0.0.13,<0.1.0"],
         "test": tests_requires,
     },
 
