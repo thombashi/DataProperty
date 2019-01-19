@@ -276,6 +276,7 @@ class Test_DataPeroperty_is_escape_html_tag(object):
                 False,
                 "<a href='https://google.com'>test</a>",
             ],
+            [True, True, True],
         ],
     )
     def test_normal_tab(self, value, is_escape_html_tag, expected):

@@ -396,7 +396,10 @@ class DataProperty(DataPeropertyBase):
             else:
                 import html
 
-                data = html.escape(data)
+                try:
+                    data = html.escape(data)
+                except AttributeError:
+                    return (data, None)
 
         try:
             return (data, strip_ansi_escape(data))
