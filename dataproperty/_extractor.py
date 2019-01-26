@@ -577,7 +577,7 @@ class DataPropertyExtractor(object):
                     col_idx, value_dp_list = future.result()
                     col_data_map[col_idx] = value_dp_list
         finally:
-            logger.debug("shutdown ProcessPoolExecutor")
+            logger.debug("shutdown ProcessPoolExecutor: workers={}".format(self.max_workers))
             executor.shutdown()
 
         return list(zip(*[col_data_map[col_idx] for col_idx in sorted(col_data_map)]))
