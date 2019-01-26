@@ -406,7 +406,12 @@ class DataPropertyExtractor(object):
         if self.column_type_hints:
             logs.append(
                 "    column_type_hints=({})".format(
-                    ", ".join([type_hint.__name__ for type_hint in self.column_type_hints])
+                    ", ".join(
+                        [
+                            type_hint.__name__ if type_hint else "none"
+                            for type_hint in self.column_type_hints
+                        ]
+                    )
                 )
             )
 
