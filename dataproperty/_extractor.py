@@ -392,16 +392,28 @@ class DataPropertyExtractor(object):
         return self._to_dp_list(values, strip_str=self.strip_str_value)
 
     def to_column_dp_list(self, value_dp_matrix, previous_column_dp_list=None):
-        logger.debug(
-            "prev_col_count={}, mismatch_process={}".format(
-                len(previous_column_dp_list) if previous_column_dp_list else None,
-                self.matrix_formatting,
-            )
-        )
-
         col_dp_list = self.__get_col_dp_list_base()
 
         logger.debug("converting to column dataproperty:")
+
+        logs = [
+            "  params:",
+            "    prev_col_count={}".format(
+                len(previous_column_dp_list) if previous_column_dp_list else None
+            ),
+            "    matrix_formatting={}".format(self.matrix_formatting),
+        ]
+        if self.column_type_hints:
+            logs.append(
+                "    column_type_hints=({})".format(
+                    ", ".join([type_hint.__name__ for type_hint in self.column_type_hints])
+                )
+            )
+
+        for log in logs:
+            logger.debug(log)
+
+        logger.debug("  results:")
         for col_idx, value_dp_list in enumerate(zip(*value_dp_matrix)):
             try:
                 col_dp_list[col_idx]
@@ -430,7 +442,7 @@ class DataPropertyExtractor(object):
 
             col_dp.end_update()
 
-            logger.debug("  {:s}".format(text_type(col_dp)))
+            logger.debug("    {:s}".format(text_type(col_dp)))
 
         return col_dp_list
 
