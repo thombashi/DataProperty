@@ -80,7 +80,7 @@ class Test_DataPropertyExtractor_to_dp(object):
         self, dp_extractor, value, type_value_map, is_strict, expected_value, expected_typecode
     ):
         dp_extractor.type_value_map = type_value_map
-        dp_extractor.strict_type_map = get_strict_type_map(is_strict)
+        dp_extractor.strict_level_map = get_strict_type_map(is_strict)
         dp = dp_extractor.to_dp(value)
 
         assert dp.data == expected_value
@@ -107,7 +107,7 @@ class Test_DataPropertyExtractor_to_dp(object):
     ):
         dp_extractor.datetime_formatter = datetime_formatter
         dp_extractor.datetime_format_str = datetime_format_str
-        dp_extractor.strict_type_map = get_strict_type_map(is_strict)
+        dp_extractor.strict_level_map = get_strict_type_map(is_strict)
         dp = dp_extractor.to_dp(value)
 
         assert dp.data == expected
@@ -175,7 +175,7 @@ class Test_DataPropertyExtractor_to_dp_const_value_map(object):
     )
     def test_normal(self, dp_extractor, value, const_value_map, is_strict, expected):
         dp_extractor.const_value_map = const_value_map
-        dp_extractor.strict_type_map = get_strict_type_map(is_strict)
+        dp_extractor.strict_level_map = get_strict_type_map(is_strict)
         dp = dp_extractor.to_dp(value)
 
         assert dp.data == expected

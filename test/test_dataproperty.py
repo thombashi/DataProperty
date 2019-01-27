@@ -138,7 +138,7 @@ class Test_DataPeroperty_data_typecode(object):
         ],
     )
     def test_normal_strict_map(self, value, is_convert, expected_data, expected_typecode):
-        dp = DataProperty(value, strict_type_map=get_strict_type_map(not is_convert))
+        dp = DataProperty(value, strict_level_map=get_strict_type_map(not is_convert))
 
         assert dp == dp
         assert dp != DataProperty("test for __ne__")
@@ -156,7 +156,7 @@ class Test_DataPeroperty_data_typecode(object):
     )
     def test_normal_strip_str(self, value, strip_str, is_strict, expected_data, expected_typecode):
         dp = DataProperty(
-            value, strip_str=strip_str, strict_type_map=get_strict_type_map(is_strict)
+            value, strip_str=strip_str, strict_level_map=get_strict_type_map(is_strict)
         )
 
         assert dp.data == expected_data
@@ -195,7 +195,7 @@ class Test_DataPeroperty_data_typecode(object):
     def test_normal_type_hint(self, value, type_hint, is_strict, expected_typecode):
 
         dp = DataProperty(
-            value, type_hint=type_hint, strict_type_map=get_strict_type_map(is_strict)
+            value, type_hint=type_hint, strict_level_map=get_strict_type_map(is_strict)
         )
 
         assert dp.typecode == expected_typecode
@@ -209,7 +209,7 @@ class Test_DataPeroperty_data_typecode(object):
         ],
     )
     def test_normal_nan(self, value, is_convert, expected_data, expected_typecode):
-        dp = DataProperty(value, strict_type_map=get_strict_type_map(not is_convert))
+        dp = DataProperty(value, strict_level_map=get_strict_type_map(not is_convert))
 
         assert Nan(dp.data).is_type()
         assert dp.typecode == expected_typecode
@@ -228,7 +228,7 @@ class Test_DataPeroperty_to_str(object):
     )
     def test_normal(self, value, type_hint, is_strict, expected_data, expected_str):
         dp = DataProperty(
-            value, type_hint=type_hint, strict_type_map=get_strict_type_map(is_strict)
+            value, type_hint=type_hint, strict_level_map=get_strict_type_map(is_strict)
         )
 
         assert dp.data == expected_data
@@ -257,7 +257,7 @@ class Test_DataPeroperty_set_data(object):
     def test_normal_tab(self, value, is_convert, replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
             value,
-            strict_type_map=get_strict_type_map(not is_convert),
+            strict_level_map=get_strict_type_map(not is_convert),
             replace_tabs_with_spaces=replace_tabs_with_spaces,
             tab_length=tab_length,
         )
@@ -496,20 +496,20 @@ class Test_DataPeroperty_additional_format_len(object):
 
 class Test_DataPeroperty_repr(object):
     @pytest.mark.parametrize(
-        ["value", "strict_type_map", "expected"],
+        ["value", "strict_level_map", "expected"],
         [
             ["100-0004", NOT_STRICT_TYPE_MAP, 95],
             [{"a": 1}, DefaultValue.STRICT_LEVEL_MAP, 100],
             ["新しいテキスト ドキュメント.txt", DefaultValue.STRICT_LEVEL_MAP, 100],
         ],
     )
-    def test_smoke(self, value, strict_type_map, expected):
-        dp = DataProperty(value, strict_type_map=strict_type_map)
+    def test_smoke(self, value, strict_level_map, expected):
+        dp = DataProperty(value, strict_level_map=strict_level_map)
         assert len(dp.__repr__()) > expected
 
     @pytest.mark.skipif("six.PY2")
     @pytest.mark.parametrize(
-        ["value", "strict_type_map", "expected"],
+        ["value", "strict_level_map", "expected"],
         [
             [
                 0,
@@ -623,8 +623,8 @@ class Test_DataPeroperty_repr(object):
             ],
         ],
     )
-    def test_normal(self, value, strict_type_map, expected):
-        dp = DataProperty(value, strict_type_map=strict_type_map)
+    def test_normal(self, value, strict_level_map, expected):
+        dp = DataProperty(value, strict_level_map=strict_level_map)
 
         print("[expected] {}".format(expected))
         print("[actual]   {}".format(dp))

@@ -266,11 +266,11 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def strict_type_map(self):
+    def strict_level_map(self):
         return self.__strict_type_map
 
-    @strict_type_map.setter
-    def strict_type_map(self, value):
+    @strict_level_map.setter
+    def strict_level_map(self, value):
         if self.__strict_type_map == value:
             return
 
@@ -498,7 +498,7 @@ class DataPropertyExtractor(object):
             self.headers,
             type_hint=String,
             strip_str=self.strip_str_header,
-            strict_type_map=NOT_STRICT_TYPE_MAP,
+            strict_level_map=NOT_STRICT_TYPE_MAP,
         )
 
     @staticmethod
@@ -523,12 +523,12 @@ class DataPropertyExtractor(object):
         except (TypeError, IndexError):
             return Format.NONE
 
-    def __to_dp(self, data, type_hint=None, strip_str=None, strict_type_map=None):
+    def __to_dp(self, data, type_hint=None, strip_str=None, strict_level_map=None):
         data = self.trans_func(data)
 
         if type_hint:
             return self.__to_dp_raw(
-                data, type_hint=type_hint, strip_str=strip_str, strict_type_map=strict_type_map
+                data, type_hint=type_hint, strip_str=strip_str, strict_level_map=strict_level_map
             )
 
         try:
@@ -538,22 +538,20 @@ class DataPropertyExtractor(object):
             # unhashable type
             pass
 
-        if data == 0:
-            if text_type(data) != "False":
-                return self.__dp_cache_zero
-
+        if data is 0:
+            return self.__dp_cache_zero
+        if data is 1:
+            return self.__dp_cache_one
+        if data is False:
             return self.__dp_cache_false
-        if data == 1:
-            if text_type(data) != "True":
-                return self.__dp_cache_one
-
+        if data is True:
             return self.__dp_cache_true
 
         return self.__to_dp_raw(
-            data, type_hint=type_hint, strip_str=strip_str, strict_type_map=strict_type_map
+            data, type_hint=type_hint, strip_str=strip_str, strict_level_map=strict_level_map
         )
 
-    def __to_dp_raw(self, data, type_hint=None, strip_str=None, strict_type_map=None):
+    def __to_dp_raw(self, data, type_hint=None, strip_str=None, strict_level_map=None):
         value_dp = DataProperty(
             data,
             type_hint=(type_hint if type_hint is not None else self.default_type_hint),
@@ -561,7 +559,7 @@ class DataPropertyExtractor(object):
             strip_str=strip_str,
             float_type=self.float_type,
             datetime_format_str=self.datetime_format_str,
-            strict_type_map=(strict_type_map if type_hint is not None else self.strict_type_map),
+            strict_level_map=(strict_level_map if type_hint is not None else self.strict_level_map),
             east_asian_ambiguous_width=self.east_asian_ambiguous_width,
         )
 
@@ -611,7 +609,7 @@ class DataPropertyExtractor(object):
 
         return list(zip(*[col_data_map[col_idx] for col_idx in sorted(col_data_map)]))
 
-    def _to_dp_list(self, data_list, type_hint=None, strip_str=None, strict_type_map=None):
+    def _to_dp_list(self, data_list, type_hint=None, strip_str=None, strict_level_map=None):
         if is_empty_sequence(data_list):
             return []
 
@@ -632,7 +630,7 @@ class DataPropertyExtractor(object):
                 data=data,
                 type_hint=expect_type_hist,
                 strip_str=strip_str,
-                strict_type_map=strict_type_map,
+                strict_level_map=strict_level_map,
             )
             type_counter[dataprop.type_class] += 1
 
@@ -710,7 +708,7 @@ class DataPropertyExtractor(object):
             datetime_formatter=self.datetime_formatter,
             datetime_format_str=self.datetime_format_str,
             float_type=self.float_type,
-            strict_type_map=self.strict_type_map,
+            strict_level_map=self.strict_level_map,
         )
 
 
