@@ -6,8 +6,8 @@
 
 from __future__ import absolute_import
 
-from dataproperty._common import MIN_STRICT_LEVEL_MAP, STRICT_TYPE_MAP
+from dataproperty._common import MIN_STRICT_LEVEL_MAP, MAX_STRICT_LEVEL_MAP
 
 
 def get_strict_level_map(is_strict):
-    return STRICT_TYPE_MAP if is_strict else MIN_STRICT_LEVEL_MAP
+    return MAX_STRICT_LEVEL_MAP if is_strict else MIN_STRICT_LEVEL_MAP

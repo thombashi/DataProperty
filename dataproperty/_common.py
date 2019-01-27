@@ -28,7 +28,7 @@ NOT_QUOTING_FLAGS = {
     Typecode.STRING: False,
 }
 
-STRICT_TYPE_MAP = dict(itertools.product(list(Typecode), [StrictLevel.MAX]))
+MAX_STRICT_LEVEL_MAP = dict(itertools.product(list(Typecode), [StrictLevel.MAX]))
 MIN_STRICT_LEVEL_MAP = dict(itertools.product(list(Typecode), [StrictLevel.MIN]))
 
 

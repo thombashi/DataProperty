@@ -10,7 +10,7 @@ import re
 
 from typepy import Typecode, TypeConversionError
 
-from ._common import STRICT_TYPE_MAP, DefaultValue
+from ._common import MAX_STRICT_LEVEL_MAP, DefaultValue
 from ._dataproperty import DataProperty
 
 
@@ -62,7 +62,7 @@ class DataPropertyConverter(object):
             value,
             float_type=self.__float_type,
             datetime_format_str=self.__datetime_format_str,
-            strict_level_map=STRICT_TYPE_MAP,
+            strict_level_map=MAX_STRICT_LEVEL_MAP,
             line_break_handling=self.__line_break_handling,
             is_escape_html_tag=self.__is_escape_html_tag,
         )
