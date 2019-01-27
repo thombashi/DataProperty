@@ -39,7 +39,7 @@ class DataPropertyConverter(object):
         self.__datetime_formatter = datetime_formatter
         self.__datetime_format_str = datetime_format_str
         self.__float_type = float_type
-        self.__strict_type_map = strict_level_map
+        self.__strict_level_map = strict_level_map
         self.__line_break_handling = line_break_handling
         self.__is_escape_html_tag = is_escape_html_tag
 
