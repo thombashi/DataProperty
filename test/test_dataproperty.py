@@ -14,7 +14,7 @@ from decimal import Decimal
 import pytest
 import six
 from dataproperty import (
-    NOT_STRICT_TYPE_MAP,
+    MIN_STRICT_LEVEL_MAP,
     Align,
     DataProperty,
     DefaultValue,
@@ -498,7 +498,7 @@ class Test_DataPeroperty_repr(object):
     @pytest.mark.parametrize(
         ["value", "strict_level_map", "expected"],
         [
-            ["100-0004", NOT_STRICT_TYPE_MAP, 95],
+            ["100-0004", MIN_STRICT_LEVEL_MAP, 95],
             [{"a": 1}, DefaultValue.STRICT_LEVEL_MAP, 100],
             ["新しいテキスト ドキュメント.txt", DefaultValue.STRICT_LEVEL_MAP, 100],
         ],
@@ -593,7 +593,7 @@ class Test_DataPeroperty_repr(object):
             ],
             [
                 "2017-01-02 03:04:05+0900",
-                NOT_STRICT_TYPE_MAP,
+                MIN_STRICT_LEVEL_MAP,
                 "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, "
                 "ascii_char_width=24, additional_format_len=0",
             ],
