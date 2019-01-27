@@ -39,6 +39,10 @@ from ._line_break import LineBreakHandling
 from .logger import logger
 
 
+def nop(v):
+    return v
+
+
 @enum.unique
 class MatrixFormatting(enum.Enum):
     # raise exception if the matrix is not properly formatted
@@ -312,6 +316,18 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
+    def trans_func(self):
+        return self.__trans_func
+
+    @trans_func.setter
+    def trans_func(self, value):
+        if self.__trans_func is value:
+            return
+
+        self.__trans_func = value
+        self.__clear_cache()
+
+    @property
     def quoting_flags(self):
         return self.__quoting_flags
 
@@ -368,6 +384,8 @@ class DataPropertyExtractor(object):
 
         self.__type_value_map = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)
         self.__const_value_map = copy.deepcopy(DefaultValue.CONST_VALUE_MAP)
+
+        self.__trans_func = nop
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None
         self.__matrix_formatting = MatrixFormatting.TRIM
@@ -506,6 +524,8 @@ class DataPropertyExtractor(object):
             return Format.NONE
 
     def __to_dp(self, data, type_hint=None, strip_str=None, strict_type_map=None):
+        data = self.trans_func(data)
+
         if type_hint:
             return self.__to_dp_raw(
                 data, type_hint=type_hint, strip_str=strip_str, strict_type_map=strict_type_map

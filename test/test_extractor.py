@@ -41,6 +41,20 @@ def datetime_formatter_tostr_1(value):
     return value.strftime("%Y/%m/%d %H:%M:%S")
 
 
+def trans_func_1(v):
+    if v is None:
+        return ""
+    if v is False:
+        return "false"
+    if v == 0:
+        return 123
+    return v
+
+
+def nop(v):
+    return v
+
+
 class Test_DataPropertyExtractor_to_dp(object):
     @pytest.mark.parametrize(
         ["value", "type_value_map", "is_strict", "expected_value", "expected_typecode"],
@@ -99,10 +113,18 @@ class Test_DataPropertyExtractor_to_dp(object):
         assert dp.data == expected
 
     @pytest.mark.parametrize(
-        ["value", "type_hint", "expected"],
-        [[1, String, "1"], [0, String, "0"], [None, String, "None"]],
+        ["value", "type_hint", "trans_func", "expected"],
+        [
+            [1, String, nop, "1"],
+            [0, String, nop, "0"],
+            [None, String, nop, "None"],
+            [0, String, trans_func_1, "123"],
+            [False, String, trans_func_1, "false"],
+            [None, String, trans_func_1, ""],
+        ],
     )
-    def test_normal_type_hint(self, dp_extractor, value, type_hint, expected):
+    def test_normal_type_hint(self, dp_extractor, value, type_hint, trans_func, expected):
+        dp_extractor.trans_func = trans_func
         dp = dp_extractor._DataPropertyExtractor__to_dp(value, type_hint=type_hint)
 
         assert dp.data == expected
@@ -333,12 +355,12 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
     TEST_DATA_MATRIX = [
         [1, 1.1, "aa", 1, 1, True, inf, nan, datetime.datetime(2017, 1, 1, 0, 0, 0)],
         [2, 2.2, "bbb", 2.2, 2.2, False, "inf", "nan", "2017-01-01T01:23:45+0900"],
-        [3, 3.33, "cccc", -3, "ccc", "true", "infinity", "NAN", "2017-11-01 01:23:45+0900"],
+        [3, 3.33, "cccc", -3, "ccc", True, "infinity", "NAN", "2017-11-01 01:23:45+0900"],
     ]
     TEST_DATA_MATRIX_TUPLE = (
         (1, 1.1, "aa", 1, 1, True, inf, nan, datetime.datetime(2017, 1, 1, 0, 0, 0)),
         (2, 2.2, "bbb", 2.2, 2.2, False, "inf", "nan", "2017-01-01T01:23:45+0900"),
-        (3, 3.33, "cccc", -3, "ccc", "true", "infinity", "NAN", "2017-11-01 01:23:45+0900"),
+        (3, 3.33, "cccc", -3, "ccc", True, "infinity", "NAN", "2017-11-01 01:23:45+0900"),
     )
 
     @pytest.mark.parametrize(
