@@ -98,6 +98,15 @@ class Test_DataPropertyExtractor_to_dp(object):
 
         assert dp.data == expected
 
+    @pytest.mark.parametrize(
+        ["value", "type_hint", "expected"],
+        [[1, String, "1"], [0, String, "0"], [None, String, "None"]],
+    )
+    def test_normal_type_hint(self, dp_extractor, value, type_hint, expected):
+        dp = dp_extractor._DataPropertyExtractor__to_dp(value, type_hint=type_hint)
+
+        assert dp.data == expected
+
 
 class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
     ALWAYS_QUOTE_FLAG_MAP = {

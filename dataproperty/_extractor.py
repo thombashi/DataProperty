@@ -504,6 +504,11 @@ class DataPropertyExtractor(object):
             return Format.NONE
 
     def __to_dp(self, data, type_hint=None, strip_str=None, strict_type_map=None):
+        if type_hint:
+            return self.__to_dp_raw(
+                data, type_hint=type_hint, strip_str=strip_str, strict_type_map=strict_type_map
+            )
+
         try:
             if data in self.__dp_cache_map:
                 return self.__dp_cache_map.get(data)
