@@ -149,10 +149,12 @@ class DataPropertyExtractor(object):
 
     @property
     def column_type_hint_list(self):
+        # deprecated: alias to column_type_hints
         return self.column_type_hints
 
     @column_type_hint_list.setter
     def column_type_hint_list(self, value):
+        # deprecated: alias to column_type_hints
         self.column_type_hints = value
 
     @property
