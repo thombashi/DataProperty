@@ -299,10 +299,12 @@ class DataPropertyExtractor(object):
 
     @property
     def const_value_map(self):
+        # deprecated
         return self.__const_value_map
 
     @const_value_map.setter
     def const_value_map(self, value):
+        # deprecated
         if self.__const_value_map == value:
             return
 
