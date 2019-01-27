@@ -43,7 +43,7 @@ class DefaultValue(object):
     QUOTING_FLAGS = copy.deepcopy(NOT_QUOTING_FLAGS)
 
     STRICT_LEVEL_MAP = {
-        Typecode.BOOL: 1,
+        Typecode.BOOL: StrictLevel.MAX,
         Typecode.DATETIME: StrictLevel.MAX,
         Typecode.DICTIONARY: StrictLevel.MAX,
         Typecode.REAL_NUMBER: 1,
