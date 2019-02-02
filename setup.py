@@ -84,7 +84,7 @@ setuptools.setup(
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
     extras_require={
-        "build": ["wheel"],
+        "build": ["twine", "wheel"],
         "docs": docs_requires,
         "logging": ["Logbook>=1.0.1,<2.0.0"],
         "release": ["releasecmd>=0.0.13,<0.1.0"],
