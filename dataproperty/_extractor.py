@@ -317,10 +317,12 @@ class DataPropertyExtractor(object):
 
     @property
     def trans_func(self):
+        # deprecated
         return self.__trans_func
 
     @trans_func.setter
     def trans_func(self, value):
+        # deprecated
         if self.__trans_func is value:
             return
 
