@@ -538,14 +538,14 @@ class DataPropertyExtractor(object):
             # unhashable type
             pass
 
-        if data is 0:
+        if data == 0:
+            if data is False:
+                return self.__dp_cache_false
             return self.__dp_cache_zero
-        if data is 1:
+        if data == 1:
+            if data is True:
+                return self.__dp_cache_true
             return self.__dp_cache_one
-        if data is False:
-            return self.__dp_cache_false
-        if data is True:
-            return self.__dp_cache_true
 
         return self.__to_dp_raw(
             data, type_hint=type_hint, strip_str=strip_str, strict_level_map=strict_level_map
