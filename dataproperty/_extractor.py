@@ -329,6 +329,10 @@ class DataPropertyExtractor(object):
         self.__trans_func = value
         self.__clear_cache()
 
+    def register_trans_func(self, trans_func):
+        self.__trans_func_list.insert(0, trans_func)
+        self.__clear_cache()
+
     @property
     def quoting_flags(self):
         return self.__quoting_flags
@@ -388,6 +392,7 @@ class DataPropertyExtractor(object):
         self.__const_value_map = copy.deepcopy(DefaultValue.CONST_VALUE_MAP)
 
         self.__trans_func = nop
+        self.__trans_func_list = []
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None
         self.__matrix_formatting = MatrixFormatting.TRIM
@@ -526,7 +531,8 @@ class DataPropertyExtractor(object):
             return Format.NONE
 
     def __to_dp(self, data, type_hint=None, strip_str=None, strict_level_map=None):
-        data = self.trans_func(data)
+        for trans_func in self.__trans_func_list:
+            data = trans_func(data)
 
         if type_hint:
             return self.__to_dp_raw(

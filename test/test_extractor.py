@@ -51,6 +51,12 @@ def trans_func_1(v):
     return v
 
 
+def trans_func_2(v):
+    if v == 123:
+        return 321
+    return v
+
+
 def nop(v):
     return v
 
@@ -124,7 +130,21 @@ class Test_DataPropertyExtractor_to_dp(object):
         ],
     )
     def test_normal_type_hint(self, dp_extractor, value, type_hint, trans_func, expected):
-        dp_extractor.trans_func = trans_func
+        dp_extractor.register_trans_func(trans_func)
+        dp = dp_extractor._DataPropertyExtractor__to_dp(value, type_hint=type_hint)
+
+        assert dp.data == expected
+
+    @pytest.mark.parametrize(
+        ["value", "type_hint", "trans_funcs", "expected"],
+        [
+            [0, String, [trans_func_2, trans_func_1], "321"],
+            [0, String, [trans_func_1, trans_func_2], "123"],
+        ],
+    )
+    def test_normal_trans_funcs(self, dp_extractor, value, type_hint, trans_funcs, expected):
+        for trans_func in trans_funcs:
+            dp_extractor.register_trans_func(trans_func)
         dp = dp_extractor._DataPropertyExtractor__to_dp(value, type_hint=type_hint)
 
         assert dp.data == expected
