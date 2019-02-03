@@ -87,7 +87,7 @@ setuptools.setup(
         "build": ["twine", "wheel"],
         "docs": docs_requires,
         "logging": ["Logbook>=1.0.1,<2.0.0"],
-        "release": ["releasecmd>=0.0.13,<0.1.0"],
+        "release": ["releasecmd>=0.0.18,<0.1.0"],
         "test": tests_requires,
     },
 
