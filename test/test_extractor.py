@@ -556,7 +556,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.decimal_places == 2
         assert dp.format_str == "{:.2f}"
 
-    def test_normal_col_type_hint_list(self, dp_extractor):
+    def test_normal_column_type_hints(self, dp_extractor):
         dp_extractor.headers = ["none", "to_float", "to_str", "to_datetime"]
         dp_extractor.column_type_hints = [None, RealNumber, String, DateTime]
         col_dp_list = dp_extractor.to_column_dp_list(
