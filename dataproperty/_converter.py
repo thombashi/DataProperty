@@ -21,7 +21,6 @@ class DataPropertyConverter(object):
     def __init__(
         self,
         type_value_map=None,
-        const_value_map=None,
         quoting_flags=None,
         line_break_handling=None,
         is_escape_html_tag=False,
@@ -31,9 +30,6 @@ class DataPropertyConverter(object):
         strict_level_map=None,
     ):
         self.__type_value_map = type_value_map if type_value_map else DefaultValue.TYPE_VALUE_MAP
-        self.__const_value_map = (
-            const_value_map if const_value_map else DefaultValue.CONST_VALUE_MAP
-        )
         self.__quoting_flags = quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS
 
         self.__datetime_formatter = datetime_formatter
@@ -80,16 +76,6 @@ class DataPropertyConverter(object):
         return '"{}"'.format(self.__RE_QUOTE_CHAR.sub('\\"', data.replace("\\", "\\\\")))
 
     def __convert_value(self, dp_value):
-        if dp_value.typecode in (Typecode.BOOL, Typecode.STRING):
-            try:
-                if dp_value.data in self.__const_value_map:
-                    return self.__apply_quote(
-                        dp_value.typecode, self.__const_value_map.get(dp_value.data)
-                    )
-            except TypeError:
-                # unhashable type will be reached this line
-                raise TypeConversionError
-
         if dp_value.typecode in self.__type_value_map:
             return self.__apply_quote(
                 dp_value.typecode, self.__type_value_map.get(dp_value.typecode)

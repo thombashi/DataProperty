@@ -38,8 +38,6 @@ class DefaultValue(object):
     INF_VALUE = FLOAT_TYPE("inf")
     NAN_VALUE = FLOAT_TYPE("nan")
 
-    CONST_VALUE_MAP = {}
-
     QUOTING_FLAGS = copy.deepcopy(NOT_QUOTING_FLAGS)
 
     STRICT_LEVEL_MAP = {

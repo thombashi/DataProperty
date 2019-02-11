@@ -302,20 +302,6 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def const_value_map(self):
-        # deprecated
-        return self.__const_value_map
-
-    @const_value_map.setter
-    def const_value_map(self, value):
-        # deprecated
-        if self.__const_value_map == value:
-            return
-
-        self.__const_value_map = value
-        self.__clear_cache()
-
-    @property
     def trans_func(self):
         # deprecated
         return self.__trans_func
@@ -389,7 +375,6 @@ class DataPropertyExtractor(object):
         self.__east_asian_ambiguous_width = 1
 
         self.__type_value_map = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)
-        self.__const_value_map = copy.deepcopy(DefaultValue.CONST_VALUE_MAP)
 
         self.__trans_func = nop
         self.__trans_func_list = []
@@ -709,7 +694,6 @@ class DataPropertyExtractor(object):
     def __update_dp_converter(self):
         self.__dp_converter = DataPropertyConverter(
             type_value_map=self.type_value_map,
-            const_value_map=self.const_value_map,
             quoting_flags=self.quoting_flags,
             line_break_handling=self.line_break_handling,
             is_escape_html_tag=self.is_escape_html_tag,
