@@ -164,16 +164,16 @@ class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
     }
 
     @pytest.mark.parametrize(
-        ["value", "quoting_flags", "is_strict", "expected"],
+        ["value", "quoting_flags", "expected"],
         [
-            ["string", ALWAYS_QUOTE_FLAG_MAP, False, '"string"'],
-            ['"string"', ALWAYS_QUOTE_FLAG_MAP, False, '"string"'],
-            [' "123"', ALWAYS_QUOTE_FLAG_MAP, False, ' "123"'],
-            ['"string" ', ALWAYS_QUOTE_FLAG_MAP, False, '"string" '],
-            [' "12 345" ', ALWAYS_QUOTE_FLAG_MAP, False, ' "12 345" '],
+            ["string", ALWAYS_QUOTE_FLAG_MAP, '"string"'],
+            ['"string"', ALWAYS_QUOTE_FLAG_MAP, '"string"'],
+            [' "123"', ALWAYS_QUOTE_FLAG_MAP, ' "123"'],
+            ['"string" ', ALWAYS_QUOTE_FLAG_MAP, '"string" '],
+            [' "12 345" ', ALWAYS_QUOTE_FLAG_MAP, ' "12 345" '],
         ],
     )
-    def test_normal_always_quote(self, dp_extractor, value, quoting_flags, is_strict, expected):
+    def test_normal_always_quote(self, dp_extractor, value, quoting_flags, expected):
         dp_extractor.quoting_flags = quoting_flags
         dp = dp_extractor.to_dp(value)
 
