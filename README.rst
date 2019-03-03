@@ -49,7 +49,7 @@ e.g. Extract a ``float`` value property
 
     >>> from dataproperty import DataProperty
     >>> DataProperty(-1.1)
-    data=-1.1, typename=REAL_NUMBER, align=right, ascii_char_width=4, integer_digits=1, decimal_places=1, additional_format_len=1
+    data=-1.1, type=REAL_NUMBER, align=right, ascii_width=4, int_digits=1, decimal_places=1, extra_len=1
 
 e.g. Extract a ``int`` value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +57,7 @@ e.g. Extract a ``int`` value property
 
     >>> from dataproperty import DataProperty
     >>> DataProperty(123456789)
-    data=123456789, typename=INTEGER, align=right, ascii_char_width=9, integer_digits=9, decimal_places=0, additional_format_len=0
+    data=123456789, type=INTEGER, align=right, ascii_width=9, int_digits=9, decimal_places=0, extra_len=0
 
 e.g. Extract a ``str`` (ascii) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,7 +65,7 @@ e.g. Extract a ``str`` (ascii) value property
 
     >>> from dataproperty import DataProperty
     >>> DataProperty("sample string")
-    data=sample string, typename=STRING, align=left, length=13, ascii_char_width=13, additional_format_len=0
+    data=sample string, type=STRING, align=left, length=13, ascii_width=13, extra_len=0
 
 e.g. Extract a ``str`` (multi-byte) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -74,7 +74,7 @@ e.g. Extract a ``str`` (multi-byte) value property
     >>> import six
     >>> from dataproperty import DataProperty
     >>> six.text_type(DataProperty("吾輩は猫である"))
-    data=吾輩は猫である, typename=STRING, align=left, length=7, ascii_char_width=14, additional_format_len=0
+    data=吾輩は猫である, type=STRING, align=left, length=7, ascii_width=14, extra_len=0
 
 e.g. Extract a time (``datetime``) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -83,7 +83,7 @@ e.g. Extract a time (``datetime``) value property
     >>> import datetime
     >>> from dataproperty import DataProperty
     >>> DataProperty(datetime.datetime(2017, 1, 1, 0, 0, 0))
-    data=2017-01-01 00:00:00, typename=DATETIME, align=left, ascii_char_width=19, additional_format_len=0
+    data=2017-01-01 00:00:00, type=DATETIME, align=left, ascii_width=19, extra_len=0
 
 e.g. Extract a ``bool`` value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,7 +91,7 @@ e.g. Extract a ``bool`` value property
 
     >>> from dataproperty import DataProperty
     >>> DataProperty(True)
-    data=True, typename=BOOL, align=left, ascii_char_width=4, additional_format_len=0
+    data=True, type=BOOL, align=left, ascii_width=4, extra_len=0
 
 
 Extract data property for each element from a matrix
@@ -123,33 +123,33 @@ An example data set and the result are as follows:
 :Output:
     ::
 
-        row=0, col=0, data=1, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
-        row=0, col=1, data=1.1, typename=REAL_NUMBER, align=right, ascii_char_width=3, integer_digits=1, decimal_places=1, additional_format_len=0
-        row=0, col=2, data=aa, typename=STRING, align=left, ascii_char_width=2, length=2, additional_format_len=0
-        row=0, col=3, data=1, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
-        row=0, col=4, data=1, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
-        row=0, col=5, data=True, typename=BOOL, align=left, ascii_char_width=4, additional_format_len=0
-        row=0, col=6, data=Infinity, typename=INFINITY, align=left, ascii_char_width=8, additional_format_len=0
-        row=0, col=7, data=NaN, typename=NAN, align=left, ascii_char_width=3, additional_format_len=0
-        row=0, col=8, data=2017-01-01 00:00:00, typename=DATETIME, align=left, ascii_char_width=19, additional_format_len=0
-        row=1, col=0, data=2, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
-        row=1, col=1, data=2.2, typename=REAL_NUMBER, align=right, ascii_char_width=3, integer_digits=1, decimal_places=1, additional_format_len=0
-        row=1, col=2, data=bbb, typename=STRING, align=left, ascii_char_width=3, length=3, additional_format_len=0
-        row=1, col=3, data=2.2, typename=REAL_NUMBER, align=right, ascii_char_width=3, integer_digits=1, decimal_places=1, additional_format_len=0
-        row=1, col=4, data=2.2, typename=REAL_NUMBER, align=right, ascii_char_width=3, integer_digits=1, decimal_places=1, additional_format_len=0
-        row=1, col=5, data=False, typename=BOOL, align=left, ascii_char_width=5, additional_format_len=0
-        row=1, col=6, data=Infinity, typename=INFINITY, align=left, ascii_char_width=8, additional_format_len=0
-        row=1, col=7, data=NaN, typename=NAN, align=left, ascii_char_width=3, additional_format_len=0
-        row=1, col=8, data=2017-01-01 00:00:00, typename=DATETIME, align=left, ascii_char_width=19, additional_format_len=0
-        row=2, col=0, data=3, typename=INTEGER, align=right, ascii_char_width=1, integer_digits=1, decimal_places=0, additional_format_len=0
-        row=2, col=1, data=3.33, typename=REAL_NUMBER, align=right, ascii_char_width=4, integer_digits=1, decimal_places=2, additional_format_len=0
-        row=2, col=2, data=cccc, typename=STRING, align=left, ascii_char_width=4, length=4, additional_format_len=0
-        row=2, col=3, data=-3, typename=INTEGER, align=right, ascii_char_width=2, integer_digits=1, decimal_places=0, additional_format_len=1
-        row=2, col=4, data=ccc, typename=STRING, align=left, ascii_char_width=3, length=3, additional_format_len=0
-        row=2, col=5, data=True, typename=BOOL, align=left, ascii_char_width=4, additional_format_len=0
-        row=2, col=6, data=Infinity, typename=INFINITY, align=left, ascii_char_width=8, additional_format_len=0
-        row=2, col=7, data=NaN, typename=NAN, align=left, ascii_char_width=3, additional_format_len=0
-        row=2, col=8, data=2017-01-01T01:23:45+0900, typename=STRING, align=left, ascii_char_width=24, length=24, additional_format_len=0
+        row=0, col=0, data=1, type=INTEGER, align=right, ascii_width=1, int_digits=1, decimal_places=0, extra_len=0
+        row=0, col=1, data=1.1, type=REAL_NUMBER, align=right, ascii_width=3, int_digits=1, decimal_places=1, extra_len=0
+        row=0, col=2, data=aa, type=STRING, align=left, ascii_width=2, length=2, extra_len=0
+        row=0, col=3, data=1, type=INTEGER, align=right, ascii_width=1, int_digits=1, decimal_places=0, extra_len=0
+        row=0, col=4, data=1, type=INTEGER, align=right, ascii_width=1, int_digits=1, decimal_places=0, extra_len=0
+        row=0, col=5, data=True, type=BOOL, align=left, ascii_width=4, extra_len=0
+        row=0, col=6, data=Infinity, type=INFINITY, align=left, ascii_width=8, extra_len=0
+        row=0, col=7, data=NaN, type=NAN, align=left, ascii_width=3, extra_len=0
+        row=0, col=8, data=2017-01-01 00:00:00, type=DATETIME, align=left, ascii_width=19, extra_len=0
+        row=1, col=0, data=2, type=INTEGER, align=right, ascii_width=1, int_digits=1, decimal_places=0, extra_len=0
+        row=1, col=1, data=2.2, type=REAL_NUMBER, align=right, ascii_width=3, int_digits=1, decimal_places=1, extra_len=0
+        row=1, col=2, data=bbb, type=STRING, align=left, ascii_width=3, length=3, extra_len=0
+        row=1, col=3, data=2.2, type=REAL_NUMBER, align=right, ascii_width=3, int_digits=1, decimal_places=1, extra_len=0
+        row=1, col=4, data=2.2, type=REAL_NUMBER, align=right, ascii_width=3, int_digits=1, decimal_places=1, extra_len=0
+        row=1, col=5, data=False, type=BOOL, align=left, ascii_width=5, extra_len=0
+        row=1, col=6, data=Infinity, type=INFINITY, align=left, ascii_width=8, extra_len=0
+        row=1, col=7, data=NaN, type=NAN, align=left, ascii_width=3, extra_len=0
+        row=1, col=8, data=2017-01-01 00:00:00, type=DATETIME, align=left, ascii_width=19, extra_len=0
+        row=2, col=0, data=3, type=INTEGER, align=right, ascii_width=1, int_digits=1, decimal_places=0, extra_len=0
+        row=2, col=1, data=3.33, type=REAL_NUMBER, align=right, ascii_width=4, int_digits=1, decimal_places=2, extra_len=0
+        row=2, col=2, data=cccc, type=STRING, align=left, ascii_width=4, length=4, extra_len=0
+        row=2, col=3, data=-3, type=INTEGER, align=right, ascii_width=2, int_digits=1, decimal_places=0, extra_len=1
+        row=2, col=4, data=ccc, type=STRING, align=left, ascii_width=3, length=3, extra_len=0
+        row=2, col=5, data=True, type=BOOL, align=left, ascii_width=4, extra_len=0
+        row=2, col=6, data=Infinity, type=INFINITY, align=left, ascii_width=8, extra_len=0
+        row=2, col=7, data=NaN, type=NAN, align=left, ascii_width=3, extra_len=0
+        row=2, col=8, data=2017-01-01T01:23:45+0900, type=STRING, align=left, ascii_width=24, length=24, extra_len=0
 
 
 Full example source code can be found at *examples/py/to_dp_matrix.py*
@@ -188,15 +188,15 @@ Example data set and result are as follows:
 :Output:
     ::
 
-        column=0, typename=INTEGER, align=right, ascii_char_width=3, bit_len=2, integer_digits=1, decimal_places=0
-        column=1, typename=REAL_NUMBER, align=right, ascii_char_width=5, integer_digits=1, decimal_places=(min=1, max=2)
-        column=2, typename=STRING, align=left, ascii_char_width=4
-        column=3, typename=REAL_NUMBER, align=right, ascii_char_width=4, integer_digits=1, decimal_places=(min=0, max=1), additional_format_len=(min=0, max=1)
-        column=4, typename=STRING, align=left, ascii_char_width=3, integer_digits=1, decimal_places=(min=0, max=1)
-        column=5, typename=BOOL, align=left, ascii_char_width=5
-        column=6, typename=INFINITY, align=left, ascii_char_width=8
-        column=7, typename=NAN, align=left, ascii_char_width=3
-        column=8, typename=STRING, align=left, ascii_char_width=24
+        column=0, type=INTEGER, align=right, ascii_width=3, bit_len=2, int_digits=1, decimal_places=0
+        column=1, type=REAL_NUMBER, align=right, ascii_width=5, int_digits=1, decimal_places=(min=1, max=2)
+        column=2, type=STRING, align=left, ascii_width=4
+        column=3, type=REAL_NUMBER, align=right, ascii_width=4, int_digits=1, decimal_places=(min=0, max=1), extra_len=(min=0, max=1)
+        column=4, type=STRING, align=left, ascii_width=3, int_digits=1, decimal_places=(min=0, max=1)
+        column=5, type=BOOL, align=left, ascii_width=5
+        column=6, type=INFINITY, align=left, ascii_width=8
+        column=7, type=NAN, align=left, ascii_width=3
+        column=8, type=STRING, align=left, ascii_width=24
 
 
 Full example source code can be found at *examples/py/to_column_dp_list.py*
