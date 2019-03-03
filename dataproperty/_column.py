@@ -111,9 +111,9 @@ class ColumnDataProperty(DataPeropertyBase):
 
         element_list.extend(
             [
-                "typename={}".format(self.typename),
+                "type={}".format(self.typename),
                 "align={}".format(self.align.align_string),
-                "ascii_char_width={}".format(six.text_type(self.ascii_char_width)),
+                "ascii_width={}".format(six.text_type(self.ascii_char_width)),
             ]
         )
 
@@ -122,9 +122,9 @@ class ColumnDataProperty(DataPeropertyBase):
 
         if self.minmax_integer_digits.has_value():
             if self.minmax_integer_digits.is_same_value():
-                value = "integer_digits={}".format(self.minmax_integer_digits.min_value)
+                value = "int_digits={}".format(self.minmax_integer_digits.min_value)
             else:
-                value = "integer_digits=({})".format(self.minmax_integer_digits)
+                value = "int_digits=({})".format(self.minmax_integer_digits)
 
             element_list.append(value)
 
@@ -138,11 +138,9 @@ class ColumnDataProperty(DataPeropertyBase):
 
         if not self.minmax_additional_format_len.is_zero():
             if self.minmax_additional_format_len.is_same_value():
-                value = "additional_format_len={}".format(
-                    self.minmax_additional_format_len.min_value
-                )
+                value = "extra_len={}".format(self.minmax_additional_format_len.min_value)
             else:
-                value = "additional_format_len=({})".format(self.minmax_additional_format_len)
+                value = "extra_len=({})".format(self.minmax_additional_format_len)
 
             element_list.append(value)
 

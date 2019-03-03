@@ -498,9 +498,9 @@ class Test_DataPeroperty_repr(object):
     @pytest.mark.parametrize(
         ["value", "strict_level_map", "expected"],
         [
-            ["100-0004", MIN_STRICT_LEVEL_MAP, 95],
-            [{"a": 1}, DefaultValue.STRICT_LEVEL_MAP, 100],
-            ["新しいテキスト ドキュメント.txt", DefaultValue.STRICT_LEVEL_MAP, 100],
+            ["100-0004", MIN_STRICT_LEVEL_MAP, 75],
+            [{"a": 1}, DefaultValue.STRICT_LEVEL_MAP, 75],
+            ["新しいテキスト ドキュメント.txt", DefaultValue.STRICT_LEVEL_MAP, 80],
         ],
     )
     def test_smoke(self, value, strict_level_map, expected):
@@ -514,112 +514,100 @@ class Test_DataPeroperty_repr(object):
             [
                 0,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=0, typename=INTEGER, align=right, "
-                "ascii_char_width=1, "
-                "integer_digits=1, decimal_places=0, additional_format_len=0",
+                "data=0, type=INTEGER, align=right, "
+                "ascii_width=1, int_digits=1, decimal_places=0, extra_len=0",
             ],
             [
                 colored(0, "red"),
                 DefaultValue.STRICT_LEVEL_MAP,
                 (
-                    ("data={}, typename=STRING, align=right, ".format(colored(0, "red")))
-                    + "ascii_char_width=1, length=10, integer_digits=1, decimal_places=0, "
-                    + "additional_format_len=0"
+                    ("data={}, type=STRING, align=right, ".format(colored(0, "red")))
+                    + "ascii_width=1, length=10, int_digits=1, decimal_places=0, "
+                    + "extra_len=0"
                 ),
             ],
             [
                 -1.0,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=-1, typename=INTEGER, align=right, "
-                "ascii_char_width=2, "
-                "integer_digits=1, decimal_places=0, additional_format_len=1",
+                "data=-1, type=INTEGER, align=right, "
+                "ascii_width=2, int_digits=1, decimal_places=0, extra_len=1",
             ],
             [
                 -1.1,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=-1.1, typename=REAL_NUMBER, align=right, "
-                "ascii_char_width=4, "
-                "integer_digits=1, decimal_places=1, additional_format_len=1",
+                "data=-1.1, type=REAL_NUMBER, align=right, "
+                "ascii_width=4, int_digits=1, decimal_places=1, extra_len=1",
             ],
             [
                 -12.234,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=-12.23, typename=REAL_NUMBER, align=right, "
-                "ascii_char_width=6, "
-                "integer_digits=2, decimal_places=2, additional_format_len=1",
+                "data=-12.23, type=REAL_NUMBER, align=right, "
+                "ascii_width=6, int_digits=2, decimal_places=2, extra_len=1",
             ],
             [
                 0.01,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=0.01, typename=REAL_NUMBER, align=right, "
-                "ascii_char_width=4, "
-                "integer_digits=1, decimal_places=2, additional_format_len=0",
+                "data=0.01, type=REAL_NUMBER, align=right, "
+                "ascii_width=4, int_digits=1, decimal_places=2, extra_len=0",
             ],
             [
                 "abcdefg",
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=abcdefg, typename=STRING, align=left, "
-                "ascii_char_width=7, length=7, additional_format_len=0",
+                "data=abcdefg, type=STRING, align=left, ascii_width=7, length=7, extra_len=0",
             ],
             [
                 "いろは",
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=いろは, typename=STRING, align=left, "
-                "ascii_char_width=6, length=3, additional_format_len=0",
+                "data=いろは, type=STRING, align=left, ascii_width=6, length=3, extra_len=0",
             ],
             [
                 None,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=None, typename=NONE, align=left, "
-                "ascii_char_width=4, additional_format_len=0",
+                "data=None, type=NONE, align=left, ascii_width=4, extra_len=0",
             ],
             [
                 True,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=True, typename=BOOL, align=left, "
-                "ascii_char_width=4, additional_format_len=0",
+                "data=True, type=BOOL, align=left, ascii_width=4, extra_len=0",
             ],
             [
                 DATATIME_DATA,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=2017-01-02 03:04:05, typename=DATETIME, align=left, "
-                "ascii_char_width=19, additional_format_len=0",
+                "data=2017-01-02 03:04:05, type=DATETIME, align=left, "
+                "ascii_width=19, extra_len=0",
             ],
             [
                 "2017-01-02 03:04:05",
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=2017-01-02 03:04:05, typename=STRING, align=left, "
-                "ascii_char_width=19, length=19, additional_format_len=0",
+                "data=2017-01-02 03:04:05, type=STRING, align=left, "
+                "ascii_width=19, length=19, extra_len=0",
             ],
             [
                 "2017-01-02 03:04:05+0900",
                 MIN_STRICT_LEVEL_MAP,
-                "data=2017-01-02 03:04:05+09:00, typename=DATETIME, align=left, "
-                "ascii_char_width=24, additional_format_len=0",
+                "data=2017-01-02 03:04:05+09:00, type=DATETIME, align=left, "
+                "ascii_width=24, extra_len=0",
             ],
             [
                 inf,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=Infinity, typename=INFINITY, align=left, "
-                "ascii_char_width=8, additional_format_len=0",
+                "data=Infinity, type=INFINITY, align=left, ascii_width=8, extra_len=0",
             ],
             [
                 nan,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=NaN, typename=NAN, align=left, "
-                "ascii_char_width=3, additional_format_len=0",
+                "data=NaN, type=NAN, align=left, ascii_width=3, extra_len=0",
             ],
             [
                 ["side", "where"],
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=['side', 'where'], typename=LIST, align=left, "
-                "ascii_char_width=17, length=2, additional_format_len=0",
+                "data=['side', 'where'], type=LIST, align=left, "
+                "ascii_width=17, length=2, extra_len=0",
             ],
             [
                 ["い", "ろは"],
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=['い', 'ろは'], typename=LIST, align=left, "
-                "ascii_char_width=14, length=2, additional_format_len=0",
+                "data=['い', 'ろは'], type=LIST, align=left, ascii_width=14, length=2, extra_len=0",
             ],
         ],
     )

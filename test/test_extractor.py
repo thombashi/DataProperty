@@ -392,8 +392,8 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.decimal_places == 0
         assert dp.format_str == "{:d}"
         assert text_type(dp) == (
-            "column=0, typename=INTEGER, align=right, "
-            "ascii_char_width=1, bit_len=2, integer_digits=1, decimal_places=0"
+            "column=0, type=INTEGER, align=right, "
+            "ascii_width=1, bit_len=2, int_digits=1, decimal_places=0"
         )
 
         col_idx += 1

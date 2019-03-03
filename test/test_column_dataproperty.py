@@ -119,9 +119,9 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 1
 
         assert text_type(col_dp) == (
-            "typename=REAL_NUMBER, align=right, ascii_char_width=6, "
-            "integer_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
-            "additional_format_len=(min=0, max=1)"
+            "type=REAL_NUMBER, align=right, ascii_width=6, "
+            "int_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
+            "extra_len=(min=0, max=1)"
         )
 
     def test_normal_number_1(self):
@@ -146,8 +146,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert text_type(col_dp) == (
-            "typename=REAL_NUMBER, align=right, ascii_char_width=8, "
-            "integer_digits=1, decimal_places=0"
+            "type=REAL_NUMBER, align=right, ascii_width=8, " "int_digits=1, decimal_places=0"
         )
 
     def test_normal_number_2(self):
@@ -172,9 +171,9 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 1
 
         assert text_type(col_dp) == (
-            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=1, decimal_places=(min=0, max=1), "
-            "additional_format_len=(min=0, max=1)"
+            "type=REAL_NUMBER, align=right, ascii_width=4, "
+            "int_digits=1, decimal_places=(min=0, max=1), "
+            "extra_len=(min=0, max=1)"
         )
 
     def test_normal_number_3(self):
@@ -199,8 +198,8 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert text_type(col_dp) == (
-            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=1, decimal_places=(min=1, max=2)"
+            "type=REAL_NUMBER, align=right, ascii_width=4, "
+            "int_digits=1, decimal_places=(min=1, max=2)"
         )
 
     def test_normal_number_4(self):
@@ -224,8 +223,8 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert text_type(col_dp) == (
-            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=1, decimal_places=(min=0, max=2)"
+            "type=REAL_NUMBER, align=right, ascii_width=4, "
+            "int_digits=1, decimal_places=(min=0, max=2)"
         )
 
     def test_normal_number_5(self):
@@ -249,8 +248,8 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert text_type(col_dp) == (
-            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=1, decimal_places=(min=1, max=2)"
+            "type=REAL_NUMBER, align=right, ascii_width=4, "
+            "int_digits=1, decimal_places=(min=1, max=2)"
         )
 
     def test_normal_inf(self):
@@ -274,7 +273,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
-        assert text_type(col_dp) == ("typename=INFINITY, align=left, ascii_char_width=8")
+        assert text_type(col_dp) == ("type=INFINITY, align=left, ascii_width=8")
 
     def test_normal_mix_0(self):
         col_dp = ColumnDataProperty()
@@ -298,9 +297,9 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 1
 
         assert text_type(col_dp) == (
-            "typename=STRING, align=left, ascii_char_width=7, "
-            "integer_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
-            "additional_format_len=(min=0, max=1)"
+            "type=STRING, align=left, ascii_width=7, "
+            "int_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
+            "extra_len=(min=0, max=1)"
         )
 
     def test_normal_number_ansi_escape(self):
@@ -325,9 +324,9 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 1
 
         assert text_type(col_dp) == (
-            "typename=REAL_NUMBER, align=right, ascii_char_width=4, "
-            "integer_digits=1, decimal_places=(min=0, max=1), "
-            "additional_format_len=(min=0, max=1)"
+            "type=REAL_NUMBER, align=right, ascii_width=4, "
+            "int_digits=1, decimal_places=(min=0, max=1), "
+            "extra_len=(min=0, max=1)"
         )
 
     def test_normal_mix_ansi_escape(self):
@@ -357,9 +356,9 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 1
 
         assert text_type(col_dp) == (
-            "typename=STRING, align=left, ascii_char_width=7, "
-            "integer_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
-            "additional_format_len=(min=0, max=1)"
+            "type=STRING, align=left, ascii_width=7, "
+            "int_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
+            "extra_len=(min=0, max=1)"
         )
 
     @pytest.mark.parametrize(["values", "expected"], [[[0, 1, 0, 1], 1], [[-128, 0, 127, None], 8]])
@@ -404,7 +403,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
-        assert text_type(col_dp) == ("typename=STRING, align=left, ascii_char_width=6")
+        assert text_type(col_dp) == ("type=STRING, align=left, ascii_width=6")
 
     @pytest.mark.parametrize(["ambiguous_width", "ascii_char_width"], [[2, 6], [1, 3]])
     def test_normal_east_asian_ambiguous_width(self, ambiguous_width, ascii_char_width):
@@ -452,9 +451,9 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.max_value == 1
 
         assert text_type(col_dp) == (
-            "typename=REAL_NUMBER, align=right, ascii_char_width=100, "
-            "integer_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
-            "additional_format_len=(min=0, max=1)"
+            "type=REAL_NUMBER, align=right, ascii_width=100, "
+            "int_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
+            "extra_len=(min=0, max=1)"
         )
 
     def test_extend_width(self):

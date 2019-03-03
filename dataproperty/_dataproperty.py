@@ -223,9 +223,9 @@ class DataProperty(DataPeropertyBase):
 
         element_list.extend(
             [
-                "typename={:s}".format(self.typename),
+                "type={:s}".format(self.typename),
                 "align={}".format(self.align.align_string),
-                "ascii_char_width={:d}".format(self.ascii_char_width),
+                "ascii_width={:d}".format(self.ascii_char_width),
             ]
         )
 
@@ -233,13 +233,13 @@ class DataProperty(DataPeropertyBase):
             element_list.append("length={}".format(self.length))
 
         if Integer(self.integer_digits).is_type():
-            element_list.append("integer_digits={}".format(self.integer_digits))
+            element_list.append("int_digits={}".format(self.integer_digits))
 
         if Integer(self.decimal_places).is_type():
             element_list.append("decimal_places={}".format(self.decimal_places))
 
         if Integer(self.additional_format_len).is_type():
-            element_list.append("additional_format_len={}".format(self.additional_format_len))
+            element_list.append("extra_len={}".format(self.additional_format_len))
 
         return ", ".join(element_list)
 
