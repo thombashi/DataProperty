@@ -565,11 +565,11 @@ class DataPropertyExtractor(object):
                     _to_dp_list_helper(
                         self,
                         col_idx,
-                        data_list,
+                        values,
                         self.__get_col_type_hint(col_idx),
                         self.strip_str_value,
                     )[1]
-                    for col_idx, data_list in enumerate(zip(*value_matrix))
+                    for col_idx, values in enumerate(zip(*value_matrix))
                 ]
             )
         )
@@ -586,11 +586,11 @@ class DataPropertyExtractor(object):
                         _to_dp_list_helper,
                         self,
                         col_idx,
-                        data_list,
+                        values,
                         self.__get_col_type_hint(col_idx),
                         self.strip_str_value,
                     )
-                    for col_idx, data_list in enumerate(zip(*value_matrix))
+                    for col_idx, values in enumerate(zip(*value_matrix))
                 ]
 
                 for future in futures.as_completed(future_list):
