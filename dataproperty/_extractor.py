@@ -610,18 +610,18 @@ class DataPropertyExtractor(object):
 
         dp_list = []
         for data in data_list:
-            expect_type_hist = type_hint
+            expect_type_hint = type_hint
             if type_hint is None:
                 try:
-                    expect_type_hist, _count = type_counter.most_common(1)[0]
-                    if not expect_type_hist(data, strict_level=StrictLevel.MAX).is_type():
-                        expect_type_hist = None
+                    expect_type_hint, _count = type_counter.most_common(1)[0]
+                    if not expect_type_hint(data, strict_level=StrictLevel.MAX).is_type():
+                        expect_type_hint = None
                 except IndexError:
                     pass
 
             dataprop = self.__to_dp(
                 data=data,
-                type_hint=expect_type_hist,
+                type_hint=expect_type_hint,
                 strip_str=strip_str,
                 strict_level_map=strict_level_map,
             )
