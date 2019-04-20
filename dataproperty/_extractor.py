@@ -428,6 +428,8 @@ class DataPropertyExtractor(object):
                     )
                 )
             )
+        else:
+            logs.append("    column_type_hints=()")
 
         for log in logs:
             logger.debug(log)
