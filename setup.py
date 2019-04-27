@@ -48,7 +48,7 @@ with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
 
 with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     tests_requires = [line.strip() for line in f if line.strip()]
-    if sys.version_info[0:2] <= (2, 7):
+    if sys.version_info[0] == 2:
         tests_requires.append("pytest<=2.9.2")
     else:
         tests_requires.append("pytest")
