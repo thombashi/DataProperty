@@ -2,11 +2,11 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import enum
+from enum import Enum, auto, unique
 
 
-@enum.unique
-class LineBreakHandling(enum.Enum):
-    NOP = 0
-    REPLACE = 1
-    ESCAPE = 2
+@unique
+class LineBreakHandling(Enum):
+    NOP = auto()
+    REPLACE = auto()
+    ESCAPE = auto()
