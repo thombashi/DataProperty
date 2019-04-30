@@ -33,6 +33,8 @@ if six.PY2:
     sys.setdefaultencoding("utf-8")
 
 
+dateutil = pytest.importorskip("dateutil", minversion="2.7")
+
 DATATIME_DATA = datetime.datetime(2017, 1, 2, 3, 4, 5)
 
 nan = float("nan")
