@@ -29,14 +29,6 @@ A Python library for extract property from data.
     :alt: Test coverage
 
 
-Installation
-============
-
-::
-
-    pip install DataProperty
-
-
 Usage
 =====
 
@@ -200,6 +192,24 @@ Example data set and result are as follows:
 
 
 Full example source code can be found at *examples/py/to_column_dp_list.py*
+
+
+Installation
+============
+
+Install from PyPI
+------------------------------
+::
+
+    pip install DataProperty
+
+Install from PPA (for Ubuntu)
+------------------------------
+::
+
+    sudo add-apt-repository ppa:thombashi/ppa
+    sudo apt update
+    sudo apt install python3-dataproperty
 
 
 Dependencies
