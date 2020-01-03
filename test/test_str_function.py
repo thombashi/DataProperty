@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 import itertools
 
 import pytest
+
 from dataproperty import calc_ascii_char_width, is_multibyte_str
 
 

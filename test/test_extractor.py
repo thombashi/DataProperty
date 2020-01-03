@@ -11,9 +11,10 @@ from decimal import Decimal
 
 import pytest
 import six
-from dataproperty import Align, DataPropertyExtractor, Format, LineBreakHandling, MatrixFormatting
 from six import text_type
 from typepy import DateTime, RealNumber, String, Typecode
+
+from dataproperty import Align, DataPropertyExtractor, Format, LineBreakHandling, MatrixFormatting
 
 from .common import get_strict_level_map
 

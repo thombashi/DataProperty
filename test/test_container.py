@@ -8,9 +8,10 @@ from __future__ import unicode_literals
 
 import pytest
 import six
-from dataproperty import MinMaxContainer
 from six import text_type
 from typepy import Nan
+
+from dataproperty import MinMaxContainer
 
 
 @pytest.fixture

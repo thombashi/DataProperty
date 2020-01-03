@@ -12,7 +12,6 @@ from ipaddress import ip_address
 
 import pytest
 import six
-from dataproperty import Align, ColumnDataProperty, DataProperty, Format
 from six import text_type
 from termcolor import colored
 from typepy import (
@@ -30,6 +29,8 @@ from typepy import (
     String,
     Typecode,
 )
+
+from dataproperty import Align, ColumnDataProperty, DataProperty, Format
 
 
 nan = float("nan")

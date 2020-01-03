@@ -13,6 +13,10 @@ from decimal import Decimal
 
 import pytest
 import six
+from six import text_type
+from termcolor import colored
+from typepy import Bool, DateTime, Integer, Nan, RealNumber, StrictLevel, String, Typecode
+
 from dataproperty import (
     MIN_STRICT_LEVEL_MAP,
     Align,
@@ -21,9 +25,6 @@ from dataproperty import (
     Format,
     LineBreakHandling,
 )
-from six import text_type
-from termcolor import colored
-from typepy import Bool, DateTime, Integer, Nan, RealNumber, String, Typecode
 
 from .common import get_strict_level_map
 

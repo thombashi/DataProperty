@@ -5,9 +5,10 @@
 """
 
 import pytest
+from typepy import Typecode
+
 from dataproperty import Align
 from dataproperty._align_getter import AlignGetter
-from typepy import Typecode
 
 
 @pytest.fixture

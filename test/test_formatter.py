@@ -3,10 +3,11 @@
 from __future__ import unicode_literals
 
 import pytest
+from typepy import Typecode
+
 from dataproperty import Format
 from dataproperty._common import DefaultValue
 from dataproperty._formatter import Formatter
-from typepy import Typecode
 
 
 dt_format = DefaultValue.DATETIME_FORMAT
