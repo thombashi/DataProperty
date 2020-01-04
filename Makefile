@@ -12,7 +12,7 @@ build:
 .PHONY: check
 check:
 	python setup.py check
-	codespell -q2 $(PACKAGE) examples test README.rst
+	codespell -q2 dataproperty examples test README.rst
 	travis lint
 	pylama
 
