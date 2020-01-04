@@ -13,7 +13,6 @@ exclude = '''
     | dist
 )/
 | docs/conf.py
-| setup.py
 '''
 
 [tool.isort]
