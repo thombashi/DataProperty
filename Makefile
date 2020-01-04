@@ -9,6 +9,13 @@ build:
 	@python setup.py clean --all
 	ls -lh dist/*
 
+.PHONY: check
+check:
+	python setup.py check
+	codespell -q2 $(PACKAGE) examples test README.rst
+	travis lint
+	pylama
+
 .PHONY: clean
 clean:
 	@rm -rf $(PACKAGE)-*.*.*/ \
@@ -33,3 +40,7 @@ fmt:
 release:
 	@python setup.py release --sign
 	@make clean
+
+.PHONY: setup
+setup:
+	@pip install --upgrade .[dev] tox
