@@ -351,7 +351,9 @@ class DataProperty(DataPeropertyBase):
                 return
 
         for type_class in self.__type_class_list:
-            strict_level = strict_level_map.get(type_class(None).typecode, False)
+            strict_level = strict_level_map.get(
+                type_class(None).typecode, strict_level_map.get("default", StrictLevel.MAX)
+            )
 
             if self.__try_convert_type(data, type_class, strict_level, float_type):
                 return
