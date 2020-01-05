@@ -16,6 +16,10 @@ A Python library for extract property from data.
    :target: https://pypi.org/project/DataProperty
     :alt: Supported Python versions
 
+.. image:: https://img.shields.io/pypi/implementation/DataProperty.svg
+    :target: https://pypi.org/project/DataProperty
+    :alt: Supported Python implementations
+
 .. image:: https://img.shields.io/travis/thombashi/DataProperty/master.svg?label=Linux/macOS%20CI
     :target: https://travis-ci.org/thombashi/DataProperty
     :alt: Linux/macOS CI status
