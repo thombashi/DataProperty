@@ -7,6 +7,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import re
+from decimal import Decimal
 
 import six
 from mbstrdecoder import MultiByteStrDecoder
@@ -268,7 +269,7 @@ class DataProperty(DataPeropertyBase):
 
         format_len = 0
 
-        if float(self.data) < 0:
+        if Decimal(self.data) < 0:
             # for minus character
             format_len += 1
 
