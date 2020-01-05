@@ -15,6 +15,7 @@ from decimal import Decimal
 from mbstrdecoder import MultiByteStrDecoder
 from six import text_type
 from six.moves import range
+from typepy import Integer, RealNumber, TypeConversionError
 
 
 decimal.setcontext(decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
@@ -23,24 +24,27 @@ _ansi_escape = re.compile(r"(\x9b|\x1b\[)[0-?]*[ -\/]*[@-~]", re.IGNORECASE)
 
 
 def get_integer_digit(value):
-    from typepy import RealNumber, TypeConversionError
-
     float_type = RealNumber(value)
 
     try:
         abs_value = abs(float_type.convert())
     except TypeConversionError:
-        raise ValueError(
-            "the value must be a number: value='{}' type='{}'".format(value, type(value))
-        )
+        try:
+            abs_value = abs(Integer(value).convert())
+        except TypeConversionError:
+            raise ValueError(
+                "the value must be a number: value='{}' type='{}'".format(value, type(value))
+            )
+
+        return len(text_type(abs_value))
 
     if abs_value.is_zero():
         return 1
 
     try:
         return len(text_type(abs_value.quantize(Decimal("1."), rounding=decimal.ROUND_DOWN)))
-    except decimal.InvalidOperation as e:
-        raise ValueError(e)
+    except decimal.InvalidOperation:
+        return len(text_type(abs_value))
 
 
 class DigitCalculator(object):

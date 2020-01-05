@@ -166,40 +166,42 @@ class Test_DataPeroperty_data_typecode(object):
         assert dp.typecode == expected_typecode
 
     @pytest.mark.parametrize(
-        ["value", "type_hint", "is_strict", "expected_typecode"],
+        ["value", "type_hint", "strict_level", "expected_typecode"],
         [
-            ["2017-01-02 03:04:05", None, False, Typecode.DATETIME],
-            ["2017-01-02 03:04:05", None, True, Typecode.STRING],
-            ["2017-01-02 03:04:05", DateTime, False, Typecode.DATETIME],
-            ["2017-01-02 03:04:05", DateTime, True, Typecode.DATETIME],
-            ["2017-01-02 03:04:05", Integer, False, Typecode.DATETIME],
-            ["2017-01-02 03:04:05", Integer, True, Typecode.STRING],
-            [DATATIME_DATA, None, False, Typecode.DATETIME],
-            [DATATIME_DATA, None, True, Typecode.DATETIME],
-            [DATATIME_DATA, String, False, Typecode.STRING],
-            [DATATIME_DATA, String, True, Typecode.STRING],
-            ["100-0002", None, False, Typecode.STRING],
-            [1, String, True, Typecode.STRING],
-            [1, String, False, Typecode.STRING],
-            [float("inf"), RealNumber, True, Typecode.INFINITY],
-            [float("inf"), RealNumber, False, Typecode.INFINITY],
-            [1, RealNumber, True, Typecode.INTEGER],
-            [1, RealNumber, False, Typecode.INTEGER],
-            [1.1, Integer, True, Typecode.INTEGER],
-            [1.1, Integer, False, Typecode.INTEGER],
-            ["true", None, True, Typecode.STRING],
-            ["false", None, True, Typecode.STRING],
-            ["true", None, False, Typecode.BOOL],
-            ["false", None, False, Typecode.BOOL],
-            ["true", Bool, False, Typecode.BOOL],
-            ["false", Bool, False, Typecode.BOOL],
+            ["2017-01-02 03:04:05", None, StrictLevel.MIN, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", None, StrictLevel.MAX, Typecode.STRING],
+            ["2017-01-02 03:04:05", DateTime, StrictLevel.MIN, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", DateTime, StrictLevel.MAX, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", Integer, StrictLevel.MIN, Typecode.DATETIME],
+            ["2017-01-02 03:04:05", Integer, StrictLevel.MAX, Typecode.STRING],
+            [DATATIME_DATA, None, StrictLevel.MIN, Typecode.DATETIME],
+            [DATATIME_DATA, None, StrictLevel.MAX, Typecode.DATETIME],
+            [DATATIME_DATA, String, StrictLevel.MIN, Typecode.STRING],
+            [DATATIME_DATA, String, StrictLevel.MAX, Typecode.STRING],
+            ["100-0002", None, StrictLevel.MIN, Typecode.STRING],
+            ["45e76582", None, StrictLevel.MIN, Typecode.INTEGER],
+            ["45e76582", None, StrictLevel.MAX, Typecode.STRING],
+            ["4.5e-4", None, StrictLevel.MIN, Typecode.INTEGER],
+            ["4.5e-4", None, StrictLevel.MIN + 1, Typecode.REAL_NUMBER],
+            ["4.5e-4", None, StrictLevel.MAX, Typecode.STRING],
+            [1, String, StrictLevel.MAX, Typecode.STRING],
+            [1, String, StrictLevel.MIN, Typecode.STRING],
+            [float("inf"), RealNumber, StrictLevel.MAX, Typecode.INFINITY],
+            [float("inf"), RealNumber, StrictLevel.MIN, Typecode.INFINITY],
+            [1, RealNumber, StrictLevel.MAX, Typecode.INTEGER],
+            [1, RealNumber, StrictLevel.MIN, Typecode.INTEGER],
+            [1.1, Integer, StrictLevel.MAX, Typecode.INTEGER],
+            [1.1, Integer, StrictLevel.MIN, Typecode.INTEGER],
+            ["true", None, StrictLevel.MAX, Typecode.STRING],
+            ["false", None, StrictLevel.MAX, Typecode.STRING],
+            ["true", None, StrictLevel.MIN, Typecode.BOOL],
+            ["false", None, StrictLevel.MIN, Typecode.BOOL],
+            ["true", Bool, StrictLevel.MIN, Typecode.BOOL],
+            ["false", Bool, StrictLevel.MIN, Typecode.BOOL],
         ],
     )
-    def test_normal_type_hint(self, value, type_hint, is_strict, expected_typecode):
-
-        dp = DataProperty(
-            value, type_hint=type_hint, strict_level_map=get_strict_level_map(is_strict)
-        )
+    def test_normal_type_hint(self, value, type_hint, strict_level, expected_typecode):
+        dp = DataProperty(value, type_hint=type_hint, strict_level_map={"default": strict_level})
 
         assert dp.typecode == expected_typecode
 
@@ -336,6 +338,7 @@ class Test_DataPeroperty_len(object):
             ["000", 1, None],
             ["123456789", 9, None],
             ["-123456789", 10, None],
+            ["45e76582", 8, 8],
             ["a", 1, 1],
             ["a" * 1000, 1000, 1000],
             ["あ", 2, 1],
