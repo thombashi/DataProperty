@@ -70,6 +70,7 @@ setuptools.setup(
     keywords=["data", "property"],
     license=pkg_info["__license__"],
     long_description=long_description,
+    long_description_content_type="text/x-rst",
     maintainer=pkg_info["__author__"],
     maintainer_email=pkg_info["__email__"],
     packages=setuptools.find_packages(exclude=["test*"]),
