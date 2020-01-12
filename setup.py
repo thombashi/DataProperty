@@ -81,7 +81,6 @@ setuptools.setup(
     tests_require=tests_requires,
     extras_require={
         "dev": ["releasecmd>=0.1.0,<1", "twine", "wheel"]
-        + ["autoflake", "black", "isort"]
         + ["codespell", "pylama"]
         + docs_requires,
         "logging": ["Logbook>=0.12.3,<2.0.0"],
