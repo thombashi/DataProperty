@@ -11,10 +11,8 @@ build:
 
 .PHONY: check
 check:
-	python setup.py check
-	codespell -q2 dataproperty examples test README.rst
+	tox -e lint
 	travis lint
-	pylama
 
 .PHONY: clean
 clean:

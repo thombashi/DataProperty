@@ -80,9 +80,7 @@ setuptools.setup(
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
     extras_require={
-        "dev": ["releasecmd>=0.1.0,<1", "twine", "wheel"]
-        + ["codespell", "pylama"]
-        + docs_requires,
+        "dev": ["releasecmd>=0.2.0,<1", "twine", "wheel"] + docs_requires,
         "logging": ["Logbook>=0.12.3,<2.0.0"],
         "test": tests_requires,
     },
