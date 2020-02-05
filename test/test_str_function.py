@@ -40,7 +40,7 @@ class Test_is_multibyte_str(object):
         assert is_multibyte_str(value) == expected
 
 
-class Test_get_ascii_char_width(object):
+class Test_calc_ascii_char_width(object):
     @pytest.mark.parametrize(
         ["value", "expected"], [["吾輩は猫である", 14], ["いaろbはc", 9], ["abcdef", 6], ["", 0]]
     )
