@@ -76,10 +76,7 @@ setuptools.setup(
     install_requires=setuptools_require + install_requires,
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
-    extras_require={
-        "logging": ["Logbook>=0.12.3,<2.0.0"],
-        "test": tests_requires,
-    },
+    extras_require={"logging": ["loguru>=0.4.1,<1"], "test": tests_requires},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",

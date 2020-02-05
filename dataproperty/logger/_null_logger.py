@@ -4,19 +4,16 @@
 class NullLogger(object):
     level_name = None
 
-    def catch_exceptions(self, *args, **kwargs):  # pragma: no cover
-        pass
-
     def critical(self, *args, **kwargs):  # pragma: no cover
         pass
 
     def debug(self, *args, **kwargs):  # pragma: no cover
         pass
 
-    def disable(self):  # pragma: no cover
+    def disable(self, name):  # pragma: no cover
         pass
 
-    def enable(self):  # pragma: no cover
+    def enable(self, name):  # pragma: no cover
         pass
 
     def error(self, *args, **kwargs):  # pragma: no cover
@@ -34,7 +31,10 @@ class NullLogger(object):
     def notice(self, *args, **kwargs):  # pragma: no cover
         pass
 
-    def warn(self, *args, **kwargs):  # pragma: no cover
+    def success(self, *args, **kwargs):  # pragma: no cover
+        pass
+
+    def trace(self, *args, **kwargs):  # pragma: no cover
         pass
 
     def warning(self, *args, **kwargs):  # pragma: no cover

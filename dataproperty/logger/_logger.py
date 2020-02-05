@@ -9,35 +9,23 @@ from __future__ import absolute_import, unicode_literals
 from ._null_logger import NullLogger
 
 
-def _disable_logger(l):
-    try:
-        l.disable()
-    except AttributeError:
-        l.disabled = True  # to support Logbook<1.0.0
-
+MODULE_NAME = "dataproperty"
 
 try:
-    import logbook
+    from loguru import logger
 
-    logger = logbook.Logger("DataProperty")
-    _disable_logger(logger)
-    LOGBOOK_INSTALLED = True
+    logger.disable(MODULE_NAME)
+    LOGURU_INSTALLED = True
 except ImportError:
     logger = NullLogger()
-    LOGBOOK_INSTALLED = False
+    LOGURU_INSTALLED = False
 
 
 def set_logger(is_enable):
-    if not LOGBOOK_INSTALLED:
-        return
-
     if is_enable:
-        try:
-            logger.enable()
-        except AttributeError:
-            logger.disabled = False  # to support Logbook<1.0.0
+        logger.enable("MODULE_NAME")
     else:
-        _disable_logger(logger)
+        logger.disable("MODULE_NAME")
 
 
 def set_log_level(log_level):
@@ -52,18 +40,5 @@ def set_log_level(log_level):
     :raises LookupError: If ``log_level`` is an invalid value.
     """
 
-    if not LOGBOOK_INSTALLED:
-        return
-
-    # validate log level
-    logbook.get_level_name(log_level)
-
-    if log_level == logger.level:
-        return
-
-    if log_level == logbook.NOTSET:
-        set_logger(is_enable=False)
-    else:
-        set_logger(is_enable=True)
-
-    logger.level = log_level
+    # deprecated
+    return
