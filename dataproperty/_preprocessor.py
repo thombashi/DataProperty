@@ -39,12 +39,14 @@ class Preprocessor(object):
         replace_tabs_with_spaces=True,
         tab_length=2,
         line_break_handling=None,
+        line_break_repl=" ",
         is_escape_html_tag=False,
     ):
         self.strip_str = strip_str
         self.replace_tabs_with_spaces = replace_tabs_with_spaces
         self.tab_length = tab_length
         self.line_break_handling = line_break_handling
+        self.line_break_repl = line_break_repl
         self.is_escape_html_tag = is_escape_html_tag
 
     def __repr__(self):
@@ -54,6 +56,7 @@ class Preprocessor(object):
                 "replace_tabs_with_spaces={}".format(self.replace_tabs_with_spaces),
                 "tab_length={}".format(self.tab_length),
                 "line_break_handling={}".format(self.line_break_handling),
+                "line_break_repl={}".format(self.line_break_repl),
                 "is_escape_html_tag={}".format(self.is_escape_html_tag),
             ]
         )
@@ -115,7 +118,7 @@ class Preprocessor(object):
 
         try:
             if lbh == LineBreakHandling.REPLACE:
-                return _RE_LINE_BREAK.sub(" ", data)
+                return _RE_LINE_BREAK.sub(self.line_break_repl, data)
 
             if lbh == LineBreakHandling.ESCAPE:
                 return data.replace("\n", "\\n").replace("\r", "\\r")

@@ -507,11 +507,13 @@ class DataPropertyExtractor(object):
         if preprocessor:
             preprocessor = Preprocessor(
                 line_break_handling=preprocessor.line_break_handling,
+                line_break_repl=preprocessor.line_break_repl,
                 strip_str=preprocessor.strip_str,
             )
         else:
             preprocessor = Preprocessor(
                 line_break_handling=self.preprocessor.line_break_handling,
+                line_break_repl=self.preprocessor.line_break_repl,
                 strip_str=self.preprocessor.strip_str,
             )
 
@@ -661,9 +663,9 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def __update_dp_converter(self):
-
         preprocessor = Preprocessor(
             line_break_handling=self.__preprocessor.line_break_handling,
+            line_break_repl=self.preprocessor.line_break_repl,
             is_escape_html_tag=self.__preprocessor.is_escape_html_tag,
         )
         self.__dp_converter = DataPropertyConverter(

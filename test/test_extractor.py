@@ -359,6 +359,29 @@ class Test_DataPropertyExtractor_to_dp_list(object):
         for dp, value in zip(dp_list, expected):
             assert dp.data == value
 
+    @pytest.mark.parametrize(
+        ["value", "line_break_handling", "line_break_repl", "expected"],
+        [
+            [["a\nb", "a\r\nb"], LineBreakHandling.NOP, "<br>", ["a\nb", "a\r\nb"]],
+            [
+                ["a\nb", "a\r\nb", "a\r\n\nb"],
+                LineBreakHandling.REPLACE,
+                "<br>",
+                ["a<br>b", "a<br>b", "a<br><br>b"],
+            ],
+        ],
+    )
+    def test_normal_line_break_repl(
+        self, dp_extractor, value, line_break_handling, line_break_repl, expected
+    ):
+        dp_extractor.preprocessor = Preprocessor(
+            line_break_handling=line_break_handling, line_break_repl=line_break_repl
+        )
+        dp_list = dp_extractor.to_dp_list(value)
+
+        for dp, value in zip(dp_list, expected):
+            assert dp.data == value, value
+
 
 class Test_DataPropertyExtractor_to_column_dp_list(object):
     TEST_DATA_MATRIX = [

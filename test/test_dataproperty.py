@@ -430,6 +430,27 @@ class Test_DataPeroperty_line_break_handling(object):
         )
 
 
+class Test_DataPeroperty_line_break_repl(object):
+    @pytest.mark.parametrize(
+        ["value", "line_break_handling", "line_break_repl", "expected"],
+        [
+            ["a\nb", LineBreakHandling.REPLACE, "<br>", "a<br>b"],
+            ["a\n\r\n\nb", LineBreakHandling.REPLACE, "<br>", "a<br><br><br>b"],
+            ["a\nb", LineBreakHandling.NOP, "<br>", "a\nb"],
+        ],
+    )
+    def test_normal(self, value, line_break_handling, line_break_repl, expected):
+        assert (
+            DataProperty(
+                value,
+                preprocessor=Preprocessor(
+                    line_break_handling=line_break_handling, line_break_repl=line_break_repl
+                ),
+            ).data
+            == expected
+        )
+
+
 class Test_DataPeroperty_get_padding_len(object):
     @pytest.mark.skipif("six.PY2")
     @pytest.mark.parametrize(
