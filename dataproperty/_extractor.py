@@ -152,16 +152,6 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def column_type_hint_list(self):
-        # deprecated: alias to column_type_hints
-        return self.column_type_hints
-
-    @column_type_hint_list.setter
-    def column_type_hint_list(self, value):
-        # deprecated: alias to column_type_hints
-        self.column_type_hints = value
-
-    @property
     def line_break_handling(self):
         return self.__line_break_handling
 
@@ -299,20 +289,6 @@ class DataPropertyExtractor(object):
             return
 
         self.__type_value_map = value
-        self.__clear_cache()
-
-    @property
-    def trans_func(self):
-        # deprecated
-        return self.__trans_func
-
-    @trans_func.setter
-    def trans_func(self, value):
-        # deprecated
-        if self.__trans_func is value:
-            return
-
-        self.__trans_func = value
         self.__clear_cache()
 
     def register_trans_func(self, trans_func):
