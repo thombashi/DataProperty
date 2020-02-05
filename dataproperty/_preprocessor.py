@@ -39,6 +39,17 @@ class Preprocessor(object):
         self.line_break_handling = normalize_lbh(line_break_handling)
         self.is_escape_html_tag = is_escape_html_tag
 
+    def __repr__(self):
+        return ", ".join(
+            [
+                "strip_str={}".format(self.strip_str),
+                "replace_tabs_with_spaces={}".format(self.replace_tabs_with_spaces),
+                "tab_length={}".format(self.tab_length),
+                "line_break_handling={}".format(self.line_break_handling),
+                "is_escape_html_tag={}".format(self.is_escape_html_tag),
+            ]
+        )
+
     def preprocess(self, data):
         data, no_ansi_escape_data = self.__preprocess_string(
             self.__process_line_break(self.__preprocess_data(data, self.strip_str)),
