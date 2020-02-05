@@ -20,7 +20,7 @@ clean:
 
 .PHONY: fmt
 fmt:
-	tox -e fmt
+	@tox -e fmt
 
 .PHONY: release
 release:
