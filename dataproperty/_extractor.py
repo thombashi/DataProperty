@@ -509,12 +509,14 @@ class DataPropertyExtractor(object):
                 line_break_handling=preprocessor.line_break_handling,
                 line_break_repl=preprocessor.line_break_repl,
                 strip_str=preprocessor.strip_str,
+                is_escape_formula_injection=preprocessor.is_escape_formula_injection,
             )
         else:
             preprocessor = Preprocessor(
                 line_break_handling=self.preprocessor.line_break_handling,
                 line_break_repl=self.preprocessor.line_break_repl,
                 strip_str=self.preprocessor.strip_str,
+                is_escape_formula_injection=self.__preprocessor.is_escape_formula_injection,
             )
 
         value_dp = DataProperty(
@@ -667,6 +669,7 @@ class DataPropertyExtractor(object):
             line_break_handling=self.__preprocessor.line_break_handling,
             line_break_repl=self.preprocessor.line_break_repl,
             is_escape_html_tag=self.__preprocessor.is_escape_html_tag,
+            is_escape_formula_injection=self.__preprocessor.is_escape_formula_injection,
         )
         self.__dp_converter = DataPropertyConverter(
             preprocessor=preprocessor,

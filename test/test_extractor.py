@@ -382,6 +382,32 @@ class Test_DataPropertyExtractor_to_dp_list(object):
         for dp, value in zip(dp_list, expected):
             assert dp.data == value, value
 
+    @pytest.mark.parametrize(
+        ["value", "escape_formula_injection", "expected"],
+        [
+            [
+                ["a+b", "=a+b", "-a+b", "+a+b", "@a+b"],
+                True,
+                ["a+b", "'=a+b", "'-a+b", "'+a+b", "'@a+b"],
+            ],
+            [
+                ["a+b", "=a+b", "-a+b", "+a+b", "@a+b"],
+                False,
+                ["a+b", "=a+b", "-a+b", "+a+b", "@a+b"],
+            ],
+        ],
+    )
+    def test_normal_escape_formula_injection(
+        self, dp_extractor, value, escape_formula_injection, expected
+    ):
+        dp_extractor.preprocessor = Preprocessor(
+            is_escape_formula_injection=escape_formula_injection
+        )
+        dp_list = dp_extractor.to_dp_list(value)
+
+        for dp, value in zip(dp_list, expected):
+            assert dp.data == value, value
+
 
 class Test_DataPropertyExtractor_to_column_dp_list(object):
     TEST_DATA_MATRIX = [

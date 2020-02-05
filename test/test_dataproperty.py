@@ -451,6 +451,31 @@ class Test_DataPeroperty_line_break_repl(object):
         )
 
 
+class Test_DataPeroperty_escape_formula_injection(object):
+    @pytest.mark.parametrize(
+        ["value", "escape_formula_injection", "expected"],
+        [
+            ["a+b", True, "a+b"],
+            ["=a+b", True, "'=a+b"],
+            ["=a+b", False, "=a+b"],
+            ["-a+b", True, "'-a+b"],
+            ["-a+b", False, "-a+b"],
+            ["+a+b", True, "'+a+b"],
+            ["+a+b", False, "+a+b"],
+            ["@a+b", True, "'@a+b"],
+            ["@a+b", False, "@a+b"],
+        ],
+    )
+    def test_normal(self, value, escape_formula_injection, expected):
+        assert (
+            DataProperty(
+                value,
+                preprocessor=Preprocessor(is_escape_formula_injection=escape_formula_injection),
+            ).data
+            == expected
+        )
+
+
 class Test_DataPeroperty_get_padding_len(object):
     @pytest.mark.skipif("six.PY2")
     @pytest.mark.parametrize(

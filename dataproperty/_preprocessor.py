@@ -12,6 +12,7 @@ from ._line_break import LineBreakHandling
 
 
 _RE_LINE_BREAK = re.compile(r"\r\n|\n")
+_RE_FORMULA_PREFIX = re.compile(r"^[-\+=@]")
 
 
 def normalize_lbh(value):
@@ -41,6 +42,7 @@ class Preprocessor(object):
         line_break_handling=None,
         line_break_repl=" ",
         is_escape_html_tag=False,
+        is_escape_formula_injection=False,
     ):
         self.strip_str = strip_str
         self.replace_tabs_with_spaces = replace_tabs_with_spaces
@@ -48,6 +50,7 @@ class Preprocessor(object):
         self.line_break_handling = line_break_handling
         self.line_break_repl = line_break_repl
         self.is_escape_html_tag = is_escape_html_tag
+        self.is_escape_formula_injection = is_escape_formula_injection
 
     def __repr__(self):
         return ", ".join(
@@ -57,7 +60,8 @@ class Preprocessor(object):
                 "tab_length={}".format(self.tab_length),
                 "line_break_handling={}".format(self.line_break_handling),
                 "line_break_repl={}".format(self.line_break_repl),
-                "is_escape_html_tag={}".format(self.is_escape_html_tag),
+                "escape_html_tag={}".format(self.is_escape_html_tag),
+                "escape_formula_injection={}".format(self.is_escape_formula_injection),
             ]
         )
 
@@ -92,6 +96,7 @@ class Preprocessor(object):
                     return (data, None)
 
         data = self.__process_line_break(data)
+        data = self.__escape_formula_injection(data)
 
         try:
             return (data, strip_ansi_escape(data))
@@ -126,3 +131,12 @@ class Preprocessor(object):
             return data
 
         raise ValueError("unexpected line_break_handling: {}".format(lbh))
+
+    def __escape_formula_injection(self, data):
+        if not self.is_escape_formula_injection:
+            return data
+
+        if _RE_FORMULA_PREFIX.search(data):
+            return "'" + data
+
+        return data
