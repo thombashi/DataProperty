@@ -11,7 +11,7 @@ from ._function import strip_ansi_escape
 from ._line_break import LineBreakHandling
 
 
-_RE_LINE_BREAK = re.compile("[\r\n]+")
+_RE_LINE_BREAK = re.compile(r"\r\n|\n")
 
 
 def normalize_lbh(value):
