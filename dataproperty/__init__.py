@@ -22,4 +22,5 @@ from ._function import (
     is_multibyte_str,
 )
 from ._line_break import LineBreakHandling
+from ._preprocessor import Preprocessor
 from .logger import set_log_level, set_logger

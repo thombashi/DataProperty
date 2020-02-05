@@ -36,6 +36,7 @@ from ._converter import DataPropertyConverter
 from ._dataproperty import DataProperty
 from ._formatter import Format
 from ._line_break import LineBreakHandling
+from ._preprocessor import Preprocessor
 from .logger import logger
 
 
@@ -525,9 +526,10 @@ class DataPropertyExtractor(object):
     def __to_dp_raw(self, data, type_hint=None, strip_str=None, strict_level_map=None):
         value_dp = DataProperty(
             data,
+            preprocessor=Preprocessor(
+                line_break_handling=self.line_break_handling, strip_str=strip_str,
+            ),
             type_hint=(type_hint if type_hint is not None else self.default_type_hint),
-            line_break_handling=self.line_break_handling,
-            strip_str=strip_str,
             float_type=self.float_type,
             datetime_format_str=self.datetime_format_str,
             strict_level_map=(strict_level_map if type_hint is not None else self.strict_level_map),
@@ -670,11 +672,17 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def __update_dp_converter(self):
-        self.__dp_converter = DataPropertyConverter(
-            type_value_map=self.type_value_map,
-            quoting_flags=self.quoting_flags,
+        from ._preprocessor import Preprocessor
+
+        preprocessor = Preprocessor(
             line_break_handling=self.line_break_handling,
             is_escape_html_tag=self.is_escape_html_tag,
+        )
+
+        self.__dp_converter = DataPropertyConverter(
+            preprocessor=preprocessor,
+            type_value_map=self.type_value_map,
+            quoting_flags=self.quoting_flags,
             datetime_formatter=self.datetime_formatter,
             datetime_format_str=self.datetime_format_str,
             float_type=self.float_type,

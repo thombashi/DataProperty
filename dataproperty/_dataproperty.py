@@ -6,7 +6,6 @@
 
 from __future__ import absolute_import, unicode_literals
 
-import re
 from decimal import Decimal
 
 import six
@@ -32,11 +31,8 @@ from typepy import (
 from ._align_getter import align_getter
 from ._base import DataPeropertyBase
 from ._common import DefaultValue
-from ._function import calc_ascii_char_width, get_number_of_digit, strip_ansi_escape
-from ._line_break import LineBreakHandling
-
-
-_RE_LINE_BREAK = re.compile("[\r\n]+")
+from ._function import calc_ascii_char_width, get_number_of_digit
+from ._preprocessor import Preprocessor
 
 
 class DataProperty(DataPeropertyBase):
@@ -154,16 +150,12 @@ class DataProperty(DataPeropertyBase):
     def __init__(
         self,
         data,
+        preprocessor=None,
         type_hint=None,
-        strip_str=None,
         float_type=None,
         format_flags=None,
         datetime_format_str=DefaultValue.DATETIME_FORMAT,
         strict_level_map=None,
-        replace_tabs_with_spaces=True,
-        tab_length=2,
-        line_break_handling=None,
-        is_escape_html_tag=False,
         east_asian_ambiguous_width=1,
     ):
         super(DataProperty, self).__init__(
@@ -179,12 +171,10 @@ class DataProperty(DataPeropertyBase):
         self.__integer_digits = None
         self.__length = None
 
-        data, no_ansi_escape_data = self.__preprocess_string(
-            self.__process_line_break(self.__preprocess_data(data, strip_str), line_break_handling),
-            replace_tabs_with_spaces,
-            tab_length,
-            is_escape_html_tag,
-        )
+        if preprocessor is None:
+            preprocessor = Preprocessor()
+
+        data, no_ansi_escape_data = preprocessor.preprocess(data)
 
         self.__set_data(data, type_hint, float_type, strict_level_map)
 
@@ -317,18 +307,6 @@ class DataProperty(DataPeropertyBase):
 
         return calc_ascii_char_width(unicode_str, self._east_asian_ambiguous_width)
 
-    @staticmethod
-    def __preprocess_data(data, strip_str):
-        if strip_str is None:
-            return data
-
-        try:
-            return data.strip(strip_str)
-        except AttributeError:
-            return data
-        except UnicodeDecodeError:
-            return MultiByteStrDecoder(data).unicode_str.strip(strip_str)
-
     def __set_data(self, data, type_hint, float_type, strict_level_map):
         if float_type is None:
             float_type = DefaultValue.FLOAT_TYPE
@@ -379,48 +357,3 @@ class DataProperty(DataPeropertyBase):
         self._typecode = type_obj.typecode
 
         return True
-
-    def __preprocess_string(
-        self, raw_data, replace_tabs_with_spaces, tab_length, is_escape_html_tag
-    ):
-        data = raw_data
-
-        if replace_tabs_with_spaces:
-            try:
-                data = data.replace("\t", " " * tab_length)
-            except (TypeError, AttributeError):
-                pass
-
-        if is_escape_html_tag:
-            if six.PY2:
-                import cgi
-
-                data = cgi.escape(data)
-            else:
-                import html
-
-                try:
-                    data = html.escape(data)
-                except AttributeError:
-                    return (data, None)
-
-        try:
-            return (data, strip_ansi_escape(data))
-        except TypeError:
-            return (data, None)
-
-    @staticmethod
-    def __process_line_break(data, line_break_handling):
-        if line_break_handling is None or line_break_handling == LineBreakHandling.NOP:
-            return data
-
-        try:
-            if line_break_handling == LineBreakHandling.REPLACE:
-                return _RE_LINE_BREAK.sub(" ", data)
-
-            if line_break_handling == LineBreakHandling.ESCAPE:
-                return data.replace("\n", "\\n").replace("\r", "\\r")
-        except (TypeError, AttributeError):
-            return data
-
-        raise ValueError("unexpected line_break_handling: {}".format(line_break_handling))

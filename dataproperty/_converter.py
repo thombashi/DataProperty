@@ -20,15 +20,15 @@ class DataPropertyConverter(object):
 
     def __init__(
         self,
+        preprocessor,
         type_value_map=None,
         quoting_flags=None,
-        line_break_handling=None,
-        is_escape_html_tag=False,
         datetime_formatter=None,
         datetime_format_str=None,
         float_type=None,
         strict_level_map=None,
     ):
+        self.__preprocessor = preprocessor
         self.__type_value_map = type_value_map if type_value_map else DefaultValue.TYPE_VALUE_MAP
         self.__quoting_flags = quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS
 
@@ -36,8 +36,6 @@ class DataPropertyConverter(object):
         self.__datetime_format_str = datetime_format_str
         self.__float_type = float_type
         self.__strict_level_map = strict_level_map
-        self.__line_break_handling = line_break_handling
-        self.__is_escape_html_tag = is_escape_html_tag
 
     def convert(self, dp_value):
         try:
@@ -46,7 +44,7 @@ class DataPropertyConverter(object):
             pass
 
         if not self.__quoting_flags.get(dp_value.typecode):
-            if self.__is_escape_html_tag:
+            if self.__preprocessor.is_escape_html_tag:
                 return self.__create_dataproperty(dp_value.to_str())
 
             return dp_value
@@ -56,11 +54,10 @@ class DataPropertyConverter(object):
     def __create_dataproperty(self, value):
         return DataProperty(
             value,
+            preprocessor=self.__preprocessor,
             float_type=self.__float_type,
             datetime_format_str=self.__datetime_format_str,
             strict_level_map=MAX_STRICT_LEVEL_MAP,
-            line_break_handling=self.__line_break_handling,
-            is_escape_html_tag=self.__is_escape_html_tag,
         )
 
     def __apply_quote(self, typecode, data):

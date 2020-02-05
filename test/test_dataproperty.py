@@ -24,6 +24,7 @@ from dataproperty import (
     DefaultValue,
     Format,
     LineBreakHandling,
+    Preprocessor,
 )
 
 from .common import get_strict_level_map
@@ -159,7 +160,9 @@ class Test_DataPeroperty_data_typecode(object):
     )
     def test_normal_strip_str(self, value, strip_str, is_strict, expected_data, expected_typecode):
         dp = DataProperty(
-            value, strip_str=strip_str, strict_level_map=get_strict_level_map(is_strict)
+            value,
+            preprocessor=Preprocessor(strip_str=strip_str),
+            strict_level_map=get_strict_level_map(is_strict),
         )
 
         assert dp.data == expected_data
@@ -262,9 +265,10 @@ class Test_DataPeroperty_set_data(object):
     def test_normal_tab(self, value, is_convert, replace_tabs_with_spaces, tab_length, expected):
         dp = DataProperty(
             value,
+            preprocessor=Preprocessor(
+                replace_tabs_with_spaces=replace_tabs_with_spaces, tab_length=tab_length,
+            ),
             strict_level_map=get_strict_level_map(not is_convert),
-            replace_tabs_with_spaces=replace_tabs_with_spaces,
-            tab_length=tab_length,
         )
 
         assert dp.data == expected
@@ -289,7 +293,7 @@ class Test_DataPeroperty_is_escape_html_tag(object):
         ],
     )
     def test_normal_tab(self, value, is_escape_html_tag, expected):
-        dp = DataProperty(value, is_escape_html_tag=is_escape_html_tag)
+        dp = DataProperty(value, preprocessor=Preprocessor(is_escape_html_tag=is_escape_html_tag))
 
         assert dp.data == expected
 
@@ -418,7 +422,12 @@ class Test_DataPeroperty_line_break_handling(object):
         ],
     )
     def test_normal(self, value, line_break_handling, expected):
-        assert DataProperty(value, line_break_handling=line_break_handling).data == expected
+        assert (
+            DataProperty(
+                value, preprocessor=Preprocessor(line_break_handling=line_break_handling)
+            ).data
+            == expected
+        )
 
 
 class Test_DataPeroperty_get_padding_len(object):
