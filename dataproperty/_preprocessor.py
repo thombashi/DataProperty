@@ -14,14 +14,14 @@ from ._line_break import LineBreakHandling
 _RE_LINE_BREAK = re.compile("[\r\n]+")
 
 
-def normalize_enum(value, enum_class):
-    if value is None or not isinstance(value, six.string_types):
+def normalize_lbh(value):
+    if isinstance(value, LineBreakHandling):
         return value
 
-    try:
-        return enum_class[value.upper()]
-    except KeyError:
-        return value
+    if value is None:
+        return LineBreakHandling.NOP
+
+    return LineBreakHandling[value.upper()]
 
 
 class Preprocessor(object):
@@ -36,7 +36,7 @@ class Preprocessor(object):
         self.strip_str = strip_str
         self.__replace_tabs_with_spaces = replace_tabs_with_spaces
         self.__tab_length = tab_length
-        self.__line_break_handling = normalize_enum(line_break_handling, LineBreakHandling)
+        self.__line_break_handling = normalize_lbh(line_break_handling)
         self.is_escape_html_tag = is_escape_html_tag
 
     def preprocess(self, data):
@@ -89,7 +89,7 @@ class Preprocessor(object):
     def __process_line_break(self, data):
         lbh = self.__line_break_handling
 
-        if lbh is None or lbh == LineBreakHandling.NOP:
+        if lbh == LineBreakHandling.NOP:
             return data
 
         try:
