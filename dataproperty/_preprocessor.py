@@ -33,7 +33,7 @@ class Preprocessor(object):
         line_break_handling=None,
         is_escape_html_tag=False,
     ):
-        self.__strip_str = strip_str
+        self.strip_str = strip_str
         self.__replace_tabs_with_spaces = replace_tabs_with_spaces
         self.__tab_length = tab_length
         self.__line_break_handling = normalize_enum(line_break_handling, LineBreakHandling)
@@ -41,7 +41,7 @@ class Preprocessor(object):
 
     def preprocess(self, data):
         data, no_ansi_escape_data = self.__preprocess_string(
-            self.__process_line_break(self.__preprocess_data(data, self.__strip_str)),
+            self.__process_line_break(self.__preprocess_data(data, self.strip_str)),
         )
         return (data, no_ansi_escape_data)
 
