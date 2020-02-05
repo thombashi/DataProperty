@@ -408,6 +408,13 @@ class Test_DataPropertyExtractor_to_dp_list(object):
         for dp, value in zip(dp_list, expected):
             assert dp.data == value, value
 
+    @pytest.mark.parametrize(
+        ["value", "expected"], [[[0, None], [0, None]],],
+    )
+    def test_exception_escape_formula_injection(self, dp_extractor, value, expected):
+        dp_extractor.preprocessor = Preprocessor(is_escape_formula_injection=True)
+        dp_list = dp_extractor.to_dp_list(value)
+
 
 class Test_DataPropertyExtractor_to_column_dp_list(object):
     TEST_DATA_MATRIX = [

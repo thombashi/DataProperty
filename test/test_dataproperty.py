@@ -475,6 +475,15 @@ class Test_DataPeroperty_escape_formula_injection(object):
             == expected
         )
 
+    @pytest.mark.parametrize(
+        ["value", "expected"], [[0, 0], [None, None],],
+    )
+    def test_abnormal(self, value, expected):
+        assert (
+            DataProperty(value, preprocessor=Preprocessor(is_escape_formula_injection=True),).data
+            == expected
+        )
+
 
 class Test_DataPeroperty_get_padding_len(object):
     @pytest.mark.skipif("six.PY2")

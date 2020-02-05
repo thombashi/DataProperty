@@ -136,7 +136,10 @@ class Preprocessor(object):
         if not self.is_escape_formula_injection:
             return data
 
-        if _RE_FORMULA_PREFIX.search(data):
-            return "'" + data
+        try:
+            if _RE_FORMULA_PREFIX.search(data):
+                return "'" + data
+        except (TypeError, AttributeError):
+            return data
 
         return data
