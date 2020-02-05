@@ -77,7 +77,6 @@ setuptools.setup(
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
     extras_require={
-        "dev": ["twine", "wheel"],
         "logging": ["Logbook>=0.12.3,<2.0.0"],
         "test": tests_requires,
     },
