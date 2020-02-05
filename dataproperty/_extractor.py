@@ -35,7 +35,6 @@ from ._common import MIN_STRICT_LEVEL_MAP, DefaultValue
 from ._converter import DataPropertyConverter
 from ._dataproperty import DataProperty
 from ._formatter import Format
-from ._line_break import LineBreakHandling
 from ._preprocessor import Preprocessor
 from .logger import logger
 
@@ -153,18 +152,6 @@ class DataPropertyExtractor(object):
         self.__clear_cache()
 
     @property
-    def line_break_handling(self):
-        return self.__line_break_handling
-
-    @line_break_handling.setter
-    def line_break_handling(self, value):
-        if self.__line_break_handling == value:
-            return
-
-        self.__line_break_handling = value
-        self.__update_dp_converter()
-
-    @property
     def is_formatting_float(self):
         return self.__is_formatting_float
 
@@ -173,15 +160,15 @@ class DataPropertyExtractor(object):
         self.__is_formatting_float = value
 
     @property
-    def is_escape_html_tag(self):
-        return self.__is_escape_html_tag
+    def preprocessor(self):
+        return self.__preprocessor
 
-    @is_escape_html_tag.setter
-    def is_escape_html_tag(self, value):
-        if self.__is_escape_html_tag == value:
+    @preprocessor.setter
+    def preprocessor(self, value):
+        if self.preprocessor == value:
             return
 
-        self.__is_escape_html_tag = value
+        self.__preprocessor = value
         self.__update_dp_converter()
 
     @property
@@ -194,18 +181,6 @@ class DataPropertyExtractor(object):
             return
 
         self.__strip_str_header = value
-        self.__clear_cache()
-
-    @property
-    def strip_str_value(self):
-        return self.__strip_str_value
-
-    @strip_str_value.setter
-    def strip_str_value(self, value):
-        if self.__strip_str_value == value:
-            return
-
-        self.__strip_str_value = value
         self.__clear_cache()
 
     @property
@@ -340,16 +315,15 @@ class DataPropertyExtractor(object):
         self.__col_type_hints = None
 
         self.__strip_str_header = None
-        self.__strip_str_value = None
         self.__is_formatting_float = True
-        self.__line_break_handling = LineBreakHandling.NOP
-        self.__is_escape_html_tag = False
         self.__min_col_ascii_char_width = 0
         self.__format_flags_list = []
         self.__float_type = None
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
         self.__strict_level_map = copy.deepcopy(DefaultValue.STRICT_LEVEL_MAP)
         self.__east_asian_ambiguous_width = 1
+
+        self.__preprocessor = Preprocessor()
 
         self.__type_value_map = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)
 
@@ -372,7 +346,7 @@ class DataPropertyExtractor(object):
     def to_dp(self, value):
         self.__update_dp_converter()
 
-        return self.__to_dp(value, strip_str=self.strip_str_value)
+        return self.__to_dp(value)
 
     def to_dp_list(self, values):
         if is_empty_sequence(values):
@@ -380,7 +354,7 @@ class DataPropertyExtractor(object):
 
         self.__update_dp_converter()
 
-        return self._to_dp_list(values, strip_str=self.strip_str_value)
+        return self._to_dp_list(values)
 
     def to_column_dp_list(self, value_dp_matrix, previous_column_dp_list=None):
         col_dp_list = self.__get_col_dp_list_base()
@@ -465,10 +439,13 @@ class DataPropertyExtractor(object):
     def to_header_dp_list(self):
         self.__update_dp_converter()
 
+        preprocessor = copy.deepcopy(self.__preprocessor)
+        preprocessor.strip_str = self.strip_str_header
+
         return self._to_dp_list(
             self.headers,
             type_hint=String,
-            strip_str=self.strip_str_header,
+            preprocessor=preprocessor,
             strict_level_map=MIN_STRICT_LEVEL_MAP,
         )
 
@@ -494,13 +471,16 @@ class DataPropertyExtractor(object):
         except (TypeError, IndexError):
             return Format.NONE
 
-    def __to_dp(self, data, type_hint=None, strip_str=None, strict_level_map=None):
+    def __to_dp(self, data, type_hint=None, preprocessor=None, strict_level_map=None):
         for trans_func in self.__trans_func_list:
             data = trans_func(data)
 
         if type_hint:
             return self.__to_dp_raw(
-                data, type_hint=type_hint, strip_str=strip_str, strict_level_map=strict_level_map
+                data,
+                type_hint=type_hint,
+                preprocessor=preprocessor,
+                strict_level_map=strict_level_map,
             )
 
         try:
@@ -520,15 +500,24 @@ class DataPropertyExtractor(object):
             return self.__dp_cache_one
 
         return self.__to_dp_raw(
-            data, type_hint=type_hint, strip_str=strip_str, strict_level_map=strict_level_map
+            data, type_hint=type_hint, preprocessor=preprocessor, strict_level_map=strict_level_map
         )
 
-    def __to_dp_raw(self, data, type_hint=None, strip_str=None, strict_level_map=None):
+    def __to_dp_raw(self, data, type_hint=None, preprocessor=None, strict_level_map=None):
+        if preprocessor:
+            preprocessor = Preprocessor(
+                line_break_handling=preprocessor.line_break_handling,
+                strip_str=preprocessor.strip_str,
+            )
+        else:
+            preprocessor = Preprocessor(
+                line_break_handling=self.preprocessor.line_break_handling,
+                strip_str=self.preprocessor.strip_str,
+            )
+
         value_dp = DataProperty(
             data,
-            preprocessor=Preprocessor(
-                line_break_handling=self.line_break_handling, strip_str=strip_str,
-            ),
+            preprocessor=preprocessor,
             type_hint=(type_hint if type_hint is not None else self.default_type_hint),
             float_type=self.float_type,
             datetime_format_str=self.datetime_format_str,
@@ -547,7 +536,7 @@ class DataPropertyExtractor(object):
                         col_idx,
                         values,
                         self.__get_col_type_hint(col_idx),
-                        self.strip_str_value,
+                        self.__preprocessor,
                     )[1]
                     for col_idx, values in enumerate(zip(*value_matrix))
                 ]
@@ -568,7 +557,7 @@ class DataPropertyExtractor(object):
                         col_idx,
                         values,
                         self.__get_col_type_hint(col_idx),
-                        self.strip_str_value,
+                        self.__preprocessor,
                     )
                     for col_idx, values in enumerate(zip(*value_matrix))
                 ]
@@ -582,7 +571,7 @@ class DataPropertyExtractor(object):
 
         return list(zip(*[col_data_map[col_idx] for col_idx in sorted(col_data_map)]))
 
-    def _to_dp_list(self, data_list, type_hint=None, strip_str=None, strict_level_map=None):
+    def _to_dp_list(self, data_list, type_hint=None, preprocessor=None, strict_level_map=None):
         if is_empty_sequence(data_list):
             return []
 
@@ -602,7 +591,7 @@ class DataPropertyExtractor(object):
             dataprop = self.__to_dp(
                 data=data,
                 type_hint=expect_type_hint,
-                strip_str=strip_str,
+                preprocessor=preprocessor if preprocessor else self.__preprocessor,
                 strict_level_map=strict_level_map,
             )
             type_counter[dataprop.type_class] += 1
@@ -672,13 +661,11 @@ class DataPropertyExtractor(object):
         return col_dp_list
 
     def __update_dp_converter(self):
-        from ._preprocessor import Preprocessor
 
         preprocessor = Preprocessor(
-            line_break_handling=self.line_break_handling,
-            is_escape_html_tag=self.is_escape_html_tag,
+            line_break_handling=self.__preprocessor.line_break_handling,
+            is_escape_html_tag=self.__preprocessor.is_escape_html_tag,
         )
-
         self.__dp_converter = DataPropertyConverter(
             preprocessor=preprocessor,
             type_value_map=self.type_value_map,
@@ -690,5 +677,8 @@ class DataPropertyExtractor(object):
         )
 
 
-def _to_dp_list_helper(extractor, col_idx, data_list, type_hint, strip_str):
-    return (col_idx, extractor._to_dp_list(data_list, type_hint=type_hint, strip_str=strip_str))
+def _to_dp_list_helper(extractor, col_idx, data_list, type_hint, preprocessor):
+    return (
+        col_idx,
+        extractor._to_dp_list(data_list, type_hint=type_hint, preprocessor=preprocessor),
+    )

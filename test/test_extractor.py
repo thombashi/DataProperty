@@ -14,7 +14,14 @@ import six
 from six import text_type
 from typepy import DateTime, RealNumber, String, Typecode
 
-from dataproperty import Align, DataPropertyExtractor, Format, LineBreakHandling, MatrixFormatting
+from dataproperty import (
+    Align,
+    DataPropertyExtractor,
+    Format,
+    LineBreakHandling,
+    MatrixFormatting,
+    Preprocessor,
+)
 
 from .common import get_strict_level_map
 
@@ -327,11 +334,15 @@ class Test_DataPropertyExtractor_to_dp_list(object):
         self, dp_extractor, value, strip_str_header, strip_str_value, expected
     ):
         dp_extractor.strip_str_header = strip_str_header
-        dp_extractor.strip_str_value = strip_str_value
+        dp_extractor.preprocessor = Preprocessor(strip_str=strip_str_value)
         dp_list = dp_extractor.to_dp_list(value)
 
-        for dp, value in zip(dp_list, expected):
-            assert dp.data == value
+        for dp, expected_value in zip(dp_list, expected):
+            assert dp.data == expected_value
+
+        dp_matrix = dp_extractor.to_dp_matrix([value])
+        for dp, expected_value in zip(dp_matrix[0], expected):
+            assert dp.data == expected_value
 
     @pytest.mark.parametrize(
         ["value", "line_break_handling", "expected"],
@@ -342,7 +353,7 @@ class Test_DataPropertyExtractor_to_dp_list(object):
         ],
     )
     def test_normal_line_break_handling(self, dp_extractor, value, line_break_handling, expected):
-        dp_extractor.line_break_handling = line_break_handling
+        dp_extractor.preprocessor = Preprocessor(line_break_handling=line_break_handling)
         dp_list = dp_extractor.to_dp_list(value)
 
         for dp, value in zip(dp_list, expected):
