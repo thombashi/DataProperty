@@ -53,9 +53,6 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     else:
         tests_requires.append("pytest")
 
-with open(os.path.join(REQUIREMENT_DIR, "docs_requirements.txt")) as f:
-    docs_requires = [line.strip() for line in f if line.strip()]
-
 pytest_runner_require = ["pytest-runner"] if need_pytest() else []
 setuptools_require = ["setuptools>=38.3.0"]
 
@@ -80,7 +77,7 @@ setuptools.setup(
     setup_requires=setuptools_require + pytest_runner_require,
     tests_require=tests_requires,
     extras_require={
-        "dev": ["twine", "wheel"] + docs_requires,
+        "dev": ["twine", "wheel"],
         "logging": ["Logbook>=0.12.3,<2.0.0"],
         "test": tests_requires,
     },
