@@ -60,7 +60,7 @@ class Preprocessor(object):
 
     def preprocess(self, data):
         data, no_ansi_escape_data = self.__preprocess_string(
-            self.__process_line_break(self.__preprocess_data(data, self.strip_str)),
+            self.__preprocess_data(data, self.strip_str),
         )
         return (data, no_ansi_escape_data)
 
@@ -87,6 +87,8 @@ class Preprocessor(object):
                     data = html.escape(data)
                 except AttributeError:
                     return (data, None)
+
+        data = self.__process_line_break(data)
 
         try:
             return (data, strip_ansi_escape(data))
