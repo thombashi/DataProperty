@@ -25,6 +25,14 @@ def normalize_lbh(value):
 
 
 class Preprocessor(object):
+    @property
+    def line_break_handling(self):
+        return self.__line_break_handling
+
+    @line_break_handling.setter
+    def line_break_handling(self, value):
+        self.__line_break_handling = normalize_lbh(value)
+
     def __init__(
         self,
         strip_str=None,
@@ -36,7 +44,7 @@ class Preprocessor(object):
         self.strip_str = strip_str
         self.replace_tabs_with_spaces = replace_tabs_with_spaces
         self.tab_length = tab_length
-        self.line_break_handling = normalize_lbh(line_break_handling)
+        self.line_break_handling = line_break_handling
         self.is_escape_html_tag = is_escape_html_tag
 
     def __repr__(self):
