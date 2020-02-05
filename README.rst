@@ -226,8 +226,8 @@ Python 2.7+ or 3.5+
 
 Optional dependencies
 ---------------------
-- `logbook <https://logbook.readthedocs.io/en/stable/>`__
-    - Logging using logbook if the package installed
+- `loguru <https://github.com/Delgan/loguru>`__
+    - Used for logging if the package installed
 
 Test dependencies
 -----------------
