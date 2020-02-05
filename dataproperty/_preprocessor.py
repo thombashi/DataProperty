@@ -7,7 +7,6 @@ import re
 import six
 from mbstrdecoder import MultiByteStrDecoder
 
-from ._common import DefaultValue
 from ._function import strip_ansi_escape
 from ._line_break import LineBreakHandling
 
@@ -29,7 +28,6 @@ class Preprocessor(object):
     def __init__(
         self,
         strip_str=None,
-        datetime_format_str=DefaultValue.DATETIME_FORMAT,
         replace_tabs_with_spaces=True,
         tab_length=2,
         line_break_handling=None,
