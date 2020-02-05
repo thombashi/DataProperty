@@ -34,9 +34,9 @@ class Preprocessor(object):
         is_escape_html_tag=False,
     ):
         self.strip_str = strip_str
-        self.__replace_tabs_with_spaces = replace_tabs_with_spaces
-        self.__tab_length = tab_length
-        self.__line_break_handling = normalize_lbh(line_break_handling)
+        self.replace_tabs_with_spaces = replace_tabs_with_spaces
+        self.tab_length = tab_length
+        self.line_break_handling = normalize_lbh(line_break_handling)
         self.is_escape_html_tag = is_escape_html_tag
 
     def preprocess(self, data):
@@ -50,9 +50,9 @@ class Preprocessor(object):
     ):
         data = raw_data
 
-        if self.__replace_tabs_with_spaces:
+        if self.replace_tabs_with_spaces:
             try:
-                data = data.replace("\t", " " * self.__tab_length)
+                data = data.replace("\t", " " * self.tab_length)
             except (TypeError, AttributeError):
                 pass
 
@@ -87,7 +87,7 @@ class Preprocessor(object):
             return MultiByteStrDecoder(data).unicode_str.strip(strip_str)
 
     def __process_line_break(self, data):
-        lbh = self.__line_break_handling
+        lbh = self.line_break_handling
 
         if lbh == LineBreakHandling.NOP:
             return data
