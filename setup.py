@@ -21,10 +21,6 @@ REQUIREMENT_DIR = "requirements"
 pkg_info = {}
 
 
-def need_pytest():
-    return set(["pytest", "test", "ptr"]).intersection(sys.argv)
-
-
 def get_release_command_class():
     try:
         from releasecmd import ReleaseCommand
@@ -53,7 +49,6 @@ with open(os.path.join(REQUIREMENT_DIR, "test_requirements.txt")) as f:
     else:
         tests_requires.append("pytest")
 
-pytest_runner_require = ["pytest-runner"] if need_pytest() else []
 setuptools_require = ["setuptools>=38.3.0"]
 
 setuptools.setup(
@@ -74,8 +69,7 @@ setuptools.setup(
     project_urls={"Source": REPOSITORY_URL, "Tracker": "{:s}/issues".format(REPOSITORY_URL)},
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
     install_requires=setuptools_require + install_requires,
-    setup_requires=setuptools_require + pytest_runner_require,
-    tests_require=tests_requires,
+    setup_requires=setuptools_require,
     extras_require={"logging": ["loguru>=0.4.1,<1"], "test": tests_requires},
     classifiers=[
         "Development Status :: 4 - Beta",
