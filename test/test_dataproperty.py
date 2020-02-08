@@ -476,7 +476,7 @@ class Test_DataPeroperty_escape_formula_injection(object):
         )
 
     @pytest.mark.parametrize(
-        ["value", "expected"], [[0, 0], [None, None],],
+        ["value", "expected"], [[0, 0], [None, None]],
     )
     def test_abnormal(self, value, expected):
         assert (
