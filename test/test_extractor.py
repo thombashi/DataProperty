@@ -415,6 +415,9 @@ class Test_DataPropertyExtractor_to_dp_list(object):
         dp_extractor.preprocessor = Preprocessor(is_escape_formula_injection=True)
         dp_list = dp_extractor.to_dp_list(value)
 
+        for dp, value in zip(dp_list, expected):
+            assert dp.data == value, value
+
 
 class Test_DataPropertyExtractor_to_column_dp_list(object):
     TEST_DATA_MATRIX = [
