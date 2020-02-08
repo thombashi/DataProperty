@@ -750,3 +750,31 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
 
         with pytest.raises(expected):
             dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
+
+
+class Test_DataPropertyExtractor_update_preprocessor(object):
+    def test_normal(self, dp_extractor):
+        assert dp_extractor.preprocessor.strip_str is None
+        assert dp_extractor.preprocessor.replace_tabs_with_spaces is True
+        assert dp_extractor.preprocessor.tab_length == 2
+        assert dp_extractor.preprocessor.line_break_handling is LineBreakHandling.NOP
+        assert dp_extractor.preprocessor.line_break_repl == " "
+        assert dp_extractor.preprocessor.is_escape_html_tag is False
+        assert dp_extractor.preprocessor.is_escape_formula_injection is False
+
+        dp_extractor.update_preprocessor(
+            strip_str='"',
+            replace_tabs_with_spaces=False,
+            tab_length=4,
+            line_break_handling=LineBreakHandling.REPLACE,
+            line_break_repl="<br>",
+            is_escape_html_tag=True,
+            is_escape_formula_injection=True,
+        )
+        assert dp_extractor.preprocessor.strip_str == '"'
+        assert dp_extractor.preprocessor.replace_tabs_with_spaces is False
+        assert dp_extractor.preprocessor.tab_length == 4
+        assert dp_extractor.preprocessor.line_break_handling is LineBreakHandling.REPLACE
+        assert dp_extractor.preprocessor.line_break_repl == "<br>"
+        assert dp_extractor.preprocessor.is_escape_html_tag is True
+        assert dp_extractor.preprocessor.is_escape_formula_injection is True

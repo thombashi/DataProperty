@@ -452,6 +452,10 @@ class DataPropertyExtractor(object):
             strict_level_map=MIN_STRICT_LEVEL_MAP,
         )
 
+    def update_preprocessor(self, **kwargs):
+        self.__preprocessor.update(**kwargs)
+        self.__update_dp_converter()
+
     @staticmethod
     def __is_dp_matrix(value):
         if not value:
