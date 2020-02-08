@@ -9,6 +9,7 @@ from __future__ import absolute_import, unicode_literals
 import copy
 import enum
 import multiprocessing
+import warnings
 from collections import Counter
 
 from six import text_type
@@ -100,12 +101,14 @@ class DataPropertyExtractor(object):
 
     @property
     def header_list(self):
-        """alias to headers"""
+        warnings.warn("'header_list' has moved to 'headers'", DeprecationWarning)
+
         return self.headers
 
     @header_list.setter
     def header_list(self, value):
-        """alias to headers"""
+        warnings.warn("'header_list' has moved to 'headers'", DeprecationWarning)
+
         self.headers = value
 
     @property
