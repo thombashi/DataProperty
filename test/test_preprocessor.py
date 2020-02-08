@@ -20,7 +20,7 @@ class Test_Preprocessor_update(object):
         assert preprocessor.is_escape_html_tag is False
         assert preprocessor.is_escape_formula_injection is False
 
-        preprocessor.update(
+        assert preprocessor.update(
             strip_str='"',
             replace_tabs_with_spaces=False,
             tab_length=4,
@@ -36,3 +36,5 @@ class Test_Preprocessor_update(object):
         assert preprocessor.line_break_repl == "<br>"
         assert preprocessor.is_escape_html_tag is True
         assert preprocessor.is_escape_formula_injection is True
+
+        assert not preprocessor.update(strip_str='"')
