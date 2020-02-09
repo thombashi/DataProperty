@@ -310,6 +310,22 @@ class DataPropertyExtractor(object):
         self.__matrix_formatting = value
         self.__clear_cache()
 
+    @property
+    def max_workers(self):
+        return self.__max_workers
+
+    @max_workers.setter
+    def max_workers(self, value):
+        try:
+            from _multiprocessing import SemLock, sem_unlink  # noqa
+        except ImportError:
+            logger.debug("This platform lacks a functioning sem_open implementation")
+            value = 1
+
+        self.__max_workers = value
+        if not self.__max_workers:
+            self.__max_workers = multiprocessing.cpu_count()
+
     def __init__(self):
         self.max_workers = multiprocessing.cpu_count()
 
@@ -430,9 +446,6 @@ class DataPropertyExtractor(object):
         if self.__is_dp_matrix(value_matrix):
             logger.debug("already a dataproperty matrix")
             return value_matrix
-
-        if not self.max_workers:
-            self.max_workers = multiprocessing.cpu_count()
 
         if self.max_workers <= 1:
             return self.__to_dp_matrix_st(value_matrix)
