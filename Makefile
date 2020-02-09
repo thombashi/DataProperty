@@ -6,11 +6,11 @@ BUILD_PKG_DIR := $(BUILD_WORK_DIR)/$(PACKAGE)
 
 .PHONY: build-remote
 build-remote:
-	@rm -rf $(BUILD_WORK_DIR)/
-	@mkdir -p $(BUILD_WORK_DIR)/
-	@cd $(BUILD_WORK_DIR); \
-		git clone https://github.com/$(AUTHOR)/$(PACKAGE).git; \
-		cd $(PACKAGE); \
+	@rm -rf $(BUILD_WORK_DIR)
+	@mkdir -p $(BUILD_WORK_DIR)
+	@cd $(BUILD_WORK_DIR) && \
+		git clone https://github.com/$(AUTHOR)/$(PACKAGE).git && \
+		cd $(PACKAGE) && \
 		tox -e build
 	ls -lh $(BUILD_PKG_DIR)/dist/*
 
@@ -28,6 +28,7 @@ check:
 .PHONY: clean
 clean:
 	@tox -e clean
+	@rm -rf $(BUILD_WORK_DIR)
 
 .PHONY: fmt
 fmt:
