@@ -15,10 +15,8 @@ try:
     from loguru import logger
 
     logger.disable(MODULE_NAME)
-    LOGURU_INSTALLED = True
 except ImportError:
     logger = NullLogger()
-    LOGURU_INSTALLED = False
 
 
 def set_logger(is_enable):
