@@ -23,9 +23,9 @@ except ImportError:
 
 def set_logger(is_enable):
     if is_enable:
-        logger.enable("MODULE_NAME")
+        logger.enable(MODULE_NAME)
     else:
-        logger.disable("MODULE_NAME")
+        logger.disable(MODULE_NAME)
 
 
 def set_log_level(log_level):
