@@ -16,10 +16,10 @@ try:
 
     logger.disable(MODULE_NAME)
 except ImportError:
-    logger = NullLogger()
+    logger = NullLogger()  # type: ignore
 
 
-def set_logger(is_enable):
+def set_logger(is_enable, propagation_depth=1):
     if is_enable:
         logger.enable(MODULE_NAME)
     else:
