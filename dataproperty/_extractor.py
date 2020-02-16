@@ -466,8 +466,10 @@ class DataPropertyExtractor(object):
         )
 
     def update_preprocessor(self, **kwargs):
-        self.__preprocessor.update(**kwargs)
+        is_updated = self.__preprocessor.update(**kwargs)
         self.__update_dp_converter()
+
+        return is_updated
 
     @staticmethod
     def __is_dp_matrix(value):
