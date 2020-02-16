@@ -72,7 +72,7 @@ class Preprocessor(object):
         return (data, no_ansi_escape_data)
 
     def update(self, **kwargs):
-        is_update = False
+        is_updated = False
 
         for key, value in kwargs.items():
             if not hasattr(self, key):
@@ -82,9 +82,9 @@ class Preprocessor(object):
                 continue
 
             setattr(self, key, value)
-            is_update = True
+            is_updated = True
 
-        return is_update
+        return is_updated
 
     def __preprocess_string(
         self, raw_data,
