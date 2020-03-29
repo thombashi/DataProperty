@@ -21,7 +21,9 @@ class AlignGetter(object):
         self.__typecode_align_table = x
 
     def get_align_from_typecode(self, typecode):
+        # pytype: disable=attribute-error
         return self.__typecode_align_table.get(typecode, self.default_align)
+        # pytype: enable=attribute-error
 
     def __init__(self):
         self.typecode_align_table = {
