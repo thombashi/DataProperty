@@ -380,13 +380,17 @@ class DataPropertyExtractor(object):
 
         logger.debug("converting to column dataproperty:")
 
-        logs = [
-            "  params:",
-            "    prev_col_count={}".format(
-                len(previous_column_dp_list) if previous_column_dp_list else None
-            ),
-            "    matrix_formatting={}".format(self.matrix_formatting),
-        ]
+        logs = ["  params:"]
+        if self.headers:
+            logs.append("    headers={}".format(len(self.headers)))
+        logs.extend(
+            [
+                "    prev_col_count={}".format(
+                    len(previous_column_dp_list) if previous_column_dp_list else None
+                ),
+                "    matrix_formatting={}".format(self.matrix_formatting),
+            ]
+        )
         if self.column_type_hints:
             logs.append(
                 "    column_type_hints=({})".format(
@@ -439,7 +443,9 @@ class DataPropertyExtractor(object):
 
     def to_dp_matrix(self, value_matrix):
         self.__update_dp_converter()
-        logger.debug("max_workers = {}".format(self.max_workers))
+        logger.debug(
+            "max_workers={}, preprocessor={}".format(self.max_workers, self.__preprocessor)
+        )
 
         value_matrix = self.__strip_data_matrix(value_matrix)
 
