@@ -94,7 +94,7 @@ class Preprocessor(object):
         if self.replace_tabs_with_spaces:
             try:
                 data = data.replace("\t", " " * self.tab_length)
-            except (TypeError, AttributeError):
+            except (TypeError, AttributeError, ValueError):
                 pass
 
         if self.is_escape_html_tag:
