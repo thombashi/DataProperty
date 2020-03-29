@@ -67,9 +67,8 @@ e.g. Extract a ``str`` (multi-byte) value property
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code:: python
 
-    >>> import six
     >>> from dataproperty import DataProperty
-    >>> six.text_type(DataProperty("吾輩は猫である"))
+    >>> str(DataProperty("吾輩は猫である"))
     data=吾輩は猫である, type=STRING, align=left, length=7, ascii_width=14, extra_len=0
 
 e.g. Extract a time (``datetime``) value property
@@ -218,10 +217,9 @@ Install from PPA (for Ubuntu)
 
 Dependencies
 ============
-Python 2.7+ or 3.5+
+Python 3.5+
 
 - `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
-- `six <https://pypi.org/project/six/>`__
 - `typepy <https://github.com/thombashi/typepy>`__
 
 Optional dependencies
