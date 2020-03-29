@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import absolute_import, unicode_literals
 
 import decimal
 import math
@@ -13,8 +9,6 @@ from collections import namedtuple
 from decimal import Decimal
 
 from mbstrdecoder import MultiByteStrDecoder
-from six import text_type
-from six.moves import range
 from typepy import Integer, RealNumber, TypeConversionError
 
 
@@ -36,18 +30,18 @@ def get_integer_digit(value):
                 "the value must be a number: value='{}' type='{}'".format(value, type(value))
             )
 
-        return len(text_type(abs_value))
+        return len(str(abs_value))
 
     if abs_value.is_zero():
         return 1
 
     try:
-        return len(text_type(abs_value.quantize(Decimal("1."), rounding=decimal.ROUND_DOWN)))
+        return len(str(abs_value.quantize(Decimal("1."), rounding=decimal.ROUND_DOWN)))
     except decimal.InvalidOperation:
-        return len(text_type(abs_value))
+        return len(str(abs_value))
 
 
-class DigitCalculator(object):
+class DigitCalculator:
     Threshold = namedtuple("Threshold", "pow digit_len")
 
     def __init__(self):
@@ -69,7 +63,7 @@ class DigitCalculator(object):
             abs_value = abs(int_type.convert())
         else:
             abs_value = abs(float(value))
-            text_value = text_type(abs_value)
+            text_value = str(abs_value)
             float_text = 0
             if text_value.find(".") != -1:
                 float_text = text_value.split(".")[1]

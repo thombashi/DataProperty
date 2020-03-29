@@ -1,17 +1,13 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import absolute_import
 
 from typepy import Typecode
 
 from ._align import Align
 
 
-class AlignGetter(object):
+class AlignGetter:
     @property
     def typecode_align_table(self):
         raise NotImplementedError()

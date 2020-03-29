@@ -1,15 +1,11 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import unicode_literals
-
 from dataproperty import LineBreakHandling, Preprocessor
 
 
-class Test_Preprocessor_update(object):
+class Test_Preprocessor_update:
     def test_normal(self):
         preprocessor = Preprocessor()
         assert preprocessor.strip_str is None

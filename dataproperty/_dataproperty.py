@@ -1,14 +1,9 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import, unicode_literals
-
 from decimal import Decimal
 
-import six
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import (
     Bool,
@@ -158,7 +153,7 @@ class DataProperty(DataPeropertyBase):
         strict_level_map=None,
         east_asian_ambiguous_width=1,
     ):
-        super(DataProperty, self).__init__(
+        super().__init__(
             format_flags=format_flags,
             is_formatting_float=True,
             datetime_format_str=datetime_format_str,
@@ -205,7 +200,7 @@ class DataProperty(DataPeropertyBase):
         element_list = []
 
         if self.typecode == Typecode.DATETIME:
-            element_list.append("data={:s}".format(six.text_type(self.data)))
+            element_list.append("data={:s}".format(str(self.data)))
         else:
             try:
                 element_list.append("data=" + self.to_str())
@@ -295,7 +290,7 @@ class DataProperty(DataPeropertyBase):
             except ValueError:
                 # reach to this line if the year <1900.
                 # the datetime strftime() methods require year >= 1900.
-                return len(six.text_type(self.data))
+                return len(str(self.data))
 
         if self.is_include_ansi_escape:
             return self.no_ansi_escape_dp.ascii_char_width

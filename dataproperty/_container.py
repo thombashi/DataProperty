@@ -1,17 +1,13 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import division, unicode_literals
 
 import abc
 
 from typepy import RealNumber
 
 
-class AbstractContainer(object):
+class AbstractContainer:
     @abc.abstractproperty
     def min_value(self):  # pragma: no cover
         pass

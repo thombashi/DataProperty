@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import absolute_import, unicode_literals
 
 import copy
 import enum
@@ -12,8 +8,6 @@ import multiprocessing
 import warnings
 from collections import Counter
 
-from six import text_type
-from six.moves import zip
 from typepy import (
     Bool,
     DateTime,
@@ -59,7 +53,7 @@ class MatrixFormatting(enum.Enum):
     HEADER_ALIGNED = 1 << 4
 
 
-class DataPropertyExtractor(object):
+class DataPropertyExtractor:
     """
     .. py:attribute:: quoting_flags
 
@@ -437,7 +431,7 @@ class DataPropertyExtractor(object):
 
             col_dp.end_update()
 
-            logger.debug("    {:s}".format(text_type(col_dp)))
+            logger.debug("    {:s}".format(str(col_dp)))
 
         return col_dp_list
 

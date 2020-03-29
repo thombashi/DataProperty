@@ -1,18 +1,11 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import absolute_import
-
 import abc
 
-import six
 
-
-@six.add_metaclass(abc.ABCMeta)
-class DataPeropertyInterface(object):
+class DataPeropertyInterface(metaclass=abc.ABCMeta):
     __slots__ = ()
 
     @abc.abstractproperty

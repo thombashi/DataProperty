@@ -1,10 +1,6 @@
-# encoding: utf-8
-
-from __future__ import absolute_import, unicode_literals
-
+import html
 import re
 
-import six
 from mbstrdecoder import MultiByteStrDecoder
 
 from ._function import strip_ansi_escape
@@ -25,7 +21,7 @@ def normalize_lbh(value):
     return LineBreakHandling[value.upper()]
 
 
-class Preprocessor(object):
+class Preprocessor:
     @property
     def line_break_handling(self):
         return self.__line_break_handling
@@ -98,17 +94,10 @@ class Preprocessor(object):
                 pass
 
         if self.is_escape_html_tag:
-            if six.PY2:
-                import cgi
-
-                data = cgi.escape(data)
-            else:
-                import html
-
-                try:
-                    data = html.escape(data)
-                except AttributeError:
-                    return (data, None)
+            try:
+                data = html.escape(data)
+            except AttributeError:
+                return (data, None)
 
         data = self.__process_line_break(data)
         data = self.__escape_formula_injection(data)

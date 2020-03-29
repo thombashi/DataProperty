@@ -1,17 +1,11 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import unicode_literals
 
 import datetime
 from decimal import Decimal
 
 import pytest
-import six
-from six import text_type
 from typepy import DateTime, RealNumber, String, Typecode
 
 from dataproperty import (
@@ -69,7 +63,7 @@ def nop(v):
     return v
 
 
-class Test_DataPropertyExtractor_to_dp(object):
+class Test_DataPropertyExtractor_to_dp:
     @pytest.mark.parametrize(
         ["value", "type_value_map", "is_strict", "expected_value", "expected_typecode"],
         [
@@ -99,7 +93,7 @@ class Test_DataPropertyExtractor_to_dp(object):
 
         assert dp.data == expected_value
         assert dp.typecode == expected_typecode
-        assert isinstance(dp.to_str(), six.text_type)
+        assert isinstance(dp.to_str(), str)
 
     @pytest.mark.parametrize(
         ["value", "datetime_formatter", "datetime_format_str", "is_strict", "expected"],
@@ -158,7 +152,7 @@ class Test_DataPropertyExtractor_to_dp(object):
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
+class Test_DataPropertyExtractor_to_dp_quoting_flags:
     ALWAYS_QUOTE_FLAG_MAP = {
         Typecode.NONE: True,
         Typecode.INTEGER: True,
@@ -188,7 +182,7 @@ class Test_DataPropertyExtractor_to_dp_quoting_flags(object):
         assert dp.data == expected
 
 
-class Test_DataPropertyExtractor_to_dp_matrix(object):
+class Test_DataPropertyExtractor_to_dp_matrix:
     @pytest.mark.parametrize(
         ["value"],
         [
@@ -289,7 +283,7 @@ class Test_DataPropertyExtractor_to_dp_matrix(object):
         assert dp_extractor.to_dp_matrix(value) == expected
 
 
-class Test_DataPropertyExtractor_to_dp_list(object):
+class Test_DataPropertyExtractor_to_dp_list:
     @pytest.mark.parametrize(
         ["value", "float_type"], [[[0.1, Decimal("1.1")], float], [[0.1, Decimal("1.1")], Decimal]]
     )
@@ -419,7 +413,7 @@ class Test_DataPropertyExtractor_to_dp_list(object):
             assert dp.data == value, value
 
 
-class Test_DataPropertyExtractor_to_column_dp_list(object):
+class Test_DataPropertyExtractor_to_column_dp_list:
     TEST_DATA_MATRIX = [
         [1, 1.1, "aa", 1, 1, True, inf, nan, datetime.datetime(2017, 1, 1, 0, 0, 0)],
         [2, 2.2, "bbb", 2.2, 2.2, False, "inf", "nan", "2017-01-01T01:23:45+0900"],
@@ -462,7 +456,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.ascii_char_width == 1
         assert dp.decimal_places == 0
         assert dp.format_str == "{:d}"
-        assert text_type(dp) == (
+        assert str(dp) == (
             "column=0, type=INTEGER, align=right, "
             "ascii_width=1, bit_len=2, int_digits=1, decimal_places=0"
         )
@@ -702,7 +696,7 @@ class Test_DataPropertyExtractor_to_column_dp_list(object):
         assert dp.format_str == "{}"
 
 
-class Test_DataPropertyExtractor_matrix_formatting(object):
+class Test_DataPropertyExtractor_matrix_formatting:
     TEST_DATA_MATRIX_NORMAL_COL3 = [["a", 0, "aa"], ["b", 1, "bb"], ["c", 2, "ccc"]]
     TEST_DATA_MATRIX_NOUNIFORM_COL1 = [["a", 0], ["b", 1, "bb"], ["c", 2, "ccc", 0.1], ["d"]]
 
@@ -752,7 +746,7 @@ class Test_DataPropertyExtractor_matrix_formatting(object):
             dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(value))
 
 
-class Test_DataPropertyExtractor_update_preprocessor(object):
+class Test_DataPropertyExtractor_update_preprocessor:
     def test_normal(self, dp_extractor):
         assert dp_extractor.preprocessor.strip_str is None
         assert dp_extractor.preprocessor.replace_tabs_with_spaces is True

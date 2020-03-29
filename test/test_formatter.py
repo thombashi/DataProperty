@@ -1,7 +1,3 @@
-# encoding: utf-8
-
-from __future__ import unicode_literals
-
 import pytest
 from typepy import Typecode
 
@@ -13,7 +9,7 @@ from dataproperty._formatter import Formatter
 dt_format = DefaultValue.DATETIME_FORMAT
 
 
-class TestFormatter_make_format_str(object):
+class TestFormatter_make_format_str:
     @pytest.mark.parametrize(
         ["format_flags", "datetime_format_str", "decimal_places", "typecode", "expected"],
         [
@@ -43,7 +39,7 @@ class TestFormatter_make_format_str(object):
         assert formatter.make_format_str(typecode, decimal_places) == expected
 
 
-class TestFormatter_make_format_map(object):
+class TestFormatter_make_format_map:
     @pytest.mark.parametrize(
         ["format_flags", "datetime_format_str", "decimal_places", "expected"],
         [[None, dt_format, "", {}]],

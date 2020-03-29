@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import unicode_literals
 
 import itertools
 
@@ -17,7 +13,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_is_multibyte_str(object):
+class Test_is_multibyte_str:
     @pytest.mark.parametrize(
         ["value", "expected"],
         [
@@ -40,7 +36,7 @@ class Test_is_multibyte_str(object):
         assert is_multibyte_str(value) == expected
 
 
-class Test_calc_ascii_char_width(object):
+class Test_calc_ascii_char_width:
     @pytest.mark.parametrize(
         ["value", "expected"], [["吾輩は猫である", 14], ["いaろbはc", 9], ["abcdef", 6], ["", 0]]
     )
@@ -57,7 +53,7 @@ class Test_calc_ascii_char_width(object):
     @pytest.mark.parametrize(
         ["value", "expected"],
         [
-            ["abcdef".encode("ascii"), TypeError],
+            [b"abcdef", TypeError],
             [None, TypeError],
             [True, TypeError],
             [1, TypeError],

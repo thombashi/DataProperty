@@ -1,18 +1,14 @@
-# encoding: utf-8
-
-from __future__ import absolute_import, unicode_literals
-
 import copy
 
 from typepy import Nan, Typecode
 
 
-class Format(object):
+class Format:
     NONE = 0
     THOUSAND_SEPARATOR = 1
 
 
-class Formatter(object):
+class Formatter:
     __slots__ = ("__is_formatting_float", "__format_flags", "__datetime_format_str")
 
     _BLANK_CURLY_BRACES_FORMAT_MAP = {

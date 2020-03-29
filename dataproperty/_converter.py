@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import absolute_import, unicode_literals
 
 import re
 
@@ -14,7 +10,7 @@ from ._common import MAX_STRICT_LEVEL_MAP, DefaultValue
 from ._dataproperty import DataProperty
 
 
-class DataPropertyConverter(object):
+class DataPropertyConverter:
     __RE_QUOTE_LINE = re.compile(r"^\s*[\"'].*[\"']\s*$")  # noqa: w605
     __RE_QUOTE_CHAR = re.compile("[\"']")
 

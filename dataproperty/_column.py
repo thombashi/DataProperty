@@ -1,11 +1,6 @@
-# encoding: utf-8
-
-from __future__ import absolute_import, unicode_literals
-
 import math
 from decimal import Decimal
 
-import six
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, Nan, StrictLevel, Typecode, TypeConversionError
 
@@ -81,7 +76,7 @@ class ColumnDataProperty(DataPeropertyBase):
         datetime_format_str=DefaultValue.DATETIME_FORMAT,
         east_asian_ambiguous_width=1,
     ):
-        super(ColumnDataProperty, self).__init__(
+        super().__init__(
             format_flags=format_flags,
             is_formatting_float=is_formatting_float,
             datetime_format_str=datetime_format_str,
@@ -113,7 +108,7 @@ class ColumnDataProperty(DataPeropertyBase):
             [
                 "type={}".format(self.typename),
                 "align={}".format(self.align.align_string),
-                "ascii_width={}".format(six.text_type(self.ascii_char_width)),
+                "ascii_width={}".format(self.ascii_char_width),
             ]
         )
 

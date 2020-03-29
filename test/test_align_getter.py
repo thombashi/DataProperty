@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
@@ -16,7 +14,7 @@ def align_getter():
     return AlignGetter()
 
 
-class Test_AlignGetter_get_align_from_typecode(object):
+class Test_AlignGetter_get_align_from_typecode:
     @pytest.mark.parametrize(
         ["value", "expected"],
         [

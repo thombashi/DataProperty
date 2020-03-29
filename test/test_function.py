@@ -1,11 +1,6 @@
-# encoding: utf-8
-
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import unicode_literals
 
 import pytest
 
@@ -16,7 +11,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_get_integer_digit(object):
+class Test_get_integer_digit:
     @pytest.mark.parametrize(
         ["value", "expected"],
         [
@@ -94,7 +89,7 @@ class Test_get_integer_digit(object):
             get_integer_digit(value)
 
 
-class Test_get_number_of_digit(object):
+class Test_get_number_of_digit:
     @pytest.mark.parametrize(
         ["value", "expected"],
         [
@@ -152,7 +147,7 @@ class Test_get_number_of_digit(object):
         assert get_number_of_digit(value) == expected
 
     @pytest.mark.parametrize(
-        ["value"], [[None], [True], [inf], [nan], ["0xff"], ["test"], ["いろは".encode("utf_8")]]
+        ["value"], [[None], [True], [inf], [nan], ["0xff"], ["test"], ["いろは".encode()]]
     )
     def test_nan(self, value):
         integer_digits, decimal_places = get_number_of_digit(value)

@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import absolute_import, unicode_literals
 
 import copy
 import itertools
@@ -32,7 +28,7 @@ MAX_STRICT_LEVEL_MAP = dict(itertools.product(list(Typecode), [StrictLevel.MAX])
 MIN_STRICT_LEVEL_MAP = dict(itertools.product(list(Typecode), [StrictLevel.MIN]))
 
 
-class DefaultValue(object):
+class DefaultValue:
     DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
     FLOAT_TYPE = Decimal
     INF_VALUE = FLOAT_TYPE("inf")

@@ -1,12 +1,7 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import unicode_literals
-
-import io
 import os.path
 
 import setuptools
@@ -32,10 +27,10 @@ def get_release_command_class():
 with open(os.path.join(MODULE_NAME.lower(), "__version__.py")) as f:
     exec(f.read(), pkg_info)
 
-with io.open("README.rst", encoding="utf8") as f:
+with open("README.rst", encoding="utf8") as f:
     long_description = f.read()
 
-with io.open(os.path.join(MISC_DIR, "summary.txt"), encoding="utf8") as f:
+with open(os.path.join(MISC_DIR, "summary.txt"), encoding="utf8") as f:
     summary = f.read().strip()
 
 with open(os.path.join(REQUIREMENT_DIR, "requirements.txt")) as f:
@@ -62,7 +57,7 @@ setuptools.setup(
     maintainer_email=pkg_info["__email__"],
     packages=setuptools.find_packages(exclude=["test*"]),
     project_urls={"Source": REPOSITORY_URL, "Tracker": "{:s}/issues".format(REPOSITORY_URL)},
-    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
+    python_requires=">=3.5",
     install_requires=setuptools_require + install_requires,
     setup_requires=setuptools_require,
     extras_require={"logging": ["loguru>=0.4.1,<1"], "test": tests_requires},
@@ -72,8 +67,6 @@ setuptools.setup(
         "Intended Audience :: Information Technology",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",

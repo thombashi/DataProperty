@@ -1,10 +1,6 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
-
-from __future__ import print_function, unicode_literals
 
 import datetime
 import ipaddress
@@ -12,8 +8,6 @@ import sys
 from decimal import Decimal
 
 import pytest
-import six
-from six import text_type
 from termcolor import colored
 from typepy import Bool, DateTime, Integer, Nan, RealNumber, StrictLevel, String, Typecode
 
@@ -30,11 +24,6 @@ from dataproperty import (
 from .common import get_strict_level_map
 
 
-if six.PY2:
-    reload(sys)  # noqa: W0602
-    sys.setdefaultencoding("utf-8")
-
-
 dateutil = pytest.importorskip("dateutil", minversion="2.7")
 
 DATATIME_DATA = datetime.datetime(2017, 1, 2, 3, 4, 5)
@@ -43,7 +32,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_DataPeroperty_eq(object):
+class Test_DataPeroperty_eq:
     @pytest.mark.parametrize(
         ["lhs", "rhs", "expected"],
         [
@@ -65,7 +54,7 @@ class Test_DataPeroperty_eq(object):
         assert (lhs != rhs) == (not expected)
 
 
-class Test_DataPeroperty_data_typecode(object):
+class Test_DataPeroperty_data_typecode:
     @pytest.mark.parametrize(
         ["value", "expected_data", "expected_typecode"],
         [["-0.00284241876820074", Decimal("-0.00284241876820074"), Typecode.REAL_NUMBER]],
@@ -81,10 +70,10 @@ class Test_DataPeroperty_data_typecode(object):
         ["value", "is_convert", "expected_data", "expected_typecode"],
         [
             [1.0, True, 1, Typecode.INTEGER],
-            [six.MAXSIZE, True, six.MAXSIZE, Typecode.INTEGER],
-            [-six.MAXSIZE, False, -six.MAXSIZE, Typecode.INTEGER],
-            [text_type(-six.MAXSIZE), True, -six.MAXSIZE, Typecode.INTEGER],
-            [text_type(six.MAXSIZE), False, text_type(six.MAXSIZE), Typecode.STRING],
+            [sys.maxsize, True, sys.maxsize, Typecode.INTEGER],
+            [-sys.maxsize, False, -sys.maxsize, Typecode.INTEGER],
+            [str(-sys.maxsize), True, -sys.maxsize, Typecode.INTEGER],
+            [str(sys.maxsize), False, str(sys.maxsize), Typecode.STRING],
             [1.1, True, 1, Typecode.INTEGER],
             [-1.1, False, Decimal("-1.1"), Typecode.REAL_NUMBER],
             [Decimal("1.1"), False, Decimal("1.1"), Typecode.REAL_NUMBER],
@@ -138,7 +127,7 @@ class Test_DataPeroperty_data_typecode(object):
                 "Høgskolen i Østfold er et eksempel...",
                 Typecode.STRING,
             ],
-            ["新しいテキスト ドキュメント.txt".encode("utf_8"), True, "新しいテキスト ドキュメント.txt", Typecode.STRING],
+            ["新しいテキスト ドキュメント.txt".encode(), True, "新しいテキスト ドキュメント.txt", Typecode.STRING],
         ],
     )
     def test_normal_strict_map(self, value, is_convert, expected_data, expected_typecode):
@@ -223,7 +212,7 @@ class Test_DataPeroperty_data_typecode(object):
         assert dp.typecode == expected_typecode
 
 
-class Test_DataPeroperty_to_str(object):
+class Test_DataPeroperty_to_str:
     @pytest.mark.parametrize(
         ["value", "type_hint", "is_strict", "expected_data", "expected_str"],
         [
@@ -251,7 +240,7 @@ class Test_DataPeroperty_to_str(object):
         assert dp.to_str() == expected
 
 
-class Test_DataPeroperty_set_data(object):
+class Test_DataPeroperty_set_data:
     @pytest.mark.parametrize(
         ["value", "is_convert", "replace_tabs_with_spaces", "tab_length", "expected"],
         [
@@ -274,8 +263,7 @@ class Test_DataPeroperty_set_data(object):
         assert dp.data == expected
 
 
-class Test_DataPeroperty_is_escape_html_tag(object):
-    @pytest.mark.skipif("six.PY2")
+class Test_DataPeroperty_is_escape_html_tag:
     @pytest.mark.parametrize(
         ["value", "is_escape_html_tag", "expected"],
         [
@@ -298,7 +286,7 @@ class Test_DataPeroperty_is_escape_html_tag(object):
         assert dp.data == expected
 
 
-class Test_DataPeroperty_float_type(object):
+class Test_DataPeroperty_float_type:
     @pytest.mark.parametrize(
         ["value", "float_type", "expected"], [[1.1, float, 1.1], [1.1, Decimal, Decimal("1.1")]]
     )
@@ -309,7 +297,7 @@ class Test_DataPeroperty_float_type(object):
         assert dp.data == expected
 
 
-class Test_DataPeroperty_align(object):
+class Test_DataPeroperty_align:
     @pytest.mark.parametrize(
         ["value", "expected"],
         [
@@ -328,7 +316,7 @@ class Test_DataPeroperty_align(object):
         assert dp.align == expected
 
 
-class Test_DataPeroperty_len(object):
+class Test_DataPeroperty_len:
     @pytest.mark.parametrize(
         ["value", "expected_acw", "expected_len"],
         [
@@ -394,7 +382,7 @@ class Test_DataPeroperty_len(object):
             DataProperty(value, east_asian_ambiguous_width=eaaw).ascii_char_width
 
 
-class Test_DataPeroperty_is_include_ansi_escape(object):
+class Test_DataPeroperty_is_include_ansi_escape:
     @pytest.mark.parametrize(
         ["value", "expected_acw"],
         [
@@ -410,7 +398,7 @@ class Test_DataPeroperty_is_include_ansi_escape(object):
         assert DataProperty(value).is_include_ansi_escape == expected_acw
 
 
-class Test_DataPeroperty_line_break_handling(object):
+class Test_DataPeroperty_line_break_handling:
     @pytest.mark.parametrize(
         ["value", "line_break_handling", "expected"],
         [
@@ -430,7 +418,7 @@ class Test_DataPeroperty_line_break_handling(object):
         )
 
 
-class Test_DataPeroperty_line_break_repl(object):
+class Test_DataPeroperty_line_break_repl:
     @pytest.mark.parametrize(
         ["value", "line_break_handling", "line_break_repl", "expected"],
         [
@@ -451,7 +439,7 @@ class Test_DataPeroperty_line_break_repl(object):
         )
 
 
-class Test_DataPeroperty_escape_formula_injection(object):
+class Test_DataPeroperty_escape_formula_injection:
     @pytest.mark.parametrize(
         ["value", "escape_formula_injection", "expected"],
         [
@@ -485,8 +473,7 @@ class Test_DataPeroperty_escape_formula_injection(object):
         )
 
 
-class Test_DataPeroperty_get_padding_len(object):
-    @pytest.mark.skipif("six.PY2")
+class Test_DataPeroperty_get_padding_len:
     @pytest.mark.parametrize(
         ["value", "ascii_char_width", "expected"],
         [
@@ -515,7 +502,7 @@ class Test_DataPeroperty_get_padding_len(object):
         assert dp.get_padding_len(ascii_char_width) == expected
 
 
-class Test_DataPeroperty_integer_digits(object):
+class Test_DataPeroperty_integer_digits:
     @pytest.mark.parametrize(["value", "expected"], [[1, 1], [1.0, 1], [12.34, 2]])
     def test_normal(self, value, expected):
         dp = DataProperty(value)
@@ -527,7 +514,7 @@ class Test_DataPeroperty_integer_digits(object):
         Nan(dp.integer_digits).is_type()
 
 
-class Test_DataPeroperty_decimal_places(object):
+class Test_DataPeroperty_decimal_places:
     @pytest.mark.parametrize(["value", "expected"], [[1, 0], [1.0, 0], [1.1, 1], [12.34, 2]])
     def test_normal(self, value, expected):
         dp = DataProperty(value)
@@ -539,7 +526,7 @@ class Test_DataPeroperty_decimal_places(object):
         Nan(dp.decimal_places).is_type()
 
 
-class Test_DataPeroperty_additional_format_len(object):
+class Test_DataPeroperty_additional_format_len:
     @pytest.mark.parametrize(
         ["value", "expected"],
         [
@@ -564,7 +551,7 @@ class Test_DataPeroperty_additional_format_len(object):
         assert dp.additional_format_len == expected
 
 
-class Test_DataPeroperty_repr(object):
+class Test_DataPeroperty_repr:
     @pytest.mark.parametrize(
         ["value", "strict_level_map", "expected"],
         [
@@ -577,7 +564,6 @@ class Test_DataPeroperty_repr(object):
         dp = DataProperty(value, strict_level_map=strict_level_map)
         assert len(dp.__repr__()) > expected
 
-    @pytest.mark.skipif("six.PY2")
     @pytest.mark.parametrize(
         ["value", "strict_level_map", "expected"],
         [
@@ -687,4 +673,4 @@ class Test_DataPeroperty_repr(object):
         print("[expected] {}".format(expected))
         print("[actual]   {}".format(dp))
 
-        assert text_type(dp) == expected
+        assert str(dp) == expected

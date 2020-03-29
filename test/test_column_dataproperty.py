@@ -1,18 +1,13 @@
-# encoding: utf-8
-
 """
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-from __future__ import unicode_literals
-
 import datetime
+import sys
 from decimal import Decimal
 from ipaddress import ip_address
 
 import pytest
-import six
-from six import text_type
 from termcolor import colored
 from typepy import (
     Bool,
@@ -37,7 +32,7 @@ nan = float("nan")
 inf = float("inf")
 
 
-class Test_ColumnDataPeroperty(object):
+class Test_ColumnDataPeroperty:
     DATATIME_DATA = datetime.datetime(2017, 1, 1, 1, 2, 3)
 
     @pytest.mark.parametrize(
@@ -45,11 +40,11 @@ class Test_ColumnDataPeroperty(object):
         [
             # single type values
             [[None, None], Typecode.NONE, NoneType],
-            [[0, six.MAXSIZE, text_type(six.MAXSIZE), -six.MAXSIZE], Typecode.INTEGER, Integer],
-            [[0, 1.1, "0.01", -six.MAXSIZE], Typecode.REAL_NUMBER, RealNumber],
+            [[0, sys.maxsize, str(sys.maxsize), -sys.maxsize], Typecode.INTEGER, Integer],
+            [[0, 1.1, "0.01", -sys.maxsize], Typecode.REAL_NUMBER, RealNumber],
             [["-0.538882625371217", "0.268624155343302", ""], Typecode.REAL_NUMBER, RealNumber],
             [[ip_address("127.0.0.1"), ip_address("::1")], Typecode.IP_ADDRESS, IpAddress],
-            [[0, 1.1, -six.MAXSIZE, "test"], Typecode.STRING, String],
+            [[0, 1.1, -sys.maxsize, "test"], Typecode.STRING, String],
             [["", ""], Typecode.NULL_STRING, NullString],
             [[True, True, False], Typecode.BOOL, Bool],
             [[True, "True", False], Typecode.STRING, String],
@@ -60,7 +55,7 @@ class Test_ColumnDataPeroperty(object):
             [[{"a": 1}, {"b": 2}], Typecode.DICTIONARY, Dictionary],
             [[[1, 2], ["a", "b"]], Typecode.LIST, List],
             # not mixed types with None value
-            [[None, six.MAXSIZE, text_type(-six.MAXSIZE)], Typecode.INTEGER, Integer],
+            [[None, sys.maxsize, str(-sys.maxsize)], Typecode.INTEGER, Integer],
             [[1, None, ""], Typecode.INTEGER, Integer],
             [[1.1, None], Typecode.REAL_NUMBER, RealNumber],
             [[1.1, None, ""], Typecode.REAL_NUMBER, RealNumber],
@@ -83,8 +78,8 @@ class Test_ColumnDataPeroperty(object):
             [[inf, "test"], Typecode.STRING, String],
             [[nan, 0.1], Typecode.REAL_NUMBER, RealNumber],
             [[nan, "test"], Typecode.STRING, String],
-            [[six.MAXSIZE, inf, nan], Typecode.REAL_NUMBER, RealNumber],
-            [[DATATIME_DATA, text_type(DATATIME_DATA), DATATIME_DATA], Typecode.STRING, String],
+            [[sys.maxsize, inf, nan], Typecode.REAL_NUMBER, RealNumber],
+            [[DATATIME_DATA, str(DATATIME_DATA), DATATIME_DATA], Typecode.STRING, String],
             [[1, 1.1, DATATIME_DATA, "test", None, True, inf, Nan], Typecode.STRING, String],
         ],
     )
@@ -119,7 +114,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 1
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=REAL_NUMBER, align=right, ascii_width=6, "
             "int_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
             "extra_len=(min=0, max=1)"
@@ -146,7 +141,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=REAL_NUMBER, align=right, ascii_width=8, " "int_digits=1, decimal_places=0"
         )
 
@@ -171,7 +166,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 1
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=REAL_NUMBER, align=right, ascii_width=4, "
             "int_digits=1, decimal_places=(min=0, max=1), "
             "extra_len=(min=0, max=1)"
@@ -198,7 +193,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=REAL_NUMBER, align=right, ascii_width=4, "
             "int_digits=1, decimal_places=(min=1, max=2)"
         )
@@ -223,7 +218,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=REAL_NUMBER, align=right, ascii_width=4, "
             "int_digits=1, decimal_places=(min=0, max=2)"
         )
@@ -248,7 +243,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=REAL_NUMBER, align=right, ascii_width=4, "
             "int_digits=1, decimal_places=(min=1, max=2)"
         )
@@ -274,7 +269,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
-        assert text_type(col_dp) == ("type=INFINITY, align=left, ascii_width=8")
+        assert str(col_dp) == ("type=INFINITY, align=left, ascii_width=8")
 
     def test_normal_mix_0(self):
         col_dp = ColumnDataProperty()
@@ -297,7 +292,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 1
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=STRING, align=left, ascii_width=7, "
             "int_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
             "extra_len=(min=0, max=1)"
@@ -324,7 +319,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 1
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=REAL_NUMBER, align=right, ascii_width=4, "
             "int_digits=1, decimal_places=(min=0, max=1), "
             "extra_len=(min=0, max=1)"
@@ -356,7 +351,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 1
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=STRING, align=left, ascii_width=7, "
             "int_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
             "extra_len=(min=0, max=1)"
@@ -404,7 +399,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
-        assert text_type(col_dp) == ("type=STRING, align=left, ascii_width=6")
+        assert str(col_dp) == ("type=STRING, align=left, ascii_width=6")
 
     @pytest.mark.parametrize(["ambiguous_width", "ascii_char_width"], [[2, 6], [1, 3]])
     def test_normal_east_asian_ambiguous_width(self, ambiguous_width, ascii_char_width):
@@ -451,7 +446,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 1
 
-        assert text_type(col_dp) == (
+        assert str(col_dp) == (
             "type=REAL_NUMBER, align=right, ascii_width=100, "
             "int_digits=(min=1, max=2), decimal_places=(min=0, max=3), "
             "extra_len=(min=0, max=1)"
@@ -475,7 +470,7 @@ class Test_ColumnDataPeroperty(object):
         assert col_dp.ascii_char_width == 0
 
 
-class Test_ColumnDataPeroperty_dp_to_str(object):
+class Test_ColumnDataPeroperty_dp_to_str:
     def test_normal_0(self):
         col_dp = ColumnDataProperty()
         values = [0.1, 3.4375, 65.5397978633, 189.74439359, 10064.0097539, "abcd"]
