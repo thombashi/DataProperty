@@ -27,8 +27,8 @@ check:
 
 .PHONY: clean
 clean:
-	@tox -e clean
 	@rm -rf $(BUILD_WORK_DIR)
+	@tox -e clean
 
 .PHONY: fmt
 fmt:
