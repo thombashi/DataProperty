@@ -5,7 +5,6 @@
 import copy
 import enum
 import multiprocessing
-import warnings
 from collections import Counter
 
 from typepy import (
@@ -92,18 +91,6 @@ class DataPropertyExtractor:
 
         self.__headers = value
         self.__clear_cache()
-
-    @property
-    def header_list(self):
-        warnings.warn("'header_list' has moved to 'headers'", DeprecationWarning)
-
-        return self.headers
-
-    @header_list.setter
-    def header_list(self, value):
-        warnings.warn("'header_list' has moved to 'headers'", DeprecationWarning)
-
-        self.headers = value
 
     @property
     def default_type_hint(self):
