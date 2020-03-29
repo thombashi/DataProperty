@@ -574,26 +574,22 @@ class DataPropertyExtractor(object):
 
         col_data_map = {}
 
-        try:
-            with futures.ProcessPoolExecutor(self.max_workers) as executor:
-                future_list = [
-                    executor.submit(
-                        _to_dp_list_helper,
-                        self,
-                        col_idx,
-                        values,
-                        self.__get_col_type_hint(col_idx),
-                        self.__preprocessor,
-                    )
-                    for col_idx, values in enumerate(zip(*value_matrix))
-                ]
+        with futures.ProcessPoolExecutor(self.max_workers) as executor:
+            future_list = [
+                executor.submit(
+                    _to_dp_list_helper,
+                    self,
+                    col_idx,
+                    values,
+                    self.__get_col_type_hint(col_idx),
+                    self.__preprocessor,
+                )
+                for col_idx, values in enumerate(zip(*value_matrix))
+            ]
 
-                for future in futures.as_completed(future_list):
-                    col_idx, value_dp_list = future.result()
-                    col_data_map[col_idx] = value_dp_list
-        finally:
-            logger.debug("shutdown ProcessPoolExecutor: workers={}".format(self.max_workers))
-            executor.shutdown()
+            for future in futures.as_completed(future_list):
+                col_idx, value_dp_list = future.result()
+                col_data_map[col_idx] = value_dp_list
 
         return list(zip(*[col_data_map[col_idx] for col_idx in sorted(col_data_map)]))
 
