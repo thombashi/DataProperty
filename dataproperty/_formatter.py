@@ -19,10 +19,6 @@ class Formatter:
         Typecode.LIST: "{}",
     }
 
-    @property
-    def blank_curly_braces_format_type_list(self):
-        return self._BLANK_CURLY_BRACES_FORMAT_MAP.keys()
-
     def __init__(self, datetime_format_str, is_formatting_float=True, format_flags=None):
         if format_flags is not None:
             self.__format_flags = format_flags
