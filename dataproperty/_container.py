@@ -7,7 +7,7 @@ import abc
 from typepy import RealNumber
 
 
-class AbstractContainer:
+class AbstractContainer(metaclass=abc.ABCMeta):
     @abc.abstractproperty
     def min_value(self):  # pragma: no cover
         pass
