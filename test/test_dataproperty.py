@@ -145,6 +145,8 @@ class Test_DataPeroperty_data_typecode:
             ['"1"', "", False, '"1"', Typecode.STRING],
             ['"1"', '"', True, "1", Typecode.STRING],
             ['"1"', "", False, '"1"', Typecode.STRING],
+            ["hoge".encode("utf8"), "a", False, "hoge", Typecode.STRING],
+            ["hogea", "a".encode("utf8"), False, "hoge", Typecode.STRING],
         ],
     )
     def test_normal_strip_str(self, value, strip_str, is_strict, expected_data, expected_typecode):
