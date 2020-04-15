@@ -1,13 +1,17 @@
 import math
 from decimal import Decimal
+from typing import List  # noqa
+from typing import Optional
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, Nan, StrictLevel, Typecode, TypeConversionError
 
+from ._align import Align
 from ._align_getter import align_getter
 from ._base import DataPeropertyBase
 from ._common import DefaultValue
 from ._container import ListContainer, MinMaxContainer
+from ._dataproperty import DataProperty
 from ._function import calc_ascii_char_width
 
 
@@ -26,11 +30,11 @@ class ColumnDataProperty(DataPeropertyBase):
     )
 
     @property
-    def align(self):
+    def align(self) -> Align:
         return align_getter.get_align_from_typecode(self.typecode)
 
     @property
-    def bit_length(self):
+    def bit_length(self) -> Optional[int]:
         if self.typecode != Typecode.INTEGER:
             return None
 
@@ -44,38 +48,38 @@ class ColumnDataProperty(DataPeropertyBase):
         return bit_length
 
     @property
-    def column_index(self):
+    def column_index(self) -> Optional[int]:
         return self.__column_index
 
     @property
-    def decimal_places(self):
+    def decimal_places(self) -> Optional[int]:
         return self._decimal_places
 
     @property
-    def ascii_char_width(self):
+    def ascii_char_width(self) -> int:
         return max(self.__header_ascii_char_width, self.__body_ascii_char_width)
 
     @property
-    def minmax_integer_digits(self):
+    def minmax_integer_digits(self) -> MinMaxContainer:
         return self.__minmax_integer_digits
 
     @property
-    def minmax_decimal_places(self):
+    def minmax_decimal_places(self) -> ListContainer:
         return self.__minmax_decimal_places
 
     @property
-    def minmax_additional_format_len(self):
+    def minmax_additional_format_len(self) -> MinMaxContainer:
         return self.__minmax_additional_format_len
 
     def __init__(
         self,
-        column_index=None,
-        min_width=0,
-        format_flags=None,
-        is_formatting_float=True,
-        datetime_format_str=DefaultValue.DATETIME_FORMAT,
-        east_asian_ambiguous_width=1,
-    ):
+        column_index: Optional[int] = None,
+        min_width: int = 0,
+        format_flags: Optional[int] = None,
+        is_formatting_float: bool = True,
+        datetime_format_str: str = DefaultValue.DATETIME_FORMAT,
+        east_asian_ambiguous_width: int = 1,
+    ) -> None:
         super().__init__(
             format_flags=format_flags,
             is_formatting_float=is_formatting_float,
@@ -88,7 +92,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__column_index = column_index
 
         self.__is_calculate = True
-        self.__dp_list = []
+        self.__dp_list = []  # type: List[DataProperty]
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -98,7 +102,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__format_map = self._formatter.make_format_map(decimal_places=self._decimal_places)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         element_list = []
 
         if self.column_index is not None:
@@ -113,7 +117,7 @@ class ColumnDataProperty(DataPeropertyBase):
         )
 
         if Integer(self.bit_length).is_type():
-            element_list.append("bit_len={:d}".format(self.bit_length))
+            element_list.append("bit_len={}".format(self.bit_length))
 
         if self.minmax_integer_digits.has_value():
             if self.minmax_integer_digits.is_same_value():
@@ -141,7 +145,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return ", ".join(element_list)
 
-    def dp_to_str(self, value_dp):
+    def dp_to_str(self, value_dp: DataProperty) -> str:
         try:
             value = self.__preprocess_value_before_tostring(value_dp)
         except TypeConversionError:
@@ -156,20 +160,20 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return MultiByteStrDecoder(value).unicode_str
 
-    def extend_width(self, ascii_char_width):
+    def extend_width(self, ascii_char_width: int) -> None:
         self.extend_header_width(ascii_char_width)
         self.extend_body_width(ascii_char_width)
 
-    def extend_header_width(self, ascii_char_width):
+    def extend_header_width(self, ascii_char_width: int) -> None:
         self.__header_ascii_char_width += ascii_char_width
 
-    def extend_body_width(self, ascii_char_width):
+    def extend_body_width(self, ascii_char_width: int) -> None:
         self.__body_ascii_char_width += ascii_char_width
 
-    def update_header(self, header_db):
+    def update_header(self, header_db: DataProperty) -> None:
         self.__header_ascii_char_width = header_db.ascii_char_width
 
-    def update_body(self, value_dp):
+    def update_body(self, value_dp: DataProperty) -> None:
         if value_dp.is_include_ansi_escape:
             value_dp = value_dp.no_ansi_escape_dp
 
@@ -187,7 +191,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__body_ascii_char_width = max(self.__body_ascii_char_width, value_dp.ascii_char_width)
         self.__calc_ascii_char_width()
 
-    def merge(self, column_dp):
+    def merge(self, column_dp) -> None:
         self.__typecode_bitmap |= column_dp.typecode.value
         self.__calc_typecode_from_bitmap()
 
@@ -200,22 +204,22 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__body_ascii_char_width = max(self.__body_ascii_char_width, column_dp.ascii_char_width)
         self.__calc_ascii_char_width()
 
-    def begin_update(self):
+    def begin_update(self) -> None:
         self.__is_calculate = False
 
-    def end_update(self):
+    def end_update(self) -> None:
         self.__is_calculate = True
 
         self.__calc_typecode_from_bitmap()
         self.__calc_decimal_places()
         self.__calc_ascii_char_width()
 
-    def __is_not_single_typecode(self, typecode_bitmap):
-        return (
+    def __is_not_single_typecode(self, typecode_bitmap: int) -> bool:
+        return bool(
             self.__typecode_bitmap & typecode_bitmap and self.__typecode_bitmap & ~typecode_bitmap
         )
 
-    def __is_float_typecode(self):
+    def __is_float_typecode(self) -> bool:
         FLOAT_TYPECODE_BMP = (
             Typecode.REAL_NUMBER.value | Typecode.INFINITY.value | Typecode.NAN.value
         )
@@ -237,7 +241,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return False
 
-    def __update_body_ascii_char_width(self):
+    def __update_body_ascii_char_width(self) -> int:
         if not self.__typecode_bitmap & (Typecode.REAL_NUMBER.value | Typecode.INTEGER.value):
             return self.__body_ascii_char_width
 
@@ -257,7 +261,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return max_width
 
-    def __get_decimal_places(self):
+    def __get_decimal_places(self) -> Optional[int]:
         try:
             avg = self.minmax_decimal_places.mean()
         except TypeError:
@@ -268,13 +272,13 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return int(min(math.ceil(avg + Decimal("1.0")), self.minmax_decimal_places.max_value))
 
-    def __get_tostring_format(self, value_dp):
+    def __get_tostring_format(self, value_dp: DataProperty) -> str:
         if self.typecode == Typecode.STRING:
             return self.__format_map.get(value_dp.typecode, "{:s}")
 
         return self.__format_map.get(self.typecode, "{:s}")
 
-    def __get_typecode_from_bitmap(self):
+    def __get_typecode_from_bitmap(self) -> Typecode:
         if self.__is_float_typecode():
             return Typecode.REAL_NUMBER
 
@@ -309,26 +313,26 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return Typecode.STRING
 
-    def __calc_ascii_char_width(self):
+    def __calc_ascii_char_width(self) -> None:
         if not self.__is_calculate:
             return
 
         self.__body_ascii_char_width = self.__update_body_ascii_char_width()
 
-    def __calc_decimal_places(self):
+    def __calc_decimal_places(self) -> None:
         if not self.__is_calculate:
             return
 
         self._decimal_places = self.__get_decimal_places()
         self.__format_map = self._formatter.make_format_map(decimal_places=self._decimal_places)
 
-    def __calc_typecode_from_bitmap(self):
+    def __calc_typecode_from_bitmap(self) -> None:
         if not self.__is_calculate:
             return
 
         self._typecode = self.__get_typecode_from_bitmap()
 
-    def __preprocess_value_before_tostring(self, value_dp):
+    def __preprocess_value_before_tostring(self, value_dp: DataProperty):
         if self.typecode == value_dp.typecode or self.typecode in [
             Typecode.STRING,
             Typecode.BOOL,

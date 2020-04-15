@@ -13,13 +13,13 @@ class Align(enum.Enum):
     CENTER = (1 << 3, "center")
 
     @property
-    def align_code(self):
+    def align_code(self) -> int:
         return self.__align_code
 
     @property
-    def align_string(self):
+    def align_string(self) -> str:
         return self.__align_string
 
-    def __init__(self, code, string):
+    def __init__(self, code: int, string: str):
         self.__align_code = code
         self.__align_string = string

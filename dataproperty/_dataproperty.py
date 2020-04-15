@@ -3,6 +3,7 @@
 """
 
 from decimal import Decimal
+from typing import Any, Dict, Optional, Type, Union, cast
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import (
@@ -23,6 +24,7 @@ from typepy import (
     TypeConversionError,
 )
 
+from ._align import Align
 from ._align_getter import align_getter
 from ._base import DataPeropertyBase
 from ._common import DefaultValue
@@ -56,103 +58,19 @@ class DataProperty(DataPeropertyBase):
         String,
     ]
 
-    @property
-    def align(self):
-        if not self.__align:
-            if self.is_include_ansi_escape:
-                self.__align = self.no_ansi_escape_dp.align
-            else:
-                self.__align = align_getter.get_align_from_typecode(self.typecode)
-
-        return self.__align
-
-    @property
-    def decimal_places(self):
-        """
-        :return:
-            Decimal places if the ``data`` type either ``float`` or
-            ``decimal.Decimal``. Returns ``0`` if the ``data`` type is ``int``.
-            Otherwise, returns ``float("nan")``.
-        :rtype: int
-        """
-
-        if not self._decimal_places:
-            self.__set_digit()
-
-        return self._decimal_places
-
-    @property
-    def data(self):
-        """
-        :return: Original data value.
-        :rtype: Original data type.
-        """
-
-        return self.__data
-
-    @property
-    def is_include_ansi_escape(self):
-        if self.no_ansi_escape_dp is None:
-            return False
-
-        return self.length != self.no_ansi_escape_dp.length
-
-    @property
-    def no_ansi_escape_dp(self):
-        return self.__no_ansi_escape_data
-
-    @property
-    def length(self):
-        """
-        :return: Length of the ``data``.
-        :rtype: int
-        """
-
-        if not self.__length:
-            self.__length = self.__get_length()
-
-        return self.__length
-
-    @property
-    def ascii_char_width(self):
-        if not self.__ascii_char_width:
-            self.__ascii_char_width = self.__calc_ascii_char_width()
-
-        return self.__ascii_char_width
-
-    @property
-    def integer_digits(self):
-        """
-        :return:
-            Integer digits if the ``data`` type either
-            ``int``/``float``/``decimal.Decimal``.
-            Otherwise, returns ``None``.
-        :rtype: int
-        """
-
-        if not self.__integer_digits:
-            self.__set_digit()
-
-        return self.__integer_digits
-
-    @property
-    def additional_format_len(self):
-        if not self.__additional_format_len:
-            self.__additional_format_len = self.__get_additional_format_len()
-
-        return self.__additional_format_len
-
     def __init__(
         self,
-        data,
-        preprocessor=None,
-        type_hint=None,
-        float_type=None,
-        format_flags=None,
-        datetime_format_str=DefaultValue.DATETIME_FORMAT,
-        strict_level_map=None,
-        east_asian_ambiguous_width=1,
-    ):
+        data: Any,
+        preprocessor: Optional[Preprocessor] = None,
+        type_hint: Optional[Any] = None,
+        float_type: Union[Type[Decimal], Type[float], None] = None,
+        format_flags: Optional[int] = None,
+        datetime_format_str: str = DefaultValue.DATETIME_FORMAT,
+        strict_level_map: Optional[
+            Union[Dict[Typecode, int], Dict[Union[str, Typecode], int], Dict[str, int]]
+        ] = None,
+        east_asian_ambiguous_width: int = 1,
+    ) -> None:
         super().__init__(
             format_flags=format_flags,
             is_formatting_float=True,
@@ -160,11 +78,11 @@ class DataProperty(DataPeropertyBase):
             east_asian_ambiguous_width=east_asian_ambiguous_width,
         )
 
-        self.__additional_format_len = None
-        self.__align = None
-        self.__ascii_char_width = None
-        self.__integer_digits = None
-        self.__length = None
+        self.__additional_format_len = None  # type: Optional[int]
+        self.__align = None  # type: Optional[Align]
+        self.__ascii_char_width = None  # type: Optional[int]
+        self.__integer_digits = None  # type: Optional[int]
+        self.__length = None  # type: Optional[int]
 
         if preprocessor is None:
             preprocessor = Preprocessor()
@@ -174,11 +92,11 @@ class DataProperty(DataPeropertyBase):
         self.__set_data(data, type_hint, float_type, strict_level_map)
 
         if no_ansi_escape_data is None or len(data) == len(no_ansi_escape_data):
-            self.__no_ansi_escape_data = None
+            self.__no_ansi_escape_data = None  # type: Optional[DataProperty]
         else:
             self.__no_ansi_escape_data = DataProperty(no_ansi_escape_data)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if self.typecode != other.typecode:
             return False
 
@@ -187,7 +105,7 @@ class DataProperty(DataPeropertyBase):
 
         return self.data == other.data
 
-    def __ne__(self, other):
+    def __ne__(self, other) -> bool:
         if self.typecode != other.typecode:
             return True
 
@@ -196,7 +114,7 @@ class DataProperty(DataPeropertyBase):
 
         return self.data != other.data
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         element_list = []
 
         if self.typecode == Typecode.DATETIME:
@@ -229,26 +147,116 @@ class DataProperty(DataPeropertyBase):
 
         return ", ".join(element_list)
 
-    def get_padding_len(self, ascii_char_width):
+    @property
+    def align(self) -> Align:
+        if not self.__align:
+            if self.is_include_ansi_escape:
+                self.__align = self.no_ansi_escape_dp.align
+            else:
+                self.__align = align_getter.get_align_from_typecode(self.typecode)
+
+        assert self.__align
+
+        return self.__align
+
+    @property
+    def decimal_places(self) -> Optional[int]:
+        """
+        :return:
+            Decimal places if the ``data`` type either ``float`` or
+            ``decimal.Decimal``. Returns ``0`` if the ``data`` type is ``int``.
+            Otherwise, returns ``float("nan")``.
+        :rtype: int
+        """
+
+        if not self._decimal_places:
+            self.__set_digit()
+
+        return self._decimal_places
+
+    @property
+    def data(self) -> Any:
+        """
+        :return: Original data value.
+        :rtype: Original data type.
+        """
+
+        return self.__data
+
+    @property
+    def is_include_ansi_escape(self) -> bool:
+        if self.no_ansi_escape_dp is None:
+            return False
+
+        return self.length != self.no_ansi_escape_dp.length
+
+    @property
+    def no_ansi_escape_dp(self):
+        return self.__no_ansi_escape_data
+
+    @property
+    def length(self) -> Optional[int]:
+        """
+        :return: Length of the ``data``.
+        :rtype: int
+        """
+
+        if not self.__length:
+            self.__length = self.__get_length()
+
+        return self.__length
+
+    @property
+    def ascii_char_width(self) -> int:
+        if not self.__ascii_char_width:
+            self.__ascii_char_width = self.__calc_ascii_char_width()
+
+        return self.__ascii_char_width
+
+    @property
+    def integer_digits(self) -> Optional[int]:
+        """
+        :return:
+            Integer digits if the ``data`` type either
+            ``int``/``float``/``decimal.Decimal``.
+            Otherwise, returns ``None``.
+        :rtype: int
+        """
+
+        if not self.__integer_digits:
+            self.__set_digit()
+
+        return self.__integer_digits
+
+    @property
+    def additional_format_len(self) -> int:
+        if not self.__additional_format_len:
+            self.__additional_format_len = self.__get_additional_format_len()
+
+        return self.__additional_format_len
+
+    def get_padding_len(self, ascii_char_width: int) -> int:
         if self.typecode == Typecode.LIST:
             return max(
                 ascii_char_width
                 - (
                     self.ascii_char_width
-                    - DataProperty(MultiByteStrDecoder(str(self.data)).unicode_str).length
+                    - cast(
+                        int, DataProperty(MultiByteStrDecoder(str(self.data)).unicode_str).length
+                    )
                 ),
                 0,
             )
 
         try:
-            return max(ascii_char_width - (self.ascii_char_width - self.length), 0)
+            return max(ascii_char_width - (self.ascii_char_width - cast(int, self.length)), 0)
         except TypeError:
             return ascii_char_width
 
-    def to_str(self):
+    def to_str(self) -> str:
         return self.format_str.format(self.data)
 
-    def __get_additional_format_len(self):
+    def __get_additional_format_len(self) -> int:
         if not RealNumber(self.data, strip_ansi_escape=False).is_type():
             return 0
 
@@ -271,15 +279,15 @@ class DataProperty(DataPeropertyBase):
 
         return float_len
 
-    def __get_length(self):
+    def __get_length(self) -> Optional[int]:
         if self.typecode in (Typecode.DICTIONARY, Typecode.LIST, Typecode.STRING):
             return len(self.data)
 
         return None
 
-    def __calc_ascii_char_width(self):
+    def __calc_ascii_char_width(self) -> int:
         if self.typecode == Typecode.INTEGER:
-            return self.integer_digits + self.additional_format_len
+            return cast(int, self.integer_digits) + self.additional_format_len
 
         if self.typecode == Typecode.REAL_NUMBER:
             return self.__get_base_float_len() + self.additional_format_len
@@ -336,7 +344,7 @@ class DataProperty(DataPeropertyBase):
             "failed to convert: data={}, strict_level={}".format(data, strict_level_map)
         )
 
-    def __set_digit(self):
+    def __set_digit(self) -> None:
         integer_digits, decimal_places = get_number_of_digit(self.__data)
         self.__integer_digits = integer_digits
         self._decimal_places = decimal_places

@@ -1,3 +1,5 @@
+from typing import Optional, Type
+
 from typepy import (
     Bool,
     DateTime,
@@ -13,6 +15,7 @@ from typepy import (
     String,
     Typecode,
 )
+from typepy.type import AbstractType
 
 from ._formatter import Formatter
 from ._interface import DataPeropertyInterface
@@ -44,11 +47,11 @@ class DataPeropertyBase(DataPeropertyInterface):
     }
 
     @property
-    def type_class(self):
-        return self.__TYPE_CLASS_TABLE.get(self.typecode)
+    def type_class(self) -> Type[AbstractType]:
+        return self.__TYPE_CLASS_TABLE[self.typecode]
 
     @property
-    def typecode(self):
+    def typecode(self) -> Typecode:
         """
         ``typepy.Typecode`` that corresponds to the type of the ``data``.
 
@@ -57,33 +60,39 @@ class DataPeropertyBase(DataPeropertyInterface):
         :rtype: typepy.Typecode
         """
 
+        assert self._typecode
+
         return self._typecode
 
     @property
-    def typename(self):
+    def typename(self) -> str:
         return self.typecode.name
 
-    @property
-    def format_str(self):
-        if self.__format_str:
-            return self.__format_str
-
-        self.__format_str = self._formatter.make_format_str(self.typecode, self.decimal_places)
-
-        return self.__format_str
-
     def __init__(
-        self, format_flags, is_formatting_float, datetime_format_str, east_asian_ambiguous_width
-    ):
-        self._decimal_places = None
+        self,
+        format_flags: Optional[int],
+        is_formatting_float: bool,
+        datetime_format_str: str,
+        east_asian_ambiguous_width: int,
+    ) -> None:
+        self._decimal_places = None  # type: Optional[int]
         self._east_asian_ambiguous_width = east_asian_ambiguous_width
-        self._typecode = None
+        self._typecode = None  # type: Optional[Typecode]
 
         self._datetime_format_str = datetime_format_str
-        self.__format_str = None
+        self.__format_str = ""
 
         self._formatter = Formatter(
             format_flags=format_flags,
             datetime_format_str=self._datetime_format_str,
             is_formatting_float=is_formatting_float,
         )
+
+    @property
+    def format_str(self) -> str:
+        if self.__format_str:
+            return self.__format_str
+
+        self.__format_str = self._formatter.make_format_str(self.typecode, self.decimal_places)
+
+        return self.__format_str

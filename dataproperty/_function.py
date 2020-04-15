@@ -7,6 +7,7 @@ import math
 import re
 from collections import namedtuple
 from decimal import Decimal
+from typing import Optional, Tuple, Union
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, RealNumber, TypeConversionError
@@ -17,7 +18,7 @@ decimal.setcontext(decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
 _ansi_escape = re.compile(r"(\x9b|\x1b\[)[0-?]*[ -\/]*[@-~]", re.IGNORECASE)
 
 
-def get_integer_digit(value):
+def get_integer_digit(value) -> int:
     float_type = RealNumber(value)
 
     try:
@@ -53,7 +54,7 @@ class DigitCalculator:
             for i, _ in enumerate(range(upper_threshold.digit_len, self.__min_digit_len - 1, -1))
         ]
 
-    def get_decimal_places(self, value):
+    def get_decimal_places(self, value: Union[str, float, int, Decimal]) -> int:
         from typepy import Integer
 
         int_type = Integer(value)
@@ -64,7 +65,7 @@ class DigitCalculator:
         else:
             abs_value = abs(float(value))
             text_value = str(abs_value)
-            float_text = 0
+            float_text = "0"
             if text_value.find(".") != -1:
                 float_text = text_value.split(".")[1]
                 float_digit_len = len(float_text)
@@ -84,21 +85,21 @@ class DigitCalculator:
 _digit_calculator = DigitCalculator()
 
 
-def get_number_of_digit(value):
+def get_number_of_digit(value) -> Tuple[Optional[int], Optional[int]]:
     try:
         integer_digits = get_integer_digit(value)
     except (ValueError, TypeError, OverflowError):
         return (None, None)
 
     try:
-        decimal_places = _digit_calculator.get_decimal_places(value)
+        decimal_places = _digit_calculator.get_decimal_places(value)  # type: Optional[int]
     except (ValueError, TypeError):
         decimal_places = None
 
     return (integer_digits, decimal_places)
 
 
-def is_multibyte_str(text):
+def is_multibyte_str(text) -> bool:
     from typepy import StrictLevel, String
 
     if not String(text, strict_level=StrictLevel.MIN).is_type():
@@ -117,7 +118,7 @@ def is_multibyte_str(text):
     return False
 
 
-def _validate_eaaw(east_asian_ambiguous_width):
+def _validate_eaaw(east_asian_ambiguous_width: int) -> None:
     if east_asian_ambiguous_width in (1, 2):
         return
 
@@ -128,11 +129,11 @@ def _validate_eaaw(east_asian_ambiguous_width):
     )
 
 
-def strip_ansi_escape(unicode_str):
+def strip_ansi_escape(unicode_str: str) -> str:
     return _ansi_escape.sub("", unicode_str)
 
 
-def calc_ascii_char_width(unicode_str, east_asian_ambiguous_width=1):
+def calc_ascii_char_width(unicode_str: str, east_asian_ambiguous_width: int = 1) -> int:
     import unicodedata
 
     width = 0

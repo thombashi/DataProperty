@@ -1,5 +1,6 @@
 import html
 import re
+from typing import Any, Optional, Tuple, Union
 
 from mbstrdecoder import MultiByteStrDecoder
 
@@ -11,7 +12,7 @@ _RE_LINE_BREAK = re.compile(r"\r\n|\n")
 _RE_FORMULA_PREFIX = re.compile(r"^[-\+=@]")
 
 
-def normalize_lbh(value):
+def normalize_lbh(value: Optional[LineBreakHandling]) -> LineBreakHandling:
     if isinstance(value, LineBreakHandling):
         return value
 
@@ -23,7 +24,7 @@ def normalize_lbh(value):
 
 class Preprocessor:
     @property
-    def line_break_handling(self):
+    def line_break_handling(self) -> Optional[LineBreakHandling]:
         return self.__line_break_handling
 
     @line_break_handling.setter
@@ -32,15 +33,15 @@ class Preprocessor:
 
     def __init__(
         self,
-        strip_str=None,
-        replace_tabs_with_spaces=True,
-        tab_length=2,
-        line_break_handling=None,
-        line_break_repl=" ",
-        is_escape_html_tag=False,
-        is_escape_formula_injection=False,
-    ):
-        self.strip_str = strip_str
+        strip_str: Optional[Union[str, bytes]] = None,
+        replace_tabs_with_spaces: bool = True,
+        tab_length: int = 2,
+        line_break_handling: Optional[LineBreakHandling] = None,
+        line_break_repl: str = " ",
+        is_escape_html_tag: bool = False,
+        is_escape_formula_injection: bool = False,
+    ) -> None:
+        self.strip_str = strip_str  # type: Optional[Union[str, bytes]]
         self.replace_tabs_with_spaces = replace_tabs_with_spaces
         self.tab_length = tab_length
         self.line_break_handling = line_break_handling
@@ -48,10 +49,10 @@ class Preprocessor:
         self.is_escape_html_tag = is_escape_html_tag
         self.is_escape_formula_injection = is_escape_formula_injection
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ", ".join(
             [
-                "strip_str={}".format(self.strip_str),
+                "strip_str={!r}".format(self.strip_str),
                 "replace_tabs_with_spaces={}".format(self.replace_tabs_with_spaces),
                 "tab_length={}".format(self.tab_length),
                 "line_break_handling={}".format(self.line_break_handling),
@@ -61,13 +62,13 @@ class Preprocessor:
             ]
         )
 
-    def preprocess(self, data):
+    def preprocess(self, data: Any) -> Tuple:
         data, no_ansi_escape_data = self.__preprocess_string(
             self.__preprocess_data(data, self.strip_str),
         )
         return (data, no_ansi_escape_data)
 
-    def update(self, **kwargs):
+    def update(self, **kwargs) -> bool:
         is_updated = False
 
         for key, value in kwargs.items():
