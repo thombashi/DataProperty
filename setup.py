@@ -57,6 +57,7 @@ setuptools.setup(
     maintainer=pkg_info["__author__"],
     maintainer_email=pkg_info["__email__"],
     packages=setuptools.find_packages(exclude=["test*"]),
+    package_data={MODULE_NAME: ["py.typed"]},
     project_urls={"Source": REPOSITORY_URL, "Tracker": "{:s}/issues".format(REPOSITORY_URL)},
     python_requires=">=3.5",
     install_requires=setuptools_require + install_requires,
