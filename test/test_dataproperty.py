@@ -9,7 +9,17 @@ from decimal import Decimal
 
 import pytest
 from termcolor import colored
-from typepy import Bool, DateTime, Integer, Nan, RealNumber, StrictLevel, String, Typecode
+from typepy import (
+    Bool,
+    DateTime,
+    Dictionary,
+    Integer,
+    Nan,
+    RealNumber,
+    StrictLevel,
+    String,
+    Typecode,
+)
 
 from dataproperty import (
     MIN_STRICT_LEVEL_MAP,
@@ -192,6 +202,14 @@ class Test_DataPeroperty_data_typecode:
             ["false", None, StrictLevel.MIN, Typecode.BOOL],
             ["true", Bool, StrictLevel.MIN, Typecode.BOOL],
             ["false", Bool, StrictLevel.MIN, Typecode.BOOL],
+            ["hoge".encode("utf8"), None, StrictLevel.MAX, Typecode.STRING],
+            ["hoge".encode("utf8"), None, StrictLevel.MIN, Typecode.STRING],
+            ['{"foo": 10}', None, StrictLevel.MAX, Typecode.STRING],
+            ['{"foo": 10}', None, StrictLevel.MIN, Typecode.DICTIONARY],
+            ['{"foo": 10}', Dictionary, StrictLevel.MAX, Typecode.DICTIONARY],
+            ['{"foo": 10}', Dictionary, StrictLevel.MIN, Typecode.DICTIONARY],
+            [{"foo": 10}, None, StrictLevel.MAX, Typecode.DICTIONARY],
+            [{"foo": 10}, None, StrictLevel.MIN, Typecode.LIST],
         ],
     )
     def test_normal_type_hint(self, value, type_hint, strict_level, expected_typecode):
