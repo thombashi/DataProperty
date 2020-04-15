@@ -28,7 +28,7 @@ from typepy import (
     Typecode,
     is_empty_sequence,
 )
-from typepy.type import AbstractType
+from typepy.type import AbstractType  # noqa
 
 from ._column import ColumnDataProperty
 from ._common import MIN_STRICT_LEVEL_MAP, DefaultValue
@@ -37,9 +37,7 @@ from ._dataproperty import DataProperty
 from ._formatter import Format
 from ._preprocessor import Preprocessor
 from .logger import logger
-
-
-TypeHint = Optional[Type[AbstractType]]
+from .typing import TypeHint
 
 
 def nop(v):
@@ -92,14 +90,14 @@ class DataPropertyExtractor:
     def __init__(self) -> None:
         self.max_workers = multiprocessing.cpu_count()
 
-        self.__headers = []  # type: typing.List[str]
+        self.__headers = []  # type: Sequence[str]
         self.__default_type_hint = None  # type: TypeHint
-        self.__col_type_hints = []  # type: typing.List[TypeHint]
+        self.__col_type_hints = []  # type: Sequence[TypeHint]
 
         self.__strip_str_header = None  # type: Optional[str]
         self.__is_formatting_float = True
         self.__min_col_ascii_char_width = 0
-        self.__format_flags_list = []  # type: typing.List[Format]
+        self.__format_flags_list = []  # type: Sequence[int]
         self.__float_type = None  # type: Union[Type[float], Type[Decimal], None]
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
         self.__strict_level_map = copy.deepcopy(DefaultValue.STRICT_LEVEL_MAP)
@@ -126,11 +124,11 @@ class DataPropertyExtractor:
         self.__dp_cache_map = {None: self.__to_dp_raw(None), "": self.__to_dp_raw("")}
 
     @property
-    def headers(self) -> typing.List[str]:
+    def headers(self) -> Sequence[str]:
         return self.__headers
 
     @headers.setter
-    def headers(self, value: typing.List[str]) -> None:
+    def headers(self, value: Sequence[str]) -> None:
         if self.__headers == value:
             return
 
@@ -150,11 +148,11 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def column_type_hints(self) -> typing.List[TypeHint]:
+    def column_type_hints(self) -> Sequence[TypeHint]:
         return self.__col_type_hints
 
     @column_type_hints.setter
-    def column_type_hints(self, value: typing.List[TypeHint]) -> None:
+    def column_type_hints(self, value: Sequence[TypeHint]) -> None:
         if self.__col_type_hints == value:
             return
 
@@ -225,11 +223,11 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def format_flags_list(self) -> typing.List[Format]:
+    def format_flags_list(self) -> Sequence[int]:
         return self.__format_flags_list
 
     @format_flags_list.setter
-    def format_flags_list(self, value: typing.List[Format]):
+    def format_flags_list(self, value: Sequence[int]):
         if self.__format_flags_list == value:
             return
 
@@ -370,7 +368,7 @@ class DataPropertyExtractor:
     def to_column_dp_list(
         self,
         value_dp_matrix: Any,
-        previous_column_dp_list: Optional[typing.List[ColumnDataProperty]] = None,
+        previous_column_dp_list: Optional[Sequence[ColumnDataProperty]] = None,
     ) -> typing.List[ColumnDataProperty]:
         col_dp_list = self.__get_col_dp_list_base()
 

@@ -1,6 +1,6 @@
-from typing import Optional
+from typing import Optional, Type
 
 from typepy.type import AbstractType
 
 
-TypeHint = Optional[AbstractType]
+TypeHint = Optional[Type[AbstractType]]
