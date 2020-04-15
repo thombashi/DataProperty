@@ -48,7 +48,7 @@ class ColumnDataProperty(DataPeropertyBase):
         return bit_length
 
     @property
-    def column_index(self) -> Optional[int]:
+    def column_index(self) -> int:
         return self.__column_index
 
     @property
@@ -73,7 +73,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def __init__(
         self,
-        column_index: Optional[int] = None,
+        column_index: int,
         min_width: int = 0,
         format_flags: Optional[int] = None,
         is_formatting_float: bool = True,
