@@ -5,6 +5,7 @@
 import copy
 import enum
 import multiprocessing
+import sys
 import typing
 from collections import Counter
 from datetime import datetime
@@ -346,6 +347,10 @@ class DataPropertyExtractor:
             from _multiprocessing import SemLock, sem_unlink  # noqa
         except ImportError:
             logger.debug("This platform lacks a functioning sem_open implementation")
+            value = 1
+
+        if "pytest" in sys.modules and value != 1:
+            logger.debug("set max_workers to 1 to avoid deadlock when executed from pytest")
             value = 1
 
         self.__max_workers = value
