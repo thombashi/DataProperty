@@ -5,6 +5,7 @@
 import copy
 import itertools
 from decimal import Decimal
+from typing import Mapping, Union
 
 from typepy import StrictLevel, Typecode
 
@@ -52,7 +53,11 @@ class DefaultValue:
         Typecode.STRING: StrictLevel.MIN,
     }
 
-    TYPE_VALUE_MAP = {Typecode.NONE: None, Typecode.INFINITY: INF_VALUE, Typecode.NAN: NAN_VALUE}
+    TYPE_VALUE_MAP = {
+        Typecode.NONE: None,
+        Typecode.INFINITY: INF_VALUE,
+        Typecode.NAN: NAN_VALUE,
+    }  # type: Mapping[Typecode, Union[float, Decimal, None]]
 
 
 def default_datetime_formatter(value):

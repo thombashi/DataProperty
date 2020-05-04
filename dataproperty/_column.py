@@ -1,7 +1,7 @@
 import math
 from decimal import Decimal
 from typing import List  # noqa
-from typing import Optional
+from typing import Optional, Type, Union
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, Nan, StrictLevel, Typecode, TypeConversionError
@@ -21,6 +21,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__body_ascii_char_width",
         "__column_index",
         "__dp_list",
+        "__float_type",
         "__format_map",
         "__is_calculate",
         "__minmax_integer_digits",
@@ -74,6 +75,7 @@ class ColumnDataProperty(DataPeropertyBase):
     def __init__(
         self,
         column_index: int,
+        float_type: Union[Type[float], Type[Decimal], None],
         min_width: int = 0,
         format_flags: Optional[int] = None,
         is_formatting_float: bool = True,
@@ -90,6 +92,8 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__header_ascii_char_width = 0
         self.__body_ascii_char_width = min_width
         self.__column_index = column_index
+
+        self.__float_type = float_type
 
         self.__is_calculate = True
         self.__dp_list = []  # type: List[DataProperty]
@@ -341,5 +345,8 @@ class ColumnDataProperty(DataPeropertyBase):
             return value_dp.data
 
         return self.type_class(
-            value_dp.data, strict_level=StrictLevel.MIN, strip_ansi_escape=False
+            value_dp.data,
+            strict_level=StrictLevel.MIN,
+            float_type=self.__float_type,
+            strip_ansi_escape=False,
         ).convert()

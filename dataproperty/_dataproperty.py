@@ -94,7 +94,7 @@ class DataProperty(DataPeropertyBase):
         if no_ansi_escape_data is None or len(data) == len(no_ansi_escape_data):
             self.__no_ansi_escape_data = None  # type: Optional[DataProperty]
         else:
-            self.__no_ansi_escape_data = DataProperty(no_ansi_escape_data)
+            self.__no_ansi_escape_data = DataProperty(no_ansi_escape_data, float_type=float_type)
 
     def __eq__(self, other) -> bool:
         if self.typecode != other.typecode:

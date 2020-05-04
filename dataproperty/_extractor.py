@@ -10,6 +10,7 @@ import typing
 from collections import Counter
 from datetime import datetime
 from decimal import Decimal
+from typing import Mapping  # noqa
 from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Type, Union
 
 from typepy import (
@@ -106,7 +107,9 @@ class DataPropertyExtractor:
 
         self.__preprocessor = Preprocessor()
 
-        self.__type_value_map = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)
+        self.__type_value_map = copy.deepcopy(
+            DefaultValue.TYPE_VALUE_MAP
+        )  # type: Mapping[Typecode, Union[float, Decimal, None]]
 
         self.__trans_func = nop
         self.__trans_func_list = []  # type: typing.List[Callable]
@@ -415,6 +418,7 @@ class DataPropertyExtractor:
                 col_dp_list.append(
                     ColumnDataProperty(
                         column_index=col_idx,
+                        float_type=self.float_type,
                         min_width=self.min_column_width,
                         format_flags=self.__get_format_flags(col_idx),
                         is_formatting_float=self.is_formatting_float,
@@ -629,7 +633,7 @@ class DataPropertyExtractor:
                 try:
                     expect_type_hint, _count = type_counter.most_common(1)[0]
                     if not expect_type_hint(
-                        data, strict_level=StrictLevel.MAX
+                        data, float_type=self.float_type, strict_level=StrictLevel.MAX
                     ).is_type():  # type: ignore
                         expect_type_hint = None
                 except IndexError:
@@ -696,6 +700,7 @@ class DataPropertyExtractor:
         for col_idx, header_dp in enumerate(header_dp_list):
             col_dp = ColumnDataProperty(
                 column_index=col_idx,
+                float_type=self.float_type,
                 min_width=self.min_column_width,
                 format_flags=self.__get_format_flags(col_idx),
                 is_formatting_float=self.is_formatting_float,
