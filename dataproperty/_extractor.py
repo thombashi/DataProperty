@@ -102,7 +102,9 @@ class DataPropertyExtractor:
         self.__format_flags_list = []  # type: Sequence[int]
         self.__float_type = None  # type: Union[Type[float], Type[Decimal], None]
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
-        self.__strict_level_map = copy.deepcopy(DefaultValue.STRICT_LEVEL_MAP)
+        self.__strict_level_map = copy.deepcopy(
+            DefaultValue.STRICT_LEVEL_MAP
+        )  # type: Mapping[Union[Typecode, str], int]
         self.__east_asian_ambiguous_width = 1
 
         self.__preprocessor = Preprocessor()
@@ -263,11 +265,11 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def strict_level_map(self) -> Dict:
+    def strict_level_map(self) -> Mapping[Union[Typecode, str], int]:
         return self.__strict_level_map
 
     @strict_level_map.setter
-    def strict_level_map(self, value: Dict):
+    def strict_level_map(self, value: Mapping[Union[Typecode, str], int]):
         if self.__strict_level_map == value:
             return
 

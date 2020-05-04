@@ -5,7 +5,7 @@
 import copy
 import itertools
 from decimal import Decimal
-from typing import Mapping, Union
+from typing import Mapping, Union  # noqa
 
 from typepy import StrictLevel, Typecode
 
@@ -51,7 +51,7 @@ class DefaultValue:
         Typecode.NONE: StrictLevel.MAX,
         Typecode.NULL_STRING: StrictLevel.MIN,
         Typecode.STRING: StrictLevel.MIN,
-    }
+    }  # type: Mapping[Union[Typecode, str], int]
 
     TYPE_VALUE_MAP = {
         Typecode.NONE: None,
