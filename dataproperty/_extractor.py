@@ -482,6 +482,17 @@ class DataPropertyExtractor:
 
         return is_updated
 
+    def update_strict_level_map(self, value: Mapping[Union[Typecode, str], int]) -> bool:
+        org = copy.deepcopy(self.__strict_level_map)
+        self.__strict_level_map.update(value)
+
+        if org == self.__strict_level_map:
+            return False
+
+        self.__clear_cache()
+
+        return True
+
     @staticmethod
     def __is_dp_matrix(value) -> bool:
         if not value:
