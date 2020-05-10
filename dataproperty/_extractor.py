@@ -113,7 +113,6 @@ class DataPropertyExtractor:
             DefaultValue.TYPE_VALUE_MAP
         )  # type: Mapping[Typecode, Union[float, Decimal, None]]
 
-        self.__trans_func = nop
         self.__trans_func_list = []  # type: typing.List[TransFunc]
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None  # type: Optional[Callable[[datetime], str]]
