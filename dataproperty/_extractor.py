@@ -42,10 +42,6 @@ from .logger import logger
 from .typing import StrictLevelMap, TransFunc, TypeHint
 
 
-def nop(v):
-    return v
-
-
 @enum.unique
 class MatrixFormatting(enum.Enum):
     # raise exception if the matrix is not properly formatted
