@@ -11,7 +11,7 @@ from collections import Counter
 from datetime import datetime
 from decimal import Decimal
 from typing import Mapping  # noqa
-from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Type, Union, cast
 
 from typepy import (
     Bool,
@@ -39,7 +39,7 @@ from ._dataproperty import DataProperty
 from ._formatter import Format
 from ._preprocessor import Preprocessor
 from .logger import logger
-from .typing import TypeHint
+from .typing import StrictLevelMap, TransFunc, TypeHint
 
 
 def nop(v):
@@ -103,8 +103,8 @@ class DataPropertyExtractor:
         self.__float_type = None  # type: Union[Type[float], Type[Decimal], None]
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
         self.__strict_level_map = copy.deepcopy(
-            DefaultValue.STRICT_LEVEL_MAP
-        )  # type: Mapping[Union[Typecode, str], int]
+            cast(Dict[Union[Typecode, str], int], DefaultValue.STRICT_LEVEL_MAP)
+        )
         self.__east_asian_ambiguous_width = 1
 
         self.__preprocessor = Preprocessor()
@@ -114,7 +114,7 @@ class DataPropertyExtractor:
         )  # type: Mapping[Typecode, Union[float, Decimal, None]]
 
         self.__trans_func = nop
-        self.__trans_func_list = []  # type: typing.List[Callable]
+        self.__trans_func_list = []  # type: typing.List[TransFunc]
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None  # type: Optional[Callable[[datetime], str]]
         self.__matrix_formatting = MatrixFormatting.TRIM
@@ -265,15 +265,15 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def strict_level_map(self) -> Mapping[Union[Typecode, str], int]:
+    def strict_level_map(self) -> StrictLevelMap:
         return self.__strict_level_map
 
     @strict_level_map.setter
-    def strict_level_map(self, value: Mapping[Union[Typecode, str], int]):
+    def strict_level_map(self, value: StrictLevelMap):
         if self.__strict_level_map == value:
             return
 
-        self.__strict_level_map = value
+        self.__strict_level_map = cast(Dict[Union[Typecode, str], int], value)
         self.__clear_cache()
 
     @property
@@ -300,7 +300,7 @@ class DataPropertyExtractor:
         self.__type_value_map = value
         self.__clear_cache()
 
-    def register_trans_func(self, trans_func: Callable) -> None:
+    def register_trans_func(self, trans_func: TransFunc) -> None:
         self.__trans_func_list.insert(0, trans_func)
         self.__clear_cache()
 
@@ -482,7 +482,7 @@ class DataPropertyExtractor:
 
         return is_updated
 
-    def update_strict_level_map(self, value: Mapping[Union[Typecode, str], int]) -> bool:
+    def update_strict_level_map(self, value: StrictLevelMap) -> bool:
         org = copy.deepcopy(self.__strict_level_map)
         self.__strict_level_map.update(value)
 

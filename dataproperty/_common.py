@@ -9,6 +9,8 @@ from typing import Mapping, Union  # noqa
 
 from typepy import StrictLevel, Typecode
 
+from .typing import StrictLevelMap  # noqa
+
 
 NOT_QUOTING_FLAGS = {
     Typecode.BOOL: False,
@@ -51,7 +53,7 @@ class DefaultValue:
         Typecode.NONE: StrictLevel.MAX,
         Typecode.NULL_STRING: StrictLevel.MIN,
         Typecode.STRING: StrictLevel.MIN,
-    }  # type: Mapping[Union[Typecode, str], int]
+    }  # type: StrictLevelMap
 
     TYPE_VALUE_MAP = {
         Typecode.NONE: None,
