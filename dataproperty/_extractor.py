@@ -679,7 +679,9 @@ class DataPropertyExtractor:
         if self.matrix_formatting == MatrixFormatting.EXCEPTION:
             if min_col_size != max_col_size:
                 raise ValueError(
-                    "nonuniform column size: min={}, max={}".format(min_col_size, max_col_size)
+                    "nonuniform column size found: min={}, max={}".format(
+                        min_col_size, max_col_size
+                    )
                 )
 
             return data_matrix
