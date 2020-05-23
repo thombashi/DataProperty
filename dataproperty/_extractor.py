@@ -11,8 +11,9 @@ from collections import Counter
 from datetime import datetime
 from decimal import Decimal
 from typing import Mapping  # noqa
-from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type, Union, cast
 
+import typepy
 from typepy import (
     Bool,
     DateTime,
@@ -20,7 +21,6 @@ from typepy import (
     Infinity,
     Integer,
     IpAddress,
-    List,
     Nan,
     NoneType,
     NullString,
@@ -109,7 +109,7 @@ class DataPropertyExtractor:
             DefaultValue.TYPE_VALUE_MAP
         )  # type: Mapping[Typecode, Union[float, Decimal, None]]
 
-        self.__trans_func_list = []  # type: typing.List[TransFunc]
+        self.__trans_func_list = []  # type: List[TransFunc]
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter = None  # type: Optional[Callable[[datetime], str]]
         self.__matrix_formatting = MatrixFormatting.TRIM
@@ -166,7 +166,7 @@ class DataPropertyExtractor:
                     Infinity,
                     Integer,
                     IpAddress,
-                    List,
+                    typepy.List,
                     Nan,
                     NoneType,
                     RealNumber,
@@ -362,7 +362,7 @@ class DataPropertyExtractor:
 
         return self.__to_dp(value)
 
-    def to_dp_list(self, values: Sequence) -> typing.List[DataProperty]:
+    def to_dp_list(self, values: Sequence) -> List[DataProperty]:
         if is_empty_sequence(values):
             return []
 
@@ -374,7 +374,7 @@ class DataPropertyExtractor:
         self,
         value_dp_matrix: Any,
         previous_column_dp_list: Optional[Sequence[ColumnDataProperty]] = None,
-    ) -> typing.List[ColumnDataProperty]:
+    ) -> List[ColumnDataProperty]:
         col_dp_list = self.__get_col_dp_list_base()
 
         logger.debug("converting to column dataproperty:")
@@ -458,7 +458,7 @@ class DataPropertyExtractor:
 
         return self.__to_dp_matrix_mt(value_matrix)
 
-    def to_header_dp_list(self) -> typing.List[DataProperty]:
+    def to_header_dp_list(self) -> List[DataProperty]:
         self.__update_dp_converter()
 
         preprocessor = copy.deepcopy(self.__preprocessor)
@@ -628,7 +628,7 @@ class DataPropertyExtractor:
         type_hint: TypeHint = None,
         preprocessor: Optional[Preprocessor] = None,
         strict_level_map: Optional[Dict[Typecode, int]] = None,
-    ) -> typing.List[DataProperty]:
+    ) -> List[DataProperty]:
         if is_empty_sequence(data_list):
             return []
 
@@ -746,7 +746,7 @@ def _to_dp_list_helper(
     data_list: Sequence,
     type_hint: TypeHint,
     preprocessor: Preprocessor,
-) -> Tuple[int, typing.List[DataProperty]]:
+) -> Tuple[int, List[DataProperty]]:
     return (
         col_idx,
         extractor._to_dp_list(data_list, type_hint=type_hint, preprocessor=preprocessor),
