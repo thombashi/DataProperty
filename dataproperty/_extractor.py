@@ -6,7 +6,7 @@ import copy
 import enum
 import multiprocessing
 import sys
-import typing
+import typing  # noqa
 from collections import Counter
 from datetime import datetime
 from decimal import Decimal
@@ -441,7 +441,7 @@ class DataPropertyExtractor:
 
         return col_dp_list
 
-    def to_dp_matrix(self, value_matrix: Sequence) -> Sequence:
+    def to_dp_matrix(self, value_matrix: Sequence) -> Sequence[Sequence[DataProperty]]:
         self.__update_dp_converter()
         logger.debug(
             "max_workers={}, preprocessor={}".format(self.max_workers, self.__preprocessor)
@@ -582,7 +582,7 @@ class DataPropertyExtractor:
 
         return self.__dp_converter.convert(value_dp)
 
-    def __to_dp_matrix_st(self, value_matrix):
+    def __to_dp_matrix_st(self, value_matrix) -> Sequence[Sequence[DataProperty]]:
         return list(
             zip(
                 *[
@@ -598,7 +598,7 @@ class DataPropertyExtractor:
             )
         )
 
-    def __to_dp_matrix_mt(self, value_matrix):
+    def __to_dp_matrix_mt(self, value_matrix) -> Sequence[Sequence[DataProperty]]:
         from concurrent import futures
 
         col_data_map = {}
