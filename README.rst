@@ -217,17 +217,10 @@ Install from PPA (for Ubuntu)
 
 Dependencies
 ============
-Python 3.5+
-
-- `mbstrdecoder <https://github.com/thombashi/mbstrdecoder>`__
-- `typepy <https://github.com/thombashi/typepy>`__
+- Python 3.5+
+- `Python package dependencies (automatically installed) <https://github.com/thombashi/DataProperty/network/dependencies>`__
 
 Optional dependencies
 ---------------------
 - `loguru <https://github.com/Delgan/loguru>`__
     - Used for logging if the package installed
-
-Test dependencies
------------------
-- `pytest <https://pypi.org/project/pytest>`__
-- `tox <https://pypi.org/project/tox>`__
