@@ -24,4 +24,5 @@ def set_logger(is_enable, propagation_depth=1):
 
 def set_log_level(log_level):
     # deprecated
+    logger.disable(MODULE_NAME)
     return
