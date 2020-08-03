@@ -4,7 +4,6 @@
 
 import copy
 import enum
-import multiprocessing
 import sys
 import typing  # noqa
 from collections import Counter
@@ -86,7 +85,7 @@ class DataPropertyExtractor:
     """
 
     def __init__(self) -> None:
-        self.max_workers = 1
+        self.max_workers = DefaultValue.MAX_WORKERS
 
         self.__headers = []  # type: Sequence[str]
         self.__default_type_hint = None  # type: TypeHint
@@ -363,7 +362,7 @@ class DataPropertyExtractor:
 
         self.__max_workers = value
         if not self.__max_workers:
-            self.__max_workers = multiprocessing.cpu_count()
+            self.__max_workers = DefaultValue.MAX_WORKERS
 
     def to_dp(self, value) -> DataProperty:
         self.__update_dp_converter()

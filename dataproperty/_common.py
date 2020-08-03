@@ -61,6 +61,8 @@ class DefaultValue:
         Typecode.NAN: NAN_VALUE,
     }  # type: Mapping[Typecode, Union[float, Decimal, None]]
 
+    MAX_WORKERS = 1
+
 
 def default_datetime_formatter(value):
     return value.strftime(DefaultValue.DATETIME_FORMAT)
