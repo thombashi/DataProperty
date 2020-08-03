@@ -86,7 +86,7 @@ class DataPropertyExtractor:
     """
 
     def __init__(self) -> None:
-        self.max_workers = multiprocessing.cpu_count()
+        self.max_workers = 1
 
         self.__headers = []  # type: Sequence[str]
         self.__default_type_hint = None  # type: TypeHint
@@ -245,6 +245,14 @@ class DataPropertyExtractor:
             return
 
         self.__float_type = value
+        """
+        self.__type_value_map = {
+            Typecode.NONE: None,
+            Typecode.INFINITY: self.__float_type("inf"),
+            Typecode.NAN: self.__float_type("nan"),
+        }
+        """
+
         self.__clear_cache()
 
     @property
@@ -487,6 +495,24 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
         return True
+
+    """
+    def update_dict(self, lhs: Mapping, rhs: Mapping) -> bool:
+        is_updated = False
+
+        for key, value in rhs.items():
+            if key not in lhs:
+                lhs[]
+                continue
+
+            if getattr(lhs, key) == value:
+                continue
+
+            setattr(lhs, key, value)
+            is_updated = True
+
+        return is_updated
+    """
 
     @staticmethod
     def __is_dp_matrix(value) -> bool:
