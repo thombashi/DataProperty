@@ -12,6 +12,10 @@ A Python library for extract property from data.
     :target: https://badge.fury.io/py/DataProperty
     :alt: PyPI package version
 
+.. image:: https://anaconda.org/conda-forge/DataProperty/badges/version.svg
+    :target: https://anaconda.org/conda-forge/DataProperty
+    :alt: conda-forge package version
+
 .. image:: https://img.shields.io/pypi/pyversions/DataProperty.svg
    :target: https://pypi.org/project/DataProperty
     :alt: Supported Python versions
@@ -31,6 +35,30 @@ A Python library for extract property from data.
 .. image:: https://coveralls.io/repos/github/thombashi/DataProperty/badge.svg?branch=master
     :target: https://coveralls.io/github/thombashi/DataProperty?branch=master
     :alt: Test coverage
+
+
+Installation
+============
+
+Installation: pip
+------------------------------
+::
+
+    pip install DataProperty
+
+Installation: conda
+------------------------------
+::
+
+    conda install -c conda-forge dataproperty
+
+Installation: apt
+------------------------------
+::
+
+    sudo add-apt-repository ppa:thombashi/ppa
+    sudo apt update
+    sudo apt install python3-dataproperty
 
 
 Usage
@@ -195,24 +223,6 @@ Example data set and result are as follows:
 
 
 Full example source code can be found at *examples/py/to_column_dp_list.py*
-
-
-Installation
-============
-
-Install from PyPI
-------------------------------
-::
-
-    pip install DataProperty
-
-Install from PPA (for Ubuntu)
-------------------------------
-::
-
-    sudo add-apt-repository ppa:thombashi/ppa
-    sudo apt update
-    sudo apt install python3-dataproperty
 
 
 Dependencies
