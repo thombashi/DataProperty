@@ -83,9 +83,7 @@ class Preprocessor:
 
         return is_updated
 
-    def __preprocess_string(
-        self, raw_data,
-    ):
+    def __preprocess_string(self, raw_data):
         data = raw_data
 
         if self.replace_tabs_with_spaces:

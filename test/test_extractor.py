@@ -403,7 +403,8 @@ class Test_DataPropertyExtractor_to_dp_list:
             assert dp.data == value, value
 
     @pytest.mark.parametrize(
-        ["value", "expected"], [[[0, None], [0, None]]],
+        ["value", "expected"],
+        [[[0, None], [0, None]]],
     )
     def test_exception_escape_formula_injection(self, dp_extractor, value, expected):
         dp_extractor.preprocessor = Preprocessor(is_escape_formula_injection=True)

@@ -275,7 +275,8 @@ class Test_DataPeroperty_set_data:
         dp = DataProperty(
             value,
             preprocessor=Preprocessor(
-                replace_tabs_with_spaces=replace_tabs_with_spaces, tab_length=tab_length,
+                replace_tabs_with_spaces=replace_tabs_with_spaces,
+                tab_length=tab_length,
             ),
             strict_level_map=get_strict_level_map(not is_convert),
         )
@@ -484,11 +485,15 @@ class Test_DataPeroperty_escape_formula_injection:
         )
 
     @pytest.mark.parametrize(
-        ["value", "expected"], [[0, 0], [None, None]],
+        ["value", "expected"],
+        [[0, 0], [None, None]],
     )
     def test_abnormal(self, value, expected):
         assert (
-            DataProperty(value, preprocessor=Preprocessor(is_escape_formula_injection=True),).data
+            DataProperty(
+                value,
+                preprocessor=Preprocessor(is_escape_formula_injection=True),
+            ).data
             == expected
         )
 
