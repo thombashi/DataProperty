@@ -28,7 +28,7 @@ class Preprocessor:
         return self.__line_break_handling
 
     @line_break_handling.setter
-    def line_break_handling(self, value):
+    def line_break_handling(self, value: Optional[LineBreakHandling]):
         self.__line_break_handling = normalize_lbh(value)
 
     def __init__(
