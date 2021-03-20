@@ -19,7 +19,7 @@ def normalize_lbh(value: Optional[LineBreakHandling]) -> LineBreakHandling:
     if value is None:
         return LineBreakHandling.NOP
 
-    return LineBreakHandling[value.upper()]
+    return LineBreakHandling[value.upper()]  # type: ignore
 
 
 class Preprocessor:

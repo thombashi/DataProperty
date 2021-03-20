@@ -268,6 +268,9 @@ class DataProperty(DataPeropertyBase):
         return format_len
 
     def __get_base_float_len(self):
+        assert self.integer_digits is not None
+        assert self.decimal_places is not None
+
         if any([self.integer_digits < 0, self.decimal_places < 0]):
             raise ValueError("integer digits and decimal places must be greater or equals to zero")
 

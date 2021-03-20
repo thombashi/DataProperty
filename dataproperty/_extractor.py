@@ -667,7 +667,7 @@ class DataPropertyExtractor:
                     expect_type_hint, _count = type_counter.most_common(1)[0]
                     if not expect_type_hint(
                         data, float_type=self.float_type, strict_level=StrictLevel.MAX
-                    ).is_type():  # type: ignore
+                    ).is_type():
                         expect_type_hint = None
                 except IndexError:
                     pass
