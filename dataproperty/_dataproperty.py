@@ -168,7 +168,7 @@ class DataProperty(DataPeropertyBase):
         :rtype: int
         """
 
-        if not self._decimal_places:
+        if self._decimal_places is None:
             self.__set_digit()
 
         return self._decimal_places
@@ -200,14 +200,14 @@ class DataProperty(DataPeropertyBase):
         :rtype: int
         """
 
-        if not self.__length:
+        if self.__length is None:
             self.__length = self.__get_length()
 
         return self.__length
 
     @property
     def ascii_char_width(self) -> int:
-        if not self.__ascii_char_width:
+        if self.__ascii_char_width is None:
             self.__ascii_char_width = self.__calc_ascii_char_width()
 
         return self.__ascii_char_width
@@ -222,14 +222,14 @@ class DataProperty(DataPeropertyBase):
         :rtype: int
         """
 
-        if not self.__integer_digits:
+        if self.__integer_digits is None:
             self.__set_digit()
 
         return self.__integer_digits
 
     @property
     def additional_format_len(self) -> int:
-        if not self.__additional_format_len:
+        if self.__additional_format_len is None:
             self.__additional_format_len = self.__get_additional_format_len()
 
         return self.__additional_format_len
