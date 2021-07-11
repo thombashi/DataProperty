@@ -2,6 +2,7 @@ AUTHOR := thombashi
 PACKAGE := DataProperty
 BUILD_WORK_DIR := _work
 PKG_BUILD_DIR := $(BUILD_WORK_DIR)/$(PACKAGE)
+PYTHON := python3
 
 
 .PHONY: build-remote
@@ -40,5 +41,5 @@ release:
 
 .PHONY: setup
 setup:
-	@pip install --upgrade -e .[test] releasecmd tox
-	pip check
+	@$(PYTHON) -m pip install -q --disable-pip-version-check --upgrade -e .[test] releasecmd tox
+	@$(PYTHON) -m pip check
