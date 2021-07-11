@@ -23,7 +23,7 @@ build: clean
 check:
 	tox -e lint
 	travis lint
-	pip check
+	$(PYTHON) -m pip check
 
 .PHONY: clean
 clean:
@@ -36,7 +36,7 @@ fmt:
 
 .PHONY: release
 release:
-	@cd $(PKG_BUILD_DIR) && python setup.py release --sign --dir dataproperty
+	@cd $(PKG_BUILD_DIR) && $(PYTHON) setup.py release --sign --search-dir dataproperty
 	@make clean
 
 .PHONY: setup
