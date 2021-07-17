@@ -658,7 +658,7 @@ class DataPropertyExtractor:
 
         dp_list = []
         for data in data_list:
-            expect_type_hint: Optional[Type[AbstractType]] = type_hint
+            expect_type_hint: TypeHint = type_hint
             if type_hint is None:
                 try:
                     expect_type_hint, _count = type_counter.most_common(1)[0]
