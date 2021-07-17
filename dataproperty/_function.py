@@ -4,7 +4,6 @@
 
 import decimal
 import re
-from collections import namedtuple
 from decimal import Decimal
 from typing import Optional, Tuple, Union
 
