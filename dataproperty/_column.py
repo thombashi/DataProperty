@@ -201,7 +201,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_additional_format_len.update(value_dp.additional_format_len)
 
         self.__dp_list.append(value_dp)
-        self.__calc_ascii_char_width()
+        self.__update_ascii_char_width()
 
     def merge(self, column_dp) -> None:
         self.__typecode_bitmap |= column_dp.typecode.value
@@ -214,7 +214,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_additional_format_len.merge(column_dp.minmax_additional_format_len)
 
         self.__body_ascii_char_width = max(self.__body_ascii_char_width, column_dp.ascii_char_width)
-        self.__calc_ascii_char_width()
+        self.__update_ascii_char_width()
 
     def begin_update(self) -> None:
         self.__is_calculate = False
@@ -224,7 +224,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__calc_typecode_from_bitmap()
         self.__calc_decimal_places()
-        self.__calc_ascii_char_width()
+        self.__update_ascii_char_width()
 
     def __is_not_single_typecode(self, typecode_bitmap: int) -> bool:
         return bool(
@@ -318,7 +318,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return Typecode.STRING
 
-    def __calc_ascii_char_width(self) -> None:
+    def __update_ascii_char_width(self) -> None:
         if not self.__is_calculate:
             return
 
