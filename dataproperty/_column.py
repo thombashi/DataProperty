@@ -1,7 +1,7 @@
 import math
 from decimal import Decimal
 from typing import List  # noqa
-from typing import Optional, Type, Union
+from typing import Optional
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, Nan, StrictLevel, Typecode, TypeConversionError
@@ -13,6 +13,7 @@ from ._common import DefaultValue
 from ._container import ListContainer, MinMaxContainer
 from ._dataproperty import DataProperty
 from ._function import calc_ascii_char_width
+from .typing import FloatType
 
 
 class ColumnDataProperty(DataPeropertyBase):
