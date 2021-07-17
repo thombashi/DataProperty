@@ -30,7 +30,7 @@ from ._base import DataPeropertyBase
 from ._common import DefaultValue
 from ._function import calc_ascii_char_width, get_number_of_digit
 from ._preprocessor import Preprocessor
-from .typing import FloatType, StrictLevelMap
+from .typing import FloatType, StrictLevelMap, TypeHint
 
 
 class DataProperty(DataPeropertyBase):
@@ -63,7 +63,7 @@ class DataProperty(DataPeropertyBase):
         self,
         data: Any,
         preprocessor: Optional[Preprocessor] = None,
-        type_hint: Optional[Any] = None,
+        type_hint: TypeHint = None,
         float_type: Optional[FloatType] = None,
         format_flags: Optional[int] = None,
         datetime_format_str: str = DefaultValue.DATETIME_FORMAT,
@@ -312,7 +312,13 @@ class DataProperty(DataPeropertyBase):
 
         return calc_ascii_char_width(unicode_str, self._east_asian_ambiguous_width)
 
-    def __set_data(self, data, type_hint, float_type, strict_level_map):
+    def __set_data(
+        self,
+        data: Any,
+        type_hint: TypeHint,
+        float_type: Optional[FloatType],
+        strict_level_map: Optional[StrictLevelMap],
+    ):
         if float_type is None:
             float_type = DefaultValue.FLOAT_TYPE
 
