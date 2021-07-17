@@ -149,6 +149,16 @@ class Test_get_number_of_digit:
         assert get_number_of_digit(value) == expected
 
     @pytest.mark.parametrize(
+        ["value", "max_decimal_places", "expected"],
+        [
+            [0, 5, (1, 0)],
+            ["0.000000000000001", 5, (1, 5)],
+        ],
+    )
+    def test_normal_max_decimal_places(self, value, max_decimal_places, expected):
+        assert get_number_of_digit(value, max_decimal_places=max_decimal_places) == expected
+
+    @pytest.mark.parametrize(
         ["value"], [[None], [True], [inf], [nan], ["0xff"], ["test"], ["いろは".encode()]]
     )
     def test_nan(self, value):

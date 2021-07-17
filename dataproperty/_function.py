@@ -5,7 +5,7 @@
 import decimal
 import re
 from decimal import Decimal
-from typing import Optional, Tuple, Union
+from typing import Any, Optional, Tuple, Union
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, RealNumber, TypeConversionError
@@ -65,14 +65,18 @@ class DigitCalculator:
 _digit_calculator = DigitCalculator()
 
 
-def get_number_of_digit(value) -> Tuple[Optional[int], Optional[int]]:
+def get_number_of_digit(
+    value: Any, max_decimal_places: int = 99
+) -> Tuple[Optional[int], Optional[int]]:
     try:
         integer_digits = get_integer_digit(value)
     except (ValueError, TypeError, OverflowError):
         return (None, None)
 
     try:
-        decimal_places = _digit_calculator.get_decimal_places(value)  # type: Optional[int]
+        decimal_places = min(
+            _digit_calculator.get_decimal_places(value), max_decimal_places
+        )  # type: Optional[int]
     except (ValueError, TypeError):
         decimal_places = None
 
