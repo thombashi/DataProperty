@@ -21,7 +21,7 @@ build: clean
 
 .PHONY: check
 check:
-	tox -e lint
+	@tox -e lint
 	travis lint
 	$(PYTHON) -m pip check
 
