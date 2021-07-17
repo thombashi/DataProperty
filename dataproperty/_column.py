@@ -75,7 +75,7 @@ class ColumnDataProperty(DataPeropertyBase):
     def __init__(
         self,
         column_index: int,
-        float_type: Union[Type[float], Type[Decimal], None],
+        float_type: Optional[FloatType],
         min_width: int = 0,
         format_flags: Optional[int] = None,
         is_formatting_float: bool = True,

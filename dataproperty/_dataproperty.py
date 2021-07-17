@@ -3,7 +3,7 @@
 """
 
 from decimal import Decimal
-from typing import Any, Optional, Type, Union, cast
+from typing import Any, Optional, cast
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import (
@@ -30,7 +30,7 @@ from ._base import DataPeropertyBase
 from ._common import DefaultValue
 from ._function import calc_ascii_char_width, get_number_of_digit
 from ._preprocessor import Preprocessor
-from .typing import StrictLevelMap
+from .typing import FloatType, StrictLevelMap
 
 
 class DataProperty(DataPeropertyBase):
@@ -64,7 +64,7 @@ class DataProperty(DataPeropertyBase):
         data: Any,
         preprocessor: Optional[Preprocessor] = None,
         type_hint: Optional[Any] = None,
-        float_type: Union[Type[Decimal], Type[float], None] = None,
+        float_type: Optional[FloatType] = None,
         format_flags: Optional[int] = None,
         datetime_format_str: str = DefaultValue.DATETIME_FORMAT,
         strict_level_map: Optional[StrictLevelMap] = None,
