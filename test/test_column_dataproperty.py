@@ -477,7 +477,14 @@ class Test_ColumnDataPeroperty_dp_to_str:
     def test_normal_0(self):
         col_dp = ColumnDataProperty(0, float_type=Decimal)
         values = [0.1, 3.4375, 65.5397978633, 189.74439359, 10064.0097539, "abcd"]
-        expected_list = ["0.100", "3.437", "65.540", "189.744", "10064.010", "abcd"]
+        expected_list = [
+            "0.1000000",
+            "3.4375000",
+            "65.5397979",
+            "189.7443936",
+            "10064.0097539",
+            "abcd",
+        ]
 
         col_dp.update_header(DataProperty("abc"))
         for value in values:
@@ -514,7 +521,7 @@ class Test_ColumnDataPeroperty_dp_to_str:
         ["values", "expected_list"],
         [
             [[1234, 223, 1234567], ["1,234", "223", "1,234,567"]],
-            [[1234.1, 223.33, 1234567.33], ["1,234.1", "223.3", "1,234,567.3"]],
+            [[1234.1, 223.33, 1234567.33], ["1,234.10", "223.33", "1,234,567.33"]],
         ],
     )
     def test_normal_format(self, values, expected_list):

@@ -3,7 +3,6 @@
 """
 
 import decimal
-import math
 import re
 from collections import namedtuple
 from decimal import Decimal
@@ -43,43 +42,25 @@ def get_integer_digit(value) -> int:
 
 
 class DigitCalculator:
-    Threshold = namedtuple("Threshold", "pow digit_len")
-
-    def __init__(self):
-        upper_threshold = self.Threshold(pow=-2, digit_len=6)
-
-        self.__min_digit_len = 1
-        self.__thresholds = [
-            self.Threshold(upper_threshold.pow + i, upper_threshold.digit_len - i)
-            for i, _ in enumerate(range(upper_threshold.digit_len, self.__min_digit_len - 1, -1))
-        ]
+    REGEXP_COMMON_LOG = re.compile(r"[\d\.]+[eE]\-\d+")
+    REGEXP_SPLIT = re.compile(r"[eE]\-")
 
     def get_decimal_places(self, value: Union[str, float, int, Decimal]) -> int:
-        from typepy import Integer
-
-        int_type = Integer(value)
+        if Integer(value).is_type():
+            return 0
 
         float_digit_len = 0
-        if int_type.is_type():
-            abs_value = abs(int_type.convert())
-        else:
-            abs_value = abs(float(value))
-            text_value = str(abs_value)
-            float_text = "0"
-            if text_value.find(".") != -1:
-                float_text = text_value.split(".")[1]
-                float_digit_len = len(float_text)
-            elif text_value.find("e-") != -1:
-                float_text = text_value.split("e-")[1]
-                float_digit_len = int(float_text) - 1
+        abs_value = abs(float(value))
+        text_value = str(abs_value)
+        float_text = "0"
+        if text_value.find(".") != -1:
+            float_text = text_value.split(".")[1]
+            float_digit_len = len(float_text)
+        elif self.REGEXP_COMMON_LOG.search(text_value):
+            float_text = self.REGEXP_SPLIT.split(text_value)[1]
+            float_digit_len = int(float_text)
 
-        abs_digit = self.__min_digit_len
-        for threshold in self.__thresholds:
-            if abs_value < math.pow(10, threshold.pow):
-                abs_digit = threshold.digit_len
-                break
-
-        return min(abs_digit, float_digit_len)
+        return float_digit_len
 
 
 _digit_calculator = DigitCalculator()

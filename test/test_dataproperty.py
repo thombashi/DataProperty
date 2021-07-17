@@ -627,14 +627,20 @@ class Test_DataPeroperty_repr:
             [
                 -12.234,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=-12.23, type=REAL_NUMBER, align=right, "
-                "ascii_width=6, int_digits=2, decimal_places=2, extra_len=1",
+                "data=-12.234, type=REAL_NUMBER, align=right, "
+                "ascii_width=7, int_digits=2, decimal_places=3, extra_len=1",
             ],
             [
                 0.01,
                 DefaultValue.STRICT_LEVEL_MAP,
                 "data=0.01, type=REAL_NUMBER, align=right, "
                 "ascii_width=4, int_digits=1, decimal_places=2, extra_len=0",
+            ],
+            [
+                "0.000000000000001",
+                DefaultValue.STRICT_LEVEL_MAP,
+                "data=0.000000000000001, type=REAL_NUMBER, align=right, "
+                "ascii_width=17, int_digits=1, decimal_places=15, extra_len=0",
             ],
             [
                 "abcdefg",
