@@ -151,6 +151,9 @@ class ColumnDataProperty(DataPeropertyBase):
         return ", ".join(element_list)
 
     def dp_to_str(self, value_dp: DataProperty) -> str:
+        if value_dp.typecode == Typecode.STRING:
+            return value_dp.data
+
         try:
             value = self.__preprocess_value_before_tostring(value_dp)
         except TypeConversionError:
@@ -160,10 +163,15 @@ class ColumnDataProperty(DataPeropertyBase):
 
         try:
             return to_string_format_str.format(value)
+        except (ValueError, TypeError):
+            pass
+
+        try:
+            return MultiByteStrDecoder(value).unicode_str
         except ValueError:
             pass
 
-        return MultiByteStrDecoder(value).unicode_str
+        return str(value)
 
     def extend_width(self, ascii_char_width: int) -> None:
         self.extend_header_width(ascii_char_width)
@@ -193,7 +201,6 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_additional_format_len.update(value_dp.additional_format_len)
 
         self.__dp_list.append(value_dp)
-        self.__body_ascii_char_width = max(self.__body_ascii_char_width, value_dp.ascii_char_width)
         self.__calc_ascii_char_width()
 
     def merge(self, column_dp) -> None:
@@ -247,24 +254,17 @@ class ColumnDataProperty(DataPeropertyBase):
         return False
 
     def __update_body_ascii_char_width(self) -> int:
-        if not self.__typecode_bitmap & (Typecode.REAL_NUMBER.value | Typecode.INTEGER.value):
-            return self.__body_ascii_char_width
-
-        max_width = self.__body_ascii_char_width
+        width_list = [self.__body_ascii_char_width]
 
         for value_dp in self.__dp_list:
-            if value_dp.typecode in [Typecode.INFINITY, Typecode.NAN]:
-                continue
-
             if value_dp.is_include_ansi_escape:
                 value_dp = value_dp.no_ansi_escape_dp
 
-            max_width = max(
-                max_width,
-                calc_ascii_char_width(self.dp_to_str(value_dp), self._east_asian_ambiguous_width),
+            width_list.append(
+                calc_ascii_char_width(self.dp_to_str(value_dp), self._east_asian_ambiguous_width)
             )
 
-        return max_width
+        return max(width_list)
 
     def __get_decimal_places(self) -> Optional[int]:
         try:
