@@ -5,12 +5,11 @@
 import copy
 import enum
 import sys
-import typing  # noqa
+import typing
 from collections import Counter
 from datetime import datetime
 from decimal import Decimal
-from typing import Mapping  # noqa
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast
 
 import typepy
 from typepy import (
@@ -29,7 +28,7 @@ from typepy import (
     Typecode,
     is_empty_sequence,
 )
-from typepy.type import AbstractType  # noqa
+from typepy.type import AbstractType
 
 from ._column import ColumnDataProperty
 from ._common import MIN_STRICT_LEVEL_MAP, DefaultValue
@@ -87,15 +86,15 @@ class DataPropertyExtractor:
     def __init__(self) -> None:
         self.max_workers = DefaultValue.MAX_WORKERS
 
-        self.__headers = []  # type: Sequence[str]
-        self.__default_type_hint = None  # type: TypeHint
-        self.__col_type_hints = []  # type: Sequence[TypeHint]
+        self.__headers: Sequence[str] = []
+        self.__default_type_hint: TypeHint = None
+        self.__col_type_hints: Sequence[TypeHint] = []
 
-        self.__strip_str_header = None  # type: Optional[str]
+        self.__strip_str_header: Optional[str] = None
         self.__is_formatting_float = True
         self.__min_col_ascii_char_width = 0
-        self.__format_flags_list = []  # type: Sequence[int]
-        self.__float_type = None  # type: Union[Type[float], Type[Decimal], None]
+        self.__format_flags_list: Sequence[int] = []
+        self.__float_type: Union[Type[float], Type[Decimal], None] = None
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
         self.__strict_level_map = copy.deepcopy(
             cast(Dict[Union[Typecode, str], int], DefaultValue.STRICT_LEVEL_MAP)
@@ -104,13 +103,13 @@ class DataPropertyExtractor:
 
         self.__preprocessor = Preprocessor()
 
-        self.__type_value_map = copy.deepcopy(
+        self.__type_value_map: Mapping[Typecode, Union[float, Decimal, None]] = copy.deepcopy(
             DefaultValue.TYPE_VALUE_MAP
-        )  # type: Mapping[Typecode, Union[float, Decimal, None]]
+        )
 
-        self.__trans_func_list = []  # type: List[TransFunc]
+        self.__trans_func_list: List[TransFunc] = []
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
-        self.__datetime_formatter = None  # type: Optional[Callable[[datetime], str]]
+        self.__datetime_formatter: Optional[Callable[[datetime], str]] = None
         self.__matrix_formatting = MatrixFormatting.TRIM
 
         self.__clear_cache()
@@ -173,7 +172,7 @@ class DataPropertyExtractor:
                     NullString,
                     None,
                 ):
-                    raise ValueError("invalid type hint: {}".format(type(type_hint)))
+                    raise ValueError(f"invalid type hint: {type(type_hint)}")
 
         self.__col_type_hints = value
         self.__clear_cache()
@@ -388,13 +387,13 @@ class DataPropertyExtractor:
 
         logs = ["  params:"]
         if self.headers:
-            logs.append("    headers={}".format(len(self.headers)))
+            logs.append(f"    headers={len(self.headers)}")
         logs.extend(
             [
                 "    prev_col_count={}".format(
                     len(previous_column_dp_list) if previous_column_dp_list else None
                 ),
-                "    matrix_formatting={}".format(self.matrix_formatting),
+                f"    matrix_formatting={self.matrix_formatting}",
             ]
         )
         if self.column_type_hints:
@@ -444,15 +443,13 @@ class DataPropertyExtractor:
 
             col_dp.end_update()
 
-            logger.debug("    {:s}".format(str(col_dp)))
+            logger.debug(f"    {str(col_dp):s}")
 
         return col_dp_list
 
     def to_dp_matrix(self, value_matrix: Sequence) -> Sequence[Sequence[DataProperty]]:
         self.__update_dp_converter()
-        logger.debug(
-            "max_workers={}, preprocessor={}".format(self.max_workers, self.__preprocessor)
-        )
+        logger.debug(f"max_workers={self.max_workers}, preprocessor={self.__preprocessor}")
 
         value_matrix = self.__strip_data_matrix(value_matrix)
 
@@ -610,7 +607,7 @@ class DataPropertyExtractor:
     def __to_dp_matrix_st(self, value_matrix) -> Sequence[Sequence[DataProperty]]:
         return list(
             zip(
-                *[
+                *(
                     _to_dp_list_helper(
                         self,
                         col_idx,
@@ -619,7 +616,7 @@ class DataPropertyExtractor:
                         self.__preprocessor,
                     )[1]
                     for col_idx, values in enumerate(zip(*value_matrix))
-                ]
+                )
             )
         )
 
@@ -645,7 +642,7 @@ class DataPropertyExtractor:
                 col_idx, value_dp_list = future.result()
                 col_data_map[col_idx] = value_dp_list
 
-        return list(zip(*[col_data_map[col_idx] for col_idx in sorted(col_data_map)]))
+        return list(zip(*(col_data_map[col_idx] for col_idx in sorted(col_data_map))))
 
     def _to_dp_list(
         self,
@@ -657,11 +654,11 @@ class DataPropertyExtractor:
         if is_empty_sequence(data_list):
             return []
 
-        type_counter = Counter()  # type: typing.Counter[Type[AbstractType]]
+        type_counter: typing.Counter[Type[AbstractType]] = Counter()
 
         dp_list = []
         for data in data_list:
-            expect_type_hint = type_hint  # type: Optional[Type[AbstractType]]
+            expect_type_hint: Optional[Type[AbstractType]] = type_hint
             if type_hint is None:
                 try:
                     expect_type_hint, _count = type_counter.most_common(1)[0]
@@ -721,7 +718,7 @@ class DataPropertyExtractor:
         elif self.matrix_formatting == MatrixFormatting.FILL_NONE:
             format_col_size = max_col_size
         else:
-            raise ValueError("unknown matrix formatting: {}".format(self.matrix_formatting))
+            raise ValueError(f"unknown matrix formatting: {self.matrix_formatting}")
 
         return [
             list(data_matrix[row_idx][:format_col_size]) + [None] * (format_col_size - col_size)

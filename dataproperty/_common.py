@@ -5,11 +5,11 @@
 import copy
 import itertools
 from decimal import Decimal
-from typing import Mapping, Union  # noqa
+from typing import Mapping, Union
 
 from typepy import StrictLevel, Typecode
 
-from .typing import StrictLevelMap  # noqa
+from .typing import StrictLevelMap
 
 
 NOT_QUOTING_FLAGS = {
@@ -39,7 +39,7 @@ class DefaultValue:
 
     QUOTING_FLAGS = copy.deepcopy(NOT_QUOTING_FLAGS)
 
-    STRICT_LEVEL_MAP = {
+    STRICT_LEVEL_MAP: StrictLevelMap = {
         "default": StrictLevel.MAX,
         Typecode.BOOL: StrictLevel.MAX,
         Typecode.DATETIME: StrictLevel.MAX,
@@ -53,13 +53,13 @@ class DefaultValue:
         Typecode.NONE: StrictLevel.MAX,
         Typecode.NULL_STRING: StrictLevel.MIN,
         Typecode.STRING: StrictLevel.MIN,
-    }  # type: StrictLevelMap
+    }
 
-    TYPE_VALUE_MAP = {
+    TYPE_VALUE_MAP: Mapping[Typecode, Union[float, Decimal, None]] = {
         Typecode.NONE: None,
         Typecode.INFINITY: INF_VALUE,
         Typecode.NAN: NAN_VALUE,
-    }  # type: Mapping[Typecode, Union[float, Decimal, None]]
+    }
 
     MAX_WORKERS = 1
 

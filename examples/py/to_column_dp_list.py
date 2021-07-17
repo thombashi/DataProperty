@@ -17,7 +17,7 @@ def display_col_dp(dp_list, attr_name):
     """
 
     print()
-    print("---------- {:s} ----------".format(attr_name))
+    print(f"---------- {attr_name:s} ----------")
     print([getattr(dp, attr_name) for dp in dp_list])
 
 

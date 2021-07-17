@@ -155,8 +155,8 @@ class Test_DataPeroperty_data_typecode:
             ['"1"', "", False, '"1"', Typecode.STRING],
             ['"1"', '"', True, "1", Typecode.STRING],
             ['"1"', "", False, '"1"', Typecode.STRING],
-            ["hoge".encode("utf8"), "a", False, "hoge", Typecode.STRING],
-            ["hogea", "a".encode("utf8"), False, "hoge", Typecode.STRING],
+            [b"hoge", "a", False, "hoge", Typecode.STRING],
+            ["hogea", b"a", False, "hoge", Typecode.STRING],
         ],
     )
     def test_normal_strip_str(self, value, strip_str, is_strict, expected_data, expected_typecode):
@@ -207,8 +207,8 @@ class Test_DataPeroperty_data_typecode:
             ["false", None, StrictLevel.MIN, Typecode.BOOL],
             ["true", Bool, StrictLevel.MIN, Typecode.BOOL],
             ["false", Bool, StrictLevel.MIN, Typecode.BOOL],
-            ["hoge".encode("utf8"), None, StrictLevel.MAX, Typecode.STRING],
-            ["hoge".encode("utf8"), None, StrictLevel.MIN, Typecode.STRING],
+            [b"hoge", None, StrictLevel.MAX, Typecode.STRING],
+            [b"hoge", None, StrictLevel.MIN, Typecode.STRING],
             ['{"foo": 10}', None, StrictLevel.MAX, Typecode.STRING],
             ['{"foo": 10}', None, StrictLevel.MIN, Typecode.DICTIONARY],
             ['{"foo": 10}', Dictionary, StrictLevel.MAX, Typecode.DICTIONARY],
@@ -706,7 +706,7 @@ class Test_DataPeroperty_repr:
     def test_normal(self, value, strict_level_map, expected):
         dp = DataProperty(value, strict_level_map=strict_level_map)
 
-        print("[expected] {}".format(expected))
-        print("[actual]   {}".format(dp))
+        print(f"[expected] {expected}")
+        print(f"[actual]   {dp}")
 
         assert str(dp) == expected

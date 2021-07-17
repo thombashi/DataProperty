@@ -77,11 +77,11 @@ class DataProperty(DataPeropertyBase):
             east_asian_ambiguous_width=east_asian_ambiguous_width,
         )
 
-        self.__additional_format_len = None  # type: Optional[int]
-        self.__align = None  # type: Optional[Align]
-        self.__ascii_char_width = None  # type: Optional[int]
-        self.__integer_digits = None  # type: Optional[int]
-        self.__length = None  # type: Optional[int]
+        self.__additional_format_len: Optional[int] = None
+        self.__align: Optional[Align] = None
+        self.__ascii_char_width: Optional[int] = None
+        self.__integer_digits: Optional[int] = None
+        self.__length: Optional[int] = None
 
         if preprocessor is None:
             preprocessor = Preprocessor()
@@ -91,7 +91,7 @@ class DataProperty(DataPeropertyBase):
         self.__set_data(data, type_hint, float_type, strict_level_map)
 
         if no_ansi_escape_data is None or len(data) == len(no_ansi_escape_data):
-            self.__no_ansi_escape_data = None  # type: Optional[DataProperty]
+            self.__no_ansi_escape_data: Optional[DataProperty] = None
         else:
             self.__no_ansi_escape_data = DataProperty(no_ansi_escape_data, float_type=float_type)
 
@@ -117,32 +117,32 @@ class DataProperty(DataPeropertyBase):
         element_list = []
 
         if self.typecode == Typecode.DATETIME:
-            element_list.append("data={:s}".format(str(self.data)))
+            element_list.append(f"data={str(self.data):s}")
         else:
             try:
                 element_list.append("data=" + self.to_str())
             except UnicodeEncodeError:
-                element_list.append("data={}".format(MultiByteStrDecoder(self.data).unicode_str))
+                element_list.append(f"data={MultiByteStrDecoder(self.data).unicode_str}")
 
         element_list.extend(
             [
-                "type={:s}".format(self.typename),
-                "align={}".format(self.align.align_string),
-                "ascii_width={:d}".format(self.ascii_char_width),
+                f"type={self.typename:s}",
+                f"align={self.align.align_string}",
+                f"ascii_width={self.ascii_char_width:d}",
             ]
         )
 
         if Integer(self.length).is_type():
-            element_list.append("length={}".format(self.length))
+            element_list.append(f"length={self.length}")
 
         if Integer(self.integer_digits).is_type():
-            element_list.append("int_digits={}".format(self.integer_digits))
+            element_list.append(f"int_digits={self.integer_digits}")
 
         if Integer(self.decimal_places).is_type():
-            element_list.append("decimal_places={}".format(self.decimal_places))
+            element_list.append(f"decimal_places={self.decimal_places}")
 
         if Integer(self.additional_format_len).is_type():
-            element_list.append("extra_len={}".format(self.additional_format_len))
+            element_list.append(f"extra_len={self.additional_format_len}")
 
         return ", ".join(element_list)
 
@@ -349,7 +349,7 @@ class DataProperty(DataPeropertyBase):
                 return
 
         raise TypeConversionError(
-            "failed to convert: data={}, strict_level={}".format(data, strict_level_map)
+            f"failed to convert: data={data}, strict_level={strict_level_map}"
         )
 
     def __set_digit(self) -> None:

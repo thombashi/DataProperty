@@ -41,7 +41,7 @@ class Preprocessor:
         is_escape_html_tag: bool = False,
         is_escape_formula_injection: bool = False,
     ) -> None:
-        self.strip_str = strip_str  # type: Optional[Union[str, bytes]]
+        self.strip_str: Optional[Union[str, bytes]] = strip_str
         self.replace_tabs_with_spaces = replace_tabs_with_spaces
         self.tab_length = tab_length
         self.line_break_handling = line_break_handling
@@ -52,13 +52,13 @@ class Preprocessor:
     def __repr__(self) -> str:
         return ", ".join(
             [
-                "strip_str={!r}".format(self.strip_str),
-                "replace_tabs_with_spaces={}".format(self.replace_tabs_with_spaces),
-                "tab_length={}".format(self.tab_length),
-                "line_break_handling={}".format(self.line_break_handling),
-                "line_break_repl={}".format(self.line_break_repl),
-                "escape_html_tag={}".format(self.is_escape_html_tag),
-                "escape_formula_injection={}".format(self.is_escape_formula_injection),
+                f"strip_str={self.strip_str!r}",
+                f"replace_tabs_with_spaces={self.replace_tabs_with_spaces}",
+                f"tab_length={self.tab_length}",
+                f"line_break_handling={self.line_break_handling}",
+                f"line_break_repl={self.line_break_repl}",
+                f"escape_html_tag={self.is_escape_html_tag}",
+                f"escape_formula_injection={self.is_escape_formula_injection}",
             ]
         )
 
@@ -139,7 +139,7 @@ class Preprocessor:
         except (TypeError, AttributeError):
             return data
 
-        raise ValueError("unexpected line_break_handling: {}".format(lbh))
+        raise ValueError(f"unexpected line_break_handling: {lbh}")
 
     def __escape_formula_injection(self, data):
         if not self.is_escape_formula_injection:

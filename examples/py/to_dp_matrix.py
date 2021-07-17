@@ -17,7 +17,7 @@ def display_dp_matrix_attr(dp_matrix, attr_name):
     """
 
     print()
-    print("---------- {:s} ----------".format(attr_name))
+    print(f"---------- {attr_name:s} ----------")
     for dp_list in dp_matrix:
         print([getattr(dp, attr_name) for dp in dp_list])
 

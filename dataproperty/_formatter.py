@@ -77,7 +77,7 @@ class Formatter:
             return "{:" + base_format + "f}"
 
         try:
-            return "{:" + "{:s}.{:d}f".format(base_format, decimal_places) + "}"
+            return "{:" + f"{base_format:s}.{decimal_places:d}f" + "}"
         except ValueError:
             pass
 

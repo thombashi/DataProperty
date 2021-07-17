@@ -25,9 +25,7 @@ def get_integer_digit(value) -> int:
         try:
             abs_value = abs(Integer(value).convert())
         except TypeConversionError:
-            raise ValueError(
-                "the value must be a number: value='{}' type='{}'".format(value, type(value))
-            )
+            raise ValueError(f"the value must be a number: value='{value}' type='{type(value)}'")
 
         return len(str(abs_value))
 
@@ -74,9 +72,9 @@ def get_number_of_digit(
         return (None, None)
 
     try:
-        decimal_places = min(
+        decimal_places: Optional[int] = min(
             _digit_calculator.get_decimal_places(value), max_decimal_places
-        )  # type: Optional[int]
+        )
     except (ValueError, TypeError):
         decimal_places = None
 

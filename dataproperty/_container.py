@@ -32,7 +32,7 @@ class AbstractContainer(metaclass=abc.ABCMeta):
         if not self.has_value():
             return "None"
 
-        return ", ".join(["min={}".format(self.min_value), "max={}".format(self.max_value)])
+        return ", ".join([f"min={self.min_value}", f"max={self.max_value}"])
 
     def has_value(self):
         return self.min_value is not None and self.max_value is not None

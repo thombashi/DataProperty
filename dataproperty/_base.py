@@ -75,9 +75,9 @@ class DataPeropertyBase(DataPeropertyInterface):
         datetime_format_str: str,
         east_asian_ambiguous_width: int,
     ) -> None:
-        self._decimal_places = None  # type: Optional[int]
+        self._decimal_places: Optional[int] = None
         self._east_asian_ambiguous_width = east_asian_ambiguous_width
-        self._typecode = None  # type: Optional[Typecode]
+        self._typecode: Optional[Typecode] = None
 
         self._datetime_format_str = datetime_format_str
         self.__format_str = ""

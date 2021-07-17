@@ -1,7 +1,6 @@
 import math
 from decimal import Decimal
-from typing import List  # noqa
-from typing import Optional
+from typing import List, Optional
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, Nan, StrictLevel, Typecode, TypeConversionError
@@ -97,7 +96,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__float_type = float_type
 
         self.__is_calculate = True
-        self.__dp_list = []  # type: List[DataProperty]
+        self.__dp_list: List[DataProperty] = []
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -111,40 +110,40 @@ class ColumnDataProperty(DataPeropertyBase):
         element_list = []
 
         if self.column_index is not None:
-            element_list.append("column={}".format(self.column_index))
+            element_list.append(f"column={self.column_index}")
 
         element_list.extend(
             [
-                "type={}".format(self.typename),
-                "align={}".format(self.align.align_string),
-                "ascii_width={}".format(self.ascii_char_width),
+                f"type={self.typename}",
+                f"align={self.align.align_string}",
+                f"ascii_width={self.ascii_char_width}",
             ]
         )
 
         if Integer(self.bit_length).is_type():
-            element_list.append("bit_len={}".format(self.bit_length))
+            element_list.append(f"bit_len={self.bit_length}")
 
         if self.minmax_integer_digits.has_value():
             if self.minmax_integer_digits.is_same_value():
-                value = "int_digits={}".format(self.minmax_integer_digits.min_value)
+                value = f"int_digits={self.minmax_integer_digits.min_value}"
             else:
-                value = "int_digits=({})".format(self.minmax_integer_digits)
+                value = f"int_digits=({self.minmax_integer_digits})"
 
             element_list.append(value)
 
         if self.minmax_decimal_places.has_value():
             if self.minmax_decimal_places.is_same_value():
-                value = "decimal_places={}".format(self.minmax_decimal_places.min_value)
+                value = f"decimal_places={self.minmax_decimal_places.min_value}"
             else:
-                value = "decimal_places=({})".format(self.minmax_decimal_places)
+                value = f"decimal_places=({self.minmax_decimal_places})"
 
             element_list.append(value)
 
         if not self.minmax_additional_format_len.is_zero():
             if self.minmax_additional_format_len.is_same_value():
-                value = "extra_len={}".format(self.minmax_additional_format_len.min_value)
+                value = f"extra_len={self.minmax_additional_format_len.min_value}"
             else:
-                value = "extra_len=({})".format(self.minmax_additional_format_len)
+                value = f"extra_len=({self.minmax_additional_format_len})"
 
             element_list.append(value)
 
