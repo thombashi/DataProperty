@@ -253,7 +253,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return False
 
-    def __update_body_ascii_char_width(self) -> int:
+    def __calc_body_ascii_char_width(self) -> int:
         width_list = [self.__body_ascii_char_width]
 
         for value_dp in self.__dp_list:
@@ -322,7 +322,7 @@ class ColumnDataProperty(DataPeropertyBase):
         if not self.__is_calculate:
             return
 
-        self.__body_ascii_char_width = self.__update_body_ascii_char_width()
+        self.__body_ascii_char_width = self.__calc_body_ascii_char_width()
 
     def __calc_decimal_places(self) -> None:
         if not self.__is_calculate:
