@@ -57,7 +57,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=["test*"]),
     package_data={MODULE_NAME: ["py.typed"]},
     project_urls={"Source": REPOSITORY_URL, "Tracker": "{:s}/issues".format(REPOSITORY_URL)},
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     install_requires=install_requires,
     extras_require={"logging": ["loguru>=0.4.1,<1"], "test": tests_requires},
     classifiers=[
@@ -67,7 +67,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
