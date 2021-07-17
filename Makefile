@@ -22,7 +22,6 @@ build: clean
 .PHONY: check
 check:
 	@tox -e lint
-	$(PYTHON) -m pip check
 
 .PHONY: clean
 clean:
