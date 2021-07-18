@@ -83,8 +83,13 @@ class DataPropertyExtractor:
             }
     """
 
-    def __init__(self) -> None:
+    def __init__(self, max_precision: Optional[int] = None) -> None:
         self.max_workers = DefaultValue.MAX_WORKERS
+
+        if max_precision is None:
+            self.__max_precision = DefaultValue.MAX_PRECISION
+        else:
+            self.__max_precision = max_precision
 
         self.__headers: Sequence[str] = []
         self.__default_type_hint: TypeHint = None
@@ -427,6 +432,7 @@ class DataPropertyExtractor:
                         is_formatting_float=self.is_formatting_float,
                         datetime_format_str=self.datetime_format_str,
                         east_asian_ambiguous_width=self.east_asian_ambiguous_width,
+                        max_precision=self.__max_precision,
                     )
                 )
 
@@ -738,6 +744,7 @@ class DataPropertyExtractor:
                 is_formatting_float=self.is_formatting_float,
                 datetime_format_str=self.datetime_format_str,
                 east_asian_ambiguous_width=self.east_asian_ambiguous_width,
+                max_precision=self.__max_precision,
             )
             col_dp.update_header(header_dp)
             col_dp_list.append(col_dp)

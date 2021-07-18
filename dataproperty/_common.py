@@ -62,6 +62,7 @@ class DefaultValue:
     }
 
     MAX_WORKERS = 1
+    MAX_PRECISION = 100
 
 
 def default_datetime_formatter(value):

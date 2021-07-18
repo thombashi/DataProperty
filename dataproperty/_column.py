@@ -1,9 +1,7 @@
-import math
-from decimal import Decimal
 from typing import List, Optional
 
 from mbstrdecoder import MultiByteStrDecoder
-from typepy import Integer, Nan, StrictLevel, Typecode, TypeConversionError
+from typepy import Integer, StrictLevel, Typecode, TypeConversionError
 
 from ._align import Align
 from ._align_getter import align_getter
@@ -24,6 +22,7 @@ class ColumnDataProperty(DataPeropertyBase):
         "__float_type",
         "__format_map",
         "__is_calculate",
+        "__max_precision",
         "__minmax_integer_digits",
         "__minmax_decimal_places",
         "__minmax_additional_format_len",
@@ -81,6 +80,7 @@ class ColumnDataProperty(DataPeropertyBase):
         is_formatting_float: bool = True,
         datetime_format_str: str = DefaultValue.DATETIME_FORMAT,
         east_asian_ambiguous_width: int = 1,
+        max_precision: int = DefaultValue.MAX_PRECISION,
     ) -> None:
         super().__init__(
             format_flags=format_flags,
@@ -100,6 +100,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
+        self.__max_precision = max_precision
 
         self.__typecode_bitmap = Typecode.NONE.value
         self.__calc_typecode_from_bitmap()
@@ -266,15 +267,10 @@ class ColumnDataProperty(DataPeropertyBase):
         return max(width_list)
 
     def __calc_decimal_places(self) -> Optional[int]:
-        try:
-            avg = self.minmax_decimal_places.mean()
-        except TypeError:
+        if self.minmax_decimal_places.max_value is None:
             return None
 
-        if Nan(avg).is_type():
-            return None
-
-        return int(min(math.ceil(avg + Decimal("1.0")), self.minmax_decimal_places.max_value))
+        return int(min(self.__max_precision, self.minmax_decimal_places.max_value))
 
     def __get_tostring_format(self, value_dp: DataProperty) -> str:
         if self.typecode == Typecode.STRING:

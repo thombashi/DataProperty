@@ -622,6 +622,30 @@ class Test_DataPropertyExtractor_to_column_dp_list:
         col_dp = col_dp_list[3]
         assert col_dp.typecode == Typecode.DATETIME
 
+    def test_normal_max_precision(self):
+        extractor = DataPropertyExtractor(max_precision=3)
+        extractor.headers = ["i", "f"]
+        value = [
+            [1234, 0.0000000001],
+            [1234567, 34.5],
+        ]
+        col_dp_list = extractor.to_column_dp_list(extractor.to_dp_matrix(value))
+
+        assert len(col_dp_list) == 2
+
+        col_idx = 0
+
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
+        assert dp.typecode == Typecode.INTEGER
+        assert dp.decimal_places == 0
+
+        col_idx += 1
+        dp = col_dp_list[col_idx]
+        assert dp.column_index == col_idx
+        assert dp.typecode == Typecode.REAL_NUMBER
+        assert dp.decimal_places == 3
+
     def test_normal_nan_inf(self, dp_extractor):
         dp_extractor.headers = ["n", "i"]
         col_dp_list = dp_extractor.to_column_dp_list(

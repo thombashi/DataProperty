@@ -426,6 +426,27 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.min_value == 0
         assert col_dp.minmax_additional_format_len.max_value == 0
 
+    def test_normal_max_precision(self):
+        col_dp = ColumnDataProperty(column_index=0, float_type=Decimal, max_precision=3)
+        col_dp.update_header(DataProperty("abc"))
+
+        for value in ["0.0000000000001", "0.1", "0"]:
+            col_dp.update_body(DataProperty(value))
+
+        assert col_dp.align == Align.RIGHT
+        assert col_dp.decimal_places == 3
+        assert col_dp.typecode == Typecode.REAL_NUMBER
+        assert col_dp.ascii_char_width == 5
+
+        assert col_dp.minmax_integer_digits.min_value == 1
+        assert col_dp.minmax_integer_digits.max_value == 1
+
+        assert col_dp.minmax_decimal_places.min_value == 0
+        assert col_dp.minmax_decimal_places.max_value == 13
+
+        assert col_dp.minmax_additional_format_len.min_value == 0
+        assert col_dp.minmax_additional_format_len.max_value == 0
+
     def test_min_width(self):
         min_width = 100
 
@@ -478,11 +499,11 @@ class Test_ColumnDataPeroperty_dp_to_str:
         col_dp = ColumnDataProperty(0, float_type=Decimal)
         values = [0.1, 3.4375, 65.5397978633, 189.74439359, 10064.0097539, "abcd"]
         expected_list = [
-            "0.1000000",
-            "3.4375000",
-            "65.5397979",
-            "189.7443936",
-            "10064.0097539",
+            "0.1000000000",
+            "3.4375000000",
+            "65.5397978633",
+            "189.7443935900",
+            "10064.0097539000",
             "abcd",
         ]
 
