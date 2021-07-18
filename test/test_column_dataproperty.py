@@ -249,6 +249,31 @@ class Test_ColumnDataPeroperty:
             "int_digits=1, decimal_places=(min=1, max=2)"
         )
 
+    def test_normal_text_number(self):
+        col_dp = ColumnDataProperty(0, float_type=Decimal)
+        col_dp.update_header(DataProperty("abc"))
+
+        for value in ["1,000,000,000,000", "1"]:
+            col_dp.update_body(DataProperty(value))
+
+        assert col_dp.align == Align.RIGHT
+        assert col_dp.decimal_places == 0
+        assert col_dp.typecode == Typecode.INTEGER
+        assert col_dp.ascii_char_width == 13
+
+        assert col_dp.minmax_integer_digits.min_value == 1
+        assert col_dp.minmax_integer_digits.max_value == 13
+
+        assert col_dp.minmax_decimal_places.min_value == 0
+        assert col_dp.minmax_decimal_places.max_value == 0
+        assert col_dp.minmax_additional_format_len.min_value == 0
+        assert col_dp.minmax_additional_format_len.max_value == 0
+
+        assert str(col_dp) == (
+            "column=0, type=INTEGER, align=right, ascii_width=13, "
+            "bit_len=40, int_digits=(min=1, max=13), decimal_places=0"
+        )
+
     def test_normal_inf(self):
         col_dp = ColumnDataProperty(0, float_type=Decimal)
         col_dp.update_header(DataProperty("inf"))
