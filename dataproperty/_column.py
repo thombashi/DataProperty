@@ -195,7 +195,7 @@ class ColumnDataProperty(DataPeropertyBase):
         if value_dp.typecode in (Typecode.REAL_NUMBER, Typecode.INTEGER):
             self.__minmax_integer_digits.update(value_dp.integer_digits)
             self.__minmax_decimal_places.update(value_dp.decimal_places)
-            self.__calc_decimal_places()
+            self.__update_decimal_places()
 
         self.__minmax_additional_format_len.update(value_dp.additional_format_len)
 
@@ -208,7 +208,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__minmax_integer_digits.merge(column_dp.minmax_integer_digits)
         self.__minmax_decimal_places.update(column_dp.minmax_decimal_places)
-        self.__calc_decimal_places()
+        self.__update_decimal_places()
 
         self.__minmax_additional_format_len.merge(column_dp.minmax_additional_format_len)
 
@@ -222,7 +222,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__is_calculate = True
 
         self.__calc_typecode_from_bitmap()
-        self.__calc_decimal_places()
+        self.__update_decimal_places()
         self.__update_ascii_char_width()
 
     def __is_not_single_typecode(self, typecode_bitmap: int) -> bool:
@@ -323,7 +323,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self.__body_ascii_char_width = self.__calc_body_ascii_char_width()
 
-    def __calc_decimal_places(self) -> None:
+    def __update_decimal_places(self) -> None:
         if not self.__is_calculate:
             return
 
