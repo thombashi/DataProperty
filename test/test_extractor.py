@@ -544,7 +544,22 @@ class Test_DataPropertyExtractor_to_column_dp_list:
 
     @pytest.mark.parametrize(
         ["headers", "value"],
-        [[["i", "f"], [[1234, 1234.5], [1234567, 34.5]]], [[], [[1234, 1234.5], [1234567, 34.5]]]],
+        [
+            [
+                ["i", "f"],
+                [
+                    [1234, 1234.5],
+                    [1234567, 34.5],
+                ],
+            ],
+            [
+                [],
+                [
+                    [1234, 1234.5],
+                    [1234567, 34.5],
+                ],
+            ],
+        ],
     )
     def test_normal_format_str(self, dp_extractor, headers, value):
         dp_extractor.format_flags_list = [Format.THOUSAND_SEPARATOR, Format.THOUSAND_SEPARATOR]
