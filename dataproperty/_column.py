@@ -265,7 +265,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         return max(width_list)
 
-    def __get_decimal_places(self) -> Optional[int]:
+    def __calc_decimal_places(self) -> Optional[int]:
         try:
             avg = self.minmax_decimal_places.mean()
         except TypeError:
@@ -327,7 +327,7 @@ class ColumnDataProperty(DataPeropertyBase):
         if not self.__is_calculate:
             return
 
-        self._decimal_places = self.__get_decimal_places()
+        self._decimal_places = self.__calc_decimal_places()
         self.__format_map = self._formatter.make_format_map(decimal_places=self._decimal_places)
 
     def __calc_typecode_from_bitmap(self) -> None:
