@@ -38,6 +38,7 @@ class Preprocessor:
         tab_length: int = 2,
         line_break_handling: Optional[LineBreakHandling] = None,
         line_break_repl: str = " ",
+        dequote: bool = False,
         is_escape_html_tag: bool = False,
         is_escape_formula_injection: bool = False,
     ) -> None:
@@ -46,6 +47,7 @@ class Preprocessor:
         self.tab_length = tab_length
         self.line_break_handling = line_break_handling
         self.line_break_repl = line_break_repl
+        self.dequote = dequote
         self.is_escape_html_tag = is_escape_html_tag
         self.is_escape_formula_injection = is_escape_formula_injection
 
@@ -100,6 +102,7 @@ class Preprocessor:
 
         data = self.__process_line_break(data)
         data = self.__escape_formula_injection(data)
+        data = self.__dequote(data)
 
         try:
             return (data, strip_ansi_escape(data))
@@ -123,6 +126,19 @@ class Preprocessor:
                 return MultiByteStrDecoder(data).unicode_str.strip(strip_str)
             elif isinstance(strip_str, bytes):
                 return data.strip(MultiByteStrDecoder(strip_str).unicode_str)
+
+    def __dequote(self, s: str) -> str:
+        if not self.dequote or not s:
+            return s
+
+        try:
+            if (s[0] == s[-1]) and s.startswith(("'", '"')):
+                if s.count(s[0]) == 2:
+                    return s[1:-1]
+        except TypeError:
+            pass
+
+        return s
 
     def __process_line_break(self, data):
         lbh = self.line_break_handling

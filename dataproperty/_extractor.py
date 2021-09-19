@@ -597,6 +597,7 @@ class DataPropertyExtractor:
     ) -> DataProperty:
         if preprocessor:
             preprocessor = Preprocessor(
+                dequote=preprocessor.dequote,
                 line_break_handling=preprocessor.line_break_handling,
                 line_break_repl=preprocessor.line_break_repl,
                 strip_str=preprocessor.strip_str,
@@ -604,6 +605,7 @@ class DataPropertyExtractor:
             )
         else:
             preprocessor = Preprocessor(
+                dequote=self.preprocessor.dequote,
                 line_break_handling=self.preprocessor.line_break_handling,
                 line_break_repl=self.preprocessor.line_break_repl,
                 strip_str=self.preprocessor.strip_str,
