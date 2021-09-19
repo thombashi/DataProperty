@@ -32,6 +32,10 @@ A Python library for extract property from data.
     :target: https://coveralls.io/github/thombashi/DataProperty?branch=master
     :alt: Test coverage
 
+.. image:: https://github.com/thombashi/DataProperty/actions/workflows/codeql-analysis.yml/badge.svg
+    :target: https://github.com/thombashi/DataProperty/actions/workflows/codeql-analysis.yml
+    :alt: CodeQL
+
 
 Installation
 ============
