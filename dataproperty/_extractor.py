@@ -191,6 +191,18 @@ class DataPropertyExtractor:
         self.__is_formatting_float = value
 
     @property
+    def max_precision(self) -> int:
+        return self.__max_precision
+
+    @max_precision.setter
+    def max_precision(self, value: int) -> None:
+        if self.__max_precision == value:
+            return
+
+        self.__max_precision = value
+        self.__clear_cache()
+
+    @property
     def preprocessor(self) -> Preprocessor:
         return self.__preprocessor
 
