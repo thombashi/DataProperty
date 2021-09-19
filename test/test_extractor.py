@@ -615,27 +615,27 @@ class Test_DataPropertyExtractor_to_column_dp_list:
         assert dp.format_str == "{:.2f}"
 
     def test_normal_column_type_hints(self, dp_extractor):
+        data_matrix = [
+            [1, "1.1", 1, "2017-01-02 03:04:05"],
+            [2, "2.2", 0.1, "2017-01-02 03:04:05"],
+        ]
         dp_extractor.headers = ["none", "to_float", "to_str", "to_datetime"]
+
         dp_extractor.column_type_hints = [None, RealNumber, String, DateTime]
-        col_dp_list = dp_extractor.to_column_dp_list(
-            dp_extractor.to_dp_matrix(
-                [[1, "1.1", 1, "2017-01-02 03:04:05"], [2, "2.2", 0.1, "2017-01-02 03:04:05"]]
-            )
-        )
-
+        col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(data_matrix))
         assert len(col_dp_list) == 4
+        assert col_dp_list[0].typecode == Typecode.INTEGER
+        assert col_dp_list[1].typecode == Typecode.REAL_NUMBER
+        assert col_dp_list[2].typecode == Typecode.STRING
+        assert col_dp_list[3].typecode == Typecode.DATETIME
 
-        col_dp = col_dp_list[0]
-        assert col_dp.typecode == Typecode.INTEGER
-
-        col_dp = col_dp_list[1]
-        assert col_dp.typecode == Typecode.REAL_NUMBER
-
-        col_dp = col_dp_list[2]
-        assert col_dp.typecode == Typecode.STRING
-
-        col_dp = col_dp_list[3]
-        assert col_dp.typecode == Typecode.DATETIME
+        dp_extractor.column_type_hints = ["", "realNumber", "str", "DateTime"]
+        col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(data_matrix))
+        assert len(col_dp_list) == 4
+        assert col_dp_list[0].typecode == Typecode.INTEGER
+        assert col_dp_list[1].typecode == Typecode.REAL_NUMBER
+        assert col_dp_list[2].typecode == Typecode.STRING
+        assert col_dp_list[3].typecode == Typecode.DATETIME
 
     def test_normal_max_precision(self):
         extractor = DataPropertyExtractor(max_precision=3)
