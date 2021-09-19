@@ -93,7 +93,7 @@ class DataPropertyExtractor:
 
         self.__headers: Sequence[str] = []
         self.__default_type_hint: TypeHint = None
-        self.__col_type_hints: Sequence[TypeHint] = []
+        self.__col_type_hints: List[TypeHint] = []
 
         self.__strip_str_header: Optional[str] = None
         self.__is_formatting_float = True
@@ -152,7 +152,7 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def column_type_hints(self) -> Sequence[TypeHint]:
+    def column_type_hints(self) -> List[TypeHint]:
         return self.__col_type_hints
 
     @column_type_hints.setter
