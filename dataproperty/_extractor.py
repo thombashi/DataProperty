@@ -157,32 +157,31 @@ class DataPropertyExtractor:
 
     @column_type_hints.setter
     def column_type_hints(self, value: Sequence[Union[str, TypeHint]]) -> None:
-        if self.__col_type_hints == value:
-            return
-
         normalized_type_hints: List[TypeHint] = []
 
-        if value:
-            for type_hint in value:
-                type_hint = normalize_type_hint(type_hint)
-                if type_hint not in (
-                    Bool,
-                    DateTime,
-                    Dictionary,
-                    Infinity,
-                    Integer,
-                    IpAddress,
-                    typepy.List,
-                    Nan,
-                    NoneType,
-                    RealNumber,
-                    String,
-                    NullString,
-                    None,
-                ):
-                    raise ValueError(f"invalid type hint: {type(type_hint)}")
+        for type_hint in value:
+            type_hint = normalize_type_hint(type_hint)
+            if type_hint not in (
+                Bool,
+                DateTime,
+                Dictionary,
+                Infinity,
+                Integer,
+                IpAddress,
+                typepy.List,
+                Nan,
+                NoneType,
+                RealNumber,
+                String,
+                NullString,
+                None,
+            ):
+                raise ValueError(f"invalid type hint: {type(type_hint)}")
 
-                normalized_type_hints.append(type_hint)
+            normalized_type_hints.append(type_hint)
+
+        if self.__col_type_hints == normalized_type_hints:
+            return
 
         self.__col_type_hints = normalized_type_hints
         self.__clear_cache()

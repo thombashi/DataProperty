@@ -622,6 +622,7 @@ class Test_DataPropertyExtractor_to_column_dp_list:
         dp_extractor.headers = ["none", "to_float", "to_str", "to_datetime"]
 
         dp_extractor.column_type_hints = [None, RealNumber, String, DateTime]
+        assert dp_extractor.column_type_hints == [None, RealNumber, String, DateTime]
         col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(data_matrix))
         assert len(col_dp_list) == 4
         assert col_dp_list[0].typecode == Typecode.INTEGER
@@ -629,7 +630,8 @@ class Test_DataPropertyExtractor_to_column_dp_list:
         assert col_dp_list[2].typecode == Typecode.STRING
         assert col_dp_list[3].typecode == Typecode.DATETIME
 
-        dp_extractor.column_type_hints = ["", "realNumber", "str", "DateTime"]
+        dp_extractor.column_type_hints = ["", "float", "str", "datetime"]
+        assert dp_extractor.column_type_hints == [None, RealNumber, String, DateTime]
         col_dp_list = dp_extractor.to_column_dp_list(dp_extractor.to_dp_matrix(data_matrix))
         assert len(col_dp_list) == 4
         assert col_dp_list[0].typecode == Typecode.INTEGER
