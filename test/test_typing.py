@@ -32,6 +32,8 @@ class Test_normalize_type_hint:
             ["inf", Infinity],
             ["infinity", Infinity],
             ["int", Integer],
+            ["int ", Integer],
+            ["int_", Integer],
             ["integer", Integer],
             ["ip", IpAddress],
             ["ipaddr", IpAddress],
@@ -41,10 +43,12 @@ class Test_normalize_type_hint:
             ["none", NoneType],
             ["nullstr", NullString],
             ["nullstring", NullString],
+            ["float", RealNumber],
             ["realnumber", RealNumber],
             ["str", String],
             ["string", String],
             ["", None],
+            [None, None],
         ],
     )
     def test_normal(self, value, expected):

@@ -26,25 +26,21 @@ TransFunc = Callable[[Any], Any]
 FloatType = Union[Type[Decimal], Type[float]]
 
 _type_hint_map = {
+    # high frequently used types
+    "int": Integer,
+    "float": RealNumber,
+    "realnumber": RealNumber,
+    "str": String,
+    # low frequently used types
     "bool": Bool,
     "datetime": DateTime,
     "dict": Dictionary,
-    "dictionary": Dictionary,
     "inf": Infinity,
-    "infinity": Infinity,
-    "int": Integer,
-    "integer": Integer,
     "ip": IpAddress,
-    "ipaddr": IpAddress,
-    "ipaddress": IpAddress,
     "list": List,
     "nan": Nan,
     "none": NoneType,
     "nullstr": NullString,
-    "nullstring": NullString,
-    "realnumber": RealNumber,
-    "str": String,
-    "string": String,
 }
 
 
@@ -52,7 +48,12 @@ def normalize_type_hint(type_hint: Union[str, TypeHint]) -> TypeHint:
     if not type_hint:
         return None
 
-    if isinstance(type_hint, str):
-        return _type_hint_map[type_hint.casefold()]
+    if not isinstance(type_hint, str):
+        return type_hint
 
-    return type_hint
+    type_hint = type_hint.strip().casefold()
+    for key, value in _type_hint_map.items():
+        if type_hint.startswith(key):
+            return value
+
+    raise ValueError(f"unknown typehint: {type_hint}")
