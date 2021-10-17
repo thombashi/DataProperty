@@ -235,7 +235,7 @@ class DataProperty(DataPeropertyBase):
         return self.__additional_format_len
 
     def get_padding_len(self, ascii_char_width: int) -> int:
-        if self.typecode == Typecode.LIST:
+        if self.typecode in (Typecode.LIST, Typecode.DICTIONARY):
             return max(
                 ascii_char_width
                 - (

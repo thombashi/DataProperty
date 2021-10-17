@@ -498,6 +498,7 @@ class Test_DataPeroperty_get_padding_len:
             [["side", "where"], 20, 20],
             [["い" * 100, "ろは"], 8, 0],
             [["い", "ろは"], 20, 17],
+            [{"1", 1}, 20, 20],
         ],
     )
     def test_normal(self, value, ascii_char_width, expected):
