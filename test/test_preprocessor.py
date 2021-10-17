@@ -60,3 +60,17 @@ class Test_Preprocessor_preprocess:
         )
         data, no_ansi_escape_data = preprocessor.preprocess(value)
         assert data == expected
+
+
+class Test_Preprocessor_preprocess_string:
+    @pytest.mark.parametrize(
+        ["value", "expected"],
+        [
+            [{"1": 1}, {"1": 1}],
+            [{"1"}, {"1"}],
+        ],
+    )
+    def test_not_str(self, value, expected):
+        preprocessor = Preprocessor(dequote=True)
+        data, _ = preprocessor._Preprocessor__preprocess_string(value)
+        assert data == expected

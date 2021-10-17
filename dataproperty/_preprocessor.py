@@ -88,6 +88,9 @@ class Preprocessor:
     def __preprocess_string(self, raw_data):
         data = raw_data
 
+        if not isinstance(data, str):
+            return (data, None)
+
         if self.replace_tabs_with_spaces:
             try:
                 data = data.replace("\t", " " * self.tab_length)
