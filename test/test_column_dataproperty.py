@@ -584,6 +584,19 @@ class Test_ColumnDataPeroperty_dp_to_str:
         for value, expected in zip(values, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
 
+    def test_normal_dict(self):
+        col_dp = ColumnDataProperty(0, float_type=Decimal)
+        values = ["abc", {"1": 1}]
+        expected_list = ["abc", "{'1': 1}"]
+
+        col_dp.update_header(DataProperty("dict item"))
+        for value in values:
+            col_dp.update_body(DataProperty(value))
+
+        assert len(values) == len(expected_list)
+        for value, expected in zip(values, expected_list):
+            assert col_dp.dp_to_str(DataProperty(value)) == expected
+
     @pytest.mark.parametrize(
         ["values", "expected_list"],
         [
