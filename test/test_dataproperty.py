@@ -67,7 +67,9 @@ class Test_DataPeroperty_eq:
 class Test_DataPeroperty_data_typecode:
     @pytest.mark.parametrize(
         ["value", "expected_data", "expected_typecode"],
-        [["-0.00284241876820074", Decimal("-0.00284241876820074"), Typecode.REAL_NUMBER]],
+        [
+            ["-0.00284241876820074", Decimal("-0.00284241876820074"), Typecode.REAL_NUMBER],
+        ],
     )
     def test_normal(self, value, expected_data, expected_typecode):
         dp = DataProperty(value)
@@ -277,13 +279,12 @@ class Test_DataPeroperty_set_data:
         ],
     )
     def test_normal_tab(self, value, is_convert, replace_tabs_with_spaces, tab_length, expected):
+        preprocessor = Preprocessor(
+            replace_tabs_with_spaces=replace_tabs_with_spaces,
+            tab_length=tab_length,
+        )
         dp = DataProperty(
-            value,
-            preprocessor=Preprocessor(
-                replace_tabs_with_spaces=replace_tabs_with_spaces,
-                tab_length=tab_length,
-            ),
-            strict_level_map=get_strict_level_map(not is_convert),
+            value, preprocessor=preprocessor, strict_level_map=get_strict_level_map(not is_convert)
         )
 
         assert dp.data == expected
@@ -436,12 +437,8 @@ class Test_DataPeroperty_line_break_handling:
         ],
     )
     def test_normal(self, value, line_break_handling, expected):
-        assert (
-            DataProperty(
-                value, preprocessor=Preprocessor(line_break_handling=line_break_handling)
-            ).data
-            == expected
-        )
+        preprocessor = Preprocessor(line_break_handling=line_break_handling)
+        assert DataProperty(value, preprocessor=preprocessor).data == expected
 
 
 class Test_DataPeroperty_line_break_repl:
@@ -454,15 +451,10 @@ class Test_DataPeroperty_line_break_repl:
         ],
     )
     def test_normal(self, value, line_break_handling, line_break_repl, expected):
-        assert (
-            DataProperty(
-                value,
-                preprocessor=Preprocessor(
-                    line_break_handling=line_break_handling, line_break_repl=line_break_repl
-                ),
-            ).data
-            == expected
+        preprocessor = Preprocessor(
+            line_break_handling=line_break_handling, line_break_repl=line_break_repl
         )
+        assert DataProperty(value, preprocessor=preprocessor).data == expected
 
 
 class Test_DataPeroperty_escape_formula_injection:
@@ -481,26 +473,16 @@ class Test_DataPeroperty_escape_formula_injection:
         ],
     )
     def test_normal(self, value, escape_formula_injection, expected):
-        assert (
-            DataProperty(
-                value,
-                preprocessor=Preprocessor(is_escape_formula_injection=escape_formula_injection),
-            ).data
-            == expected
-        )
+        preprocessor = Preprocessor(is_escape_formula_injection=escape_formula_injection)
+        assert DataProperty(value, preprocessor=preprocessor).data == expected
 
     @pytest.mark.parametrize(
         ["value", "expected"],
         [[0, 0], [None, None]],
     )
     def test_abnormal(self, value, expected):
-        assert (
-            DataProperty(
-                value,
-                preprocessor=Preprocessor(is_escape_formula_injection=True),
-            ).data
-            == expected
-        )
+        preprocessor = Preprocessor(is_escape_formula_injection=True)
+        assert DataProperty(value, preprocessor=preprocessor).data == expected
 
 
 class Test_DataPeroperty_get_padding_len:
@@ -523,7 +505,10 @@ class Test_DataPeroperty_get_padding_len:
 
     @pytest.mark.parametrize(
         ["value", "ascii_char_width", "ambiguous_width", "expected"],
-        [["aøb", 4, 1, 4], ["aøb", 4, 2, 3]],
+        [
+            ["aøb", 4, 1, 4],
+            ["aøb", 4, 2, 3],
+        ],
     )
     def test_normal_east_asian_ambiguous_width(
         self, value, ascii_char_width, ambiguous_width, expected
@@ -533,7 +518,14 @@ class Test_DataPeroperty_get_padding_len:
 
 
 class Test_DataPeroperty_integer_digits:
-    @pytest.mark.parametrize(["value", "expected"], [[1, 1], [1.0, 1], [12.34, 2]])
+    @pytest.mark.parametrize(
+        ["value", "expected"],
+        [
+            [1, 1],
+            [1.0, 1],
+            [12.34, 2],
+        ],
+    )
     def test_normal(self, value, expected):
         dp = DataProperty(value)
         assert dp.integer_digits == expected
@@ -545,7 +537,15 @@ class Test_DataPeroperty_integer_digits:
 
 
 class Test_DataPeroperty_decimal_places:
-    @pytest.mark.parametrize(["value", "expected"], [[1, 0], [1.0, 0], [1.1, 1], [12.34, 2]])
+    @pytest.mark.parametrize(
+        ["value", "expected"],
+        [
+            [1, 0],
+            [1.0, 0],
+            [1.1, 1],
+            [12.34, 2],
+        ],
+    )
     def test_normal(self, value, expected):
         dp = DataProperty(value)
         assert dp.decimal_places == expected

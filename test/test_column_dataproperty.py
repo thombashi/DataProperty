@@ -383,7 +383,13 @@ class Test_ColumnDataPeroperty:
             "extra_len=(min=0, max=1)"
         )
 
-    @pytest.mark.parametrize(["values", "expected"], [[[0, 1, 0, 1], 1], [[-128, 0, 127, None], 8]])
+    @pytest.mark.parametrize(
+        ["values", "expected"],
+        [
+            [[0, 1, 0, 1], 1],
+            [[-128, 0, 127, None], 8],
+        ],
+    )
     def test_normal_bit_length(self, values, expected):
         col_dp = ColumnDataProperty(0, float_type=Decimal)
         col_dp.update_header(DataProperty("dummy"))
@@ -394,7 +400,13 @@ class Test_ColumnDataPeroperty:
         assert col_dp.typecode == Typecode.INTEGER
         assert col_dp.bit_length == expected
 
-    @pytest.mark.parametrize(["values", "expected"], [[[0.1, 1], None], [["aaa", "0.0.0.0"], None]])
+    @pytest.mark.parametrize(
+        ["values", "expected"],
+        [
+            [[0.1, 1], None],
+            [["aaa", "0.0.0.0"], None],
+        ],
+    )
     def test_abnormal_bit_length(self, values, expected):
         col_dp = ColumnDataProperty(0, float_type=Decimal)
         col_dp.update_header(DataProperty("dummy"))
@@ -427,7 +439,13 @@ class Test_ColumnDataPeroperty:
 
         assert str(col_dp) == ("column=0, type=STRING, align=left, ascii_width=6")
 
-    @pytest.mark.parametrize(["ambiguous_width", "ascii_char_width"], [[2, 6], [1, 3]])
+    @pytest.mark.parametrize(
+        ["ambiguous_width", "ascii_char_width"],
+        [
+            [2, 6],
+            [1, 3],
+        ],
+    )
     def test_normal_east_asian_ambiguous_width(self, ambiguous_width, ascii_char_width):
         col_dp = ColumnDataProperty(
             0, float_type=Decimal, east_asian_ambiguous_width=ambiguous_width
