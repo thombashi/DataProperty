@@ -236,14 +236,10 @@ class DataProperty(DataPeropertyBase):
 
     def get_padding_len(self, ascii_char_width: int) -> int:
         if self.typecode in (Typecode.LIST, Typecode.DICTIONARY):
+            unicode_str_len = DataProperty(MultiByteStrDecoder(str(self.data)).unicode_str).length
+            assert unicode_str_len
             return max(
-                ascii_char_width
-                - (
-                    self.ascii_char_width
-                    - cast(
-                        int, DataProperty(MultiByteStrDecoder(str(self.data)).unicode_str).length
-                    )
-                ),
+                ascii_char_width - (self.ascii_char_width - unicode_str_len),
                 0,
             )
 
