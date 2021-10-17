@@ -554,6 +554,7 @@ class Test_ColumnDataPeroperty_dp_to_str:
         for value in values:
             col_dp.update_body(DataProperty(value))
 
+        assert len(values) == len(expected_list)
         for value, expected in zip(values, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
 
@@ -566,6 +567,7 @@ class Test_ColumnDataPeroperty_dp_to_str:
         for value in ["abcd", "efg"]:
             col_dp.update_body(DataProperty(value))
 
+        assert len(values) == len(expected_list)
         for value, expected in zip(values, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
 
@@ -578,6 +580,7 @@ class Test_ColumnDataPeroperty_dp_to_str:
         for value in values:
             col_dp.update_body(DataProperty(value))
 
+        assert len(values) == len(expected_list)
         for value, expected in zip(values, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
 
@@ -595,5 +598,6 @@ class Test_ColumnDataPeroperty_dp_to_str:
         for value in values:
             col_dp.update_body(DataProperty(value))
 
+        assert len(values) == len(expected_list)
         for value, expected in zip(values, expected_list):
             assert col_dp.dp_to_str(DataProperty(value)) == expected
