@@ -227,7 +227,7 @@ Full example source code can be found at *examples/py/to_column_dp_list.py*
 
 Dependencies
 ============
-- Python 3.5+
+- Python 3.6+
 - `Python package dependencies (automatically installed) <https://github.com/thombashi/DataProperty/network/dependencies>`__
 
 Optional dependencies
