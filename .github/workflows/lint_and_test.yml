@@ -36,7 +36,7 @@ jobs:
           path: |
             ${{ steps.pip-cache.outputs.dir }}
             ./.tox
-          key: ubuntu-latest-${{ env.python-version }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ubuntu-latest-${{ env.python-version }}-pip-${{ hashFiles('setup.py', '**/requirements.txt') }}
           restore-keys: |
             ubuntu-latest-${{ env.python-version }}-pip-
 
@@ -57,7 +57,7 @@ jobs:
           - os: windows-latest
             python-version: "3.6"
     concurrency:
-      group: ${{ github.workflow }}-${{ matrix.os }}-${{ matrix.python-version }}
+      group: ${{ github.workflow }}-${{ github.job }}-${{ matrix.os }}-${{ matrix.python-version }}
       cancel-in-progress: true
     timeout-minutes: 20
     steps:
@@ -81,7 +81,7 @@ jobs:
           path: |
             ${{ steps.pip-cache.outputs.dir }}
             ./.tox
-          key: ${{ matrix.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ matrix.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('setup.py', '**/requirements.txt') }}
           restore-keys: |
             ${{ matrix.os }}-${{ matrix.python-version }}-pip-
 
