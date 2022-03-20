@@ -98,6 +98,7 @@ class DataPropertyExtractor:
         self.__strip_str_header: Optional[str] = None
         self.__is_formatting_float = True
         self.__min_col_ascii_char_width = 0
+        self.__default_format_flags = Format.NONE
         self.__format_flags_list: Sequence[int] = []
         self.__float_type: Union[Type[float], Type[Decimal], None] = None
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
@@ -240,6 +241,18 @@ class DataPropertyExtractor:
             return
 
         self.__min_col_ascii_char_width = value
+        self.__clear_cache()
+
+    @property
+    def default_format_flags(self) -> int:
+        return self.__default_format_flags
+
+    @default_format_flags.setter
+    def default_format_flags(self, value: int):
+        if self.__default_format_flags == value:
+            return
+
+        self.__default_format_flags = value
         self.__clear_cache()
 
     @property
@@ -552,7 +565,7 @@ class DataPropertyExtractor:
         try:
             return self.format_flags_list[col_idx]
         except (TypeError, IndexError):
-            return Format.NONE
+            return self.__default_format_flags
 
     def __to_dp(
         self,
