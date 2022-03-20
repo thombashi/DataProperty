@@ -11,7 +11,7 @@ jobs:
     env:
       python-version: "3.8"
     concurrency:
-      group: ${{ github.workflow }}-${GITHUB_JOB}
+      group: ${{ github.workflow }}-${{ github.job }}
       cancel-in-progress: true
     timeout-minutes: 20
     steps:
