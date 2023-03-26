@@ -12,7 +12,7 @@ from dataproperty import DataPropertyExtractor
 
 def display_col_dp(dp_list, attr_name):
     """
-    show a value assocciated with an attribute for each
+    show a value associated with an attribute for each
     DataProperty instance in the dp_list
     """
 
