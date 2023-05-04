@@ -8,7 +8,7 @@ from decimal import Decimal
 from ipaddress import ip_address
 
 import pytest
-from termcolor import colored
+from tcolorpy import tcolor
 from typepy import (
     Bool,
     DateTime,
@@ -328,7 +328,11 @@ class Test_ColumnDataPeroperty:
         col_dp = ColumnDataProperty(0, float_type=Decimal)
         col_dp.update_header(DataProperty("abc"))
 
-        for value in [colored(1, "red"), colored(2.2, "green"), colored(-3, "blue")]:
+        for value in [
+            tcolor("1", color="red"),
+            tcolor("2.2", color="green"),
+            tcolor("-3", color="blue"),
+        ]:
             col_dp.update_body(DataProperty(value))
 
         assert col_dp.align == Align.RIGHT
@@ -356,10 +360,10 @@ class Test_ColumnDataPeroperty:
         col_dp.update_header(DataProperty("abc"))
 
         for value in [
-            colored(0, "red"),
-            colored(-1.234, "yellow"),
-            colored(55.55, "green"),
-            colored("abcdefg", "blue"),
+            tcolor("0", color="red"),
+            tcolor("-1.234", color="yellow"),
+            tcolor("55.55", color="green"),
+            tcolor("abcdefg", color="blue"),
         ]:
             col_dp.update_body(DataProperty(value))
 
