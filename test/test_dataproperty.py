@@ -8,7 +8,7 @@ import sys
 from decimal import Decimal
 
 import pytest
-from termcolor import colored
+from tcolorpy import tcolor
 from typepy import (
     Bool,
     DateTime,
@@ -376,9 +376,9 @@ class Test_DataPeroperty_len:
     @pytest.mark.parametrize(
         ["value", "expected_acw", "expected_len"],
         [
-            [colored(0, "red"), 1, 10],
-            [colored(12.34, "red"), 5, 14],
-            [colored("abc", "green"), 3, 12],
+            [tcolor("0", color="red"), 1, 10],
+            [tcolor("12.34", color="red"), 5, 14],
+            [tcolor("abc", color="green"), 3, 12],
         ],
     )
     def test_normal_ascii_escape_sequence(self, value, expected_acw, expected_len):
@@ -414,11 +414,11 @@ class Test_DataPeroperty_is_include_ansi_escape:
         ["value", "expected_acw"],
         [
             [0, False],
-            [colored(0, "red"), True],
+            [tcolor("0", color="red"), True],
             [12.34, False],
-            [colored(12.34, "red"), True],
+            [tcolor("12.34", color="red"), True],
             ["abc", False],
-            [colored("abc", "green"), True],
+            [tcolor("abc", color="green"), True],
         ],
     )
     def test_normal(self, value, expected_acw):
@@ -605,10 +605,10 @@ class Test_DataPeroperty_repr:
                 "ascii_width=1, int_digits=1, decimal_places=0, extra_len=0",
             ],
             [
-                colored(0, "red"),
+                tcolor("0", color="red"),
                 DefaultValue.STRICT_LEVEL_MAP,
                 (
-                    ("data={}, type=STRING, align=right, ".format(colored(0, "red")))
+                    ("data={}, type=STRING, align=right, ".format(tcolor("0", color="red")))
                     + "ascii_width=1, length=10, int_digits=1, decimal_places=0, "
                     + "extra_len=0"
                 ),
