@@ -60,10 +60,16 @@ setuptools.setup(
     maintainer_email=pkg_info["__email__"],
     packages=setuptools.find_packages(exclude=["test*"]),
     package_data={MODULE_NAME: ["py.typed"]},
-    project_urls={"Source": REPOSITORY_URL, "Tracker": f"{REPOSITORY_URL:s}/issues"},
+    project_urls={
+        "Source": REPOSITORY_URL,
+        "Tracker": f"{REPOSITORY_URL:s}/issues",
+    },
     python_requires=">=3.6",
     install_requires=install_requires,
-    extras_require={"logging": ["loguru>=0.4.1,<1"], "test": tests_requires},
+    extras_require={
+        "logging": ["loguru>=0.4.1,<1"],
+        "test": tests_requires,
+    },
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
