@@ -23,7 +23,6 @@ target-version = ['py36', 'py37', 'py38', 'py39', 'py310', 'py311']
 [tool.isort]
 known_third_party = [
     'pytest',
-    'termcolor',
 ]
 include_trailing_comma = true
 line_length = 100
