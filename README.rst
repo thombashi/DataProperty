@@ -32,8 +32,8 @@ A Python library for extract property from data.
     :target: https://coveralls.io/github/thombashi/DataProperty?branch=master
     :alt: Test coverage
 
-.. image:: https://github.com/thombashi/DataProperty/actions/workflows/codeql-analysis.yml/badge.svg
-    :target: https://github.com/thombashi/DataProperty/actions/workflows/codeql-analysis.yml
+.. image:: https://github.com/thombashi/DataProperty/actions/workflows/github-code-scanning/codeql/badge.svg
+    :target: https://github.com/thombashi/DataProperty/actions/workflows/github-code-scanning/codeql
     :alt: CodeQL
 
 
@@ -178,7 +178,7 @@ An example data set and the result are as follows:
 Full example source code can be found at *examples/py/to_dp_matrix.py*
 
 
-Extract property for each column from a matrix
+Extract properties for each column from a matrix
 ------------------------------------------------------
 ``DataPropertyExtractor.to_column_dp_list`` method returns a list of ``DataProperty`` instances from a data matrix. The list represents the properties for each column.
 An example data set and the result are as follows:
@@ -227,7 +227,7 @@ Full example source code can be found at *examples/py/to_column_dp_list.py*
 
 Dependencies
 ============
-- Python 3.6+
+- Python 3.7+
 - `Python package dependencies (automatically installed) <https://github.com/thombashi/DataProperty/network/dependencies>`__
 
 Optional dependencies
