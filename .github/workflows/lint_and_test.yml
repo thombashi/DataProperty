@@ -8,8 +8,6 @@ env:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    env:
-      python-version: "3.8"
     concurrency:
       group: ${{ github.workflow }}-${{ github.job }}
       cancel-in-progress: true
