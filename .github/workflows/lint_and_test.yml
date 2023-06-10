@@ -9,7 +9,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.workflow }}-${{ github.job }}
+      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.job }}
       cancel-in-progress: true
     timeout-minutes: 20
     container:
@@ -32,7 +32,7 @@ jobs:
           - os: windows-latest
             python-version: "3.6"
     concurrency:
-      group: ${{ github.workflow }}-${{ github.job }}-${{ matrix.os }}-${{ matrix.python-version }}
+      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.job }}-${{ matrix.os }}-${{ matrix.python-version }}
       cancel-in-progress: true
     timeout-minutes: 20
     steps:
