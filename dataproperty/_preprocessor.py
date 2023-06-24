@@ -28,7 +28,7 @@ class Preprocessor:
         return self.__line_break_handling
 
     @line_break_handling.setter
-    def line_break_handling(self, value: Optional[LineBreakHandling]):
+    def line_break_handling(self, value: Optional[LineBreakHandling]) -> None:
         self.__line_break_handling = normalize_lbh(value)
 
     def __init__(
@@ -42,7 +42,7 @@ class Preprocessor:
         is_escape_html_tag: bool = False,
         is_escape_formula_injection: bool = False,
     ) -> None:
-        self.strip_str: Optional[Union[str, bytes]] = strip_str
+        self.strip_str = strip_str
         self.replace_tabs_with_spaces = replace_tabs_with_spaces
         self.tab_length = tab_length
         self.line_break_handling = line_break_handling
@@ -85,7 +85,7 @@ class Preprocessor:
 
         return is_updated
 
-    def __preprocess_string(self, raw_data):
+    def __preprocess_string(self, raw_data: Any):
         data = raw_data
 
         if not isinstance(data, str):
@@ -113,7 +113,7 @@ class Preprocessor:
             return (data, None)
 
     @staticmethod
-    def __preprocess_data(data, strip_str):
+    def __preprocess_data(data: Any, strip_str: Optional[Union[str, bytes]]) -> Any:
         if strip_str is None:
             return data
 
@@ -143,7 +143,7 @@ class Preprocessor:
 
         return s
 
-    def __process_line_break(self, data):
+    def __process_line_break(self, data: str) -> str:
         lbh = self.line_break_handling
 
         if lbh == LineBreakHandling.NOP:
@@ -160,7 +160,7 @@ class Preprocessor:
 
         raise ValueError(f"unexpected line_break_handling: {lbh}")
 
-    def __escape_formula_injection(self, data):
+    def __escape_formula_injection(self, data: str) -> str:
         if not self.is_escape_formula_injection:
             return data
 

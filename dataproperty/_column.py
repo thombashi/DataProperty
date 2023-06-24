@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, StrictLevel, Typecode, TypeConversionError
@@ -105,7 +105,9 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__typecode_bitmap = Typecode.NONE.value
         self.__calc_typecode_from_bitmap()
 
-        self.__format_map = self._formatter.make_format_map(decimal_places=self._decimal_places)
+        self.__format_map: Dict[Typecode, str] = self._formatter.make_format_map(
+            decimal_places=self._decimal_places
+        )
 
     def __repr__(self) -> str:
         element_list = []
@@ -152,7 +154,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def dp_to_str(self, value_dp: DataProperty) -> str:
         if value_dp.typecode == Typecode.STRING:
-            return value_dp.data
+            return str(value_dp.data)
 
         try:
             value = self.__preprocess_value_before_tostring(value_dp)
@@ -188,6 +190,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
     def update_body(self, value_dp: DataProperty) -> None:
         if value_dp.is_include_ansi_escape:
+            assert value_dp.no_ansi_escape_dp
             value_dp = value_dp.no_ansi_escape_dp
 
         self.__typecode_bitmap |= value_dp.typecode.value
@@ -203,7 +206,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__dp_list.append(value_dp)
         self.__update_ascii_char_width()
 
-    def merge(self, column_dp) -> None:
+    def merge(self, column_dp: "ColumnDataProperty") -> None:
         self.__typecode_bitmap |= column_dp.typecode.value
         self.__calc_typecode_from_bitmap()
 
@@ -258,6 +261,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         for value_dp in self.__dp_list:
             if value_dp.is_include_ansi_escape:
+                assert value_dp.no_ansi_escape_dp
                 value_dp = value_dp.no_ansi_escape_dp
 
             width_list.append(
@@ -332,7 +336,7 @@ class ColumnDataProperty(DataPeropertyBase):
 
         self._typecode = self.__get_typecode_from_bitmap()
 
-    def __preprocess_value_before_tostring(self, value_dp: DataProperty):
+    def __preprocess_value_before_tostring(self, value_dp: DataProperty) -> Any:
         if self.typecode == value_dp.typecode or self.typecode in [
             Typecode.STRING,
             Typecode.BOOL,

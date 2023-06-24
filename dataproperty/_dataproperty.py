@@ -2,9 +2,11 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+import typing
 from decimal import Decimal
 from typing import Any, Optional, cast
 
+import typepy
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import (
     Bool,
@@ -13,7 +15,6 @@ from typepy import (
     Infinity,
     Integer,
     IpAddress,
-    List,
     Nan,
     NoneType,
     NullString,
@@ -23,6 +24,7 @@ from typepy import (
     Typecode,
     TypeConversionError,
 )
+from typepy.type import AbstractType
 
 from ._align import Align
 from ._align_getter import align_getter
@@ -44,7 +46,7 @@ class DataProperty(DataPeropertyBase):
         "__ascii_char_width",
     )
 
-    __type_class_list = [
+    __type_class_list: typing.List[AbstractType] = [
         NoneType,
         Integer,
         Infinity,
@@ -52,7 +54,7 @@ class DataProperty(DataPeropertyBase):
         IpAddress,
         RealNumber,
         Bool,
-        List,
+        typepy.List,
         Dictionary,
         DateTime,
         NullString,
@@ -95,7 +97,7 @@ class DataProperty(DataPeropertyBase):
         else:
             self.__no_ansi_escape_data = DataProperty(no_ansi_escape_data, float_type=float_type)
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         if self.typecode != other.typecode:
             return False
 
@@ -104,7 +106,7 @@ class DataProperty(DataPeropertyBase):
 
         return self.data == other.data
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self, other: Any) -> bool:
         if self.typecode != other.typecode:
             return True
 
@@ -150,6 +152,7 @@ class DataProperty(DataPeropertyBase):
     def align(self) -> Align:
         if not self.__align:
             if self.is_include_ansi_escape:
+                assert self.no_ansi_escape_dp
                 self.__align = self.no_ansi_escape_dp.align
             else:
                 self.__align = align_getter.get_align_from_typecode(self.typecode)
@@ -190,7 +193,7 @@ class DataProperty(DataPeropertyBase):
         return self.length != self.no_ansi_escape_dp.length
 
     @property
-    def no_ansi_escape_dp(self):
+    def no_ansi_escape_dp(self) -> Optional["DataProperty"]:
         return self.__no_ansi_escape_data
 
     @property
@@ -263,7 +266,7 @@ class DataProperty(DataPeropertyBase):
 
         return format_len
 
-    def __get_base_float_len(self):
+    def __get_base_float_len(self) -> int:
         assert self.integer_digits is not None
         assert self.decimal_places is not None
 
@@ -299,6 +302,7 @@ class DataProperty(DataPeropertyBase):
                 return len(str(self.data))
 
         if self.is_include_ansi_escape:
+            assert self.no_ansi_escape_dp
             return self.no_ansi_escape_dp.ascii_char_width
 
         try:
@@ -314,7 +318,7 @@ class DataProperty(DataPeropertyBase):
         type_hint: TypeHint,
         float_type: Optional[FloatType],
         strict_level_map: Optional[StrictLevelMap],
-    ):
+    ) -> None:
         if float_type is None:
             float_type = DefaultValue.FLOAT_TYPE
 
@@ -353,7 +357,13 @@ class DataProperty(DataPeropertyBase):
         self.__integer_digits = integer_digits
         self._decimal_places = decimal_places
 
-    def __try_convert_type(self, data, type_class, strict_level, float_type):
+    def __try_convert_type(
+        self,
+        data: Any,
+        type_class: AbstractType,
+        strict_level: int,
+        float_type: Optional[FloatType],
+    ) -> bool:
         type_obj = type_class(data, strict_level, float_type=float_type, strip_ansi_escape=False)
 
         try:

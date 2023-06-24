@@ -7,9 +7,8 @@ import enum
 import sys
 import typing
 from collections import Counter
-from datetime import datetime
 from decimal import Decimal
-from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast
 
 import typepy
 from typepy import (
@@ -37,7 +36,17 @@ from ._dataproperty import DataProperty
 from ._formatter import Format
 from ._preprocessor import Preprocessor
 from .logger import logger
-from .typing import StrictLevelMap, TransFunc, TypeHint, normalize_type_hint
+from .typing import (
+    DateTimeFormatter,
+    StrictLevelMap,
+    TransFunc,
+    TypeHint,
+    TypeValueMap,
+    normalize_type_hint,
+)
+
+
+DataPropertyMatrix = Sequence[Sequence[DataProperty]]
 
 
 @enum.unique
@@ -115,8 +124,9 @@ class DataPropertyExtractor:
 
         self.__trans_func_list: List[TransFunc] = []
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
-        self.__datetime_formatter: Optional[Callable[[datetime], str]] = None
+        self.__datetime_formatter: Optional[DateTimeFormatter] = None
         self.__matrix_formatting = MatrixFormatting.TRIM
+        self.__dp_converter: DataPropertyConverter
 
         self.__clear_cache()
 
@@ -224,7 +234,7 @@ class DataPropertyExtractor:
         return self.__strip_str_header
 
     @strip_str_header.setter
-    def strip_str_header(self, value: str):
+    def strip_str_header(self, value: str) -> None:
         if self.__strip_str_header == value:
             return
 
@@ -236,7 +246,7 @@ class DataPropertyExtractor:
         return self.__min_col_ascii_char_width
 
     @min_column_width.setter
-    def min_column_width(self, value: int):
+    def min_column_width(self, value: int) -> None:
         if self.__min_col_ascii_char_width == value:
             return
 
@@ -248,7 +258,7 @@ class DataPropertyExtractor:
         return self.__default_format_flags
 
     @default_format_flags.setter
-    def default_format_flags(self, value: int):
+    def default_format_flags(self, value: int) -> None:
         if self.__default_format_flags == value:
             return
 
@@ -260,7 +270,7 @@ class DataPropertyExtractor:
         return self.__format_flags_list
 
     @format_flags_list.setter
-    def format_flags_list(self, value: Sequence[int]):
+    def format_flags_list(self, value: Sequence[int]) -> None:
         if self.__format_flags_list == value:
             return
 
@@ -272,19 +282,11 @@ class DataPropertyExtractor:
         return self.__float_type
 
     @float_type.setter
-    def float_type(self, value: Union[Type[float], Type[Decimal]]):
+    def float_type(self, value: Union[Type[float], Type[Decimal]]) -> None:
         if self.__float_type == value:
             return
 
         self.__float_type = value
-        """
-        self.__type_value_map = {
-            Typecode.NONE: None,
-            Typecode.INFINITY: self.__float_type("inf"),
-            Typecode.NAN: self.__float_type("nan"),
-        }
-        """
-
         self.__clear_cache()
 
     @property
@@ -304,7 +306,7 @@ class DataPropertyExtractor:
         return self.__strict_level_map
 
     @strict_level_map.setter
-    def strict_level_map(self, value: StrictLevelMap):
+    def strict_level_map(self, value: StrictLevelMap) -> None:
         if self.__strict_level_map == value:
             return
 
@@ -316,7 +318,7 @@ class DataPropertyExtractor:
         return self.__east_asian_ambiguous_width
 
     @east_asian_ambiguous_width.setter
-    def east_asian_ambiguous_width(self, value: int):
+    def east_asian_ambiguous_width(self, value: int) -> None:
         if self.__east_asian_ambiguous_width == value:
             return
 
@@ -324,11 +326,11 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def type_value_map(self):
+    def type_value_map(self) -> TypeValueMap:
         return self.__type_value_map
 
     @type_value_map.setter
-    def type_value_map(self, value):
+    def type_value_map(self, value: TypeValueMap) -> None:
         if self.__type_value_map == value:
             return
 
@@ -340,11 +342,11 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def quoting_flags(self):
+    def quoting_flags(self) -> Dict[Typecode, bool]:
         return self.__quoting_flags
 
     @quoting_flags.setter
-    def quoting_flags(self, value):
+    def quoting_flags(self, value: Dict[Typecode, bool]) -> None:
         if self.__quoting_flags == value:
             return
 
@@ -352,11 +354,11 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def datetime_formatter(self) -> Optional[Callable[[datetime], str]]:
+    def datetime_formatter(self) -> Optional[DateTimeFormatter]:
         return self.__datetime_formatter
 
     @datetime_formatter.setter
-    def datetime_formatter(self, value: Callable[[datetime], str]) -> None:
+    def datetime_formatter(self, value: Optional[DateTimeFormatter]) -> None:
         if self.__datetime_formatter == value:
             return
 
@@ -368,7 +370,7 @@ class DataPropertyExtractor:
         return self.__matrix_formatting
 
     @matrix_formatting.setter
-    def matrix_formatting(self, value: MatrixFormatting):
+    def matrix_formatting(self, value: MatrixFormatting) -> None:
         if self.__matrix_formatting == value:
             return
 
@@ -382,7 +384,7 @@ class DataPropertyExtractor:
         return self.__max_workers
 
     @max_workers.setter
-    def max_workers(self, value: Optional[int]):
+    def max_workers(self, value: Optional[int]) -> None:
         try:
             from _multiprocessing import SemLock, sem_unlink  # noqa
         except ImportError:
@@ -397,12 +399,12 @@ class DataPropertyExtractor:
         if not self.__max_workers:
             self.__max_workers = DefaultValue.MAX_WORKERS
 
-    def to_dp(self, value) -> DataProperty:
+    def to_dp(self, value: Any) -> DataProperty:
         self.__update_dp_converter()
 
         return self.__to_dp(value)
 
-    def to_dp_list(self, values: Sequence) -> List[DataProperty]:
+    def to_dp_list(self, values: Sequence[Any]) -> List[DataProperty]:
         if is_empty_sequence(values):
             return []
 
@@ -482,7 +484,7 @@ class DataPropertyExtractor:
 
         return col_dp_list
 
-    def to_dp_matrix(self, value_matrix: Sequence) -> Sequence[Sequence[DataProperty]]:
+    def to_dp_matrix(self, value_matrix: Sequence[Sequence[Any]]) -> DataPropertyMatrix:
         self.__update_dp_converter()
         logger.debug(f"max_workers={self.max_workers}, preprocessor={self.__preprocessor}")
 
@@ -546,10 +548,7 @@ class DataPropertyExtractor:
     """
 
     @staticmethod
-    def __is_dp_matrix(value) -> bool:
-        if not value:
-            return False
-
+    def __is_dp_matrix(value: Any) -> bool:
         try:
             return isinstance(value[0][0], DataProperty)
         except (TypeError, IndexError):
@@ -561,7 +560,7 @@ class DataPropertyExtractor:
         except (TypeError, IndexError):
             return self.default_type_hint
 
-    def __get_format_flags(self, col_idx: int):
+    def __get_format_flags(self, col_idx: int) -> int:
         try:
             return self.format_flags_list[col_idx]
         except (TypeError, IndexError):
@@ -569,10 +568,10 @@ class DataPropertyExtractor:
 
     def __to_dp(
         self,
-        data,
+        data: Any,
         type_hint: TypeHint = None,
         preprocessor: Optional[Preprocessor] = None,
-        strict_level_map: Optional[Dict] = None,
+        strict_level_map: Optional[StrictLevelMap] = None,
     ) -> DataProperty:
         for trans_func in self.__trans_func_list:
             data = trans_func(data)
@@ -607,10 +606,10 @@ class DataPropertyExtractor:
 
     def __to_dp_raw(
         self,
-        data,
+        data: Any,
         type_hint: TypeHint = None,
         preprocessor: Optional[Preprocessor] = None,
-        strict_level_map: Optional[Dict] = None,
+        strict_level_map: Optional[StrictLevelMap] = None,
     ) -> DataProperty:
         if preprocessor:
             preprocessor = Preprocessor(
@@ -641,7 +640,7 @@ class DataPropertyExtractor:
 
         return self.__dp_converter.convert(value_dp)
 
-    def __to_dp_matrix_st(self, value_matrix) -> Sequence[Sequence[DataProperty]]:
+    def __to_dp_matrix_st(self, value_matrix: Sequence[Sequence[Any]]) -> DataPropertyMatrix:
         return list(
             zip(
                 *(
@@ -657,7 +656,7 @@ class DataPropertyExtractor:
             )
         )
 
-    def __to_dp_matrix_mt(self, value_matrix) -> Sequence[Sequence[DataProperty]]:
+    def __to_dp_matrix_mt(self, value_matrix: Sequence[Sequence[Any]]) -> DataPropertyMatrix:
         from concurrent import futures
 
         col_data_map = {}
@@ -683,10 +682,10 @@ class DataPropertyExtractor:
 
     def _to_dp_list(
         self,
-        data_list: Sequence,
+        data_list: Sequence[Any],
         type_hint: TypeHint = None,
         preprocessor: Optional[Preprocessor] = None,
-        strict_level_map: Optional[Dict[Typecode, int]] = None,
+        strict_level_map: Optional[StrictLevelMap] = None,
     ) -> List[DataProperty]:
         if is_empty_sequence(data_list):
             return []
@@ -718,7 +717,7 @@ class DataPropertyExtractor:
 
         return dp_list
 
-    def __strip_data_matrix(self, data_matrix):
+    def __strip_data_matrix(self, data_matrix: Sequence[Sequence[Any]]) -> Sequence[Sequence[Any]]:
         header_col_size = len(self.headers) if self.headers else 0
         try:
             col_size_list = [len(data_list) for data_list in data_matrix]
@@ -762,7 +761,7 @@ class DataPropertyExtractor:
             for row_idx, col_size in enumerate(col_size_list)
         ]
 
-    def __get_col_dp_list_base(self):
+    def __get_col_dp_list_base(self) -> List[ColumnDataProperty]:
         header_dp_list = self.to_header_dp_list()
         col_dp_list = []
 
@@ -782,7 +781,7 @@ class DataPropertyExtractor:
 
         return col_dp_list
 
-    def __update_dp_converter(self):
+    def __update_dp_converter(self) -> None:
         preprocessor = Preprocessor(
             line_break_handling=self.__preprocessor.line_break_handling,
             line_break_repl=self.preprocessor.line_break_repl,
@@ -803,7 +802,7 @@ class DataPropertyExtractor:
 def _to_dp_list_helper(
     extractor: DataPropertyExtractor,
     col_idx: int,
-    data_list: Sequence,
+    data_list: Sequence[Any],
     type_hint: TypeHint,
     preprocessor: Preprocessor,
 ) -> Tuple[int, List[DataProperty]]:

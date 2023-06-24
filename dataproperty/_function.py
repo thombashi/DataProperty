@@ -15,7 +15,7 @@ decimal.setcontext(decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
 _ansi_escape = re.compile(r"(\x9b|\x1b\[)[0-?]*[ -\/]*[@-~]", re.IGNORECASE)
 
 
-def get_integer_digit(value) -> int:
+def get_integer_digit(value: Any) -> int:
     float_type = RealNumber(value)
 
     try:

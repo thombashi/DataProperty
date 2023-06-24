@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 from typing import Any, Callable, Mapping, Optional, Type, Union
 
@@ -19,11 +20,13 @@ from typepy import (
 from typepy.type import AbstractType
 
 
-StrictLevelMap = Mapping[Union[str, Typecode], int]
 TypeHint = Optional[Type[AbstractType]]
 TransFunc = Callable[[Any], Any]
+DateTimeFormatter = Callable[[datetime], str]
 
 FloatType = Union[Type[Decimal], Type[float]]
+StrictLevelMap = Mapping[Union[str, Typecode], int]
+TypeValueMap = Mapping[Typecode, Union[float, Decimal, None]]
 
 _type_hint_map = {
     # high frequently used types

@@ -21,26 +21,26 @@ class AbstractContainer(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def update(self, value):  # pragma: no cover
+    def update(self, value) -> None:  # pragma: no cover
         pass
 
     @abc.abstractmethod
-    def merge(self, value):  # pragma: no cover
+    def merge(self, value) -> None:  # pragma: no cover
         pass
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         if not self.has_value():
             return "None"
 
         return ", ".join([f"min={self.min_value}", f"max={self.max_value}"])
 
-    def has_value(self):
+    def has_value(self) -> bool:
         return self.min_value is not None and self.max_value is not None
 
-    def is_same_value(self):
+    def is_same_value(self) -> bool:
         return self.has_value() and self.min_value == self.max_value
 
-    def is_zero(self):
+    def is_zero(self) -> bool:
         return self.has_value() and self.min_value == 0 and self.max_value == 0
 
 
@@ -77,14 +77,14 @@ class ListContainer(AbstractContainer):
         except ZeroDivisionError:
             return float("nan")
 
-    def update(self, value):
+    def update(self, value) -> None:
         store_value = RealNumber(value).try_convert()
         if store_value is None:
             return
 
         self.__value_list.append(store_value)
 
-    def merge(self, value):
+    def merge(self, value) -> None:
         try:
             self.__value_list.extend(value)
         except TypeError:
@@ -133,7 +133,7 @@ class MinMaxContainer(AbstractContainer):
         except TypeError:
             return float("nan")
 
-    def update(self, value):
+    def update(self, value) -> None:
         if value is None:
             return
 
@@ -147,6 +147,6 @@ class MinMaxContainer(AbstractContainer):
         else:
             self.__max_value = max(self.__max_value, value)
 
-    def merge(self, value):
+    def merge(self, value) -> None:
         self.update(value.min_value)
         self.update(value.max_value)

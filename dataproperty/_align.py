@@ -20,6 +20,6 @@ class Align(enum.Enum):
     def align_string(self) -> str:
         return self.__align_string
 
-    def __init__(self, code: int, string: str):
+    def __init__(self, code: int, string: str) -> None:
         self.__align_code = code
         self.__align_string = string

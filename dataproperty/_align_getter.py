@@ -2,6 +2,8 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
+from typing import Dict
+
 from typepy import Typecode
 
 from ._align import Align
@@ -13,13 +15,13 @@ class AlignGetter:
         raise NotImplementedError()
 
     @typecode_align_table.setter
-    def typecode_align_table(self, x):
+    def typecode_align_table(self, x: Dict[Typecode, Align]) -> None:
         self.__typecode_align_table = x
 
-    def get_align_from_typecode(self, typecode):
+    def get_align_from_typecode(self, typecode: Typecode) -> Align:
         return self.__typecode_align_table.get(typecode, self.default_align)
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.typecode_align_table = {
             Typecode.STRING: Align.LEFT,
             Typecode.INTEGER: Align.RIGHT,

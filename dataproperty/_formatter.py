@@ -1,6 +1,11 @@
 import copy
+from decimal import Decimal
+from typing import Optional, Union
 
 from typepy import Nan, Typecode
+
+
+DecimalPlaces = Union[float, Decimal]
 
 
 class Format:
@@ -19,7 +24,12 @@ class Formatter:
         Typecode.LIST: "{}",
     }
 
-    def __init__(self, datetime_format_str, is_formatting_float=True, format_flags=None):
+    def __init__(
+        self,
+        datetime_format_str: str,
+        is_formatting_float: Optional[bool] = True,
+        format_flags: Optional[int] = None,
+    ) -> None:
         if format_flags is not None:
             self.__format_flags = format_flags
         else:
@@ -28,7 +38,7 @@ class Formatter:
         self.__datetime_format_str = datetime_format_str
         self.__is_formatting_float = is_formatting_float
 
-    def make_format_map(self, decimal_places=None):
+    def make_format_map(self, decimal_places: Optional[DecimalPlaces] = None):
         format_map = copy.copy(self._BLANK_CURLY_BRACES_FORMAT_MAP)
         format_map.update(
             {
@@ -42,7 +52,9 @@ class Formatter:
 
         return format_map
 
-    def make_format_str(self, typecode, decimal_places=None):
+    def make_format_str(
+        self, typecode: Typecode, decimal_places: Optional[DecimalPlaces] = None
+    ) -> str:
         format_str = self._BLANK_CURLY_BRACES_FORMAT_MAP.get(typecode)
         if format_str is not None:
             return format_str
@@ -58,16 +70,16 @@ class Formatter:
 
         return "{:s}"
 
-    def __get_base_format_str(self):
+    def __get_base_format_str(self) -> str:
         if self.__format_flags & Format.THOUSAND_SEPARATOR:
             return ","
 
         return ""
 
-    def __get_integer_format(self):
+    def __get_integer_format(self) -> str:
         return "{:" + self.__get_base_format_str() + "d}"
 
-    def __get_realnumber_format(self, decimal_places):
+    def __get_realnumber_format(self, decimal_places: Optional[DecimalPlaces]) -> str:
         if not self.__is_formatting_float:
             return "{}"
 

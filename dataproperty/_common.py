@@ -4,12 +4,12 @@
 
 import copy
 import itertools
+from datetime import datetime
 from decimal import Decimal
-from typing import Mapping, Union
 
 from typepy import StrictLevel, Typecode
 
-from .typing import StrictLevelMap
+from .typing import StrictLevelMap, TypeValueMap
 
 
 NOT_QUOTING_FLAGS = {
@@ -27,8 +27,8 @@ NOT_QUOTING_FLAGS = {
     Typecode.STRING: False,
 }
 
-MAX_STRICT_LEVEL_MAP = dict(itertools.product(list(Typecode), [StrictLevel.MAX]))
-MIN_STRICT_LEVEL_MAP = dict(itertools.product(list(Typecode), [StrictLevel.MIN]))
+MAX_STRICT_LEVEL_MAP: StrictLevelMap = dict(itertools.product(list(Typecode), [StrictLevel.MAX]))
+MIN_STRICT_LEVEL_MAP: StrictLevelMap = dict(itertools.product(list(Typecode), [StrictLevel.MIN]))
 
 
 class DefaultValue:
@@ -55,7 +55,7 @@ class DefaultValue:
         Typecode.STRING: StrictLevel.MIN,
     }
 
-    TYPE_VALUE_MAP: Mapping[Typecode, Union[float, Decimal, None]] = {
+    TYPE_VALUE_MAP: TypeValueMap = {
         Typecode.NONE: None,
         Typecode.INFINITY: INF_VALUE,
         Typecode.NAN: NAN_VALUE,
@@ -65,5 +65,5 @@ class DefaultValue:
     MAX_PRECISION = 100
 
 
-def default_datetime_formatter(value):
+def default_datetime_formatter(value: datetime) -> str:
     return value.strftime(DefaultValue.DATETIME_FORMAT)
