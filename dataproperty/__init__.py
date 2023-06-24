@@ -19,4 +19,4 @@ from ._function import (
 )
 from ._line_break import LineBreakHandling
 from ._preprocessor import Preprocessor
-from .logger import set_log_level, set_logger
+from .logger import set_logger

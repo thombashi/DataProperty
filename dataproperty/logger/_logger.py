@@ -20,9 +20,3 @@ def set_logger(is_enable, propagation_depth=1):
         logger.enable(MODULE_NAME)
     else:
         logger.disable(MODULE_NAME)
-
-
-def set_log_level(log_level):
-    # deprecated
-    logger.disable(MODULE_NAME)
-    return
