@@ -11,12 +11,7 @@ from ._container import MinMaxContainer
 from ._dataproperty import DataProperty
 from ._extractor import DataPropertyExtractor, MatrixFormatting
 from ._formatter import Format
-from ._function import (
-    calc_ascii_char_width,
-    get_integer_digit,
-    get_number_of_digit,
-    is_multibyte_str,
-)
+from ._function import calc_ascii_char_width, get_integer_digit, get_number_of_digit
 from ._line_break import LineBreakHandling
 from ._preprocessor import Preprocessor
 from .logger import set_logger
@@ -36,7 +31,6 @@ __all__ = (
     "calc_ascii_char_width",
     "get_integer_digit",
     "get_number_of_digit",
-    "is_multibyte_str",
     "MAX_STRICT_LEVEL_MAP",
     "MIN_STRICT_LEVEL_MAP",
     "NOT_QUOTING_FLAGS",

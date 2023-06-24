@@ -7,7 +7,6 @@ import re
 from decimal import Decimal
 from typing import Any, Optional, Tuple, Union
 
-from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, RealNumber, TypeConversionError
 
 
@@ -79,25 +78,6 @@ def get_number_of_digit(
         decimal_places = None
 
     return (integer_digits, decimal_places)
-
-
-def is_multibyte_str(text) -> bool:
-    from typepy import StrictLevel, String
-
-    if not String(text, strict_level=StrictLevel.MIN).is_type():
-        return False
-
-    try:
-        unicode_text = MultiByteStrDecoder(text).unicode_str
-    except ValueError:
-        return False
-
-    try:
-        unicode_text.encode("ascii")
-    except UnicodeEncodeError:
-        return True
-
-    return False
 
 
 def _validate_eaaw(east_asian_ambiguous_width: int) -> None:
