@@ -28,8 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Lint
-        run: make build
+      - run: make build
 
   lint:
     runs-on: ubuntu-latest
