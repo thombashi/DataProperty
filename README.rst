@@ -24,8 +24,8 @@ A Python library for extract property from data.
     :target: https://pypi.org/project/DataProperty
     :alt: Supported Python implementations
 
-.. image:: https://github.com/thombashi/DataProperty/actions/workflows/lint_and_test.yml/badge.svg
-    :target: https://github.com/thombashi/DataProperty/actions/workflows/lint_and_test.yml
+.. image:: https://github.com/thombashi/DataProperty/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/thombashi/DataProperty/actions/workflows/ci.yml
     :alt: CI status of Linux/macOS/Windows
 
 .. image:: https://coveralls.io/repos/github/thombashi/DataProperty/badge.svg?branch=master
