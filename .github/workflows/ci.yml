@@ -42,8 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Lint
-        run: make check
+      - run: make check
 
   unit-test:
     runs-on: ${{ matrix.os }}
@@ -72,8 +71,7 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade --disable-pip-version-check "pip>=21.1"
 
-      - name: Install dependencies
-        run: make setup-ci
+      - run: make setup-ci
 
       - run: tox -e py
 
@@ -97,8 +95,7 @@ jobs:
             **/*requirements.txt
             tox.ini
 
-      - name: Install dependencies
-        run: make setup-ci
+      - run: make setup-ci
 
       - run: tox -e cov
           # tox -e cov -- --discord-verbose=0  # reduce verbosity level of summary that send to discord
