@@ -113,7 +113,7 @@ jobs:
   smoke-examples:
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.event_name }}-${{ github.workflow }}-ex-${{ github.ref_name }}
+      group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.ref_name }}-ex
       cancel-in-progress: true
     timeout-minutes: 20
     steps:
