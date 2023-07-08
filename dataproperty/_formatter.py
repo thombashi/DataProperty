@@ -1,6 +1,6 @@
 import copy
 from decimal import Decimal
-from typing import Optional, Union
+from typing import Dict, Optional, Union
 
 from typepy import Nan, Typecode
 
@@ -16,7 +16,7 @@ class Format:
 class Formatter:
     __slots__ = ("__is_formatting_float", "__format_flags", "__datetime_format_str")
 
-    _BLANK_CURLY_BRACES_FORMAT_MAP = {
+    _BLANK_CURLY_BRACES_FORMAT_MAP: Dict[Typecode, str] = {
         Typecode.NONE: "{}",
         Typecode.IP_ADDRESS: "{}",
         Typecode.BOOL: "{}",
@@ -38,7 +38,9 @@ class Formatter:
         self.__datetime_format_str = datetime_format_str
         self.__is_formatting_float = is_formatting_float
 
-    def make_format_map(self, decimal_places: Optional[DecimalPlaces] = None):
+    def make_format_map(
+        self, decimal_places: Optional[DecimalPlaces] = None
+    ) -> Dict[Typecode, str]:
         format_map = copy.copy(self._BLANK_CURLY_BRACES_FORMAT_MAP)
         format_map.update(
             {

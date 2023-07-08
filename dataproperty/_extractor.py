@@ -46,7 +46,7 @@ from .typing import (
 )
 
 
-DataPropertyMatrix = Sequence[Sequence[DataProperty]]
+DataPropertyMatrix = List[List[DataProperty]]
 
 
 @enum.unique
@@ -492,7 +492,7 @@ class DataPropertyExtractor:
 
         if self.__is_dp_matrix(value_matrix):
             logger.debug("already a dataproperty matrix")
-            return value_matrix
+            return value_matrix  # type: ignore
 
         if self.max_workers <= 1:
             return self.__to_dp_matrix_st(value_matrix)
@@ -512,7 +512,7 @@ class DataPropertyExtractor:
             strict_level_map=MIN_STRICT_LEVEL_MAP,
         )
 
-    def update_preprocessor(self, **kwargs) -> bool:
+    def update_preprocessor(self, **kwargs: Any) -> bool:
         is_updated = self.__preprocessor.update(**kwargs)
         self.__update_dp_converter()
 
@@ -642,7 +642,7 @@ class DataPropertyExtractor:
 
     def __to_dp_matrix_st(self, value_matrix: Sequence[Sequence[Any]]) -> DataPropertyMatrix:
         return list(
-            zip(
+            zip(  # type: ignore
                 *(
                     _to_dp_list_helper(
                         self,
@@ -678,7 +678,9 @@ class DataPropertyExtractor:
                 col_idx, value_dp_list = future.result()
                 col_data_map[col_idx] = value_dp_list
 
-        return list(zip(*(col_data_map[col_idx] for col_idx in sorted(col_data_map))))
+        return list(
+            zip(*(col_data_map[col_idx] for col_idx in sorted(col_data_map)))  # type: ignore
+        )
 
     def _to_dp_list(
         self,

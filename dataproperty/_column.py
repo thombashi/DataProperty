@@ -274,7 +274,7 @@ class ColumnDataProperty(DataPeropertyBase):
         if self.minmax_decimal_places.max_value is None:
             return None
 
-        return int(min(self.__max_precision, self.minmax_decimal_places.max_value))
+        return min(self.__max_precision, int(self.minmax_decimal_places.max_value))
 
     def __get_tostring_format(self, value_dp: DataProperty) -> str:
         if self.typecode == Typecode.STRING:

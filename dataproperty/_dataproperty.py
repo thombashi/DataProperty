@@ -98,6 +98,9 @@ class DataProperty(DataPeropertyBase):
             self.__no_ansi_escape_data = DataProperty(no_ansi_escape_data, float_type=float_type)
 
     def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, DataProperty):
+            return False
+
         if self.typecode != other.typecode:
             return False
 
@@ -107,6 +110,9 @@ class DataProperty(DataPeropertyBase):
         return self.data == other.data
 
     def __ne__(self, other: Any) -> bool:
+        if not isinstance(other, DataProperty):
+            return True
+
         if self.typecode != other.typecode:
             return True
 

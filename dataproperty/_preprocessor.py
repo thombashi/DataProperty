@@ -70,7 +70,7 @@ class Preprocessor:
         )
         return (data, no_ansi_escape_data)
 
-    def update(self, **kwargs) -> bool:
+    def update(self, **kwargs: Any) -> bool:
         is_updated = False
 
         for key, value in kwargs.items():
@@ -85,7 +85,7 @@ class Preprocessor:
 
         return is_updated
 
-    def __preprocess_string(self, raw_data: Any):
+    def __preprocess_string(self, raw_data: Any) -> Tuple[Any, Optional[str]]:
         data = raw_data
 
         if not isinstance(data, str):
