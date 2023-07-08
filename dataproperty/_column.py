@@ -211,7 +211,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__calc_typecode_from_bitmap()
 
         self.__minmax_integer_digits.merge(column_dp.minmax_integer_digits)
-        self.__minmax_decimal_places.update(column_dp.minmax_decimal_places)
+        self.__minmax_decimal_places.merge(column_dp.minmax_decimal_places)
         self.__update_decimal_places()
 
         self.__minmax_additional_format_len.merge(column_dp.minmax_additional_format_len)
