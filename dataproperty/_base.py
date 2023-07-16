@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Dict, Optional, Type
 
 from typepy import (
     Bool,
@@ -31,7 +31,7 @@ class DataPeropertyBase(DataPeropertyInterface):
         "__format_str",
     )
 
-    __TYPE_CLASS_TABLE = {
+    __TYPE_CLASS_TABLE: Dict[Typecode, AbstractType] = {
         Typecode.BOOL: Bool,
         Typecode.DATETIME: DateTime,
         Typecode.DICTIONARY: Dictionary,
