@@ -87,6 +87,7 @@ setuptools.setup(
         "Programming Language :: Python :: Implementation :: PyPy",
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
+        "Typing :: Typed",
     ],
     cmdclass=get_release_command_class(),
     zip_safe=False,
