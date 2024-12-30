@@ -2,15 +2,17 @@ name: CI
 
 on:
   push:
+    branches:
+      - master
     paths-ignore:
-      - 'misc/**'
-      - '.gitignore'
-      - 'README.rst'
+      - "misc/**"
+      - ".gitignore"
+      - "README.rst"
   pull_request:
     paths-ignore:
-      - 'misc/**'
-      - '.gitignore'
-      - 'README.rst'
+      - "misc/**"
+      - ".gitignore"
+      - "README.rst"
 
 permissions:
   contents: read
