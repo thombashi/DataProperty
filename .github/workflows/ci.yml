@@ -12,6 +12,9 @@ on:
       - '.gitignore'
       - 'README.rst'
 
+permissions:
+  contents: read
+
 env:
   PYTEST_DISCORD_WEBHOOK: ${{ secrets.PYTEST_DISCORD_WEBHOOK }}
 
