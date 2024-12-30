@@ -14,11 +14,13 @@ NAN = Decimal("nan")
 
 
 class AbstractContainer(metaclass=abc.ABCMeta):
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def min_value(self) -> Optional[Decimal]:  # pragma: no cover
         pass
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def max_value(self) -> Optional[Decimal]:  # pragma: no cover
         pass
 

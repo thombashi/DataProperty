@@ -13,18 +13,22 @@ from ._align import Align
 class DataPeropertyInterface(metaclass=abc.ABCMeta):
     __slots__ = ()
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def align(self) -> Align:  # pragma: no cover
         pass
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def decimal_places(self) -> Optional[int]:  # pragma: no cover
         pass
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def typecode(self) -> Typecode:  # pragma: no cover
         pass
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def typename(self) -> str:  # pragma: no cover
         pass
