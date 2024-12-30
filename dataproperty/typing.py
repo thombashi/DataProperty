@@ -1,7 +1,7 @@
 from collections.abc import Mapping
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Final, Optional, Union
 
 from typepy import (
     Bool,
@@ -29,7 +29,7 @@ FloatType = Union[type[Decimal], type[float]]
 StrictLevelMap = Mapping[Union[str, Typecode], int]
 TypeValueMap = Mapping[Typecode, Union[float, str, Decimal, None]]
 
-_type_hint_map = {
+_type_hint_map: Final = {
     # high frequently used types
     "int": Integer,
     "float": RealNumber,

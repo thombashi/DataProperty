@@ -1,6 +1,6 @@
 import html
 import re
-from typing import Any, Optional, Union
+from typing import Any, Final, Optional, Union
 
 from mbstrdecoder import MultiByteStrDecoder
 
@@ -8,8 +8,8 @@ from ._function import strip_ansi_escape
 from ._line_break import LineBreakHandling
 
 
-_RE_LINE_BREAK = re.compile(r"\r\n|\n")
-_RE_FORMULA_PREFIX = re.compile(r"^[-\+=@]")
+_RE_LINE_BREAK: Final = re.compile(r"\r\n|\n")
+_RE_FORMULA_PREFIX: Final = re.compile(r"^[-\+=@]")
 
 
 def normalize_lbh(value: Optional[LineBreakHandling]) -> LineBreakHandling:

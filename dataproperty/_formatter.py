@@ -1,6 +1,6 @@
 import copy
 from decimal import Decimal
-from typing import Optional, Union
+from typing import Final, Optional, Union
 
 from typepy import Nan, Typecode
 
@@ -9,14 +9,14 @@ DecimalPlaces = Union[float, Decimal]
 
 
 class Format:
-    NONE = 0
-    THOUSAND_SEPARATOR = 1
+    NONE: Final = 0
+    THOUSAND_SEPARATOR: Final = 1
 
 
 class Formatter:
     __slots__ = ("__is_formatting_float", "__format_flags", "__datetime_format_str")
 
-    _BLANK_CURLY_BRACES_FORMAT_MAP: dict[Typecode, str] = {
+    _BLANK_CURLY_BRACES_FORMAT_MAP: Final[dict[Typecode, str]] = {
         Typecode.NONE: "{}",
         Typecode.IP_ADDRESS: "{}",
         Typecode.BOOL: "{}",

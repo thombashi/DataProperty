@@ -3,7 +3,7 @@
 """
 
 from decimal import Decimal
-from typing import Any, Optional, cast
+from typing import Any, Final, Optional, cast
 
 import typepy
 from mbstrdecoder import MultiByteStrDecoder
@@ -45,7 +45,7 @@ class DataProperty(DataPeropertyBase):
         "__ascii_char_width",
     )
 
-    __type_class_list: list[type[AbstractType]] = [
+    __type_class_list: Final[list[type[AbstractType]]] = [
         NoneType,
         Integer,
         Infinity,

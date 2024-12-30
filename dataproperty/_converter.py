@@ -3,7 +3,7 @@
 """
 
 import re
-from typing import Any, Optional
+from typing import Any, Final, Optional
 
 from typepy import Typecode, TypeConversionError
 
@@ -14,8 +14,8 @@ from .typing import DateTimeFormatter, FloatType, StrictLevelMap, TypeValueMap
 
 
 class DataPropertyConverter:
-    __RE_QUOTE_LINE = re.compile(r"^\s*[\"'].*[\"']\s*$")  # noqa: w605
-    __RE_QUOTE_CHAR = re.compile("[\"']")
+    __RE_QUOTE_LINE: Final = re.compile(r"^\s*[\"'].*[\"']\s*$")  # noqa: w605
+    __RE_QUOTE_CHAR: Final = re.compile("[\"']")
 
     def __init__(
         self,

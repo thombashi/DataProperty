@@ -5,18 +5,18 @@
 import decimal
 import re
 from decimal import Decimal
-from typing import Any, Optional, Union
+from typing import Any, Final, Optional, Union
 
 from typepy import Integer, RealNumber, TypeConversionError
 
 
 decimal.setcontext(decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
 
-_ansi_escape = re.compile(r"(\x9b|\x1b\[)[0-?]*[ -\/]*[@-~]", re.IGNORECASE)
+_ansi_escape: Final = re.compile(r"(\x9b|\x1b\[)[0-?]*[ -\/]*[@-~]", re.IGNORECASE)
 
 
 def get_integer_digit(value: Any) -> int:
-    float_type = RealNumber(value)
+    float_type: Final = RealNumber(value)
 
     try:
         abs_value = abs(float_type.convert())
@@ -38,8 +38,8 @@ def get_integer_digit(value: Any) -> int:
 
 
 class DigitCalculator:
-    REGEXP_COMMON_LOG = re.compile(r"[\d\.]+[eE]\-\d+")
-    REGEXP_SPLIT = re.compile(r"[eE]\-")
+    REGEXP_COMMON_LOG: Final = re.compile(r"[\d\.]+[eE]\-\d+")
+    REGEXP_SPLIT: Final = re.compile(r"[eE]\-")
 
     def get_decimal_places(self, value: Union[str, float, int, Decimal]) -> int:
         if Integer(value).is_type():

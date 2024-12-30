@@ -5,13 +5,13 @@
 import abc
 from collections.abc import Sequence
 from decimal import Decimal
-from typing import Any, Optional, Union
+from typing import Any, Final, Optional, Union
 
 from typepy import RealNumber
 
 
 T = Union[int, float, Decimal]
-NAN = Decimal("nan")
+NAN: Final = Decimal("nan")
 
 
 class AbstractContainer(metaclass=abc.ABCMeta):

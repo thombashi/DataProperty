@@ -3,14 +3,15 @@
 """
 
 import os.path
+from typing import Final
 
 import setuptools
 
 
-MODULE_NAME = "DataProperty"
-REPOSITORY_URL = f"https://github.com/thombashi/{MODULE_NAME:s}"
-MISC_DIR = "misc"
-REQUIREMENT_DIR = "requirements"
+MODULE_NAME: Final = "DataProperty"
+REPOSITORY_URL: Final = f"https://github.com/thombashi/{MODULE_NAME:s}"
+MISC_DIR: Final = "misc"
+REQUIREMENT_DIR: Final = "requirements"
 
 pkg_info: dict[str, str] = {}
 

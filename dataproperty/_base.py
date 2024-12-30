@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Final, Optional
 
 from typepy import (
     Bool,
@@ -31,7 +31,7 @@ class DataPeropertyBase(DataPeropertyInterface):
         "__format_str",
     )
 
-    __TYPE_CLASS_TABLE: dict[Typecode, type[AbstractType]] = {
+    __TYPE_CLASS_TABLE: Final[dict[Typecode, type[AbstractType]]] = {
         Typecode.BOOL: Bool,
         Typecode.DATETIME: DateTime,
         Typecode.DICTIONARY: Dictionary,

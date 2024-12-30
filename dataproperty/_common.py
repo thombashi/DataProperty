@@ -6,13 +6,14 @@ import copy
 import itertools
 from datetime import datetime
 from decimal import Decimal
+from typing import Final
 
 from typepy import StrictLevel, Typecode
 
 from .typing import StrictLevelMap, TypeValueMap
 
 
-NOT_QUOTING_FLAGS = {
+NOT_QUOTING_FLAGS: Final = {
     Typecode.BOOL: False,
     Typecode.DATETIME: False,
     Typecode.DICTIONARY: False,
@@ -27,19 +28,23 @@ NOT_QUOTING_FLAGS = {
     Typecode.STRING: False,
 }
 
-MAX_STRICT_LEVEL_MAP: StrictLevelMap = dict(itertools.product(list(Typecode), [StrictLevel.MAX]))
-MIN_STRICT_LEVEL_MAP: StrictLevelMap = dict(itertools.product(list(Typecode), [StrictLevel.MIN]))
+MAX_STRICT_LEVEL_MAP: Final[StrictLevelMap] = dict(
+    itertools.product(list(Typecode), [StrictLevel.MAX])
+)
+MIN_STRICT_LEVEL_MAP: Final[StrictLevelMap] = dict(
+    itertools.product(list(Typecode), [StrictLevel.MIN])
+)
 
 
 class DefaultValue:
-    DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
-    FLOAT_TYPE = Decimal
-    INF_VALUE = FLOAT_TYPE("inf")
-    NAN_VALUE = FLOAT_TYPE("nan")
+    DATETIME_FORMAT: Final = "%Y-%m-%dT%H:%M:%S%z"
+    FLOAT_TYPE: Final = Decimal
+    INF_VALUE: Final = FLOAT_TYPE("inf")
+    NAN_VALUE: Final = FLOAT_TYPE("nan")
 
-    QUOTING_FLAGS = copy.deepcopy(NOT_QUOTING_FLAGS)
+    QUOTING_FLAGS: Final = copy.deepcopy(NOT_QUOTING_FLAGS)
 
-    STRICT_LEVEL_MAP: StrictLevelMap = {
+    STRICT_LEVEL_MAP: Final[StrictLevelMap] = {
         "default": StrictLevel.MAX,
         Typecode.BOOL: StrictLevel.MAX,
         Typecode.DATETIME: StrictLevel.MAX,
@@ -55,14 +60,14 @@ class DefaultValue:
         Typecode.STRING: StrictLevel.MIN,
     }
 
-    TYPE_VALUE_MAP: TypeValueMap = {
+    TYPE_VALUE_MAP: Final[TypeValueMap] = {
         Typecode.NONE: None,
         Typecode.INFINITY: INF_VALUE,
         Typecode.NAN: NAN_VALUE,
     }
 
-    MAX_WORKERS = 1
-    MAX_PRECISION = 100
+    MAX_WORKERS: Final = 1
+    MAX_PRECISION: Final = 100
 
 
 def default_datetime_formatter(value: datetime) -> str:
