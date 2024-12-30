@@ -122,11 +122,11 @@ class Preprocessor:
         except AttributeError:
             return data
         except UnicodeDecodeError:
-            return MultiByteStrDecoder(data).unicode_str.strip(strip_str)
+            return MultiByteStrDecoder(data).unicode_str.strip(str(strip_str))
         except TypeError:
             # reach here when data and strip_str type are different
             if isinstance(data, bytes):
-                return MultiByteStrDecoder(data).unicode_str.strip(strip_str)
+                return MultiByteStrDecoder(data).unicode_str.strip(str(strip_str))
             elif isinstance(strip_str, bytes):
                 return data.strip(MultiByteStrDecoder(strip_str).unicode_str)
 

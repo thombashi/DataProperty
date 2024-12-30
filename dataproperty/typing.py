@@ -26,7 +26,7 @@ DateTimeFormatter = Callable[[datetime], str]
 
 FloatType = Union[Type[Decimal], Type[float]]
 StrictLevelMap = Mapping[Union[str, Typecode], int]
-TypeValueMap = Mapping[Typecode, Union[float, Decimal, None]]
+TypeValueMap = Mapping[Typecode, Union[float, str, Decimal, None]]
 
 _type_hint_map = {
     # high frequently used types

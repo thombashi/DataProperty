@@ -1,4 +1,4 @@
-from ._logger import logger, set_logger
+from ._logger import logger, set_logger  # type: ignore
 
 
 __all__ = (

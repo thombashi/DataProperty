@@ -8,7 +8,7 @@ import sys
 import typing
 from collections import Counter
 from decimal import Decimal
-from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Any, Dict, List, Optional, Sequence, Tuple, Type, Union, cast
 
 import typepy
 from typepy import (
@@ -35,7 +35,7 @@ from ._converter import DataPropertyConverter
 from ._dataproperty import DataProperty
 from ._formatter import Format
 from ._preprocessor import Preprocessor
-from .logger import logger
+from .logger import logger  # type: ignore
 from .typing import (
     DateTimeFormatter,
     StrictLevelMap,
@@ -118,9 +118,7 @@ class DataPropertyExtractor:
 
         self.__preprocessor = Preprocessor()
 
-        self.__type_value_map: Mapping[Typecode, Union[float, Decimal, None]] = copy.deepcopy(
-            DefaultValue.TYPE_VALUE_MAP
-        )
+        self.__type_value_map: TypeValueMap = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)
 
         self.__trans_func_list: List[TransFunc] = []
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)

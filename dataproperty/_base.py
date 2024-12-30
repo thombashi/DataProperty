@@ -31,7 +31,7 @@ class DataPeropertyBase(DataPeropertyInterface):
         "__format_str",
     )
 
-    __TYPE_CLASS_TABLE: Dict[Typecode, AbstractType] = {
+    __TYPE_CLASS_TABLE: Dict[Typecode, type[AbstractType]] = {
         Typecode.BOOL: Bool,
         Typecode.DATETIME: DateTime,
         Typecode.DICTIONARY: Dictionary,

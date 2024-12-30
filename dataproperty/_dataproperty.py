@@ -46,7 +46,7 @@ class DataProperty(DataPeropertyBase):
         "__ascii_char_width",
     )
 
-    __type_class_list: typing.List[AbstractType] = [
+    __type_class_list: typing.List[type[AbstractType]] = [
         NoneType,
         Integer,
         Infinity,
@@ -348,7 +348,7 @@ class DataProperty(DataPeropertyBase):
 
         for type_class in self.__type_class_list:
             strict_level = strict_level_map.get(
-                type_class(None).typecode, strict_level_map.get("default", StrictLevel.MAX)
+                type_class(None, 0).typecode, strict_level_map.get("default", StrictLevel.MAX)
             )
 
             if self.__try_convert_type(data, type_class, strict_level, float_type):
@@ -366,7 +366,7 @@ class DataProperty(DataPeropertyBase):
     def __try_convert_type(
         self,
         data: Any,
-        type_class: AbstractType,
+        type_class: type[AbstractType],
         strict_level: int,
         float_type: Optional[FloatType],
     ) -> bool:
