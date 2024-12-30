@@ -139,7 +139,12 @@ class Test_DataPeroperty_data_typecode:
                 "Høgskolen i Østfold er et eksempel...",
                 Typecode.STRING,
             ],
-            ["新しいテキスト ドキュメント.txt".encode(), True, "新しいテキスト ドキュメント.txt", Typecode.STRING],
+            [
+                "新しいテキスト ドキュメント.txt".encode(),
+                True,
+                "新しいテキスト ドキュメント.txt",
+                Typecode.STRING,
+            ],
         ],
     )
     def test_normal_strict_map(self, value, is_convert, expected_data, expected_typecode):
