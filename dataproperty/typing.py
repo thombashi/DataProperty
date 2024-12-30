@@ -1,6 +1,7 @@
+from collections.abc import Mapping
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Callable, Mapping, Optional, Type, Union
+from typing import Any, Callable, Optional, Union
 
 from typepy import (
     Bool,
@@ -20,11 +21,11 @@ from typepy import (
 from typepy.type import AbstractType
 
 
-TypeHint = Optional[Type[AbstractType]]
+TypeHint = Optional[type[AbstractType]]
 TransFunc = Callable[[Any], Any]
 DateTimeFormatter = Callable[[datetime], str]
 
-FloatType = Union[Type[Decimal], Type[float]]
+FloatType = Union[type[Decimal], type[float]]
 StrictLevelMap = Mapping[Union[str, Typecode], int]
 TypeValueMap = Mapping[Typecode, Union[float, str, Decimal, None]]
 

@@ -7,8 +7,9 @@ import enum
 import sys
 import typing
 from collections import Counter
+from collections.abc import Sequence
 from decimal import Decimal
-from typing import Any, Dict, List, Optional, Sequence, Tuple, Type, Union, cast
+from typing import Any, Optional, Union, cast
 
 import typepy
 from typepy import (
@@ -46,7 +47,7 @@ from .typing import (
 )
 
 
-DataPropertyMatrix = List[List[DataProperty]]
+DataPropertyMatrix = list[list[DataProperty]]
 
 
 @enum.unique
@@ -102,17 +103,17 @@ class DataPropertyExtractor:
 
         self.__headers: Sequence[str] = []
         self.__default_type_hint: TypeHint = None
-        self.__col_type_hints: List[TypeHint] = []
+        self.__col_type_hints: list[TypeHint] = []
 
         self.__strip_str_header: Optional[str] = None
         self.__is_formatting_float = True
         self.__min_col_ascii_char_width = 0
         self.__default_format_flags = Format.NONE
         self.__format_flags_list: Sequence[int] = []
-        self.__float_type: Union[Type[float], Type[Decimal], None] = None
+        self.__float_type: Union[type[float], type[Decimal], None] = None
         self.__datetime_format_str = DefaultValue.DATETIME_FORMAT
         self.__strict_level_map = copy.deepcopy(
-            cast(Dict[Union[Typecode, str], int], DefaultValue.STRICT_LEVEL_MAP)
+            cast(dict[Union[Typecode, str], int], DefaultValue.STRICT_LEVEL_MAP)
         )
         self.__east_asian_ambiguous_width = 1
 
@@ -120,7 +121,7 @@ class DataPropertyExtractor:
 
         self.__type_value_map: TypeValueMap = copy.deepcopy(DefaultValue.TYPE_VALUE_MAP)
 
-        self.__trans_func_list: List[TransFunc] = []
+        self.__trans_func_list: list[TransFunc] = []
         self.__quoting_flags = copy.deepcopy(DefaultValue.QUOTING_FLAGS)
         self.__datetime_formatter: Optional[DateTimeFormatter] = None
         self.__matrix_formatting = MatrixFormatting.TRIM
@@ -161,12 +162,12 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def column_type_hints(self) -> List[TypeHint]:
+    def column_type_hints(self) -> list[TypeHint]:
         return self.__col_type_hints
 
     @column_type_hints.setter
     def column_type_hints(self, value: Sequence[Union[str, TypeHint]]) -> None:
-        normalized_type_hints: List[TypeHint] = []
+        normalized_type_hints: list[TypeHint] = []
 
         for type_hint in value:
             type_hint = normalize_type_hint(type_hint)
@@ -276,11 +277,11 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def float_type(self) -> Union[Type[float], Type[Decimal], None]:
+    def float_type(self) -> Union[type[float], type[Decimal], None]:
         return self.__float_type
 
     @float_type.setter
-    def float_type(self, value: Union[Type[float], Type[Decimal]]) -> None:
+    def float_type(self, value: Union[type[float], type[Decimal]]) -> None:
         if self.__float_type == value:
             return
 
@@ -308,7 +309,7 @@ class DataPropertyExtractor:
         if self.__strict_level_map == value:
             return
 
-        self.__strict_level_map = cast(Dict[Union[Typecode, str], int], value)
+        self.__strict_level_map = cast(dict[Union[Typecode, str], int], value)
         self.__clear_cache()
 
     @property
@@ -340,11 +341,11 @@ class DataPropertyExtractor:
         self.__clear_cache()
 
     @property
-    def quoting_flags(self) -> Dict[Typecode, bool]:
+    def quoting_flags(self) -> dict[Typecode, bool]:
         return self.__quoting_flags
 
     @quoting_flags.setter
-    def quoting_flags(self, value: Dict[Typecode, bool]) -> None:
+    def quoting_flags(self, value: dict[Typecode, bool]) -> None:
         if self.__quoting_flags == value:
             return
 
@@ -402,7 +403,7 @@ class DataPropertyExtractor:
 
         return self.__to_dp(value)
 
-    def to_dp_list(self, values: Sequence[Any]) -> List[DataProperty]:
+    def to_dp_list(self, values: Sequence[Any]) -> list[DataProperty]:
         if is_empty_sequence(values):
             return []
 
@@ -414,7 +415,7 @@ class DataPropertyExtractor:
         self,
         value_dp_matrix: Any,
         previous_column_dp_list: Optional[Sequence[ColumnDataProperty]] = None,
-    ) -> List[ColumnDataProperty]:
+    ) -> list[ColumnDataProperty]:
         col_dp_list = self.__get_col_dp_list_base()
 
         logger.debug("converting to column dataproperty:")
@@ -497,7 +498,7 @@ class DataPropertyExtractor:
 
         return self.__to_dp_matrix_mt(value_matrix)
 
-    def to_header_dp_list(self) -> List[DataProperty]:
+    def to_header_dp_list(self) -> list[DataProperty]:
         self.__update_dp_converter()
 
         preprocessor = copy.deepcopy(self.__preprocessor)
@@ -686,11 +687,11 @@ class DataPropertyExtractor:
         type_hint: TypeHint = None,
         preprocessor: Optional[Preprocessor] = None,
         strict_level_map: Optional[StrictLevelMap] = None,
-    ) -> List[DataProperty]:
+    ) -> list[DataProperty]:
         if is_empty_sequence(data_list):
             return []
 
-        type_counter: typing.Counter[Type[AbstractType]] = Counter()
+        type_counter: typing.Counter[type[AbstractType]] = Counter()
 
         dp_list = []
         for data in data_list:
@@ -761,7 +762,7 @@ class DataPropertyExtractor:
             for row_idx, col_size in enumerate(col_size_list)
         ]
 
-    def __get_col_dp_list_base(self) -> List[ColumnDataProperty]:
+    def __get_col_dp_list_base(self) -> list[ColumnDataProperty]:
         header_dp_list = self.to_header_dp_list()
         col_dp_list = []
 
@@ -805,7 +806,7 @@ def _to_dp_list_helper(
     data_list: Sequence[Any],
     type_hint: TypeHint,
     preprocessor: Preprocessor,
-) -> Tuple[int, List[DataProperty]]:
+) -> tuple[int, list[DataProperty]]:
     return (
         col_idx,
         extractor._to_dp_list(data_list, type_hint=type_hint, preprocessor=preprocessor),

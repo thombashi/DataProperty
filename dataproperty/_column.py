@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from mbstrdecoder import MultiByteStrDecoder
 from typepy import Integer, StrictLevel, Typecode, TypeConversionError
@@ -96,7 +96,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__float_type = float_type
 
         self.__is_calculate = True
-        self.__dp_list: List[DataProperty] = []
+        self.__dp_list: list[DataProperty] = []
         self.__minmax_integer_digits = MinMaxContainer()
         self.__minmax_decimal_places = ListContainer()
         self.__minmax_additional_format_len = MinMaxContainer()
@@ -105,7 +105,7 @@ class ColumnDataProperty(DataPeropertyBase):
         self.__typecode_bitmap = Typecode.NONE.value
         self.__calc_typecode_from_bitmap()
 
-        self.__format_map: Dict[Typecode, str] = self._formatter.make_format_map(
+        self.__format_map: dict[Typecode, str] = self._formatter.make_format_map(
             decimal_places=self._decimal_places
         )
 

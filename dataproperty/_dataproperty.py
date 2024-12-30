@@ -2,7 +2,6 @@
 .. codeauthor:: Tsuyoshi Hombashi <tsuyoshi.hombashi@gmail.com>
 """
 
-import typing
 from decimal import Decimal
 from typing import Any, Optional, cast
 
@@ -46,7 +45,7 @@ class DataProperty(DataPeropertyBase):
         "__ascii_char_width",
     )
 
-    __type_class_list: typing.List[type[AbstractType]] = [
+    __type_class_list: list[type[AbstractType]] = [
         NoneType,
         Integer,
         Infinity,

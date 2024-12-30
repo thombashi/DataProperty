@@ -1,6 +1,6 @@
 import html
 import re
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 from mbstrdecoder import MultiByteStrDecoder
 
@@ -64,7 +64,7 @@ class Preprocessor:
             ]
         )
 
-    def preprocess(self, data: Any) -> Tuple:
+    def preprocess(self, data: Any) -> tuple:
         data, no_ansi_escape_data = self.__preprocess_string(
             self.__preprocess_data(data, self.strip_str),
         )
@@ -85,7 +85,7 @@ class Preprocessor:
 
         return is_updated
 
-    def __preprocess_string(self, raw_data: Any) -> Tuple[Any, Optional[str]]:
+    def __preprocess_string(self, raw_data: Any) -> tuple[Any, Optional[str]]:
         data = raw_data
 
         if not isinstance(data, str):

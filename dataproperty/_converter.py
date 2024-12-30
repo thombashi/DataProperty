@@ -3,7 +3,7 @@
 """
 
 import re
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from typepy import Typecode, TypeConversionError
 
@@ -23,7 +23,7 @@ class DataPropertyConverter:
         datetime_format_str: str,
         datetime_formatter: Optional[DateTimeFormatter] = None,
         type_value_map: Optional[TypeValueMap] = None,
-        quoting_flags: Optional[Dict[Typecode, bool]] = None,
+        quoting_flags: Optional[dict[Typecode, bool]] = None,
         float_type: Optional[FloatType] = None,
         strict_level_map: Optional[StrictLevelMap] = None,
     ) -> None:
@@ -31,7 +31,7 @@ class DataPropertyConverter:
         self.__type_value_map: TypeValueMap = (
             type_value_map if type_value_map else DefaultValue.TYPE_VALUE_MAP
         )
-        self.__quoting_flags: Dict[Typecode, bool] = (
+        self.__quoting_flags: dict[Typecode, bool] = (
             quoting_flags if quoting_flags else DefaultValue.QUOTING_FLAGS
         )
 

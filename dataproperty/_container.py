@@ -3,8 +3,9 @@
 """
 
 import abc
+from collections.abc import Sequence
 from decimal import Decimal
-from typing import Any, List, Optional, Sequence, Union
+from typing import Any, Optional, Union
 
 from typepy import RealNumber
 
@@ -70,12 +71,12 @@ class ListContainer(AbstractContainer):
             return None
 
     @property
-    def value_list(self) -> List[Decimal]:
+    def value_list(self) -> list[Decimal]:
         return self.__value_list
 
-    def __init__(self, value_list: Optional[List[Decimal]] = None) -> None:
+    def __init__(self, value_list: Optional[list[Decimal]] = None) -> None:
         if value_list is None:
-            self.__value_list: List[Decimal] = []
+            self.__value_list: list[Decimal] = []
             return
 
         for value in value_list:

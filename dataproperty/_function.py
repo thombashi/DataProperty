@@ -5,7 +5,7 @@
 import decimal
 import re
 from decimal import Decimal
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 from typepy import Integer, RealNumber, TypeConversionError
 
@@ -64,7 +64,7 @@ _digit_calculator = DigitCalculator()
 
 def get_number_of_digit(
     value: Any, max_decimal_places: int = 99
-) -> Tuple[Optional[int], Optional[int]]:
+) -> tuple[Optional[int], Optional[int]]:
     try:
         integer_digits = get_integer_digit(value)
     except (ValueError, TypeError, OverflowError):
