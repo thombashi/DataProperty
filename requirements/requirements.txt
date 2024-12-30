@@ -1,2 +1,2 @@
 mbstrdecoder>=1.0.0,<2
-typepy[datetime]>=1.2.0,<2
+typepy[datetime]>=1.3.2,<2
