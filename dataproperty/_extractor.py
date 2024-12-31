@@ -336,6 +336,10 @@ class DataPropertyExtractor:
         self.__type_value_map = value
         self.__clear_cache()
 
+    def set_type_value(self, key: Typecode, value: Union[float, str, Decimal, None]) -> None:
+        self.__type_value_map[key] = value
+        self.__clear_cache()
+
     def register_trans_func(self, trans_func: TransFunc) -> None:
         self.__trans_func_list.insert(0, trans_func)
         self.__clear_cache()
