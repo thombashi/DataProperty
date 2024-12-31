@@ -10,31 +10,35 @@ from typing import Any, Final, Optional, Union
 from typepy import Integer, RealNumber, TypeConversionError
 
 
-decimal.setcontext(decimal.Context(prec=60, rounding=decimal.ROUND_HALF_DOWN))
-
 _ansi_escape: Final = re.compile(r"(\x9b|\x1b\[)[0-?]*[ -\/]*[@-~]", re.IGNORECASE)
 
 
 def get_integer_digit(value: Any) -> int:
     float_type: Final = RealNumber(value)
 
-    try:
-        abs_value = abs(float_type.convert())
-    except TypeConversionError:
+    with decimal.localcontext() as ctx:
+        ctx.prec = 60
+        ctx.rounding = decimal.ROUND_HALF_DOWN
+
         try:
-            abs_value = abs(Integer(value).convert())
+            abs_value = abs(float_type.convert())
         except TypeConversionError:
-            raise ValueError(f"the value must be a number: value='{value}' type='{type(value)}'")
+            try:
+                abs_value = abs(Integer(value).convert())
+            except TypeConversionError:
+                raise ValueError(
+                    f"the value must be a number: value='{value}' type='{type(value)}'"
+                )
 
-        return len(str(abs_value))
+            return len(str(abs_value))
 
-    if abs_value.is_zero():
-        return 1
+        if abs_value.is_zero():
+            return 1
 
-    try:
-        return len(str(abs_value.quantize(Decimal("1."), rounding=decimal.ROUND_DOWN)))
-    except decimal.InvalidOperation:
-        return len(str(abs_value))
+        try:
+            return len(str(abs_value.quantize(Decimal("1."), rounding=decimal.ROUND_DOWN)))
+        except decimal.InvalidOperation:
+            return len(str(abs_value))
 
 
 class DigitCalculator:
