@@ -671,8 +671,7 @@ class Test_DataPeroperty_repr:
             [
                 DATATIME_DATA,
                 DefaultValue.STRICT_LEVEL_MAP,
-                "data=2017-01-02 03:04:05, type=DATETIME, align=left, "
-                "ascii_width=19, extra_len=0",
+                "data=2017-01-02 03:04:05, type=DATETIME, align=left, ascii_width=19, extra_len=0",
             ],
             [
                 "2017-01-02 03:04:05",

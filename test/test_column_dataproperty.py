@@ -142,8 +142,7 @@ class Test_ColumnDataPeroperty:
         assert col_dp.minmax_additional_format_len.max_value == 0
 
         assert str(col_dp) == (
-            "column=0, type=REAL_NUMBER, align=right, ascii_width=8, "
-            "int_digits=1, decimal_places=0"
+            "column=0, type=REAL_NUMBER, align=right, ascii_width=8, int_digits=1, decimal_places=0"
         )
 
     def test_normal_number_2(self):
